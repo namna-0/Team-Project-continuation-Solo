@@ -26,7 +26,7 @@ export default function Home() {
         <div className="p-6 border rounded-xl shadow-sm">
           <h2 className="text-xl font-semibold mb-2">Salon & Spa</h2>
           <p className="text-sm text-muted-foreground">
-            Book a beauty or grooming service with ease.
+            Book a beauty or grooming service with easeasd.
           </p>
         </div>
         <div className="p-6 border rounded-xl shadow-sm">
