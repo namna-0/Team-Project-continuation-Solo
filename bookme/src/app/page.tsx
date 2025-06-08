@@ -14,7 +14,6 @@ export default function Home() {
           Book Now
         </button>
       </section>
-
       {/* Services Section */}
       <section className="mt-16 w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
         <div className="p-6 border rounded-xl shadow-sm">
