@@ -31,7 +31,7 @@ export default function Home() {
         <div className="p-6 border rounded-xl shadow-sm">
           <h2 className="text-xl font-semibold mb-2">Consulting</h2>
           <p className="text-sm text-muted-foreground">
-            Set up meetings with experts in any field.
+            Set up meetings with experts in any fiel.
           </p>
         </div>
       </section>
