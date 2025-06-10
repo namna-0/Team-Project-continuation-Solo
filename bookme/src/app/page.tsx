@@ -1,7 +1,6 @@
 export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4 py-12 bg-white">
-      {/* Hero Section */}
       <section className="text-center max-w-xl">
         <h1 className="text-4xl font-bold mb-4">
           Book Your Appointment Easily
