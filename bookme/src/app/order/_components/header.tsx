@@ -5,8 +5,8 @@ import { useEffect, useState } from "react"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import LeaveOrder from "./leaveOrderDialog"
 import { motion, useScroll, useTransform } from "framer-motion";
-type OrderNavpropsType = { isStage: string, setIsStage: (stage: string) => void, title: string }
-const OrderNavBar = ({ isStage, setIsStage, title }: OrderNavpropsType) => {
+type OrderNavpropsType = { isStage: string, setIsStage: (stage: string) => void, title: string, Stages: string[] }
+const OrderNavBar = ({ isStage, setIsStage, Stages, title }: OrderNavpropsType) => {
 
     const initialValue = 107;
     const finalValue = 88;
@@ -29,7 +29,7 @@ const OrderNavBar = ({ isStage, setIsStage, title }: OrderNavpropsType) => {
         () => scrollY.onChange((latest) => setIsPastThreshold(latest > thresholdY)),
         []
     );
-    const Stages = ["professional", "time", "confirm"]
+
     const HandleNextStage = () => {
         if (isStage == Stages[0]) (
             setIsStage(Stages[1])
@@ -38,8 +38,8 @@ const OrderNavBar = ({ isStage, setIsStage, title }: OrderNavpropsType) => {
     };
     const HandlePrevStage = () => {
 
-        if (isStage == "time") { setIsStage("professional") }
-        if (isStage == "confirm") { setIsStage("time") }
+        if (isStage == Stages[1]) { setIsStage(Stages[0]) }
+        if (isStage == Stages[2]) { setIsStage(Stages[1]) }
     }
     return (
         <>
@@ -47,7 +47,7 @@ const OrderNavBar = ({ isStage, setIsStage, title }: OrderNavpropsType) => {
                 <div className="w-full flex justify-between items-center ">
                     <div className="flex gap-6">
                         {isStage == Stages[0] ? (
-                            <Dialog>
+                            <Dialog  >
                                 <DialogTrigger>
                                     <LucideArrowLeft /></DialogTrigger>
                                 <LeaveOrder />
@@ -59,7 +59,7 @@ const OrderNavBar = ({ isStage, setIsStage, title }: OrderNavpropsType) => {
                             </div>
                         }
                         <motion.div
-                            className="font-bold capitalize "
+                            className="font-bold text-3xl normal-case "
                             initial={{ opacity: 0, scale: 0.5 }}
                             animate={{
                                 opacity: isPastThreshold ? 1 : 0,

@@ -7,9 +7,10 @@ import { XIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 function Dialog({
+  open = true,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Root>) {
-  return <DialogPrimitive.Root data-slot="dialog" {...props} />
+  return <DialogPrimitive.Root data-slot="dialog"  {...props} />
 }
 
 function DialogTrigger({
@@ -45,7 +46,6 @@ function DialogOverlay({
     />
   )
 }
-
 function DialogContent({
   className,
   children,
