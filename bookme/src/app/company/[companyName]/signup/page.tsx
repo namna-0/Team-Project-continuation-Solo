@@ -12,6 +12,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/app/_providers/UserAuthProvider";
+import { toast } from "sonner";
+import { useState } from "react";
 
 const formSchema = z
   .object({
@@ -31,6 +34,8 @@ const formSchema = z
     path: ["confirmPassword"],
   });
 export default function Home() {
+  const { signUp, user } = useAuth();
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,8 +45,17 @@ export default function Home() {
       confirmPassword: "",
     },
   });
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const { username, email, password } = values;
+    setLoading(true);
+    try {
+      await signUp(email, password, username);
+      toast.success("Амжилттай бүртгэгдлээ!");
+    } catch (error) {
+      toast.error("Бүртгүүлэхэд алдаа гарлаа.");
+    } finally {
+      setLoading(false);
+    }
   }
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-radial-[at_50%_75%] from-indigo-900 via-blue-400 to-sky-200 to-90% text-white">
@@ -129,8 +143,9 @@ export default function Home() {
                 <Button
                   type="submit"
                   className="h-8 bg-[#007fff] text-[13px] font-bold text-white rounded-[10px] cursor-pointer"
+                  disabled={loading}
                 >
-                  Бүртгүүлэх
+                  {loading ? "Бүртгэж байна..." : "Бүртгүүлэх"}
                 </Button>
               </form>
             </Form>
