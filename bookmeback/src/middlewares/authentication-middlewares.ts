@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 
-export const authenticationMiddleware: any = (req, res, next) => {
+export const authenticationMiddleware: RequestHandler = (req, res, next) => {
   const token = req.headers.authorization;
 
   if (!token) {
@@ -16,8 +16,8 @@ export const authenticationMiddleware: any = (req, res, next) => {
       userId: string;
       isAdmin: boolean;
     };
-    req.userId = userId;
-    req.isAdmin = isAdmin;
+    (req as any).userId = userId;
+    (req as any).isAdmin = isAdmin;
 
     next();
   } catch (error) {

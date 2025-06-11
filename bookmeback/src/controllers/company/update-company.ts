@@ -1,0 +1,70 @@
+import { RequestHandler } from "express";
+import { Company } from "../../models/company.schema";
+import bcrypt from "bcrypt";
+
+export const updateCompanyController: RequestHandler = async (req, res) => {
+  try {
+    const { companyId } = req.params;
+
+    if (!companyId) {
+      res.status(400).json({ message: "Компаний ID олдсонгүй" });
+      return; 
+    }
+
+    const {
+      email,
+      workingHours,
+      lunchBreak,
+      password,
+      address,
+      companyLogo,
+      phoneNumber,
+      description,
+      companyName,
+      companyImages,
+      employees,
+      bookings,
+    } = req.body;
+
+    const updatedData: any = {
+      email,
+      workingHours,
+      lunchBreak,
+      address,
+      companyLogo,
+      phoneNumber,
+      description,
+      companyName,
+      companyImages,
+      employees,
+      bookings,
+      updatedAt: new Date(), 
+    };
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updatedData.password = hashedPassword;
+    }
+
+    const updatedCompany = await Company.findByIdAndUpdate(
+      companyId,
+      updatedData,
+      { new: true }
+    );
+
+    if (!updatedCompany) {
+      res.status(404).json({ message: "Компани олдсонгүй" });
+      return; 
+    }
+
+    res.status(200).json({
+      message: "Компанийн мэдээлэл амжилттай шинэчлэгдлээ",
+      company: updatedCompany,
+    });
+    return; 
+  } catch (error) {
+    console.error("Компанийн мэдээлэл шинэчлэхэд алдаа гарлаа:", error);
+    res.status(500).json({ message: "Server error" });
+    return 
+  }
+};
