@@ -12,6 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useAuth } from "@/app/_providers/UserAuthProvider";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -23,6 +24,7 @@ const formSchema = z.object({
 });
 
 export default function Home() {
+  const { signIn, user } = useAuth();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -30,8 +32,13 @@ export default function Home() {
       password: "",
     },
   });
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      await signIn(values.email, values.password);
+      if (!user) return;
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   }
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-radial-[at_50%_75%] from-indigo-900 via-blue-400 to-sky-200 to-90% text-white">
