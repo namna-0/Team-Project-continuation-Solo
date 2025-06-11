@@ -16,6 +16,7 @@ const companySchema = new Schema({
     default: []
   },
   employees: [{ type: Schema.Types.ObjectId, ref: "Employee", default: [] }],
+  bookings: [{ type: Schema.Types.ObjectId, ref: "Booking", default: []}],
   createdAt: { type: Date, required: false, default: Date.now },
   updatedAt: { type: Date, required: false, default: Date.now },
 });
