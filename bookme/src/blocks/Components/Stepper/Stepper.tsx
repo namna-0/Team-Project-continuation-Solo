@@ -1,4 +1,4 @@
-// ... импорт хэсэг хэвээр байна
+
 import React, {
   useState,
   Children,
@@ -167,7 +167,6 @@ export default function Stepper({
   );
 }
 
-// Wrapper for animated content
 function StepContentWrapper({
   isCompleted,
   currentStep,
@@ -204,7 +203,6 @@ function StepContentWrapper({
   );
 }
 
-// Slide animation for each step
 function SlideTransition({
   children,
   direction,
@@ -255,7 +253,6 @@ export function Step({ children }: { children: ReactNode }) {
   return <div className="px-8 text-white">{children}</div>;
 }
 
-// Step circle
 function StepIndicator({
   step,
   currentStep,
