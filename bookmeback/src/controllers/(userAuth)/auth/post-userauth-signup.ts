@@ -48,8 +48,8 @@ export const postUserAuthSignUp: RequestHandler = async (req, res) => {
       subject: "Амжилттай бүртгэгдлээ!",
       html: `
         <div style="font-family: Arial; padding: 20px;">
-          <h2>Сайн байна уу, ${username}!</h2>
-          <p>Та <strong>BookMe</strong> платформд амжилттай бүртгүүллээ.</p>
+          <h2>Сайн байна уу, ${email}!</h2>
+          <p>Та <strong>Bookme.mn</strong> платформд амжилттай бүртгүүллээ.</p>
           <p>Манай үйлчилгээг ашигласанд баярлалаа!</p>
           <a href="https://bookme.mn/login" style="color: blue;">Нэвтрэх</a>
         </div>
@@ -65,6 +65,7 @@ export const postUserAuthSignUp: RequestHandler = async (req, res) => {
       },
     });
   } catch (error) {
+    console.error("Signup error:", error);
     res.status(500).json({ message: "Бүртгэл амжилтгүй боллоо" });
   }
 };
