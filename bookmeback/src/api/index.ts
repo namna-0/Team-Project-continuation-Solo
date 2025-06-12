@@ -7,6 +7,7 @@ import authCompanyRouter from "../routes/auth-company.route";
 import companyRouter from "../routes/company.route";
 import emailRouter from "../routes/mail.route";
 import BookingRouter from "../routes/order.route";
+import employeeRouter from "../routes/employee.route";
 
 connectToDataBase();
 
@@ -18,7 +19,10 @@ app.use(express.json());
 app.use(authCompanyRouter)
 app.use(companyRouter)
 app.use(BookingRouter)
+app.use(authCompanyRouter);
+app.use(companyRouter);
 app.use(cors()).use("/authuser", authUserRouter).use("/email", emailRouter);
+app.use(employeeRouter);
 
 app.listen(port, () => {
   console.log(`Sonsoj bnaa ${port}`);
