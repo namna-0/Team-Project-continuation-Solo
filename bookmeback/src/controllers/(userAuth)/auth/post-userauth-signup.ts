@@ -51,7 +51,8 @@ export const postUserAuthSignUp: RequestHandler = async (req, res) => {
           <h2>Сайн байна уу, ${email}!</h2>
           <p>Та <strong>Bookme.mn</strong> платформд амжилттай бүртгүүллээ.</p>
           <p>Манай үйлчилгээг ашигласанд баярлалаа!</p>
-          <a href="https://bookme.mn/login" style="color: blue;">Нэвтрэх</a>
+          <img src="https://res.cloudinary.com/dqd01lbfy/image/upload/v1745994136/samples/sheep.jpg" alt="sheep" width="300">
+          
         </div>
       `,
     };
