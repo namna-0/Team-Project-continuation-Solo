@@ -15,8 +15,8 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { ImageSVG } from "./_components/assets/ImageSVG";
 import { EmployeeSvg } from "./_components/assets/EmployeeSvg";
-import Image from "next/image";
 import axios from "axios";
+import { AddEmployee } from "./_components/AddEmployee";
 
 const companyProfileSchema = z.object({
   companyName: z.string().min(2, {
@@ -38,16 +38,6 @@ const companyProfileSchema = z.object({
     message: "Username must be at least 2 characters.",
   }),
 });
-
-// const days = [
-//   "Monday",
-//   "Tuesday",
-//   "Wednesday",
-//   "Thursday",
-//   "Friday",
-//   "Saturday",
-//   "Sunday",
-// ];
 
 export default function Home() {
   const [uploadedImage, setUploadedImage] = useState("");
@@ -127,23 +117,11 @@ export default function Home() {
 
   return (
     <div className="w-full flex flex-col justify-center items-center bg-[#f7f7f7] p-4 gap-2">
-      <div className="w-[1440px] bg-white rounded-2xl">
-        <div className="flex justify-between items-center p-4">
-          <div>
-            <div className="text-[20px] font-medium">
-              Organization Management
-            </div>
-            <div className="text-[14px] font-normal text-gray-400">
-              Manage your business profile and team
-            </div>
-          </div>
-          <Button>+ Add employee</Button>
-        </div>
-      </div>
+      <AddEmployee />
       <div className="w-full border-b-2 pt-3 "></div>
       <div className="w-[1440px] p-4 flex gap-2">
-        <Button variant={"outline"}>Profile</Button>
-        <Button variant={"outline"}>Employee Management</Button>
+        <Button >Profile</Button>
+        <Button >Employee Management</Button>
       </div>
       <div className="w-[1440px] flex justify-between gap-2 ">
         <div className="flex flex-col w-[80%] gap-5">
