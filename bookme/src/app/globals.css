@@ -18,7 +18,9 @@
     --foreground: #ededed;
   }
 }
-
+.box {
+  box-shadow: 0 0 15px #0aade4;
+}
 body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
