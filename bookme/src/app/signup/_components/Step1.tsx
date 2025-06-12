@@ -3,6 +3,7 @@
 import { Step } from "@/blocks/Components/Stepper/Stepper"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { FormDataType } from "../page"
 
 type Step1Props = {
   formData: FormDataType;
