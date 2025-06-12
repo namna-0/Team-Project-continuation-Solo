@@ -1,5 +1,7 @@
 "use client"
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
+
 import {
   Menu,
   X,
@@ -208,10 +210,12 @@ export default function AnimatedNailsyLanding() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex-shrink-0">
-              <div className="text-2xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent hover:scale-110 transition-all duration-300 cursor-pointer relative">
-                <span className="inline-block hover:animate-bounce">Nailsy</span>
-                <Sparkles className="absolute -top-2 -right-6 w-4 h-4 text-pink-400 animate-pulse" />
-              </div>
+              <Link
+                href="/"
+                className="text-2xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent"
+              >
+                Nailsy
+              </Link>
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-8">
@@ -378,8 +382,75 @@ export default function AnimatedNailsyLanding() {
         </div>
       </section>
 
-      {/* Animated Services Section */}
-      <section id="services" className="py-20 bg-white">
+      {/* About Section */}
+      <section
+        id="about"
+        className="py-20 bg-gradient-to-br from-pink-50 to-purple-50"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="relative">
+              <img
+                src="/api/placeholder/600/500"
+                alt="Bertie Capone"
+                className="rounded-2xl shadow-2xl w-full h-auto"
+              />
+              <div className="absolute -bottom-4 -left-4 w-full h-full bg-gradient-to-br from-pink-200 to-purple-200 rounded-2xl -z-10"></div>
+            </div>
+
+            <div className="space-y-6">
+              <div>
+                <p className="text-pink-500 font-medium tracking-wider uppercase mb-4">
+                  About Us
+                </p>
+                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                  Meet Bertie Capone
+                </h2>
+              </div>
+
+              <div className="space-y-4 text-gray-600 text-lg leading-relaxed">
+                <p>
+                  With over a decade of experience in the beauty industry,
+                  Bertie Capone has established herself as one of the premier
+                  nail artists in the city. Her passion for perfection and eye
+                  for detail have made her the go-to choice for celebrities and
+                  discerning clients alike.
+                </p>
+                <p>
+                  At Nailsy, we believe that nail care is an art form. Every
+                  service is meticulously crafted to not only enhance your
+                  natural beauty but to provide you with a luxurious experience
+                  that rejuvenates both body and spirit.
+                </p>
+                <p>
+                  Our commitment to excellence extends beyond just our services.
+                  We use only the finest products, maintain the highest
+                  standards of hygiene, and continuously stay updated with the
+                  latest trends and techniques in nail care.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-6 pt-6">
+                <div className="text-center p-4 bg-white/50 rounded-2xl">
+                  <div className="text-2xl font-bold text-pink-500 mb-2">
+                    10+
+                  </div>
+                  <div className="text-gray-600">Years Experience</div>
+                </div>
+                <div className="text-center p-4 bg-white/50 rounded-2xl">
+                  <div className="text-2xl font-bold text-pink-500 mb-2">
+                    Celebrity
+                  </div>
+                  <div className="text-gray-600">Approved</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <p className="text-pink-500 font-medium tracking-wider uppercase mb-4">Our Services</p>
