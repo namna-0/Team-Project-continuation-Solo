@@ -10,7 +10,7 @@ const LeaveOrder = () => {
             <DialogContent showCloseButton={false} className="w-100 h-fit p-9 items-between border-none justify-between " >
                 <DialogHeader className="flex flex-col gap-9">
                     <DialogTitle>Захиалгын хэсгийг хаахдаа итгэлтэй байна уу?</DialogTitle>
-                    <DialogDescription>
+                    <DialogDescription className="text-gray-500">
                         Бүх сонголтууд устах болно.
                     </DialogDescription>
                     <div className="flex w-full justify-between gap-3">
