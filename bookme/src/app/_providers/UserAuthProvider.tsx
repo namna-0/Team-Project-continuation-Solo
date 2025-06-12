@@ -48,16 +48,32 @@ export const UserAuthProvider = ({ children }: PropsWithChildren) => {
 
   const signUp = async (email: string, password: string, username: string) => {
     try {
-      const { data } = await api.post(`/authuser/signup`, {
+      const response = await api.post(`/authuser/signup`, {
         email,
         password,
         username,
       });
+
+      const { data, status } = response;
+
       localStorage.setItem("token", data.token);
       setUser(data.user);
-    } catch (error) {
-      console.error(error);
-      toast.error("Бүртгүүлэхэд алдаа гарлаа.");
+      if (status === 200 || status === 201) {
+        toast.success("Амжилттай бүртгэгдлээ!", {
+          position: "top-center",
+        });
+      }
+    } catch (error: any) {
+      if (error.response?.status === 409) {
+        toast.error("Имэйл хаяг бүртгэлтэй байна.", {
+          position: "top-center",
+        });
+      } else {
+        toast.error("Бүртгүүлэхэд алдаа гарлаа.", {
+          position: "top-center",
+        });
+      }
+      console.error("Signup error:", error);
     }
   };
 

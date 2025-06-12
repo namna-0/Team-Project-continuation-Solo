@@ -13,6 +13,7 @@ export const postUserAuthSignUp: RequestHandler = async (req, res) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       res.status(409).json({ message: "Имэйл хаяг бүртгэлтэй байна." });
+      return;
     }
 
     const hashedPassword = await bcrypt.hash(password, 2);
@@ -34,29 +35,28 @@ export const postUserAuthSignUp: RequestHandler = async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+    // const transporter = nodemailer.createTransport({
+    //   service: "gmail",
+    //   auth: {
+    //     user: process.env.EMAIL_USER,
+    //     pass: process.env.EMAIL_PASS,
+    //   },
+    // });
 
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Амжилттай бүртгэгдлээ!",
-      html: `
-        <div style="font-family: Arial; padding: 20px;">
-          <h2>Сайн байна уу, ${email}!</h2>
-          <p>Та <strong>Bookme.mn</strong> платформд амжилттай бүртгүүллээ.</p>
-          <p>Манай үйлчилгээг ашигласанд баярлалаа!</p>
-          <img src="https://res.cloudinary.com/dqd01lbfy/image/upload/v1745994136/samples/sheep.jpg" alt="sheep" width="300">
-          
-        </div>
-      `,
-    };
-    await transporter.sendMail(mailOptions);
+    // const mailOptions = {
+    //   from: process.env.EMAIL_USER,
+    //   to: email,
+    //   subject: "Амжилттай бүртгэгдлээ!",
+    //   html: `
+    //     <div style="font-family: Arial; padding: 20px;">
+    //       <h2>Сайн байна уу, ${email}!</h2>
+    //       <p>Та <strong>Bookme.mn</strong> платформд амжилттай бүртгүүллээ.</p>
+    //       <p>Манай үйлчилгээг ашигласанд баярлалаа!</p>
+    //       <img src="https://res.cloudinary.com/dqd01lbfy/image/upload/v1745994136/samples/sheep.jpg" alt="sheep" width="300">
+    //     </div>
+    //   `,
+    // };
+    // await transporter.sendMail(mailOptions);
     res.status(200).json({
       message: "Бүртгэл амжилттай, нэвтэрсэн!",
       user: {
