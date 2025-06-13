@@ -1,14 +1,23 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { HouseIcon } from "lucide-react";
+"use client";
 import Link from "next/link";
+import { HomeAddress } from "./_components/Homeaddress";
+import { WorkAddress } from "./_components/Workaddress";
+import { useState } from "react";
 
 export default function Home() {
+  const [isEditting, setIsEditting] = useState(false);
+  const [userData, setUserData] = useState({
+    name: "Хэрэглэгчийн нэр",
+    email: "bbayargun@gmail.com",
+    phone: "218731490812",
+    address: "tend end",
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserData((prev) => ({ ...prev, [name]: value }));
+  };
+
   return (
     <div className="w-screen h-screen bg-[#f9f9f9] flex justify-center items-center flex-col">
       <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 shadow-sm">
@@ -65,66 +74,80 @@ export default function Home() {
       <div className="w-[1440px] h-fit border border-black flex items-center justify-center">
         <div className="w-[960px] h-[770px] flex flex-col gap-10">
           <div className="w-full h-[36px]">
-            <p className="font-bold text-[36px]">Profile</p>
+            <p className="font-bold text-[36px]">Хэрэглэгчийн нүүр хуудас</p>
           </div>
           <div className="w-full h-[695px] flex gap-5">
             <div className="w-[360px] h-full bg-white rounded-2xl border border-gray-300 p-10 flex flex-col gap-10">
               <div className="w-full h-[150px] flex flex-col gap-10 border-b-1">
                 <div className="w-full h-[16px] flex justify-end">
-                  <p className="text-purple-400 text-[16px] font-medium">
-                    Edit
+                  <p
+                    className="text-purple-400 text-[16px] font-medium cursor-pointer hover:underline"
+                    onClick={() => setIsEditting(!isEditting)}
+                  >
+                    {isEditting ? "Хадгалах" : "Засах"}
                   </p>
                 </div>
                 <div className="w-full h-[30px] flex justify-center items-center">
-                  <p className="font-bold text-[25px]">Username</p>
+                  <p className="font-bold text-[25px]">Хэрэглэгчийн нэр</p>
                 </div>
               </div>
 
               <div className="w-full h-fit ">
                 <div className="w-full h-[360px] flex flex-col gap-5 pt-2">
                   <div>
-                    <p className="font-semibold text-[16px]">Email</p>
-                    <p className=" text-[14px] text-gray-400">
-                      bbayargun@gmail.com
-                    </p>
+                    <p className="font-semibold text-[16px]">Емайл</p>
+                    {isEditting ? (
+                      <input
+                        name="email"
+                        value={userData.email}
+                        onChange={handleInputChange}
+                        className="text-[14px] border-b-2 border-gray-300 focus:outline-none w-full"
+                      />
+                    ) : (
+                      <p className="text-[14px] text-gray-400">
+                        {userData.email}
+                      </p>
+                    )}
                   </div>
                   <div>
-                    <p className="font-semibold text-[16px]">Mobile number</p>
-                    <p className="text-[14px] text-gray-400">218731490812</p>
+                    <p className="font-semibold text-[16px]">Утасны дугаар</p>
+                    {isEditting ? (
+                      <input
+                        name="phone"
+                        value={userData.phone}
+                        onChange={handleInputChange}
+                        className="text-[14px] border-b-2 border-gray-300 focus:outline-none w-full"
+                      />
+                    ) : (
+                      <p className="text-[14px] text-gray-400">
+                        {userData.phone}
+                      </p>
+                    )}
                   </div>
                   <div>
-                    <p className="font-semibold text-[16px]">Address</p>
-                    <p className="text-[14px] text-gray-400">tend end </p>
+                    <p className="font-semibold text-[16px]">Хаяг</p>
+                    {isEditting ? (
+                      <input
+                        name="address"
+                        value={userData.address}
+                        onChange={handleInputChange}
+                        className="text-[14px] border-b-2 border-gray-300 focus:outline-none w-full"
+                      />
+                    ) : (
+                      <p className="text-[14px] text-gray-400">
+                        {userData.address}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
             <div className="w-[580px] h-full bg-white rounded-2xl border border-gray-300 p-10 flex flex-col gap-10">
               <div className="w-full h-[24px] ">
-                <p className="text-[24px] font-bold">My address</p>
+                <p className="text-[24px] font-bold">Миний хаяг</p>
               </div>
-              <div className="w-full h-fit flex flex-col gap-[14px]">
-                <Dialog>
-                  <DialogTrigger className="cursor-pointer w-full h-[72px] border border-gray-300 rounded-[6px] hover:bg-[#fbfafa] ">
-                    <div className="w-full h-full flex items-center px-10 gap-[20px]">
-                      <div className="h-[50px] w-[50px] bg-[#e8e7e7] rounded-[9999px] flex justify-center items-center">
-                        <HouseIcon />
-                      </div>
-                      <div className="w-[130px] flex flex-col ">
-                        <p className="font-bold text-[16px]">Home</p>
-                        <p className="text-[14px] text-gray-400">
-                          Add a home address
-                        </p>
-                      </div>
-                    </div>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Are you absolutely sure?</DialogTitle>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
+              <HomeAddress />
+              <WorkAddress />
             </div>
           </div>
         </div>
