@@ -1,20 +1,17 @@
 import { RequestHandler } from "express";
 import { Booking } from "../../models/booking.schema";
 
-
-
-export const getOrdersAndOneOrder: RequestHandler = async (req, res) => {
+export const getOrdersByEmployee: RequestHandler = async (req, res) => {
 
   try {
-    const {id} = req.params;
-    const bookings = await Booking.find({id})
-
+    const { id } = req.params;
+    const bookings = await Booking.find({ employee: id }) 
     if (!bookings || bookings.length === 0) {
       res.status(404).json({ message: "танид захиалга байхгүй байна." });
-      return; 
+      return;
     }
 
-    res.status(200).json({message:"Таны захиалгууд", bookings });
+    res.status(200).json({ message: "Таны захиалгууд", bookings });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

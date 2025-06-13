@@ -35,7 +35,7 @@ const OrderNavBar = ({ isStage, setIsStage, Stages, title }: OrderNavpropsType) 
     }
     return (
         <>
-            <div className="flex w-screen h-fit p-4 bg-white z-10 fixed top-0 left-0 shadow ">
+            <div className="flex w-[1440px]  h-fit py-2 bg-white z-10 fixed top-0 shadow ">
                 <div className="w-full flex justify-between items-center ">
                     <div className="flex gap-6">
                         {isStage == Stages[0] ? (

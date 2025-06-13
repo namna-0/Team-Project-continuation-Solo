@@ -34,7 +34,8 @@ function AddTime({ isSelectEmployee }: TimingProps) {
                                 }}
                             />
                         </PopoverContent>
-                    </Popover></div>
+                    </Popover>
+                </div>
             </div>
         </div>
     )
