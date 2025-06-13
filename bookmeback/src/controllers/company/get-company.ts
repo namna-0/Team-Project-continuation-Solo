@@ -1,11 +1,13 @@
 import { RequestHandler } from "express";
 import { Company } from "../../models/company.schema";
+import "../../models/employee.schema"
+import "../../models/booking.schema"
 
 export const getCompanyController: RequestHandler = async (req, res) => {
   try {
     const { companyName } = req.params;
 
-    const company = await Company.findOne({ companyName }).populate("employee")
+    const company = await Company.findOne({ companyName }).populate("employees").populate("bookings")
 
     if (!company) {
       res.status(404).json({ message: "Company олдсонгүй" });

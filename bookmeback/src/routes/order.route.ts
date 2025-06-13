@@ -1,11 +1,13 @@
 import { Router } from "express";
 
 import { CreateOrderController, getOrdersByUCompany, getOrdersByEmployee, getOrdersByUser, } from "../controllers/order";
+import { getOrdersAndOrder } from "../controllers/order/getAllOrOneOrder";
 
 const BookingRouter = Router()
 
 BookingRouter
     .post("/order", CreateOrderController)
+    .get("/order", getOrdersAndOrder)
     .get("/order/company/:id", getOrdersByUCompany)
     .get("/order/user/:id", getOrdersByUser)
     .get("/order/employee/:id", getOrdersByEmployee)
