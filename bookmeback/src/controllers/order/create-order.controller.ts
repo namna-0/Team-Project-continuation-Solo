@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { Booking } from "../../models/booking.schema";
+import { Company } from "../../models/company.schema";
 
 export const CreateOrderController: RequestHandler = async (req, res) => {
     try {
@@ -24,6 +25,10 @@ export const CreateOrderController: RequestHandler = async (req, res) => {
             updatedAt: new Date(),
             createdAt: new Date()
         })
+        await Company.findByIdAndUpdate(company, {
+            $push: { bookings: order._id },
+            $set: { updatedAt: new Date() }
+        });
         res.status(201).json({ message: "order created", order })
     } catch (error) {
         console.error(error)

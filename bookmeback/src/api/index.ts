@@ -16,13 +16,15 @@ const app = express();
 const port = 3001;
 dotenv.config();
 
+app.use(cors())
 app.use(express.json());
 app.use(authCompanyRouter);
 app.use(companyRouter);
 app.use(BookingRouter);
 app.use(authCompanyRouter);
 app.use(companyRouter);
-app.use(cors()).use("/authuser", authUserRouter).use("/email", emailRouter);
+app.use("/authuser", authUserRouter)
+app.use("/email", emailRouter);
 app.use(employeeRouter);
 app.use(googleApiRouter);
 

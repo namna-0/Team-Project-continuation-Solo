@@ -1,29 +1,14 @@
 "use client"
-type EmloyerCardProp = {
-    setIsSelectEmployee: (value: string) => void
-}
 import { useState } from "react";
+type EmployeeCardProps = { ner: string, mergejil: string, zurag: string }
+const EmployeeCard = ({ ner, mergejil, zurag }: EmployeeCardProps) => {
 
-const EmployeeCard = ({ setIsSelectEmployee }: EmloyerCardProp) => {
-    const [isSelect, setIsSelect] = useState(false);
     return (
-        <div
-            onClick={() => {
-                if (!isSelect) {
-                    setIsSelectEmployee("hooson bish");
-                } else {
-                    setIsSelectEmployee("");
-                }
-                setIsSelect(!isSelect);
-            }}
-            className={isSelect
-                ? "w-fit border border-blue-500 shadow rounded-xl relative aspect-1/1 border px-4 py-8 flex flex-col justify-center gap-6 items-center  hover:bg-zinc-100 "
-                : "w-fit border  border-gray-300 shadow rounded-xl relative aspect-1/1 border px-4 py-8 flex flex-col justify-center gap-6 items-center hover:bg-zinc-100  "}
-        >
-            <img className="w-14 h-14 rounded-full" />
-            <div className=" w-4 " >нэр</div>
-            <div className="">танилцуулга</div>
-        </div>
+        <div className="w-fit border  border-gray-300 shadow rounded-xl relative aspect-1/1 border px-4 py-8 flex flex-col justify-center gap-6 items-center hover:bg-zinc-100  ">
+            <img className="w-14 h-14 rounded-full" src={zurag} />
+            <div className=" w-4 " >{ner}</div>
+            <div className="">{mergejil}</div>
+        </div >
     );
 }
 export default EmployeeCard
