@@ -84,7 +84,7 @@ export default function AnimatedNailsyLanding() {
   const [email, setEmail] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
   const [visibleCards, setVisibleCards] = useState<number[]>([]);
-  const images = Array.from({ length: 6 }, (_, i) => `/images/img${i + 1}.jpg`);
+  // const images = Array.from({ length: 6 }, (_, i) => `/images/img${i + 1}.jpg`);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -244,7 +244,7 @@ export default function AnimatedNailsyLanding() {
       {/* Hero Section with Animations */}
       <section
         className="relative bg-cover bg-center bg-no-repeat min-h-screen"
-        style={{ backgroundImage: "url('/Images/heroback.jpeg')" }}
+        style={{ backgroundImage: "url('https://res.cloudinary.com/dxhmgs7wt/image/upload/v1748578916/jrjgmunctd2whx6vukpy.webp')" }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -308,7 +308,7 @@ export default function AnimatedNailsyLanding() {
           <div className="grid lg:grid-cols-2 gap-24 items-center">
             <div className="relative">
               <motion.img
-                src="/Images/hair.jpeg"
+                src="https://res.cloudinary.com/dxhmgs7wt/image/upload/v1748578916/jrjgmunctd2whx6vukpy.webp"
                 alt="Bertie Capone"
                 className="rounded-2xl shadow-2xl w-full h-auto"
                 initial={{ opacity: 0, x: -50 }}
@@ -409,7 +409,7 @@ export default function AnimatedNailsyLanding() {
             Explore our latest nail designs and transformations
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-6 max-w-7xl mx-auto">
+        {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-6 max-w-7xl mx-auto">
           {images.slice(0, 6).map((imageUrl, idx) => (
             <BlurFade key={imageUrl} delay={0.25 + idx * 0.05} inView>
               <div className="overflow-hidden rounded-xl shadow-lg hover:scale-105 transition-transform">
@@ -421,7 +421,7 @@ export default function AnimatedNailsyLanding() {
               </div>
             </BlurFade>
           ))}
-        </div>
+        </div> */}
       </section>
 
       {/* Footer */}
