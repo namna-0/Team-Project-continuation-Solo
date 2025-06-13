@@ -7,9 +7,9 @@ import {
   Twitter,
   Heart,
 } from "lucide-react";
-import { BlurFade } from "@/components/magicui/blur-fade";
 import { motion } from "framer-motion";
 import ProfileCard from "@/blocks/Components/ProfileCard/ProfileCard";
+import { BlurFade } from "@/components/magicui/blur-fade";
  
 interface Service {
   id: number;
@@ -35,7 +35,7 @@ const services: Service[] = [
     description: "Traditional nail care with cuticle treatment, nail shaping, and polish application.",
     price: "$45",
     duration: "45 min",
-    image: "/Images/side-view-woman-with-beautiful-hair",
+    image: "https://res.cloudinary.com/dxhmgs7wt/image/upload/v1748578916/jrjgmunctd2whx6vukpy.webp",
   },
   {
     id: 2,
@@ -43,7 +43,7 @@ const services: Service[] = [
     description: "Long-lasting gel polish application with professional UV curing.",
     price: "$65",
     duration: "60 min",
-    image: "/api/placeholder/300/200",
+    image: "https://res.cloudinary.com/dxhmgs7wt/image/upload/v1748578916/jrjgmunctd2whx6vukpy.webp",
   },
   {
     id: 3,
@@ -51,7 +51,7 @@ const services: Service[] = [
     description: "For women on the move. Quick nail shaping with GEMINI Nourishing Nail Polish application.",
     price: "$35",
     duration: "30 min",
-    image: "/api/placeholder/300/200",
+    image: "https://res.cloudinary.com/dxhmgs7wt/image/upload/v1748578916/jrjgmunctd2whx6vukpy.webp",
   },
 ];
 
@@ -78,13 +78,21 @@ const teamMembers: TeamMember[] = [
     image: "https://res.cloudinary.com/dxhmgs7wt/image/upload/v1748578916/jrjgmunctd2whx6vukpy.webp",
   },
 ];
+
+const images = [
+  "https://res.cloudinary.com/dxhmgs7wt/image/upload/v1749802234/img2_bhtayw.jpg",
+  "https://res.cloudinary.com/dxhmgs7wt/image/upload/v1749802173/img1_ulkp8t.jpg",
+  "https://res.cloudinary.com/dxhmgs7wt/image/upload/v1749802242/img3_zautip.jpg",
+  "https://res.cloudinary.com/dxhmgs7wt/image/upload/v1748851861/umugoq8td7jirw72mgem.jpg",
+  "https://res.cloudinary.com/dxhmgs7wt/image/upload/v1748578073/rx7e7f99ixbdhti0n4vw.jpg",
+  "https://res.cloudinary.com/dxhmgs7wt/image/upload/v1748427984/pzg7syqmyhkrvsnp2uxq.jpg",
+];
  
 export default function AnimatedNailsyLanding() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
   const [visibleCards, setVisibleCards] = useState<number[]>([]);
-  // const images = Array.from({ length: 6 }, (_, i) => `/images/img${i + 1}.jpg`);
   
   useEffect(() => {
     const handleScroll = () => {
@@ -131,8 +139,6 @@ export default function AnimatedNailsyLanding() {
         <div className="absolute bottom-40 left-20 w-40 h-40 bg-rose-200/30 rounded-full blur-xl animate-pulse delay-2000"></div>
         <div className="absolute bottom-20 right-10 w-28 h-28 bg-pink-300/30 rounded-full blur-xl animate-pulse delay-3000"></div>
       </div>
-
-      {/* Animated Header */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ease-in-out ${
         isScrolled
           ? "bg-white/95 backdrop-blur-xl shadow-lg transform scale-98"
@@ -163,16 +169,12 @@ export default function AnimatedNailsyLanding() {
                 ))}
               </div>
             </div>
- 
-            {/* CTA Button */}
             <div className="hidden md:block">
               <button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group">
                 <span className="relative z-10">Нэвтрэх</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
               </button>
             </div>
- 
-            {/* Animated Hamburger Menu */}
             <div className="md:hidden">
               <button
                 onClick={toggleMenu}
@@ -193,8 +195,6 @@ export default function AnimatedNailsyLanding() {
             </div>
           </div>
         </div>
- 
-        {/* Animated Mobile Sidebar */}
         <div className={`md:hidden fixed inset-0 z-40 transition-all duration-500 ease-in-out ${
           isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}>
@@ -205,8 +205,7 @@ export default function AnimatedNailsyLanding() {
             }`}
             onClick={toggleMenu}
           ></div>
-          
-          {/* Sidebar */}
+
           <div className={`absolute top-0 right-0 w-80 h-full bg-white/95 backdrop-blur-xl shadow-2xl transform transition-all duration-500 ease-in-out ${
             isMenuOpen ? "translate-x-0" : "translate-x-full"
           }`}>
@@ -240,11 +239,10 @@ export default function AnimatedNailsyLanding() {
           </div>
         </div>
       </nav>
- 
-      {/* Hero Section with Animations */}
+
       <section
         className="relative bg-cover bg-center bg-no-repeat min-h-screen"
-        style={{ backgroundImage: "url('https://res.cloudinary.com/dxhmgs7wt/image/upload/v1748578916/jrjgmunctd2whx6vukpy.webp')" }}
+        style={{ backgroundImage: "url('https://res.cloudinary.com/dxhmgs7wt/image/upload/v1749803046/heroback_wzxjtk.jpg')" }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -308,7 +306,7 @@ export default function AnimatedNailsyLanding() {
           <div className="grid lg:grid-cols-2 gap-24 items-center">
             <div className="relative">
               <motion.img
-                src="https://res.cloudinary.com/dxhmgs7wt/image/upload/v1748578916/jrjgmunctd2whx6vukpy.webp"
+                src="https://res.cloudinary.com/dxhmgs7wt/image/upload/v1749802217/hair_dsprvz.jpg"
                 alt="Bertie Capone"
                 className="rounded-2xl shadow-2xl w-full h-auto"
                 initial={{ opacity: 0, x: -50 }}
@@ -409,7 +407,7 @@ export default function AnimatedNailsyLanding() {
             Explore our latest nail designs and transformations
           </p>
         </div>
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-6 max-w-7xl mx-auto">
           {images.slice(0, 6).map((imageUrl, idx) => (
             <BlurFade key={imageUrl} delay={0.25 + idx * 0.05} inView>
               <div className="overflow-hidden rounded-xl shadow-lg hover:scale-105 transition-transform">
@@ -421,7 +419,7 @@ export default function AnimatedNailsyLanding() {
               </div>
             </BlurFade>
           ))}
-        </div> */}
+        </div> 
       </section>
 
       {/* Footer */}
