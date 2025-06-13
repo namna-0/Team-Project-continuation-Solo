@@ -71,7 +71,7 @@ export default function Home() {
           </div>
         </div>
       </nav>
-      <div className="w-[1440px] h-fit border border-black flex items-center justify-center">
+      <div className="w-[1440px] h-fit   flex items-center justify-center">
         <div className="w-[960px] h-[770px] flex flex-col gap-10">
           <div className="w-full h-[36px]">
             <p className="font-bold text-[36px]">Хэрэглэгчийн нүүр хуудас</p>
