@@ -1,3 +1,6 @@
+"use client";
+import { useAuth } from "@/app/_providers/UserAuthProvider";
+import { api } from "@/axios";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -6,15 +9,47 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { HouseIcon, MapPin } from "lucide-react";
+import { HouseIcon } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { LocPicker } from "./Location";
 
 export const HomeAddress = () => {
+  const { user } = useAuth();
+  const [open, setOpen] = useState(false);
+  const [location, setLocation] = useState<{
+    lat: number;
+    lng: number;
+    address: string;
+  } | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleSave = async () => {
+    if (!location || !user?._id) return toast.error("Хаяг сонгоно уу.");
+
+    try {
+      setLoading(true);
+      await api.patch("/user/patch", {
+        userId: user._id,
+        address: location.address,
+        lat: location.lat,
+        lng: location.lng,
+      });
+      toast.success("Хаяг амжилттай хадгалагдлаа!");
+      setOpen(false);
+    } catch (error) {
+      toast.error("Хаяг хадгалах үед алдаа гарлаа.");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="w-full h-fit flex flex-col gap-[14px]">
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger className="cursor-pointer w-full h-[72px] border border-gray-300 rounded-[6px] hover:bg-[#fbfafa] ">
           <div className="w-full h-full flex items-center px-10 gap-[20px]">
-            <div className="h-[50px] w-[50px] bg-[#e8e7e7] rounded-[9999px] flex justify-center items-center">
+            <div className="h-[50px] w-[50px] bg-[#e8e7e7] rounded-full flex justify-center items-center">
               <HouseIcon />
             </div>
             <div className="w-[140px] flex flex-col ">
@@ -23,23 +58,26 @@ export const HomeAddress = () => {
             </div>
           </div>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="max-w-3xl">
           <DialogHeader>
             <DialogTitle>Гэрийн хаяг</DialogTitle>
           </DialogHeader>
-          <div className="w-full h-[46px] mt-5 border border-gray-400 rounded-[8px] px-4">
-            <div className="w-full h-full  flex items-center gap-[12px]">
-              <MapPin className="text-gray-600" />
-              <input
-                type="text"
-                className="w-full h-full outline-none placeholder-gray-500"
-                placeholder="Гэрийн хаягаа оруулна уу."
-                aria-label="Гэрийн хаяг"
-              />
+          {open && <LocPicker onSelect={setLocation} />}
+          {location && (
+            <div className="mt-4 text-sm text-gray-600">
+              <p>📍 Хаяг: {location.address}</p>
+              <p>
+                🌐 Координат: {location.lat}, {location.lng}
+              </p>
             </div>
-          </div>
-          <Button className="w-full h-10 mt-20 bg-blue-500 text-white cursor-pointer hover:bg-blue-600 active:bg-blue-700 transition duration-200">
-            Хадгалах
+          )}
+
+          <Button
+            className="w-full h-10 mt-6 bg-blue-500 text-white"
+            onClick={handleSave}
+            disabled={loading}
+          >
+            {loading ? "Хадгалж байна..." : "Хадгалах"}
           </Button>
         </DialogContent>
       </Dialog>
