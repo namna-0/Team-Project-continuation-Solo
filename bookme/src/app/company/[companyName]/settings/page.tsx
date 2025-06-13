@@ -120,8 +120,8 @@ export default function Home() {
       <AddEmployee />
       <div className="w-full border-b-2 pt-3 "></div>
       <div className="w-[1440px] p-4 flex gap-2">
-        <Button >Profile</Button>
-        <Button >Employee Management</Button>
+        <Button>Profile</Button>
+        <Button>Employee Management</Button>
       </div>
       <div className="w-[1440px] flex justify-between gap-2 ">
         <div className="flex flex-col w-[80%] gap-5">
@@ -298,8 +298,9 @@ export default function Home() {
                     <div className="w-fit h-fit rounded-full absolute -right-2 -bottom-2">
                       <ImageSVG />
                     </div>
+
                     <Input
-                      className="w-[30px] h-[30px] bg-white rounded-full absolute -right-2 -bottom-2 opacity-0"
+                      className="w-[30px] h-[30px] rounded-full absolute -right-2 -bottom-2 opacity-0"
                       type="file"
                       onChange={handleInputFile}
                     />
