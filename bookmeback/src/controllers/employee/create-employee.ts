@@ -9,7 +9,10 @@ export const createEmployee: RequestHandler = async (req, res) => {
       profileImage,
       availability,
       duration,
-      workingHours,
+      startTime,
+      endTime,
+      lunchTimeStart,
+      lunchTimeEnd,
     } = req.body;
     if (
       !employeeName ||
@@ -17,7 +20,10 @@ export const createEmployee: RequestHandler = async (req, res) => {
       !profileImage ||
       !availability ||
       !duration ||
-      !workingHours
+      !startTime ||
+      !endTime ||
+      !lunchTimeStart ||
+      !lunchTimeEnd
     ) {
       res.status(400).json({ message: "Бүх мэдээллийг бөглөнө үү." });
       return;
@@ -33,7 +39,10 @@ export const createEmployee: RequestHandler = async (req, res) => {
       profileImage,
       availability,
       duration,
-      workingHours,
+      startTime,
+      endTime,
+      lunchTimeStart,
+      lunchTimeEnd,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -44,10 +53,3 @@ export const createEmployee: RequestHandler = async (req, res) => {
     return;
   }
 };
-
-//   employeeName: { type: String, required: true, default: "" },
-//   description: { type: String, default: "" },
-//   profileImage: { type: String },
-//   availability: { type: Boolean },
-//   duration: { type: String, required: true },
-//   workingHours: { type: String, default: "08:00-18:00" },

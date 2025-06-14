@@ -25,18 +25,22 @@ const employeeSchema = new Schema({
   },
   startTime: {
     type: String,
+    required: true,
     default: "09:00",
   },
   endTime: {
     type: String,
+    required: true,
     default: "18:00",
   },
   lunchTimeStart: {
     type: String,
+    required: true,
     default: "12:00",
   },
   lunchTimeEnd: {
     type: String,
+    required: true,
     default: "13:00",
   },
 });
