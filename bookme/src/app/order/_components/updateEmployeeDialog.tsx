@@ -4,14 +4,14 @@ import { Dialog, DialogDescription, DialogContent, DialogHeader, DialogTitle, Di
 
 import { ChevronDown } from "lucide-react";
 type UpdateEmployeeProps = {
-    isSelectEmployee: string
+    isSelectEmployee: string, zurag: string
 }
-function UpdateEmployee({ isSelectEmployee }: UpdateEmployeeProps) {
+function UpdateEmployee({ isSelectEmployee, zurag }: UpdateEmployeeProps) {
     return (
         <Dialog>
             <DialogTrigger className="w-fit flex gap-3 border rounded-full items-center border-gray-300 p-1">
                 <Avatar>
-                    <AvatarImage src="https://github.com/leerob.png" alt="@leerob" />
+                    <AvatarImage src={zurag} alt="@leerob" />
                     <AvatarFallback>LR</AvatarFallback>
                 </Avatar>
                 <div>{isSelectEmployee}</div>

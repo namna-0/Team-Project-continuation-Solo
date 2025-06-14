@@ -5,22 +5,24 @@ import { CalendarIcon } from "lucide-react"
 import { useState } from "react"
 import { Calendar } from "@/components/ui/calendar"
 import UpdateEmployee from "./updateEmployeeDialog"
+import { CompanyType } from "../page"
 
 type TimingProps = {
-    isSelectEmployee: string
+    isSelectEmployee: string,zurag:string
+    company?:CompanyType
 }
-function AddTime({ isSelectEmployee }: TimingProps) {
+function AddTime({ isSelectEmployee ,zurag }: TimingProps) {
     const [open, setOpen] = useState(false)
     const [date, setDate] = useState<Date | undefined>(undefined)
-
+    
     return (
         <div className="w-full pr-4">
             <div className="flex w-full justify-between items-center ">
-                <UpdateEmployee isSelectEmployee={isSelectEmployee} />
+                <UpdateEmployee zurag ={zurag}isSelectEmployee={isSelectEmployee} />
                 <div className=" relative z-10">
                     <Popover open={open} onOpenChange={setOpen}>
-                        <PopoverTrigger asChild>
-                            <CalendarIcon />
+                        <PopoverTrigger >
+                            <CalendarIcon className="-z-0"/>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto overflow-hidden p-2 z-10 bg-white " align="center">
                             <Calendar className="flex gap-3"
