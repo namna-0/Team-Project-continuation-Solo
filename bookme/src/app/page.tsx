@@ -1,14 +1,15 @@
 "use client";
-
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
+import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Particles from "./_components/Particles";
 import { Hero } from "./_components/Hero";
 import { BusinessSection } from "./_components/BusinessSection";
 import { ParallaxSection } from "./_components/ParralloxSection";
+import { useGSAP } from "@gsap/react";
 import Header from "./_components/Header";
 import Services from "./_components/Services";
+import { useEffect, useState } from "react";
+import LoadingPage from "@/loading";
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
@@ -16,6 +17,42 @@ if (typeof window !== "undefined") {
 }
 
 export default function EnhancedHomePage() {
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    let tl = gsap.timeline({
+      onComplete: () => {
+        setLoading(false);
+      },
+    });
+
+    tl.to(".box", {
+      scale: 0,
+      y: 60,
+      rotate: 400,
+      duration: 1,
+      repeat: 1,
+      yoyo: true,
+      delay: 0.5,
+      stagger: {
+        amount: 1.5,
+        from: "end",
+        grid: [3, 3],
+      },
+    });
+    tl.to(".container", {
+      rotate: "-405deg",
+      scale: 0,
+      duration: 1,
+    });
+    tl.to(".wrapper", {
+      opacity: 0,
+      display: "none",
+    });
+  });
+
+  if (loading) {
+    <LoadingPage />;
+  }
   return (
     <div className="relative w-screen overflow-hidden">
       <div className="absolute inset-0 -z-10">

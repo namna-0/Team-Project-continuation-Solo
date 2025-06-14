@@ -17,7 +17,9 @@ body {
   animation: spin 120s linear infinite;
   transform-origin: center;
 }
-
+.box {
+  box-shadow: 0 0 15px #0aade4;
+}
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
