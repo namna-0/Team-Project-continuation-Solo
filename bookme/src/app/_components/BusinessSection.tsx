@@ -60,13 +60,13 @@ export const BusinessSection = () => {
     {
       title: "Цаг сонгох",
       image:
-        "https://res-console.cloudinary.com/dpbmpprw5/thumbnails/v1/image/upload/v1749805311/dGVzdF93dWpieGo=/drilldown",
+        "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749805311/test_wujbxj.jpg",
       description: "Тохиромжтой мэргэжилтэн, цагаа сонгоод захиална",
     },
     {
       title: "Хүлээн авах",
       image:
-        "https://res-console.cloudinary.com/dpbmpprw5/thumbnails/v1/image/upload/v1749805311/dGVzdF93dWpieGo=/drilldown",
+        "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749805311/test_wujbxj.jpg",
       description: "Цагтаа ирээд өөрийн сонгосон үйлчилгээг аваарай",
     },
   ];
@@ -107,7 +107,6 @@ export const BusinessSection = () => {
                   }}
                   key={i}
                 >
-                  <img className="h-[200px] rounded-[9px]" src={card.image} />
                   <div className="p-2">
                     <h3
                       className="text-xl font-semibold mb-1"
@@ -124,6 +123,7 @@ export const BusinessSection = () => {
                     </h3>
                     <p className="text-white/70 text-sm">{card.description}</p>
                   </div>
+                  <img className="h-[200px] rounded-[9px]" src={card.image} />
                 </div>
               ))}
             </div>

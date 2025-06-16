@@ -11,6 +11,7 @@
 }
 body {
   background: radial-gradient(125% 125% at 50% 10%, #000a17 40%, #007fff 100%);
+  overflow-x: hidden;
 }
 
 .rotating-earth {
