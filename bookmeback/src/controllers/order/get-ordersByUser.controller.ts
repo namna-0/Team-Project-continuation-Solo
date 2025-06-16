@@ -1,13 +1,12 @@
 import { RequestHandler } from "express";
 import { Booking } from "../../models/booking.schema";
 
-
-
 export const getOrdersByUser: RequestHandler = async (req, res) => {
-
   try {
     const { id } = req.params;
-    const bookings = await Booking.find(id ? { user: id } : {})
+    const bookings = await Booking.find({ user: id })
+      .populate("employe", "name")
+      .populate("company", "name image");
 
     if (!bookings || bookings.length === 0) {
       res.status(404).json({ message: "танид захиалга байхгүй байна." });

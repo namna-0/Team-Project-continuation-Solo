@@ -430,29 +430,29 @@ export default function CompanyHomepage() {
           </div>
         </div>
       </section>
-
-      <section className="py-20 bg-white">
-        <ScrollFloat
-          animationDuration={1}
-          ease="back.inOut(2)"
-          scrollStart="center bottom+=50%"
-          scrollEnd="bottom bottom-=40%"
-          stagger={0.03}
-        >
-          {Object.entries(company.workingHours).map(([day, hours], idx) => (
-            <div key={day} data-index={idx}>
-              <h3 className="font-bold text-gray-700">{dayLabels[day]}</h3>
-              <p className="text-gray-600">
-                {hours.closed
-                  ? "Хаалттай"
-                  : `Нээлт: ${hours.open} - Хаалт: ${hours.close}`}
-                asddas
-              </p>
-            </div>
-          ))}
-        </ScrollFloat>
-      </section>
-
+      {company.workingHours && (
+        <section className="py-20 bg-white">
+          <ScrollFloat
+            animationDuration={1}
+            ease="back.inOut(2)"
+            scrollStart="center bottom+=50%"
+            scrollEnd="bottom bottom-=40%"
+            stagger={0.03}
+          >
+            {Object.entries(company.workingHours).map(([day, hours], idx) => (
+              <div key={day} data-index={idx}>
+                <h3 className="font-bold text-gray-700">{dayLabels[day]}</h3>
+                <p className="text-gray-600">
+                  {hours.closed
+                    ? "Хаалттай"
+                    : `Нээлт: ${hours.open} - Хаалт: ${hours.close}`}
+                  asddas
+                </p>
+              </div>
+            ))}
+          </ScrollFloat>
+        </section>
+      )}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
