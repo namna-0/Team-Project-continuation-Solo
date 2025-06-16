@@ -1,4 +1,3 @@
-
 import React, {
   useState,
   Children,
@@ -22,6 +21,7 @@ interface StepperProps extends HTMLAttributes<HTMLDivElement> {
   nextButtonProps?: React.ButtonHTMLAttributes<HTMLButtonElement>;
   backButtonText?: string;
   nextButtonText?: string;
+  disabled?: boolean;
   disableStepIndicators?: boolean;
   renderStepIndicator?: (props: {
     step: number;

@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import Stepper, { Step } from "@/blocks/Components/Stepper/Stepper";
 import { Step4 } from "./_components/Step4";
@@ -16,6 +15,8 @@ export interface FormDataType {
   companyName: string;
   description: string;
   address: string;
+  lat?: number;
+  lng?: number;
   city: string;
   phone: string;
   website: string;
@@ -117,6 +118,9 @@ export default function SalonSetupPage() {
         password: formData.password,
         companyName: formData.companyName,
         address: formData.address,
+        city: formData.city,
+        lat: formData.lat,
+        lng: formData.lng,
         companyLogo: logoUrl,
         phoneNumber: formData.phone,
         description: formData.description,
@@ -125,6 +129,8 @@ export default function SalonSetupPage() {
         workingHours: formData.openingHours,
         lunchBreak: null,
       };
+
+      console.log("Илгээж буй өгөгдөл:", apiData);
 
       const response = await api.post("/signup", apiData);
 
@@ -150,6 +156,22 @@ export default function SalonSetupPage() {
     sunday: "Ням",
   };
 
+  const removeCompanyImage = (index: number) => {
+    const newPreviews = [...companyImagePreview];
+    newPreviews.splice(index, 1);
+    setCompanyImagePreview(newPreviews);
+
+    const newFiles = [...companyImages];
+    newFiles.splice(index, 1);
+    setCompanyImages(newFiles);
+  };
+
+  const removeLogo = () => {
+    setLogoFile(null);
+    setLogoPreview("");
+    setFormData((prev) => ({ ...prev, logo: "" }));
+  };
+
   return (
     <div className="bg-gradient-to-b from-indigo-900 via-blue-400 to-sky-200 min-h-screen h-fit">
       <Stepper
@@ -170,8 +192,10 @@ export default function SalonSetupPage() {
             setFormData={setFormData}
             handleImageChange={handleImageChange}
             companyImagePreview={companyImagePreview}
+            removeCompanyImage={removeCompanyImage}
             handleLogoChange={handleLogoChange}
             logoPreview={logoPreview}
+            removeLogo={removeLogo}
           />
         </Step>
 
