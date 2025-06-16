@@ -1,11 +1,11 @@
 import { RequestHandler } from "express";
 import { Employee } from "../../models/employee.schema";
-
+import "../../models/company.schema";
 export const getEmployee: RequestHandler = async (req, res) => {
   try {
     const { employeeId } = req.params;
 
-    const employee = await Employee.findById(employeeId);
+    const employee = await Employee.findById(employeeId).populate("company");
     if (!employee) {
       res.status(404).json({ message: "Employee олдсонгүй" });
       return;

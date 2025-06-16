@@ -1,104 +1,100 @@
-// "use client";
+"use client";
+import axios from "axios";
+import { createContext, PropsWithChildren, useContext, useState } from "react";
 
-// import axios from "axios";
-// import {
-//   createContext,
-//   PropsWithChildren,
-//   useContext,
-//   useEffect,
-//   useState,
-// } from "react";
+type CompanyInformationAuth = {
+  handleInputCompanyLogo: (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => Promise<void>;
+  handleInputEmployeeImage: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    form: any
+  ) => Promise<void>; // Update signature to accept form
+  companyLogo: string | null;
+  employeeImage: string | null;
+};
 
-// type CompanyInformationAuth = {
-//   handleInputCompanyLogo: (
-//     e: React.ChangeEvent<HTMLInputElement>
-//   ) => Promise<void>;
-//   companyLogo: string | null;
-//   // handleInputEmployeeImage: (
-//   //   e: React.ChangeEvent<HTMLInputElement>
-//   // ) => Promise<void>;
-//   // employeeImage: string;
-// };
-// const CompanyInformation = createContext({} as CompanyInformationAuth);
+const CompanyInformation = createContext<CompanyInformationAuth | undefined>(
+  undefined
+);
 
-// export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
+export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
+  const [companyLogo, setCompanyLogo] = useState<string | null>(null);
+  const [employeeImage, setEmployeeImage] = useState<string | null>(null);
 
-//   const [employeeImage, setEmployeeImage] = useState("");
+  const uploadedImageFunction = async (
+    file: File | null
+  ): Promise<string | null> => {
+    if (!file) return null;
 
-//   const uploadedImageFunction = async (file: File | null) => {
-//     if (!file) {
-//       return null;
-//     }
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append(
+      "upload_preset",
+      process.env.NEXT_PUBLIC_UPLOAD_PRESET_DATA!
+    );
 
-//     const formData = new FormData();
-//     formData.append("file", file);
-//     formData.append(
-//       "upload_preset",
-//       process.env.NEXT_PUBLIC_UPLOAD_PRESET_DATA!
-//     );
+    try {
+      const response = await axios.post(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      return response.data.url;
+    } catch (error) {
+      console.error("Failed to upload image", error);
+      return null;
+    }
+  };
 
-//     try {
-//       const response = await axios.post(
-//         `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload`,
-//         formData,
-//         {
-//           headers: {
-//             "Content-Type": "multipart/form-data",
-//           },
-//         }
-//       );
-//       // const result = response.data.url;
+  const handleInputCompanyLogo = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const result = await uploadedImageFunction(file);
+      if (result) setCompanyLogo(result);
+    }
+  };
 
-//       // return result;
-//       return response.data.url;
-//     } catch (error) {
-//       console.error("Failed to upload image", error);
-//     }
-//   };
+  const handleInputEmployeeImage = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    form: any
+  ) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const uploadedImageUrl = await uploadedImageFunction(file);
+      if (uploadedImageUrl) {
+        setEmployeeImage(uploadedImageUrl);
 
-//   const handleInputCompanyLogo = async (
-//     e: React.ChangeEvent<HTMLInputElement>
-//   ) => {
-//     const files = e.target.files?.[0];
+        form.setValue("profileImage", uploadedImageUrl);
+      }
+    }
+  };
 
-//     if (files) {
-//       const result = await uploadedImageFunction(files);
-//       setCompanyLogo(result);
+  return (
+    <CompanyInformation.Provider
+      value={{
+        handleInputCompanyLogo,
+        handleInputEmployeeImage,
+        companyLogo,
+        employeeImage,
+      }}
+    >
+      {children}
+    </CompanyInformation.Provider>
+  );
+};
 
-//     }
-//   };
-
-//   // const handleInputEmployeeImage = async (
-//   //   e: React.ChangeEvent<HTMLInputElement>
-//   // ) => {
-//   //   const files = e.target.files?.[0];
-//   //   if (files) {
-//   //     const result = await uploadedImageFunction(files);
-//   //     setEmployeeImage(result);
-//   //   }
-//   // };
-
-//   return (
-//     <CompanyInformation.Provider
-//       value={{
-//         // handleInputCompanyLogo,
-//         // companyLogo,
-//         // handleInputEmployeeImage,
-//         // employeeImage,
-//       }}
-//     >
-//       {children}
-//     </CompanyInformation.Provider>
-//   );
-// };
-
-// // export const useSettings = () => {
-// //   const context = useContext(CompanyInformation);
-// //   if (!context) {
-// //     throw new Error(
-// //       "useSettings must be used within a CompanySettingsProvider"
-// //     );
-// //   }
-// //   return context;
-// // };
-// export const useSettings = () => useContext(CompanyInformation);
+// Custom hook for consuming the context
+export const useSettings = (): CompanyInformationAuth => {
+  const context = useContext(CompanyInformation);
+  if (context === undefined) {
+    throw new Error(
+      "useSettings must be used within a CompanySettingsProvider"
+    );
+  }
+  return context;
+};
