@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useRef, useState } from "react";
 
 const serviceData = [
@@ -17,9 +15,9 @@ const serviceData = [
     title: "Online Payment",
     text: "Stripe, QPay зэрэг төлбөрийн шийдэлтэй. Аюулгүй, хурдан төлбөрийн систем.",
     image:
-      "https://images.unsplash.com/photo-1610076228127-df0282bb6c93?auto=format&fit=crop&w=870&q=80",
+      "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
     color: "from-green-600 to-teal-600",
-    accentColor: "bg-green-500",
+    accentColor: "bg-blue-500",
   },
   {
     id: "nochat",
@@ -28,7 +26,7 @@ const serviceData = [
     image:
       "https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?auto=format&fit=crop&w=870&q=80",
     color: "from-orange-600 to-red-600",
-    accentColor: "bg-orange-500",
+    accentColor: "bg-blue-500",
   },
   {
     id: "analytics",
@@ -37,11 +35,11 @@ const serviceData = [
     image:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=870&q=80",
     color: "from-purple-600 to-pink-600",
-    accentColor: "bg-purple-500",
+    accentColor: "bg-blue-500",
   },
 ];
 
-const ServicesParent = () => {
+const ServicesParent = ({ id }: { id: string }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
   const imagesContainerRef = useRef<HTMLDivElement>(null);
@@ -104,9 +102,10 @@ const ServicesParent = () => {
   };
 
   return (
-    <div
+    <section
+      id={id}
       ref={containerRef}
-      className="relative bg-slate-900 text-white"
+      className="relative text-white min-h-screen w-screen"
       style={{ height: `${serviceData.length * 100}vh` }}
     >
       {/* Fixed/Pinned Text Container */}
@@ -118,7 +117,7 @@ const ServicesParent = () => {
           {serviceData.map((service, index) => (
             <div
               key={service.id}
-              className={`absolute inset-0 flex flex-col justify-center transition-all duration-700 ease-out ${
+              className={`absolute inset-0 flex flex-col justify-center transition-all duration-700 ease-out p-40 ${
                 index === activeIndex
                   ? "opacity-100 translate-y-0"
                   : index < activeIndex
@@ -126,13 +125,6 @@ const ServicesParent = () => {
                   : "opacity-0 translate-y-8"
               }`}
             >
-              {/* Service number */}
-              <div className="mb-4">
-                <span className="text-sm font-mono text-white/50">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-              </div>
-
               {/* Title */}
               <h2 className="text-5xl lg:text-6xl font-bold leading-tight mb-6 text-white">
                 {service.title}
@@ -142,26 +134,6 @@ const ServicesParent = () => {
               <p className="text-lg lg:text-xl leading-relaxed text-white/80 mb-8">
                 {service.text}
               </p>
-
-              {/* CTA Button */}
-              <button
-                className={`inline-flex items-center px-8 py-4 bg-gradient-to-r ${service.color} text-white rounded-full font-medium transition-all duration-300 hover:scale-105 hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-white/50 group`}
-              >
-                Дэлгэрэнгүй
-                <svg
-                  className="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </button>
             </div>
           ))}
         </div>
@@ -178,13 +150,13 @@ const ServicesParent = () => {
             className="h-screen flex items-center justify-center p-8 lg:p-16 relative"
           >
             {/* Background gradient overlay */}
-            <div
+            {/* <div
               className={`absolute inset-0 bg-gradient-to-br ${
                 service.color
               } opacity-5 transition-opacity duration-700 ${
                 index === activeIndex ? "opacity-10" : "opacity-5"
               }`}
-            />
+            /> */}
 
             {/* Image container */}
             <div className="relative w-full max-w-lg">
@@ -214,34 +186,10 @@ const ServicesParent = () => {
 
                 {/* Image overlay */}
                 <div className="absolute inset-0 bg-black/20 rounded-3xl" />
-
-                {/* Accent line */}
-                <div
-                  className={`absolute top-8 left-8 w-1 h-16 ${
-                    service.accentColor
-                  } rounded-full transition-all duration-700 ${
-                    index === activeIndex
-                      ? "scale-y-100 opacity-100"
-                      : "scale-y-50 opacity-50"
-                  }`}
-                />
               </div>
             </div>
           </div>
         ))}
-      </div>
-
-      {/* Progress indicator */}
-      <div className="fixed right-8 top-1/2 -translate-y-1/2 z-30">
-        <div className="flex flex-col items-center">
-          {/* Progress bar */}
-          <div className="w-px h-24 bg-white/20 relative">
-            <div
-              className="absolute top-0 left-0 w-full bg-white transition-all duration-300"
-              style={{ height: `${scrollProgress * 100}%` }}
-            />
-          </div>
-        </div>
       </div>
 
       {/* Background elements */}
@@ -250,7 +198,7 @@ const ServicesParent = () => {
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />
         <div className="absolute top-3/4 left-1/3 w-64 h-64 bg-green-500/5 rounded-full blur-3xl" />
       </div>
-    </div>
+    </section>
   );
 };
 

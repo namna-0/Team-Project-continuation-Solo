@@ -1,9 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import CardSwap, { Card } from "./CardSwap";
-import { Calendar, CheckCircle, Search } from "lucide-react";
-import { color } from "motion";
 
 export const BusinessSection = () => {
   const sectionRef = useRef<HTMLElement>(null);

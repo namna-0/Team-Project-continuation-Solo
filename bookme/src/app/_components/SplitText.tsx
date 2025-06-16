@@ -1,5 +1,3 @@
-"use client";
-
 import { animate, stagger } from "motion";
 import { splitText } from "motion-plus";
 import { useEffect, useRef } from "react";

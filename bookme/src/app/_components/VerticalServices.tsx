@@ -3,21 +3,28 @@ import { useEffect, useRef, useState } from "react";
 const serviceData = [
   {
     id: "bookme",
-    title: "Bookme Business",
-    text: "Захиалгыг бүртгэлгүй хүлээн авах боломжтой. Хэрэглэгчид таны үйлчилгээг хялбар захиалах боломжтой.",
+    title: "Байгууллагад",
+    text: [
+      "Ажилтны сул цаг, туршлага, хийсэн ажлуудын динамик удирдлага",
+      "Захиалгын урсгалыг хянах, ачааллаа хуваарилах, хоосон цаг арилгах",
+      "Админ самбар-аар бүхнийг хянах — үйлчилгээ, ажилтан, цаг, хэрэглэгч",
+      "Галерей, үнэлгээ, хэрэглэгчийн туршлагыг сайжруулах цогц систем",
+    ],
     image:
       "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
-    color: "from-blue-600 to-indigo-600",
-    backgroundColor: "from-blue-600/20 to-indigo-600/10",
+    color: "from-cyan-400 to-blue-500",
   },
   {
-    id: "payment",
+    id: "Үйлчлүүлэгчдэд",
     title: "Online Payment",
-    text: "Stripe, QPay зэрэг төлбөрийн шийдэлтэй. Аюулгүй, хурдан төлбөрийн систем.",
+    text: [
+      "Хувийн мэдээлэл болон захиалгаа хамгаалсан, найдвартай нэвтрэлттэй систем. Захиалгаа бүртгүүлж, хянахад хялбар.",
+      "Та аль ч байгууллагын дуртай ажилтнаа сонгон, яг тухайн ажилтны сул цаг дээр суурилсан захиалга өгнө.",
+      "Ажилтны бодит сул цагийг хараад, өөрийн чөлөөт цагтай уялдуулан илүү оновчтой захиалга өг.",
+    ],
     image:
-      "https://images.unsplash.com/photo-1610076228127-df0282bb6c93?auto=format&fit=crop&w=870&q=80",
-    color: "from-green-600 to-teal-600",
-    backgroundColor: "from-green-600/20 to-teal-600/10",
+      "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
+    color: "from-cyan-400 to-blue-500",
   },
   {
     id: "nochat",
@@ -25,8 +32,7 @@ const serviceData = [
     text: "Нэг ч чат бичихгүйгээр хэрэглэгч захиалга өгч чадна. Автомат системээр бүх үйл явц.",
     image:
       "https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?auto=format&fit=crop&w=870&q=80",
-    color: "from-orange-600 to-red-600",
-    backgroundColor: "from-orange-600/20 to-red-600/10",
+    color: "from-cyan-400 to-blue-500",
   },
 ];
 
@@ -78,7 +84,7 @@ export const VerticalServices = ({
     >
       {/* Background with animation */}
       <div
-        className={`absolute inset-0 bg-gradient-to-br ${service.backgroundColor} transition-all duration-1000`}
+        className={`absolute inset-0 transition-all duration-1000`}
         data-animate="background"
         style={{
           opacity: isActive ? 0.2 : 0.05,
@@ -91,6 +97,7 @@ export const VerticalServices = ({
       <div className="max-w-7xl mx-auto w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Text Content */}
+
           <div
             className="space-y-6"
             data-animate="fadeUp"
@@ -109,44 +116,23 @@ export const VerticalServices = ({
                 }}
               />
               <div className="min-w-0">
-                <span
-                  className="text-sm uppercase tracking-wider text-white/60 block mb-2"
-                  data-animate="fadeDown"
-                  style={{
-                    transform: `translateY(${(1 - scrollProgress) * -30}px)`,
-                    opacity: 0.6 + scrollProgress * 0.4,
-                  }}
-                >
-                  Service {index + 1}
-                </span>
                 <h2 className="text-4xl lg:text-5xl font-bold leading-tight text-white mb-6">
                   {service.title}
                 </h2>
               </div>
             </div>
 
-            <p className="text-lg lg:text-xl leading-relaxed text-white/90">
-              {service.text}
-            </p>
-
-            <button
-              className={`px-8 py-4 bg-gradient-to-r ${service.color} text-white rounded-full transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white/50 text-lg font-semibold hover:shadow-2xl inline-flex items-center group`}
-            >
-              Дэлгэрэнгүй
-              <svg
-                className="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
-              </svg>
-            </button>
+            {Array.isArray(service.text) ? (
+              <ul className="list-disc list-inside space-y-2 text-white/90 text-lg lg:text-xl">
+                {service.text.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-lg lg:text-xl leading-relaxed text-white/90">
+                {service.text}
+              </p>
+            )}
           </div>
 
           {/* Image Content */}
@@ -175,13 +161,6 @@ export const VerticalServices = ({
               className="relative w-full h-[400px] lg:h-[500px] rounded-3xl object-cover shadow-2xl border border-white/10"
               loading="lazy"
             />
-
-            {/* Service indicator */}
-            <div className="absolute top-6 left-6 bg-black/50 backdrop-blur-sm rounded-full px-4 py-2">
-              <span className="text-white text-sm font-medium">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-            </div>
           </div>
         </div>
       </div>
