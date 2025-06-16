@@ -3,7 +3,7 @@ import { User } from "../../models";
 
 export const patchUser: RequestHandler = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const { userId } = req.params;
     const updateData = req.body;
 
     if (!userId) {

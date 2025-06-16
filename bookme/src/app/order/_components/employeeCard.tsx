@@ -1,24 +1,30 @@
 "use client"
 import { useState } from "react";
-import ProfileCard from "./ProfileCard/ProfileCard";
-type EmployeeCardProps = { ner: string, mergejil: string, zurag: string }
-const EmployeeCard = ({ ner, mergejil, zurag }: EmployeeCardProps) => {
+import TiltedCard from "@/blocks/Components/TiltedCard/TiltedCard";
+import ShinyText from "@/blocks/TextAnimations/ShinyText/ShinyText";
+type EmployeeCardProps = { ner: string, mergejil: string, zurag: string, captionText: string }
+const EmployeeCard = ({ ner, mergejil, zurag, captionText }: EmployeeCardProps) => {
     return (
-        <div>
-            <ProfileCard
-                className="w-65 max-h-80 gap-3 flex  flex-col   "
-                name={ner}
-                title={mergejil}
-                handle={ner}
-                status={""}
-                contactText="book now"
-                showBehindGradient={true}
-                avatarUrl={zurag}
-                showUserInfo={false}
-                enableTilt={true}
-                onContactClick={() => console.log('Contact clicked')}
-            />
-        </div >
+        <TiltedCard
+            imageSrc={zurag}
+            captionText={captionText}
+            containerHeight="200px"
+            containerWidth="200px"
+            imageHeight="200px"
+            imageWidth="200px"
+            rotateAmplitude={25}
+            scaleOnHover={1.2}
+            showMobileWarning={false}
+            showTooltip={true}
+            displayOverlayContent={true}
+            overlayContent={
+                <div className=" flex flex-col gap-1">
+                    <p>{ner}</p>
+                    {mergejil}
+                </div>
+            }
+        />
+
     );
 }
 export default EmployeeCard
