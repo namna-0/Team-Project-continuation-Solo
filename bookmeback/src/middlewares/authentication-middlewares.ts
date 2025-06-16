@@ -2,25 +2,29 @@ import { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
 
 export const authenticationMiddleware: RequestHandler = (req, res, next) => {
-  const token = req.headers.authorization;
+  const authHeader = req.headers.authorization;
 
-  if (!token) {
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
     res.status(401).json({ message: "Unauthenticated" });
     return;
   }
-  try {
-    const { userId, isAdmin } = jwt.verify(
-      token,
-      process.env.JWT_SECRET as string
-    ) as {
-      userId: string;
-      isAdmin: boolean;
-    };
-    (req as any).userId = userId;
-    (req as any).isAdmin = isAdmin;
 
-    next();
+  const token = authHeader.split(" ")[1];
+  console.log(token);
+
+  try {
+    console.log(process.env.JWT_SECRET);
+    console.log("hi1");
+
+    const { userId } = jwt.verify(token, process.env.JWT_SECRET as string) as {
+      userId: string;
+    };
+    console.log("hi2");
+
+    (req as any).userId = userId;
+
+    next(); // ✅ continue
   } catch (error) {
-    res.status(401).json({ message: "Invalid token middleware" });
+    res.status(401).json({ message: "Invalid token", error });
   }
 };
