@@ -5,17 +5,36 @@ import { Company } from "../../../models/company.schema";
 
 export const signupCompanyController: RequestHandler = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const {
+      email,
+      password,
+      companyName,
+      address,
+      city,
+      lat,
+      lng,
+      companyLogo,
+      phoneNumber,
+      description,
+      companyImages,
+      workingHours,
+      lunchBreak = "",
+    } = req.body;
 
-    if (!email || !password) {
-      res.status(400).json({ message: "Email болон нууц үг шаардлагатай" });
-      return 
+    if (!email || !password || !companyName || !address || !phoneNumber) {
+      res.status(400).json({
+        message:
+          "Заавал бөглөх талбарууд: Имэйл, Нууц үг, Компанийн нэр, Хаяг, Утас",
+      });
+      return;
     }
 
     const existingCompany = await Company.findOne({ email });
     if (existingCompany) {
-      res.status(409).json({ message: "Email бүртгэлтэй байна" });
-      return 
+      res
+        .status(409)
+        .json({ message: "Имэйл хаяг аль хэдийн бүртгэгдсэн байна" });
+      return;
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -23,6 +42,17 @@ export const signupCompanyController: RequestHandler = async (req, res) => {
     const company = await Company.create({
       email,
       password: hashedPassword,
+      companyName,
+      address,
+      city,
+      lat,
+      lng,
+      companyLogo: companyLogo || "",
+      phoneNumber,
+      description: description || "",
+      companyImages: companyImages || [],
+      workingHours: workingHours || {},
+      lunchBreak,
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -33,11 +63,22 @@ export const signupCompanyController: RequestHandler = async (req, res) => {
       { expiresIn: "1d" }
     );
 
-    res.status(201).json({ message: "Бүртгэл амжилттай", company, token });
-    return 
+    res.status(201).json({
+      message: "Компани амжилттай бүртгэгдлээ",
+      company: {
+        _id: company._id,
+        email: company.email,
+        companyName: company.companyName,
+      },
+      token,
+    });
+    return;
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Серверийн алдаа", error });
-    return 
+    console.error("Бүртгэлийн алдаа:", error);
+    res.status(500).json({
+      message: "Серверийн алдаа",
+      error: error instanceof Error ? error.message : "Тодорхойгүй алдаа",
+    });
+    return;
   }
 };
