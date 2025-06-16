@@ -1,16 +1,5 @@
 "use client";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { HeaderSection } from "./_components/HeaderSection";
@@ -109,7 +98,9 @@ export default function Home() {
                 </div>
               );
             })}
-            <Button className="w-fit">Update hours</Button>
+            <div className="w-full flex justify-end">
+              <Button className="w-fit" variant={"outline"}>Update hours</Button>
+            </div>
           </div>
         </div>
         <UploadCompanyLogo />

@@ -14,6 +14,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { api } from "@/axios";
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { Textarea } from "@/components/ui/textarea";
+
+
+type CompanyType = {
+  _id: string;
+  companyName: string | undefined;
+  companyLogo: string
+  description: string | null
+  phoneNumber: string
+};
+
 const companyProfileSchema = z.object({
   companyName: z.string().min(2, {
     message: "Username must be at least 2 characters.",
@@ -36,8 +48,9 @@ const companyProfileSchema = z.object({
 });
 
 export const CompanyBasicInformation = () => {
-  const [companyInfo, setCompanyInfo] = useState({});
-
+  const [companyInfo, setCompanyInfo] = useState<CompanyType | null>(null);
+  const params = useParams();
+  const companyName = params?.companyName as string
   const form = useForm<z.infer<typeof companyProfileSchema>>({
     resolver: zodResolver(companyProfileSchema),
     defaultValues: {
@@ -53,7 +66,16 @@ export const CompanyBasicInformation = () => {
   const getCompanyData = async () => {
     try {
       const response = await api.get(`/company`);
-      setCompanyInfo(response.data.companies[1]);
+      const companies: CompanyType[] = response.data.companies;
+
+      const currentCompany = companies.find(
+        (company) => company.companyName === companyName
+      );
+
+      if (currentCompany && currentCompany._id) {
+        setCompanyInfo(currentCompany)
+      }
+
     } catch (error) {
       console.error(error);
     }
@@ -62,11 +84,13 @@ export const CompanyBasicInformation = () => {
   useEffect(() => {
     getCompanyData();
   }, []);
-  console.log(companyInfo);
 
   function onSubmit(values: z.infer<typeof companyProfileSchema>) {
     console.log(values);
   }
+
+
+
 
   return (
     <div>
@@ -80,7 +104,9 @@ export const CompanyBasicInformation = () => {
                 <FormItem className="w-full ">
                   <FormLabel>Company name</FormLabel>
                   <FormControl>
-                    <Input placeholder={`${companyInfo}`} {...field} />
+                    <Input
+                      placeholder={companyInfo?.companyName ?? ""}
+                      {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -107,11 +133,9 @@ export const CompanyBasicInformation = () => {
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Description here"
-                    {...field}
-                    className="w-full py-8"
+                <FormControl className="flex justify-start">
+                  <Textarea
+                    placeholder={`${companyInfo?.description}`}
                   />
                 </FormControl>
                 <FormMessage />
@@ -126,7 +150,7 @@ export const CompanyBasicInformation = () => {
                 <FormItem className="w-full">
                   <FormLabel>Company phone</FormLabel>
                   <FormControl>
-                    <Input placeholder="Company phone" {...field} />
+                    <Input placeholder={`${companyInfo?.phoneNumber}`} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -159,7 +183,7 @@ export const CompanyBasicInformation = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Save changes</Button>
+          <div className="w-full flex justify-end">  <Button type="submit">Save changes</Button></div>
         </form>
       </Form>
     </div>
