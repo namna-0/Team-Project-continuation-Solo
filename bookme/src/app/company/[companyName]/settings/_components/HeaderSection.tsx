@@ -29,7 +29,7 @@ export type EmployeeData = {
   workingHours: string;
 };
 
-export const AddEmployee = () => {
+export const HeaderSection = () => {
   const [open, setOpen] = useState(false);
   const [employeeData, setEmployeeData] = useState<EmployeeData>({
     startTime: "",
@@ -43,18 +43,10 @@ export const AddEmployee = () => {
     duration: "",
     workingHours: "",
   });
-  console.log(open);
 
   const closeDialog = () => {
     setOpen(false);
   };
-
-  //   employeeName: { type: String, required: true, default: "" },
-  //   description: { type: String, default: "" },
-  //   profileImage: { type: String },
-  //   availability: { type: Boolean },
-  //   duration: { type: String, required: true },
-  //   workingHours: { type: String, default: "08:00-18:00" },
 
   return (
     <div className="w-[1440px] bg-white rounded-2xl">
@@ -69,21 +61,9 @@ export const AddEmployee = () => {
           <DialogTrigger asChild>
             <Button>+ Add employee</Button>
           </DialogTrigger>
-          {/* <DialogContent className="sm:max-w-[425px] bg-white">
-              <DialogHeader>
-                <DialogTitle>Upload avatar</DialogTitle>
-              </DialogHeader>
-              <EmployeeForm />
-              <DialogFooter>
-                <DialogClose asChild>
-                  <Button>Cancel</Button>
-                </DialogClose>
-                <Button type="submit">Save changes</Button>
-              </DialogFooter>
-            </DialogContent> */}
           <DialogContent className="bg-white w-[600px]">
             <DialogHeader>
-              <DialogTitle>Ажилтан үүсгэх</DialogTitle>
+              <DialogTitle>Ажилтан шинээр бүртгэх</DialogTitle>
             </DialogHeader>
             <EmployeeForm
               employeeData={employeeData}

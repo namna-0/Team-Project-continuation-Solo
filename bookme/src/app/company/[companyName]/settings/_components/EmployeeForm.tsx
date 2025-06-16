@@ -13,10 +13,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ManSVG } from "./assets/ManSVG";
-import { FormDataType } from "./AddEmployee";
+import { FormDataType } from "./HeaderSection";
 import { useState } from "react";
 import { api } from "@/axios";
 import { toast } from "sonner";
+import axios from "axios";
+// import { useSettings } from "../_providers/CompanySettingsProvider";
 
 const employeeSchema = z.object({
   profileImage: z.string().nonempty("Ажилтны зураг оруулна уу."),
@@ -36,7 +38,9 @@ export const EmployeeForm = ({
   setEmployeeData,
   setOpen,
 }: FormDataType) => {
+  // const { employeeImage, handleInputEmployeeImage } = useSettings();
   const [loading, setLoading] = useState(false);
+
   const form = useForm<z.infer<typeof employeeSchema>>({
     resolver: zodResolver(employeeSchema),
     defaultValues: {
@@ -52,72 +56,9 @@ export const EmployeeForm = ({
       lunchTimeEnd: employeeData.lunchTimeEnd,
     },
   });
+
   const currentImage = form.watch("profileImage");
-  console.log(currentImage);
 
-  console.log(form.formState.errors);
-
-  const uploadedImageFunction = async (file: File) => {
-    const data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", process.env.NEXT_PUBLIC_UPLOAD_PRESET_DATA!);
-
-    try {
-      const response = await api.post(
-        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload`,
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      const result = response.data.url;
-
-      return result;
-    } catch (error) {
-      console.error("Failed to upload image", error);
-    }
-  };
-
-  const handleInputFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-
-    const [file] = e.target.files;
-
-    if (file) {
-      const result = await uploadedImageFunction(file);
-
-      form.setValue("profileImage", result, {
-        shouldValidate: true,
-      });
-
-      setEmployeeData((prev) => ({
-        ...prev,
-        profileImage: result,
-      }));
-    }
-  };
-
-  //   const signUp = async (username: string, email: string, password: string) => {
-  //     setLoading(true);
-  //     try {
-  //       const { data } = await api.post(`/auth/sign-up`, {
-  //         username,
-  //         email,
-  //         password,
-  //       });
-
-  //       localStorage.setItem("token", data.token);
-  //       setUser(data.user);
-  //       toast.success("User successfully created. Please Sign in");
-  //       await router.push("/signIn");
-  //       setLoading(false);
-  //     } catch (error) {
-  //       console.error("Failed to sign in", error);
-  //       toast.error("Failed to sign up.");
-  //     }
-  //   };
   const handleCreateEmployee = async (
     profileImage: string,
     employeeName: string,
@@ -170,6 +111,50 @@ export const EmployeeForm = ({
     setOpen(false);
   }
 
+  const uploadedImageFunction = async (file: File | null) => {
+    if (!file) {
+      return null;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append(
+      "upload_preset",
+      process.env.NEXT_PUBLIC_UPLOAD_PRESET_DATA!
+    );
+
+    try {
+      const response = await axios.post(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      const result = response.data.url;
+
+      return result;
+    } catch (error) {
+      console.error("Failed to upload image", error);
+    }
+  };
+
+  const handleInputEmployeeImage = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const files = e.target.files?.[0];
+    if (files) {
+      const result = await uploadedImageFunction(files);
+      setEmployeeData((prevData) => ({
+        ...prevData,
+        profileImage: result,
+      }));
+    }
+  };
+  console.log(currentImage);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -186,7 +171,7 @@ export const EmployeeForm = ({
                       {employeeData.profileImage && (
                         <div>
                           <img
-                            src={field.value}
+                            src={employeeData.profileImage}
                             className="w-[100px] h-[100px]"
                           />
                         </div>
@@ -195,8 +180,7 @@ export const EmployeeForm = ({
                     {employeeData.profileImage && (
                       <div className="absolute -top-1 -right-1">
                         <Button
-                          className=" text-white rounded-full w-[5px] opacity-80 "
-                          variant={"outline"}
+                          className=" text-white rounded-full w-[5px]"
                           onClick={() =>
                             setEmployeeData((prev) => ({
                               ...prev,
@@ -211,16 +195,20 @@ export const EmployeeForm = ({
                   </div>
                   <div className=" w-full h-fit flex">
                     <div className="relative flex">
-                      <div className=" rounded-full px-3 bg-red-500">
+                      <Button
+                        className=" rounded-full px-3"
+                        variant={"outline"}
+                      >
                         Зураг оруулах
-                      </div>
+                      </Button>
 
                       <FormControl className="absolute w-full h-full">
                         <Input
+                          // {...field}
                           type="file"
                           name="profileImage"
                           className="w-full h-full opacity-0"
-                          onChange={handleInputFile}
+                          onChange={handleInputEmployeeImage}
                         />
                       </FormControl>
                     </div>
@@ -348,7 +336,7 @@ export const EmployeeForm = ({
           />
         </div>
         <div className="w-full flex justify-end">
-          <Button type="submit">Create</Button>
+          <Button type="submit">Бүртгэх</Button>
         </div>
       </form>
     </Form>
