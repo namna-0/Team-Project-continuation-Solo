@@ -84,12 +84,12 @@ export default function Stepper({
 
   return (
     <div
-      className="h-screen flex min-h-full flex-1 flex-col items-center justify-center p-4 text-white"
+      className="flex min-h-full flex-1 flex-col items-center justify-center p-4 text-white"
       {...rest}
     >
       <div
         className={`mx-auto w-full max-w-2xl rounded-4xl shadow-xl ${stepCircleContainerClassName}`}
-        style={{ border: "1px solid #FFFFFF" }}
+        style={{ border: "1px solid #FFFFFF", height: "fit-content" }}  // height: fit-content нэмсэн
       >
         <div
           className={`${stepContainerClassName} flex w-full items-center p-8`}

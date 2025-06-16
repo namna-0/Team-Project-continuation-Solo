@@ -9,6 +9,7 @@ import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { api } from "@/axios";
 import Image from "next/image";
+import ScrollFloat from "@/blocks/TextAnimations/ScrollFloat/ScrollFloat";
 
 interface Employee {
   _id: string;
@@ -431,6 +432,28 @@ export default function CompanyHomepage() {
       </section>
 
       <section className="py-20 bg-white">
+        <ScrollFloat
+          animationDuration={1}
+          ease="back.inOut(2)"
+          scrollStart="center bottom+=50%"
+          scrollEnd="bottom bottom-=40%"
+          stagger={0.03}
+        >
+          {Object.entries(company.workingHours).map(([day, hours], idx) => (
+            <div key={day} data-index={idx}>
+              <h3 className="font-bold text-gray-700">{dayLabels[day]}</h3>
+              <p className="text-gray-600">
+                {hours.closed
+                  ? "Хаалттай"
+                  : `Нээлт: ${hours.open} - Хаалт: ${hours.close}`}
+                asddas
+              </p>
+            </div>
+          ))}
+        </ScrollFloat>
+      </section>
+
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-xl md:text-5xl font-bold text-gray-900 mb-6">
@@ -465,10 +488,10 @@ export default function CompanyHomepage() {
       <section id="photos" className="bg-white py-12">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Our Work Gallery
+            Бидний зураг
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Explore our latest nail designs and transformations
+            Сүүлийн үеийн бүтээл болон манай орчин
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-6 max-w-7xl mx-auto">

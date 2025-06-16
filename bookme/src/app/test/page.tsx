@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 export default function LocationPicker() {
   const mapRef = useRef<HTMLDivElement>(null);
-  const defaultCenter = { lat: 47.9185, lng: 106.9176 }; // УБ хотын төв
+  const defaultCenter = { lat: 47.9185, lng: 106.9176 }; 
   const [destination, setDestination] = useState<{
     lat: number;
     lng: number;

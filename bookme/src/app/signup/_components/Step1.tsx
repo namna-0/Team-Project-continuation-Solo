@@ -37,7 +37,7 @@ export const Step1 = ({ formData, setFormData }: Step1Props) => {
       <h2 className="text-xl font-bold mb-2">Бүртгэлийн мэдээлэл</h2>
 
       <div>
-        <Label htmlFor="email">Имэйл *</Label>
+        <Label htmlFor="email" className="mb-2">Имэйл *</Label>
         <Input
           {...register("email")}
           placeholder="ta@example.com"
@@ -50,7 +50,7 @@ export const Step1 = ({ formData, setFormData }: Step1Props) => {
       </div>
 
       <div>
-        <Label htmlFor="password">Нууц үг *</Label>
+        <Label htmlFor="password" className="mb-2">Нууц үг *</Label>
         <Input
           {...register("password")}
           type="password"
@@ -64,7 +64,7 @@ export const Step1 = ({ formData, setFormData }: Step1Props) => {
       </div>
 
       <div>
-        <Label htmlFor="confirmPassword">Нууц үг давтах *</Label>
+        <Label htmlFor="confirmPassword" className="mb-2">Нууц үг давтах *</Label>
         <Input
           {...register("confirmPassword")}
           type="password"
@@ -80,7 +80,7 @@ export const Step1 = ({ formData, setFormData }: Step1Props) => {
       </div>
 
       <div>
-        <Label htmlFor="companyName">Салоны нэр *</Label>
+        <Label htmlFor="companyName" className="mb-2">Салоны нэр *</Label>
         <Input
           {...register("companyName")}
           placeholder="Салоны нэр"
