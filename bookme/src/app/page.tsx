@@ -5,11 +5,12 @@ import Particles from "./_components/Particles";
 import { Hero } from "./_components/Hero";
 import { BusinessSection } from "./_components/BusinessSection";
 import { ParallaxSection } from "./_components/ParralloxSection";
-import { useGSAP } from "@gsap/react";
 import Header from "./_components/Header";
-import Services from "./_components/Services";
 import { useEffect, useState } from "react";
 import LoadingPage from "@/loading";
+import ServicesParent from "./_components/ServicesParent";
+import HorizontalServicesParent from "./_components/HorizontalServicesParent";
+import VerticalServicesParent from "./_components/HorizontalServicesParent";
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
@@ -18,6 +19,7 @@ if (typeof window !== "undefined") {
 
 export default function EnhancedHomePage() {
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     let tl = gsap.timeline({
       onComplete: () => {
@@ -48,11 +50,12 @@ export default function EnhancedHomePage() {
       opacity: 0,
       display: "none",
     });
-  });
+  }, []); // Added dependency array
 
   if (loading) {
-    <LoadingPage />;
+    return <LoadingPage />; // Fixed return statement
   }
+
   return (
     <div className="relative w-screen overflow-hidden">
       <div className="absolute inset-0 -z-10">
@@ -93,8 +96,9 @@ export default function EnhancedHomePage() {
       </div>
       <Header />
       <Hero />
+      <VerticalServicesParent />
       <BusinessSection />
-      <Services />
+      <ServicesParent />
       <ParallaxSection className="section-2" title="Үйлчилгээний төрлүүд" />
       <ParallaxSection className="section-3" title="Манай баг" />
       <ParallaxSection className="section-4" title="Холбогдох" />
