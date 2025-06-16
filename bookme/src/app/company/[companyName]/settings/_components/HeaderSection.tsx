@@ -17,6 +17,7 @@ export type FormDataType = {
 };
 
 export type EmployeeData = {
+  companyName: string;
   startTime: string;
   endTime: string;
   lunchTimeStart: string;
@@ -32,6 +33,7 @@ export type EmployeeData = {
 export const HeaderSection = () => {
   const [open, setOpen] = useState(false);
   const [employeeData, setEmployeeData] = useState<EmployeeData>({
+    companyName: "",
     startTime: "",
     endTime: "",
     lunchTimeStart: "",

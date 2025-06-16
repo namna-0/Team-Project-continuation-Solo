@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,10 +18,11 @@ import { FormDataType } from "./HeaderSection";
 import { useState } from "react";
 import { api } from "@/axios";
 import { toast } from "sonner";
-import axios from "axios";
-// import { useSettings } from "../_providers/CompanySettingsProvider";
+import { useParams } from "next/navigation";
+import { useSettings } from "../_providers/CompanySettingsProvider";
 
 const employeeSchema = z.object({
+  companyName: z.string(),
   profileImage: z.string().nonempty("Ажилтны зураг оруулна уу."),
   employeeName: z.string().nonempty("Ажилтны нэрийг оруулна уу."),
   description: z.string().nonempty("Ажилтны таницуулгаа оруулна уу."),
@@ -38,13 +40,16 @@ export const EmployeeForm = ({
   setEmployeeData,
   setOpen,
 }: FormDataType) => {
-  // const { employeeImage, handleInputEmployeeImage } = useSettings();
+  const { employeeImage, handleInputEmployeeImage } = useSettings();
   const [loading, setLoading] = useState(false);
+  const params = useParams();
+  const companyNameParam = params?.companyName as string;
 
   const form = useForm<z.infer<typeof employeeSchema>>({
     resolver: zodResolver(employeeSchema),
     defaultValues: {
-      profileImage: employeeData.profileImage,
+      companyName: companyNameParam,
+      profileImage: employeeImage ?? "",
       employeeName: employeeData.employeeName,
       description: employeeData.description,
       availability: employeeData.availability,
@@ -57,34 +62,16 @@ export const EmployeeForm = ({
     },
   });
 
-  const currentImage = form.watch("profileImage");
-
   const handleCreateEmployee = async (
-    profileImage: string,
-    employeeName: string,
-    description: string,
-    availability: boolean,
-    duration: string,
-    workingHours: string,
-    startTime: string,
-    endTime: string,
-    lunchTimeStart: string,
-    lunchTimeEnd: string
+    values: z.infer<typeof employeeSchema>
   ) => {
     setLoading(true);
     try {
-      const { data } = await api.post(`/employee`, {
-        profileImage,
-        employeeName,
-        description,
-        availability,
-        duration,
-        workingHours,
-        startTime,
-        endTime,
-        lunchTimeStart,
-        lunchTimeEnd,
+      await api.post(`/employee`, {
+        ...values,
+        companyName: companyNameParam,
       });
+      toast.success("Ажилтан амжилттай нэмэгдлээ");
     } catch (error) {
       console.error("Ажилтан үүсгэхэд алдаа гарлаа", error);
       toast.error("Ажилтан үүсгэхэд алдаа гарлаа");
@@ -92,68 +79,13 @@ export const EmployeeForm = ({
       setLoading(false);
     }
   };
-  async function onSubmit(values: z.infer<typeof employeeSchema>) {
-    await handleCreateEmployee(
-      values.profileImage,
-      values.employeeName,
-      values.description,
-      values.availability,
-      values.duration,
-      values.workingHours,
-      values.startTime,
-      values.endTime,
-      values.lunchTimeStart,
-      values.lunchTimeEnd
-    );
 
-    console.log("ADGADGA", values);
-
+  const onSubmit = async (values: z.infer<typeof employeeSchema>) => {
+    setOpen(true);
+    await handleCreateEmployee(values);
     setOpen(false);
-  }
-
-  const uploadedImageFunction = async (file: File | null) => {
-    if (!file) {
-      return null;
-    }
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append(
-      "upload_preset",
-      process.env.NEXT_PUBLIC_UPLOAD_PRESET_DATA!
-    );
-
-    try {
-      const response = await axios.post(
-        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      const result = response.data.url;
-
-      return result;
-    } catch (error) {
-      console.error("Failed to upload image", error);
-    }
   };
-
-  const handleInputEmployeeImage = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const files = e.target.files?.[0];
-    if (files) {
-      const result = await uploadedImageFunction(files);
-      setEmployeeData((prevData) => ({
-        ...prevData,
-        profileImage: result,
-      }));
-    }
-  };
-  console.log(currentImage);
+  console.log(employeeImage);
 
   return (
     <Form {...form}>
@@ -161,26 +93,27 @@ export const EmployeeForm = ({
         <FormField
           control={form.control}
           name="profileImage"
-          render={({ field }) => (
-            <FormItem className="w-full ">
+          render={() => (
+            <FormItem className="w-full">
               <div className="w-full flex justify-center">
-                <div className=" flex flex-col  justify-center items-center gap-2 p-3  w-fit h-fit">
-                  <div className=" flex w-fit h-fit relative  justify-center">
-                    <div className="w-[100px] h-[100px]  rounded-full bg-gray-100 flex justify-center items-center overflow-hidden">
-                      {!employeeData.profileImage && <ManSVG />}
-                      {employeeData.profileImage && (
-                        <div>
-                          <img
-                            src={employeeData.profileImage}
-                            className="w-[100px] h-[100px]"
-                          />
-                        </div>
+                <div className="flex flex-col justify-center items-center gap-2 p-3">
+                  <div className="relative flex justify-center">
+                    <div className="w-[100px] h-[100px] rounded-full bg-gray-100 flex justify-center items-center overflow-hidden">
+                      {!employeeImage ? (
+                        <ManSVG />
+                      ) : (
+                        <img
+                          src={employeeImage}
+                          alt="Employee"
+                          className="w-[100px] h-[100px]"
+                        />
                       )}
                     </div>
-                    {employeeData.profileImage && (
+                    {employeeImage && (
                       <div className="absolute -top-1 -right-1">
                         <Button
-                          className=" text-white rounded-full w-[5px]"
+                          type="button"
+                          className="text-white rounded-full w-[5px]"
                           onClick={() =>
                             setEmployeeData((prev) => ({
                               ...prev,
@@ -193,25 +126,30 @@ export const EmployeeForm = ({
                       </div>
                     )}
                   </div>
-                  <div className=" w-full h-fit flex">
-                    <div className="relative flex">
-                      <Button
-                        className=" rounded-full px-3"
-                        variant={"outline"}
-                      >
-                        Зураг оруулах
-                      </Button>
-
-                      <FormControl className="absolute w-full h-full">
-                        <Input
-                          // {...field}
-                          type="file"
-                          name="profileImage"
-                          className="w-full h-full opacity-0"
-                          onChange={handleInputEmployeeImage}
-                        />
-                      </FormControl>
-                    </div>
+                  <div className="relative flex">
+                    <Button
+                      type="button"
+                      className="rounded-full px-3"
+                      variant="outline"
+                    >
+                      Зураг оруулах
+                    </Button>
+                    <FormControl className="absolute w-full h-full">
+                      <Input
+                        type="file"
+                        className="opacity-0 w-full h-full cursor-pointer"
+                        onChange={async (e) => {
+                          await handleInputEmployeeImage(e, form);
+                          if (employeeImage) {
+                            setEmployeeData((prevData) => ({
+                              ...prevData,
+                              profileImage: employeeImage,
+                            }));
+                            form.setValue("profileImage", employeeImage);
+                          }
+                        }}
+                      />
+                    </FormControl>
                   </div>
                 </div>
               </div>
@@ -221,7 +159,6 @@ export const EmployeeForm = ({
             </FormItem>
           )}
         />
-
         <div className="flex gap-3">
           <FormField
             control={form.control}
@@ -231,6 +168,19 @@ export const EmployeeForm = ({
                 <FormLabel>Ажилтны нэр</FormLabel>
                 <FormControl>
                   <Input placeholder="Ажилтны нэр оруулна уу." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="companyName"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormLabel>Компани</FormLabel>
+                <FormControl>
+                  <Input disabled {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -251,15 +201,17 @@ export const EmployeeForm = ({
             </FormItem>
           )}
         />
-        <div className="flex justify-between">
+
+        {/* --- Times --- */}
+        <div className="flex justify-between gap-3">
           <FormField
             control={form.control}
             name="startTime"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="w-full">
                 <FormLabel>Ажил эхлэх</FormLabel>
                 <FormControl>
-                  <Input placeholder="" {...field} />
+                  <Input type="time" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -269,25 +221,26 @@ export const EmployeeForm = ({
             control={form.control}
             name="endTime"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="w-full">
                 <FormLabel>Ажил дуусах</FormLabel>
                 <FormControl>
-                  <Input placeholder="" {...field} className="w-fit" />
+                  <Input type="time" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
-        <div className="flex justify-between">
+
+        <div className="flex justify-between gap-3">
           <FormField
             control={form.control}
             name="lunchTimeStart"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="w-full">
                 <FormLabel>Цайны цаг эхлэх</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input type="time" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -297,25 +250,26 @@ export const EmployeeForm = ({
             control={form.control}
             name="lunchTimeEnd"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="w-full">
                 <FormLabel>Цайны цаг дуусах</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input type="time" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
-        <div className="flex justify-between">
+
+        <div className="flex justify-between gap-3">
           <FormField
             control={form.control}
             name="duration"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="w-full">
                 <FormLabel>Үйлчилгээний хугацаа</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input type="text" placeholder="30 минут" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -325,19 +279,42 @@ export const EmployeeForm = ({
             control={form.control}
             name="workingHours"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Ажиллах хугацаа</FormLabel>
+              <FormItem className="w-full">
+                <FormLabel>Ажиллах цаг</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input type="text" placeholder="9:00-18:00" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
         </div>
-        <div className="w-full flex justify-end">
-          <Button type="submit">Бүртгэх</Button>
-        </div>
+
+        <FormField
+          control={form.control}
+          name="availability"
+          render={({ field }) => (
+            <FormItem className="w-full flex items-center gap-2">
+              <FormControl>
+                <input
+                  type="checkbox"
+                  checked={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                  ref={field.ref}
+                  className="checkbox" // you can style this or replace with your CSS classes
+                />
+              </FormControl>
+              <FormLabel>Боломжтой эсэх</FormLabel>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button disabled={loading === true} type="submit" className="w-full">
+          Нэмэх
+        </Button>
       </form>
     </Form>
   );

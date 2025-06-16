@@ -4,6 +4,7 @@ import { Employee } from "../../models/employee.schema";
 export const createEmployee: RequestHandler = async (req, res) => {
   try {
     const {
+      companyName,
       employeeName,
       description,
       profileImage,
@@ -15,6 +16,7 @@ export const createEmployee: RequestHandler = async (req, res) => {
       lunchTimeEnd,
     } = req.body;
     if (
+      !companyName ||
       !employeeName ||
       !description ||
       !profileImage ||
@@ -32,8 +34,8 @@ export const createEmployee: RequestHandler = async (req, res) => {
     //   res.status(400).json({ message: "Ажилтны зураг оруулна уу." });
     //   return;
     // }
-
     const employee = await Employee.create({
+      companyName,
       employeeName,
       description,
       profileImage,
