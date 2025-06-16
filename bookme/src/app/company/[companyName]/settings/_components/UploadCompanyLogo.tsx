@@ -1,4 +1,5 @@
 "use client";
+import { toast } from "sonner"
 import { ImageSVG } from "./assets/ImageSVG";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { CompanyStatus } from "./CompanyStatus";
 import { api } from "@/axios";
+import { useParams } from "next/navigation";
+import { Toaster } from "@/components/ui/sonner";
 
 export type EmployeesType = {
   employees: EmployeeType[];
@@ -25,11 +28,20 @@ type EmployeeType = {
   startTime: string;
 };
 
+type CompanyType = {
+  _id: string;
+  companyName: string;
+  companyLogo: string
+};
+
 export const UploadCompanyLogo = () => {
-  // const { handleInputCompanyLogo, companyLogo } = useSettings();
+  const [companyId, setCompanyId] = useState<string | null>(null);
   const [companyLogo, setCompanyLogo] = useState<string | null>(null);
   const [employeeData, setEmployeeData] = useState<EmployeesType[]>([]);
   const [employeeCount, setEmployeeCount] = useState<number>();
+  const params = useParams();
+  const companyName = params?.companyName as string;
+
   const uploadedImageFunction = async (file: File | null) => {
     if (!file) {
       return null;
@@ -52,9 +64,7 @@ export const UploadCompanyLogo = () => {
           },
         }
       );
-      // const result = response.data.url;
 
-      // return result;
       return response.data.url;
     } catch (error) {
       console.error("Failed to upload image", error);
@@ -69,6 +79,7 @@ export const UploadCompanyLogo = () => {
     if (files) {
       const result = await uploadedImageFunction(files);
       setCompanyLogo(result);
+      toast.success("Зураг амжилттай орууллаа.")
     }
   };
 
@@ -83,12 +94,48 @@ export const UploadCompanyLogo = () => {
     }
   };
 
+  const getCompanyData = async () => {
+    try {
+      const response = await api.get(`/company`);
+      const companies: CompanyType[] = response.data.companies;
+
+      const currentCompany = companies.find(
+        (company) => company.companyName === companyName
+
+      );
+
+      if (currentCompany && currentCompany._id) {
+        setCompanyId(currentCompany._id);
+        setCompanyLogo(currentCompany?.companyLogo)
+      } else {
+        console.warn("Company not found");
+      }
+    } catch (error) {
+      console.error("Байгууллагын мэдээлэл дуудахад алдаа гарлаа:", error);
+    }
+  };
+
   useEffect(() => {
     getEmployeeData();
+    getCompanyData()
   }, []);
 
-  const handleCompanyData = () => {
-    console.log("Hi");
+  const handleCompanyData = async () => {
+    if (!companyId || !companyLogo) {
+      toast.error("Зураг оруулна уу.")
+      console.warn("companyId эсвэл зураг алга");
+      return;
+    }
+
+    try {
+      const response = await api.put(`/company/${companyId}`, {
+        companyLogo: companyLogo,
+      });
+      toast.success("Зураг амжилттай шинэчлэгдлээ.")
+      console.log("Update success", response.data);
+    } catch (error) {
+      console.error("Update алдаа:", error);
+    }
   };
 
   return (
@@ -97,25 +144,7 @@ export const UploadCompanyLogo = () => {
         <div className="text-[20px] font-bold">Business logo</div>
         <div className="w-full h-fit flex justify-center p-4">
           <div className="w-[100px] h-[100px] rounded-2xl  bg-[#e4e4e4] overflow-hidden">
-            {/* {!companyLogo && (
-              <div className=" w-full h-full flex flex-col justify-center items-center relative">
-                <div className="absolute">
-                  <ImageSVG />
-                </div>
-                <Input
-                  className=" w-full h-full opacity-0"
-                  type="file"
-                  onChange={handleInputCompanyLogo}
-                />
-              </div>
-            )}
-            {companyLogo && (
-              <img
-                src={`${companyLogo}`}
-                alt="Company Logo Preview"
-                className="w-full h-full"
-              />
-            )} */}
+
 
             {!companyLogo ? (
               <div className="w-full h-full flex flex-col justify-center items-center relative">
@@ -129,11 +158,20 @@ export const UploadCompanyLogo = () => {
                 />
               </div>
             ) : (
-              <img
-                src={`${companyLogo}`}
-                alt="Company Logo Preview"
-                className="w-full h-full object-cover" // object-cover ашиглан зохион байгуулна
-              />
+              <div className="w-full h-full flex flex-col justify-center items-center relative ">
+                <div className="absolute ">
+                  <img
+                    src={`${companyLogo}`}
+                    alt="Company Logo Preview"
+                    className="w-full h-full object-cover "
+                  />
+                </div>
+                <Input
+                  className="w-full h-full opacity-0 "
+                  type="file"
+                  onChange={handleInputCompanyLogo}
+                />
+              </div>
             )}
           </div>
         </div>
@@ -141,30 +179,13 @@ export const UploadCompanyLogo = () => {
           <Button
             className="w-full"
             onClick={handleCompanyData}
-            disabled={companyLogo === ""}
             variant={"outline"}
           >
             Upload new logo
           </Button>
         </div>
       </div>
-      {/* <div className="w-full bg-white rounded-2xl p-4">
-        <div className="text-[20px] font-bold">Business Stats</div>
-        <div className="flex flex-col gap-4">
-          <div className="flex justify-between">
-            <div className="flex gap-2">
-              <EmployeeSvg /> Employees
-            </div>
-            <div>4</div>
-          </div>
-          <div className="flex justify-between">
-            <div className="flex gap-2">
-              <EmployeeSvg /> Бусад мэдээлэл +
-            </div>
-            <div>?</div>
-          </div>
-        </div>
-      </div> */}
+
       <CompanyStatus employeeCount={employeeCount ?? 0} />
     </div>
   );
