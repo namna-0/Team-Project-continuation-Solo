@@ -4,6 +4,7 @@ import { HomeAddress } from "./_components/Homeaddress";
 import { WorkAddress } from "./_components/Workaddress";
 import { useEffect, useState } from "react";
 import { useAuth, User } from "@/app/_providers/UserAuthProvider";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const { user } = useAuth();
@@ -142,6 +143,11 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+              <Link href="/company/test-company/appointments">
+                <Button className="w-full cursor-pointer">
+                  Захиалгын түүх харах
+                </Button>
+              </Link>
             </div>
             <div className="w-[580px] h-full bg-white rounded-2xl border border-gray-300 p-10 flex flex-col gap-10">
               <div className="w-full h-[24px] ">
