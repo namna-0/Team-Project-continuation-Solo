@@ -3,8 +3,6 @@ import jwt from "jsonwebtoken";
 import { User } from "../../../models";
 import bcrypt from "bcrypt";
 
-const JWT_SECRET = process.env.JWT_SECRET || "defaultSecret";
-
 export const postUserAuthSignIn: RequestHandler = async (req, res) => {
   const { email, password } = req.body;
 
@@ -29,8 +27,7 @@ export const postUserAuthSignIn: RequestHandler = async (req, res) => {
       {
         userId: user._id,
       },
-      JWT_SECRET,
-      { expiresIn: "7d" }
+      process.env.JWT_SECRET!
     );
 
     res.status(200).json({

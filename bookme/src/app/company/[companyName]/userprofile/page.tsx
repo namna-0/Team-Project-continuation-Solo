@@ -2,16 +2,19 @@
 import Link from "next/link";
 import { HomeAddress } from "./_components/Homeaddress";
 import { WorkAddress } from "./_components/Workaddress";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuth, User } from "@/app/_providers/UserAuthProvider";
 
 export default function Home() {
+  const { user } = useAuth();
   const [isEditting, setIsEditting] = useState(false);
-  const [userData, setUserData] = useState({
-    name: "Хэрэглэгчийн нэр",
-    email: "bbayargun@gmail.com",
-    phone: "218731490812",
-    address: "tend end",
-  });
+  const [userData, setUserData] = useState<Partial<User | undefined>>({});
+
+  useEffect(() => {
+    if (user && isEditting) {
+      setUserData(user);
+    }
+  }, [user, isEditting]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -88,7 +91,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="w-full h-[30px] flex justify-center items-center">
-                  <p className="font-bold text-[25px]">Хэрэглэгчийн нэр</p>
+                  <p className="font-bold text-[25px]">{user?.username}</p>
                 </div>
               </div>
 
@@ -99,28 +102,26 @@ export default function Home() {
                     {isEditting ? (
                       <input
                         name="email"
-                        value={userData.email}
+                        value={userData.email || ""}
                         onChange={handleInputChange}
                         className="text-[14px] border-b-2 border-gray-300 focus:outline-none w-full"
                       />
                     ) : (
-                      <p className="text-[14px] text-gray-400">
-                        {userData.email}
-                      </p>
+                      <p className="text-[14px] text-gray-400">{user?.email}</p>
                     )}
                   </div>
                   <div>
                     <p className="font-semibold text-[16px]">Утасны дугаар</p>
                     {isEditting ? (
                       <input
-                        name="phone"
-                        value={userData.phone}
+                        name="phoneNumber"
+                        value={userData.phoneNumber || ""}
                         onChange={handleInputChange}
                         className="text-[14px] border-b-2 border-gray-300 focus:outline-none w-full"
                       />
                     ) : (
                       <p className="text-[14px] text-gray-400">
-                        {userData.phone}
+                        {user?.phoneNumber}
                       </p>
                     )}
                   </div>
@@ -135,7 +136,7 @@ export default function Home() {
                       />
                     ) : (
                       <p className="text-[14px] text-gray-400">
-                        {userData.address}
+                        {user?.address}
                       </p>
                     )}
                   </div>

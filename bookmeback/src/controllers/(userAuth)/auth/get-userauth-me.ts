@@ -4,6 +4,7 @@ import { User } from "../../../models";
 export const getUserAuthMe: RequestHandler = async (req, res) => {
   try {
     const userId = (req as any).userId;
+    console.log("userid:", userId);
 
     const user = await User.findById(userId).select("-password");
 

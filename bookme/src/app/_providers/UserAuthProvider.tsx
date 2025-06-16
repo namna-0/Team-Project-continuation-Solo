@@ -10,12 +10,13 @@ import {
 } from "react";
 import { toast } from "sonner";
 
-type User = {
+export type User = {
   _id: string;
   username: string;
   email: string;
   role: string;
   phoneNumber: string;
+  address: string;
 };
 
 type AuthContextType = {
@@ -38,7 +39,7 @@ export const UserAuthProvider = ({ children }: PropsWithChildren) => {
       });
       localStorage.setItem("token", data.token);
       setUser(data.user);
-      router.push("/");
+      router.push("/company/test-company");
       return data.user;
     } catch (error) {
       toast.error("Нэвтрэхэд алдаа гарлаа.");
@@ -83,20 +84,25 @@ export const UserAuthProvider = ({ children }: PropsWithChildren) => {
   };
 
   const getUser = async () => {
+    const token = localStorage.getItem("token");
+    console.log("token :", token);
+
+    if (!token) return;
+
+    setAuthToken(token);
     try {
       const { data } = await api.get(`/authuser/me`);
+      console.log("Irj bga user data:", data);
+
       setUser(data);
     } catch (error) {
-      console.error(error);
-      localStorage.removeItem("token");
-      setUser(undefined);
+      console.error("user data aldaa:", error);
+      // localStorage.removeItem("token");
+      // setUser(undefined);
     }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-    setAuthToken(token);
     getUser();
   }, []);
 
