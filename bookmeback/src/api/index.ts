@@ -28,7 +28,7 @@ app.use("/authuser", authUserRouter);
 app.use("/email", emailRouter);
 app.use(employeeRouter);
 app.use(googleApiRouter);
-app.use("/user", userRouter);
+app.use(userRouter);
 
 app.listen(port, () => {
   console.log(`Sonsoj bnaa ${port}`);

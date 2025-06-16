@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import { CreateOrderController, getOrdersByUCompany, getOrdersByEmployee, getOrdersByUser, } from "../controllers/order";
 import { getOrdersAndOrder } from "../controllers/order/getAllOrOneOrder";
+import { getUsers } from "../controllers/user/get-users";
 
 const BookingRouter = Router()
 
