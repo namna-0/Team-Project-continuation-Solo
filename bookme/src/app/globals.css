@@ -10,7 +10,7 @@
   }
 }
 body {
-  background: radial-gradient(125% 125% at 50% 10%, #000a17 40%, #007fff 100%);
+  background: radial-gradient(125% 125% at 50% 10%, #000a17 90%, #007fff 99%);
   overflow-x: hidden;
 }
 
@@ -22,6 +22,12 @@ body {
   box-shadow: 0 0 15px #0aade4;
 }
 @custom-variant dark (&:is(.dark *));
+
+nav a.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white !important;
+  font-weight: 500 !important;
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);

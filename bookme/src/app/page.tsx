@@ -4,15 +4,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Particles from "./_components/Particles";
 import { Hero } from "./_components/Hero";
 import { BusinessSection } from "./_components/BusinessSection";
-import { ParallaxSection } from "./_components/ParralloxSection";
 import Header from "./_components/Header";
 import { useEffect, useState } from "react";
 import LoadingPage from "@/loading";
 import ServicesParent from "./_components/ServicesParent";
-import HorizontalServicesParent from "./_components/HorizontalServicesParent";
-import VerticalServicesParent from "./_components/HorizontalServicesParent";
+import VerticalServicesParent from "./_components/VerticalServicesParent";
+import Footer from "./_components/Footer";
 
-// Register GSAP plugins
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
@@ -50,10 +48,10 @@ export default function EnhancedHomePage() {
       opacity: 0,
       display: "none",
     });
-  }, []); // Added dependency array
+  }, []);
 
   if (loading) {
-    return <LoadingPage />; // Fixed return statement
+    return <LoadingPage />;
   }
 
   return (
@@ -95,13 +93,11 @@ export default function EnhancedHomePage() {
         />
       </div>
       <Header />
-      <Hero />
-      <VerticalServicesParent />
-      <BusinessSection />
-      <ServicesParent />
-      <ParallaxSection className="section-2" title="Үйлчилгээний төрлүүд" />
-      <ParallaxSection className="section-3" title="Манай баг" />
-      <ParallaxSection className="section-4" title="Холбогдох" />
+      <Hero id="hero" />
+      <VerticalServicesParent id="vertical-services" />
+      <ServicesParent id="services" />
+      {/* <BusinessSection /> */}
+      <Footer />
     </div>
   );
 }

@@ -4,35 +4,44 @@ import { VerticalServices } from "./VerticalServices";
 const serviceData = [
   {
     id: "bookme",
-    title: "Bookme Business",
-    text: "Захиалгыг бүртгэлгүй хүлээн авах боломжтой. Хэрэглэгчид таны үйлчилгээг хялбар захиалах боломжтой.",
+    title: "Байгууллагад",
+    text: [
+      "Ажилтны сул цаг, туршлага, хийсэн ажлуудын динамик удирдлага",
+      "Захиалгын урсгалыг хянах, ачааллаа хуваарилах, хоосон цаг арилгах",
+      "Админ самбар-аар бүхнийг хянах — үйлчилгээ, ажилтан, цаг, хэрэглэгч",
+      "Галерей, үнэлгээ, хэрэглэгчийн туршлагыг сайжруулах цогц систем",
+    ],
     image:
       "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
-    color: "from-blue-600 to-indigo-600",
-    backgroundColor: "from-blue-600/20 to-indigo-600/10",
+    color: "from-cyan-400 to-blue-500",
   },
   {
     id: "payment",
-    title: "Online Payment",
-    text: "Stripe, QPay зэрэг төлбөрийн шийдэлтэй. Аюулгүй, хурдан төлбөрийн систем.",
+    title: "Үйлчлүүлэгчдэд",
+    text: [
+      "Хувийн мэдээлэл болон захиалгаа хамгаалсан, найдвартай нэвтрэлттэй систем. Захиалгаа бүртгүүлж, хянахад хялбар.",
+      "Та аль ч байгууллагын дуртай ажилтнаа сонгон, яг тухайн ажилтны сул цаг дээр суурилсан захиалга өгнө.",
+    ],
     image:
-      "https://images.unsplash.com/photo-1610076228127-df0282bb6c93?auto=format&fit=crop&w=870&q=80",
-    color: "from-green-600 to-teal-600",
-    backgroundColor: "from-green-600/20 to-teal-600/10",
+      "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
+    color: "from-cyan-400 to-blue-500",
   },
   {
     id: "nochat",
-    title: "No Chat Needed",
-    text: "Нэг ч чат бичихгүйгээр хэрэглэгч захиалга өгч чадна. Автомат системээр бүх үйл явц.",
+    title: "Хэрэглэгчийн 3 түвшин",
+    text: [
+      "Хэрэглэгч — Захиалах, хянах, төлбөр төлөх",
+      "Байгууллагын админ — Үйлчилгээ, ажилтан, захиалгыг удирдах",
+      "Супер админ — Системийн хяналт, эрх олголт",
+    ],
     image:
-      "https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?auto=format&fit=crop&w=870&q=80",
-    color: "from-orange-600 to-red-600",
-    backgroundColor: "from-orange-600/20 to-red-600/10",
+      "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
+    color: "from-cyan-400 to-blue-500",
   },
 ];
 
 // Main Component
-const VerticalServicesParent = () => {
+const VerticalServicesParent = ({ id }: { id: string }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -75,9 +84,10 @@ const VerticalServicesParent = () => {
   };
 
   return (
-    <div
+    <section
+      id={id}
       ref={containerRef}
-      className="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-white relative overflow-hidden"
+      className="min-h-screen text-white relative overflow-hidden"
       style={{
         backgroundImage:
           "radial-gradient(circle at 50% 50%, rgba(120, 113, 255, 0.1) 0%, transparent 70%)",
@@ -113,34 +123,7 @@ const VerticalServicesParent = () => {
           </div>
         ))}
       </div>
-
-      {/* Navigation dots */}
-      <div className="fixed right-8 top-1/2 transform -translate-y-1/2 z-20">
-        <div className="flex flex-col space-y-4">
-          {serviceData.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => handleNavClick(index)}
-              className={`relative w-3 h-3 rounded-full transition-all duration-500 ${
-                index === activeIndex
-                  ? "bg-white scale-125"
-                  : "bg-white/40 hover:bg-white/60"
-              }`}
-              style={{
-                transform: `translateY(${
-                  index === activeIndex ? "-2px" : "0px"
-                }) scale(${index === activeIndex ? 1.25 : 1})`,
-              }}
-              aria-label={`Go to service ${index + 1}`}
-            >
-              {index === activeIndex && (
-                <div className="absolute -inset-2 border border-white/50 rounded-full animate-pulse" />
-              )}
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
+    </section>
   );
 };
 

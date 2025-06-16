@@ -1,17 +1,17 @@
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect } from "react";
 import AnimatedContent from "./AnimatedContent";
 import Particles from "./Particles";
 import ShinyText from "./ShinyText";
-import SplitText from "./SplitText";
 
-export const Hero = () => {
+export const Hero = ({ id }: { id: string }) => {
   useEffect(() => {
     document.documentElement.classList.add("js-loaded");
   }, []);
   return (
-    <section className="relative min-h-screen w-screen overflow-hidden flex items-center justify-center">
+    <section
+      className="relative min-h-screen w-screen overflow-hidden flex items-center justify-center"
+      id={id}
+    >
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 -z-10" />
         <Particles
