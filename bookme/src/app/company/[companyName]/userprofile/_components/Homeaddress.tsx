@@ -29,7 +29,7 @@ export const HomeAddress = () => {
 
     try {
       setLoading(true);
-      await api.patch("/user/patch", {
+      await api.patch(`/patch/${user._id}`, {
         userId: user._id,
         address: location.address,
         lat: location.lat,
