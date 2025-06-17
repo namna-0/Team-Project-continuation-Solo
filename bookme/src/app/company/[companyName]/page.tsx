@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/axios";
 import Image from "next/image";
 import ScrollFloat from "@/blocks/TextAnimations/ScrollFloat/ScrollFloat";
+import { LocPicker } from "./userprofile/_components/Location";
 
 export interface Employee {
   _id: string;
@@ -522,7 +523,9 @@ export default function CompanyHomepage() {
           </div>
         </div>
       </section>
-
+      <section>
+        <LocPicker />
+      </section>
       <section id="photos" className="bg-white py-12">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
