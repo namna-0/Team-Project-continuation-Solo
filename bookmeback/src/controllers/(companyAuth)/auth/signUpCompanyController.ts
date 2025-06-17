@@ -23,22 +23,18 @@ export const signupCompanyController: RequestHandler = async (req, res) => {
 
     if (!email || !password || !companyName || !address || !phoneNumber) {
       res.status(400).json({
-        message:
-          "Заавал бөглөх талбарууд: Имэйл, Нууц үг, Компанийн нэр, Хаяг, Утас",
+        message: "Имэйл, нууц үг, компанийн нэр, хаяг, утас шаардлагатай.",
       });
       return;
     }
 
-    const existingCompany = await Company.findOne({ email });
-    if (existingCompany) {
-      res
-        .status(409)
-        .json({ message: "Имэйл хаяг аль хэдийн бүртгэгдсэн байна" });
+    const existing = await Company.findOne({ email });
+    if (existing) {
+      res.status(409).json({ message: "Имэйл бүртгэлтэй байна" });
       return;
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const company = await Company.create({
       email,
       password: hashedPassword,
@@ -65,20 +61,14 @@ export const signupCompanyController: RequestHandler = async (req, res) => {
 
     res.status(201).json({
       message: "Компани амжилттай бүртгэгдлээ",
-      company: {
-        _id: company._id,
-        email: company.email,
-        companyName: company.companyName,
-      },
       token,
+      company,
     });
-    return;
   } catch (error) {
-    console.error("Бүртгэлийн алдаа:", error);
+    console.error("Signup error:", error);
     res.status(500).json({
       message: "Серверийн алдаа",
       error: error instanceof Error ? error.message : "Тодорхойгүй алдаа",
     });
-    return;
   }
 };
