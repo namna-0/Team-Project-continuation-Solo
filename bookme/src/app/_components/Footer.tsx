@@ -1,5 +1,5 @@
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { Copyright, Facebook, Instagram } from "lucide-react";
 import FacebookIcon from "./assets/FacebookIcon";
 import InstagramIcon from "./assets/InstagramIcon";
@@ -25,16 +25,14 @@ const carousel = [
 ];
 
 export default function Footer() {
-  const scrollVariants = {
+  const scrollVariants: Variants = {
     animate: {
-      x: ["0%", "-50%"], // Move by half width for seamless loop
+      x: ["0%", "-100%"],
       transition: {
-        x: {
-          repeat: Infinity,
-          repeatType: "loop",
-          duration: 20, // Adjusted duration for better visibility
-          ease: "linear",
-        },
+        repeat: Infinity,
+        repeatType: "loop",
+        duration: 15,
+        ease: "linear", // ✅ Framer Motion supports "linear", "easeIn", etc.
       },
     },
   };

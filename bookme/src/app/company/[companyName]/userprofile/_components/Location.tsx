@@ -53,7 +53,9 @@ export const LocPicker = ({ onSelect }: LocationPickerProps) => {
       script.id = "google-maps-script";
       script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDlBLYHFfHDRdJ9b7B02Kg-x5VXSV6iIVA&callback=initMap`;
       script.async = true;
-      window.initMap = initMap;
+      script.onload = () => {
+        initMap();
+      };
       document.head.appendChild(script);
     } else {
       window.initMap = initMap;
@@ -63,7 +65,7 @@ export const LocPicker = ({ onSelect }: LocationPickerProps) => {
     }
 
     return () => {
-      delete window.initMap;
+      window.initMap = () => {};
     };
   }, [onSelect]);
 
