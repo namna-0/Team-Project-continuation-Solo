@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { api } from "@/axios";
 
-// Зөвхөн signin-д тохирсон validation
 const step1Schema = z.object({
   email: z.string().email("Зөв имэйл хаяг оруулна уу"),
   password: z.string().min(8, "Нууц үг дор хаяж 8 тэмдэгт байх ёстой"),
