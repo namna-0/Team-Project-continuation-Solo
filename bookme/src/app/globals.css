@@ -28,6 +28,32 @@ nav a.active {
   color: white !important;
   font-weight: 500 !important;
 }
+.preloader {
+  will-change: transform, opacity;
+}
+
+/* Prevent flash of unstyled content */
+html.is-loading body {
+  overflow: hidden;
+}
+
+.glow-text {
+  text-shadow: 0 0 8px rgba(34, 211, 238, 0.7);
+}
+
+.box {
+  transition: all 0.3s ease-out;
+  animation: pulse 2s infinite alternate;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);

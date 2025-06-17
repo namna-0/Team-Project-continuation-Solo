@@ -1,4 +1,3 @@
-"use client";
 import React, { useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -20,37 +19,48 @@ const Header = () => {
         trigger: section,
         start: "top center",
         end: "bottom center",
-        onToggle: (self) => {
-          if (self.isActive) {
-            const correspondingLink = document.querySelector(
-              `nav a[href="#${section.id}"]`
-            );
-            if (correspondingLink) {
-              links.forEach((link: any) => link.classList.remove("active"));
-              correspondingLink.classList.add("active"); // ✅ fixed here
-            }
+        onEnter: () => {
+          const correspondingLink = document.querySelector(
+            `nav a[href="#${section.id}"]`
+          );
+          if (correspondingLink) {
+            links.forEach((link) => link.classList.remove("active"));
+            correspondingLink.classList.add("active");
+          }
+        },
+        onEnterBack: () => {
+          const correspondingLink = document.querySelector(
+            `nav a[href="#${section.id}"]`
+          );
+          if (correspondingLink) {
+            links.forEach((link) => link.classList.remove("active"));
+            correspondingLink.classList.add("active");
           }
         },
       });
     });
 
     // Smooth scroll
-    links.forEach((link: any) => {
-      link.addEventListener("click", (e: MouseEvent) => {
-        e.preventDefault();
-        const target = link.getAttribute("href");
+    const handleClick = (e: MouseEvent, link: HTMLAnchorElement) => {
+      e.preventDefault();
+      const target = link.getAttribute("href");
+      if (target) {
         gsap.to(window, {
           duration: 1,
           scrollTo: target,
           ease: "power2.inOut",
         });
-      });
+      }
+    };
+
+    links.forEach((link) => {
+      link.addEventListener("click", (e) => handleClick(e, link));
     });
 
     return () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-      links.forEach((link: any) => {
-        link.removeEventListener("click", () => {});
+      links.forEach((link) => {
+        link.removeEventListener("click", (e) => handleClick(e, link));
       });
     };
   }, []);
@@ -69,7 +79,7 @@ const Header = () => {
         </li>
         <li>
           <a
-            href="#services"
+            href="#vertical-services"
             className="text-white/90 text-sm font-medium px-4 py-2 rounded-full transition hover:bg-white/10 hover:text-white"
           >
             Байгууллага
@@ -77,7 +87,7 @@ const Header = () => {
         </li>
         <li>
           <a
-            href="#vertical-services"
+            href="#services"
             className="text-white/90 text-sm font-medium px-4 py-2 rounded-full transition hover:bg-white/10 hover:text-white"
           >
             Үйлчлүүлэгч
@@ -85,10 +95,18 @@ const Header = () => {
         </li>
         <li>
           <a
-            href="#footer"
-            className="text-white/90 text-sm font-medium px-4 py-2 rounded-full transition hover:bg-white/10 hover:text-white"
+            href="#team"
+            className="text-white/90 text-sm font-medium px-4 py-2 rounded-full transition hover:bg-white/10 hover:text-white whitespace-nowrap"
           >
-            <span className="whitespace-nowrap">Холбоо барих</span>
+            Манай баг
+          </a>
+        </li>
+        <li>
+          <a
+            href="#footer"
+            className="text-white/90 text-sm font-medium px-4 py-2 rounded-full transition hover:bg-white/10 hover:text-white whitespace-nowrap"
+          >
+            Холбоо барих
           </a>
         </li>
       </ul>
