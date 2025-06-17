@@ -1,14 +1,12 @@
 "use client"
 import { useEffect, useState } from "react";
-import OrderNavBar from "./_components/header";
+import OrderNavBar from "./_components/(publicItems)/header";
 import { ChevronRight } from "lucide-react";
-import EmployeeCard from "./_components/employeeCard";
 import { Pacifico } from 'next/font/google'
 import OrderImformation from "./_components/orderImformation";
 import { api } from "@/axios";
-import StageTwo from "./_components/SelectTime"; // Adjust the path based on your project structure
-import StagaOne from "./_components/SelectEmployee";
-import { error } from "console";
+import StageTwo from "./_components/(Stage2SelectTime)/SelectTime"; // Adjust the path based on your project structur;
+import StagaOne from "./_components/(Stage1EmployeeSelect)/SelectEmployee";
 
 const pacifico = Pacifico({
     subsets: ['latin'],
@@ -22,6 +20,9 @@ export type employeeType = {
     duration: number,
     profileImage: string, availability: boolean,
     startTime: string, endTime: string
+    lunchTimeStart: string, lunchTimeEnd: string
+    companyId: string
+    bookings: string[]
 }
 export type CompanyType = {
     _id: string,
@@ -38,7 +39,7 @@ export type CompanyType = {
 export default function OrderPage() {
     const Stages = ["Ажилтан", "Огноо", "Баталгаажуулалт"]
     const [isStage, setIsStage] = useState<string>(Stages[0])
-    const [isSelectEmployee, setIsSelectEmployee] = useState<employeeType>()
+    const [isSelectEmployee, setIsSelectEmployee] = useState<string>("")
     const [company, setCompany] = useState<CompanyType | undefined>(undefined)
     const zurag = "/images.jpeg"
     const title = () => {
@@ -56,40 +57,37 @@ export default function OrderPage() {
     };
     useEffect(() => { getCompany() }, [])
     const HandleNextStage = () => {
-        if (isStage == Stages[0] && !(isSelectEmployee?.employeeName == "")) {
-            setIsStage(Stages[1])
-        }
+        if (isStage == Stages[0] && !(isSelectEmployee == "")) { setIsStage(Stages[1]) }
         if (isStage == Stages[1]) { setIsStage(Stages[2]) }
     };
     return (
         <div className="w-full flex flex-col h-fit jusify-center items-center bg-white">
-            <div className="w-[1440px] relative h-[120vh] flex  justify-center" >
-                <OrderNavBar isStage={isStage} setIsStage={setIsStage} title={title()} Stages={Stages} />
+            <div className="w-[1440px] relative h-[120vh] flex  justify-center bg-gray-100" >
+                <OrderNavBar isStage={typeof isStage === "string" ? isStage : ""} setIsStage={setIsStage} title={title()} Stages={Stages} />
                 <div className="flex-3 relative flex flex-col p-16 gap-8">
                     <div className="flex flex-col gap-5">
                         <div className="gap-2 w-full flex  items-center ">{Stages.map((item, index) => {
                             return (<div onClick={() => {
-                                if (Stages.indexOf(isStage) > index) {
+                                if (isStage !== "" && Stages.indexOf(isStage) > index) {
                                     setIsStage(item)
                                 }
-                            }} className={item == isStage ? " font-bold h-fit flex gap-1  text-xl items-center" : " flex text-xl gap-1 font-normal items-center"} key={index}><p>{item}</p><ChevronRight size={16} />
+                            }} className={item == isStage ? " font-bold h-fit flex gap-1  text-xl items-center" : " flex text-xl gap-1 font-normal items-center"} key={index}>
+                                <p>{item}</p><ChevronRight size={16} />
                             </div>)
                         })}
                         </div>
                         <div className="font-pacifico text-3xl">{title()}</div>
                     </div>
                     {isStage == Stages[0] &&
-                        <StagaOne isSelectEmployee={isSelectEmployee?.employeeName || ""} setIsSelectEmployee={setIsSelectEmployee} company={company as CompanyType} />
+                        <StagaOne isSelectEmployee={isSelectEmployee} setIsSelectEmployee={setIsSelectEmployee} company={company as CompanyType} />
                     }
                     {isStage == Stages[1] &&
                         (<div className="w-full">
-                                {company && (
-                                    <StageTwo setIsSelectEmployee={setIsSelectEmployee} company={company} zurag={zurag} isSelectEmployee={isSelectEmployee?.employeeName || ""} />
-                                )}
-                            </div>)}
+                            <StageTwo setIsSelectEmployee={setIsSelectEmployee} company={company as CompanyType} zurag={zurag} isSelectEmployee={isSelectEmployee} />
+                        </div>)}
                 </div>
                 <div className="flex flex-2 w-full relative justify-start items-center  ">
-                    <OrderImformation HandleNextStage={HandleNextStage} isSelectEmployee={isSelectEmployee?.employeeName || ""} company={company} isStage={isStage} Stages={Stages} />
+                    <OrderImformation HandleNextStage={HandleNextStage} setIsSelectEmployee={setIsSelectEmployee} isSelectEmployee={isSelectEmployee} company={company} isStage={isStage} Stages={Stages} />
                 </div>
             </div >
         </div >

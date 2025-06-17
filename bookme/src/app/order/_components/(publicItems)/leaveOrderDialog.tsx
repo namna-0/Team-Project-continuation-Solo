@@ -2,7 +2,6 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { Button } from "@/components/ui/button"
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Ghost, LucideArrowLeft } from "lucide-react"
 // type LeaveOrderProp = { setIsStage: (stage: string) => void, Stages: string[] }
 const LeaveOrder = () => {
     return (

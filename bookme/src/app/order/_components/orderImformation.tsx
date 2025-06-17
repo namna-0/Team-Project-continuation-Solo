@@ -9,12 +9,15 @@ import { is } from "date-fns/locale";
 import { Dialog } from "@radix-ui/react-dialog";
 import { DialogTrigger } from "@/components/ui/dialog";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import UpdateEmployee from "./updateEmployeeDialog";
+import { useAuth } from "@/app/_providers/UserAuthProvider";
+import UpdateEmployee from "./(Stage1EmployeeSelect)/updateEmployeeDialog";
+
 type OrderImformationType = {
     HandleNextStage: () => void, isSelectEmployee: string
     company?: CompanyType
     isStage: string
     Stages: string[]
+    setIsSelectEmployee: (emoloyee: string) => void
 
 }
 export type OrderType = {
@@ -33,22 +36,13 @@ type user = {
     address: string,
     role: string,
     companyId: string[],
-
 }
 
-function OrderImformation({ HandleNextStage, isSelectEmployee, company, isStage, Stages }: OrderImformationType) {
+function OrderImformation({ HandleNextStage, setIsSelectEmployee, isSelectEmployee, company, isStage, Stages }: OrderImformationType) {
+    const { user } = useAuth()
     const [order, setOrder] = useState<OrderType | undefined>(undefined)
-    const [user, setUser] = useState<OrderType | undefined>(undefined)
     const [selectedTime, setSelectedTime] = useState<Date>()
-    const getUser = async () => {
-        try {
-            const response = await api.get("/user/684d5c0ac9fc32be2dd4e059");
-            setUser(response.data.user);
-        } catch (error) {
-            console.error(error)
-        }
-    };
-    const i = company?.employees.find(employee => employee.employeeName === isSelectEmployee);
+    const i = company?.employees.find((employee) => employee.employeeName === isSelectEmployee);
     const addOrder = async () => {
         api.post("/order", {
             company: company?._id,
@@ -70,7 +64,7 @@ function OrderImformation({ HandleNextStage, isSelectEmployee, company, isStage,
                     <div className="w-24 h-24 rounded border hover:border-blue-700 transition flex justify-center items-center p-3 ">
                         <img
                             src={company ? company.companyImages[0] : undefined}
-                            onClick={() => window.open('http://localhost:3000/company/[companyName]', '_blank')}
+                            onClick={() => window.open(`http://localhost:3000/company/[companyName]`, '_blank')}
                             className="w-full h-full object-cover rounded "
                         />
                     </div>
@@ -87,7 +81,7 @@ function OrderImformation({ HandleNextStage, isSelectEmployee, company, isStage,
                                 <DialogTrigger className="w-fit flex gap-3  rounded-full items-centerp-1">
                                     <div className="text-sky-600">{isSelectEmployee}</div>
                                 </DialogTrigger>
-                                <UpdateEmployee zurag={i?.profileImage || ""} isSelectEmployee={isSelectEmployee} />
+                                <UpdateEmployee setIsSelectEmployee={setIsSelectEmployee} zurag={i?.profileImage || ""} company={company as CompanyType} isSelectEmployee={isSelectEmployee} />
                             </Dialog>
                             : <div className=" flex flex-col ">{isSelectEmployee}</div>}
                     </div>}
