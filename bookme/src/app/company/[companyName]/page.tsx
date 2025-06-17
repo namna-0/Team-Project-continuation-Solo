@@ -11,7 +11,7 @@ import { api } from "@/axios";
 import Image from "next/image";
 import ScrollFloat from "@/blocks/TextAnimations/ScrollFloat/ScrollFloat";
 
-interface Employee {
+export interface Employee {
   _id: string;
   employeeName: string;
   description: string;
@@ -26,7 +26,7 @@ interface WorkingHours {
   };
 }
 
-interface Company {
+export interface Company {
   _id: string;
   companyName: string;
   description: string;
@@ -432,25 +432,63 @@ export default function CompanyHomepage() {
       </section>
       {company.workingHours && (
         <section className="py-20 bg-white">
-          <ScrollFloat
-            animationDuration={1}
-            ease="back.inOut(2)"
-            scrollStart="center bottom+=50%"
-            scrollEnd="bottom bottom-=40%"
-            stagger={0.03}
-          >
-            {Object.entries(company.workingHours).map(([day, hours], idx) => (
-              <div key={day} data-index={idx}>
-                <h3 className="font-bold text-gray-700">{dayLabels[day]}</h3>
-                <p className="text-gray-600">
-                  {hours.closed
-                    ? "Хаалттай"
-                    : `Нээлт: ${hours.open} - Хаалт: ${hours.close}`}
-                  asddas
-                </p>
-              </div>
-            ))}
-          </ScrollFloat>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                Ажлын цаг
+              </h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Бидний нээлттэй цагууд
+              </p>
+            </div>
+
+            <div className="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+              {[
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday",
+                "sunday",
+              ]
+                .filter((day) => company.workingHours.hasOwnProperty(day))
+                .map((day) => {
+                  const hours = company.workingHours[day];
+                  const dayIndex = [
+                    "monday",
+                    "tuesday",
+                    "wednesday",
+                    "thursday",
+                    "friday",
+                    "saturday",
+                    "sunday",
+                  ].indexOf(day);
+
+                  return (
+                    <motion.div
+                      key={day}
+                      className="text-center p-4 bg-white rounded-lg shadow-md"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: dayIndex * 0.1 }}
+                    >
+                      <p className="font-bold text-gray-700 mb-2">
+                        {dayLabels[day]}
+                      </p>
+                      {hours.closed ? (
+                        <p className="text-red-500 font-medium">Хаалттай</p>
+                      ) : (
+                        <div className="space-y-1">
+                          <p className="text-gray-600">Нээх: {hours.open}</p>
+                          <p className="text-gray-600">Хаах: {hours.close}</p>
+                        </div>
+                      )}
+                    </motion.div>
+                  );
+                })}
+            </div>
+          </div>
         </section>
       )}
       <section className="py-20 bg-white">
