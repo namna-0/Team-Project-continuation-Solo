@@ -6,7 +6,15 @@ export const getUserAuthMe: RequestHandler = async (req, res) => {
     const userId = (req as any).userId;
     console.log("userid:", userId);
 
-    const user = await User.findById(userId).select("-password");
+    const user = await User.findById(userId)
+      .select("-password")
+      .populate({
+        path: "booking",
+        populate: [
+          { path: "company", select: "name address avatarImage" },
+          { path: "employee", select: "username phoneNumber" },
+        ],
+      });
 
     if (!user) {
       res.status(404).json({ message: "user not found" });
