@@ -4,12 +4,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@radix-ui/react-label";
 import { Upload, X } from "lucide-react";
-import { FormDataType } from "../page";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { step2Schema, Step2SchemaType } from "./Schemas";
 import { LocPicker } from "@/app/company/[companyName]/userprofile/_components/Location";
+import { FormDataType } from "./Types";
 
 type Step2Props = {
   formData: FormDataType;
