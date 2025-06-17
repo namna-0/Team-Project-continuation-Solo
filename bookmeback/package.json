@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node build/api/index.js",
     "dev": "nodemon src/api/index.ts",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "deploy": "vercel --prod"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +21,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.1",
     "nodemailer": "^7.0.3",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "vercel": "^43.2.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

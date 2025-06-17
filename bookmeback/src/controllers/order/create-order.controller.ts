@@ -7,10 +7,10 @@ export const CreateOrderController: RequestHandler = async (req, res) => {
   try {
     const { company, user, status, employee, selectedTime } = req.body;
 
-    if (!company || !user || !selectedTime || !employee) {
-      res.status(400).json({ message: "Бүх талбарыг бөглө" });
-      return;
-    }
+    // if (!company || !user || !selectedTime || !employee) {
+    //   res.status(400).json({ message: "Бүх талбарыг бөглө" });
+    //   return;
+    // }
     const order = await Booking.create({
       company,
       user,
@@ -24,10 +24,14 @@ export const CreateOrderController: RequestHandler = async (req, res) => {
       $push: { bookings: order._id },
       $set: { updatedAt: new Date() },
     });
+
     await User.findByIdAndUpdate(user, {
       $push: { booking: order._id },
       $set: { updatedAt: new Date() },
     });
+
+    console.log("order", order);
+
     res.status(201).json({ message: "order created", order });
   } catch (error) {
     console.error(error);

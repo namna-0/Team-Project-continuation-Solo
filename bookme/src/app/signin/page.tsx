@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { api } from "@/axios";
+import { useCompanyAuth } from "../_providers/CompanyAuthProvider";
 
 const step1Schema = z.object({
   email: z.string().email("Зөв имэйл хаяг оруулна уу"),
@@ -17,6 +18,7 @@ const step1Schema = z.object({
 type Step1SchemaType = z.infer<typeof step1Schema>;
 
 export default function SignIn() {
+  const { signIn } = useCompanyAuth();
   const {
     register,
     handleSubmit,
@@ -30,10 +32,8 @@ export default function SignIn() {
   const onSubmit = async (data: Step1SchemaType) => {
     setLoading(true);
     try {
-      const response = await api.post("/signin", data);
-      if (response.status === 201) {
-        toast.success("Амжилттай нэвтэрлээ");
-      }
+      await signIn(data.email, data.password);
+      toast.success("Амжилттай нэвтэрлээ");
     } catch (error) {
       console.error("Login error:", error);
       toast.error("Нэвтрэхэд алдаа гарлаа. Дахин оролдоно уу.");

@@ -27,14 +27,12 @@ const carousel = [
 export default function Footer() {
   const scrollVariants = {
     animate: {
-      x: ["0%", "-50%"], // Move by half width for seamless loop
+      x: ["0%", "-50%"],
       transition: {
-        x: {
-          repeat: Infinity,
-          repeatType: "loop",
-          duration: 20, // Adjusted duration for better visibility
-          ease: "linear",
-        },
+        repeat: Infinity,
+        repeatType: "loop" as const,
+        duration: 20,
+        ease: "linear" as const, // 🛠 TypeScript-д тааруулж өгч байна
       },
     },
   };

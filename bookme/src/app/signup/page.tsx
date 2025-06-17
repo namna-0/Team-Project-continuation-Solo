@@ -7,41 +7,12 @@ import { Step2 } from "./_components/Step2";
 import { Step1 } from "./_components/Step1";
 import axios from "axios";
 import { api } from "@/axios";
-
-export interface FormDataType {
-  email: string;
-  password: string;
-  confirmPassword: string;
-  companyName: string;
-  description: string;
-  address: string;
-  lat?: number;
-  lng?: number;
-  city: string;
-  phone: string;
-  website: string;
-  logo: string;
-  openingHours: {
-    monday: DaySchedule;
-    tuesday: DaySchedule;
-    wednesday: DaySchedule;
-    thursday: DaySchedule;
-    friday: DaySchedule;
-    saturday: DaySchedule;
-    sunday: DaySchedule;
-  };
-}
-
-interface DaySchedule {
-  open: string;
-  close: string;
-  closed: boolean;
-}
+import { FormDataType } from "./_components/Types";
 
 const UPLOAD_PRESET = "bookMe";
 const CLOUD_NAME = "dazhij9zy";
 
-export default function SalonSetupPage() {
+export default function CompanySetupPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [companyImagePreview, setCompanyImagePreview] = useState<string[]>([]);
   const [companyImages, setCompanyImages] = useState<File[]>([]);
@@ -68,6 +39,10 @@ export default function SalonSetupPage() {
       friday: { open: "09:00", close: "18:00", closed: false },
       saturday: { open: "10:00", close: "16:00", closed: false },
       sunday: { open: "10:00", close: "16:00", closed: true },
+    },
+    lunchBreak: {
+      start: "12:00",
+      end: "13:00",
     },
   });
 
@@ -127,7 +102,7 @@ export default function SalonSetupPage() {
         companyImages: imageUrls,
         employees: [],
         workingHours: formData.openingHours,
-        lunchBreak: null,
+        lunchBreak: formData.lunchBreak,
       };
 
       console.log("Илгээж буй өгөгдөл:", apiData);
@@ -146,16 +121,6 @@ export default function SalonSetupPage() {
     }
   };
 
-  const dayLabels: Record<string, string> = {
-    monday: "Даваа",
-    tuesday: "Мягмар",
-    wednesday: "Лхагва",
-    thursday: "Пүрэв",
-    friday: "Баасан",
-    saturday: "Бямба",
-    sunday: "Ням",
-  };
-
   const removeCompanyImage = (index: number) => {
     const newPreviews = [...companyImagePreview];
     newPreviews.splice(index, 1);
@@ -170,6 +135,16 @@ export default function SalonSetupPage() {
     setLogoFile(null);
     setLogoPreview("");
     setFormData((prev) => ({ ...prev, logo: "" }));
+  };
+
+  const dayLabels: Record<string, string> = {
+    monday: "Даваа",
+    tuesday: "Мягмар",
+    wednesday: "Лхагва",
+    thursday: "Пүрэв",
+    friday: "Баасан",
+    saturday: "Бямба",
+    sunday: "Ням",
   };
 
   return (

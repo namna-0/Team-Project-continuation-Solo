@@ -89,8 +89,8 @@ const companySchema = new Schema({
     default: {},
   },
   lunchBreak: {
-    type: String,
-    default: "",
+    start: String,
+    end: String,
   },
   users: [
     {

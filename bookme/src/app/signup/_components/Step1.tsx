@@ -4,8 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FormDataType } from "../page";
 import { step1Schema, Step1SchemaType } from "./Schemas";
+import { FormDataType } from "./Types";
 
 type Step1Props = {
   formData: FormDataType;
@@ -15,7 +15,6 @@ type Step1Props = {
 export const Step1 = ({ formData, setFormData }: Step1Props) => {
   const {
     register,
-    handleSubmit,
     formState: { errors },
     trigger,
   } = useForm<Step1SchemaType>({
@@ -37,7 +36,9 @@ export const Step1 = ({ formData, setFormData }: Step1Props) => {
       <h2 className="text-xl font-bold mb-2">Бүртгэлийн мэдээлэл</h2>
 
       <div>
-        <Label htmlFor="email" className="mb-2">Имэйл *</Label>
+        <Label htmlFor="email" className="mb-2">
+          Имэйл *
+        </Label>
         <Input
           {...register("email")}
           placeholder="ta@example.com"
@@ -50,7 +51,9 @@ export const Step1 = ({ formData, setFormData }: Step1Props) => {
       </div>
 
       <div>
-        <Label htmlFor="password" className="mb-2">Нууц үг *</Label>
+        <Label htmlFor="password" className="mb-2">
+          Нууц үг *
+        </Label>
         <Input
           {...register("password")}
           type="password"
@@ -64,7 +67,9 @@ export const Step1 = ({ formData, setFormData }: Step1Props) => {
       </div>
 
       <div>
-        <Label htmlFor="confirmPassword" className="mb-2">Нууц үг давтах *</Label>
+        <Label htmlFor="confirmPassword" className="mb-2">
+          Нууц үг давтах *
+        </Label>
         <Input
           {...register("confirmPassword")}
           type="password"
@@ -80,7 +85,9 @@ export const Step1 = ({ formData, setFormData }: Step1Props) => {
       </div>
 
       <div>
-        <Label htmlFor="companyName" className="mb-2">Салоны нэр *</Label>
+        <Label htmlFor="companyName" className="mb-2">
+          Салоны нэр *
+        </Label>
         <Input
           {...register("companyName")}
           placeholder="Салоны нэр"
