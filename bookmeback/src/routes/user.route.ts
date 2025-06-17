@@ -6,8 +6,8 @@ import { getUsers } from "../controllers/user/get-users";
 const userRouter = Router();
 
 userRouter
-    .get("/user", getUsers)
-    .get("/user/:id", getUser)
-    .patch("/patch", patchUser)
+  .get("/user", getUsers)
+  .get("/user/:id", getUser)
+  .patch("/patch/:id", patchUser);
 
 export default userRouter;
