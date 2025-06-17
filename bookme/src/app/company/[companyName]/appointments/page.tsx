@@ -4,41 +4,34 @@ import { api } from "@/axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+type OrderType = {
+  _id: string;
+  selectedTime: string;
+  status: "confirmed" | "cancelled" | string;
+  company: {
+    _id: string;
+    companyName: string;
+    companyImages: string[];
+    address: string;
+  };
+  employee: {
+    _id: string;
+    employeeName: string;
+  };
+};
+
 export default function Home() {
-  const upcoming = [
-    {
-      image: "/email.png",
-      name: "SPA RE'LUXE",
-      date: "Thu, Jun 26, 2025",
-      time: "12:15",
-      employee: "B.Nomin",
-    },
-    {
-      image: "/email.png",
-      name: "Tsim Sha Tsui",
-      date: "Fri, Jun 27, 2025",
-      time: "11:00",
-      employee: "A.Bat",
-    },
-    {
-      image: "/email.png",
-      name: "Canton Barber Causeway Bay",
-      date: "Sun, Aug 3, 2025",
-      time: "14:00",
-      employee: "M.Munkherdene",
-    },
-  ];
-  const [isClicked, setisClicked] = useState<null | (typeof upcoming)[0]>(null);
-  const [orders, setOrders] = useState<
-    {
-      image: String;
-      name: String;
-      date: String;
-      time: String;
-      employee: String;
-    }[]
-  >([]);
+  const [orders, setOrders] = useState<OrderType[]>([]);
+  const [isClicked, setisClicked] = useState<OrderType | null>(null);
   const { user } = useAuth();
+
+  const cancelledOrders = orders.filter(
+    (order) => order.status === "cancelled"
+  );
+  const confirmedOrders = orders.filter(
+    (order) => order.status === "confirmed"
+  );
+
   useEffect(() => {
     if (!user) return;
     const fetchOrders = async () => {
@@ -107,7 +100,7 @@ export default function Home() {
           </div>
         </div>
       </nav>
-      <div className="w-[1440px] h-fit  border border-black flex flex-col items-center justify-center gap-[60px] p-5">
+      <div className="w-[1440px] h-fit flex flex-col items-center justify-center gap-[60px] p-5">
         <div className="w-full h-[36px]">
           <p className="font-bold text-[36px]">Захиалгын түүх</p>
         </div>
@@ -115,28 +108,30 @@ export default function Home() {
           <div className="w-fit h-fit flex flex-col gap-5">
             <div className="w-fit">
               <p className="text-[24px] font-semibold flex items-center gap-2">
-                Хүлээгдэж буй цагууд{" "}
+                Батлгаажсан цагууд{" "}
                 <span className="w-6 h-6 flex items-center justify-center text-[14px] text-white bg-blue-600 rounded-full">
-                  {orders.length}
+                  {confirmedOrders.length}
                 </span>
               </p>
               <div className="flex flex-col gap-4 mt-[10px]">
-                {upcoming.map((order, index) => (
+                {confirmedOrders.map((order, index) => (
                   <div
                     onClick={() => setisClicked(order)}
                     key={index}
                     className="w-[400px] h-[120px] bg-white border border-gray-400 rounded-[12px] flex cursor-pointer gap-4"
                   >
                     <img
-                      src={order.image}
+                      src={order.company.companyImages?.[0]}
                       className="w-[130px] h-full rounded-l-[12px] "
                     />
                     <div className="w-[250px] h-full flex flex-col justify-center">
-                      <p className="font-semibold">{order.name}</p>
-                      <p className="text-[12px]">
-                        {order.date} at {order.time}
+                      <p className="font-semibold">
+                        {order.company.companyName}
                       </p>
-                      <p className="text-[12px]">{order.employee}</p>
+                      <p className="text-[12px]">{order.selectedTime}</p>
+                      <p className="text-[12px]">
+                        {order.employee.employeeName}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -144,28 +139,30 @@ export default function Home() {
             </div>
             <div className="w-fit">
               <p className="text-[24px] font-semibold flex items-center gap-2">
-                Өмнөх цагууд{" "}
+                Цуцлагдсан цагууд{" "}
                 <span className="w-6 h-6 flex items-center justify-center text-[14px] text-white bg-blue-600 rounded-full">
-                  {upcoming.length}
+                  {cancelledOrders.length}
                 </span>
               </p>
               <div className="flex flex-col gap-4 mt-[10px]">
-                {upcoming.map((mock, index) => (
+                {cancelledOrders.map((mock, index) => (
                   <div
                     onClick={() => setisClicked(mock)}
                     key={index}
                     className="w-[400px] h-[120px] bg-white border border-gray-400 rounded-[12px] flex cursor-pointer gap-4"
                   >
                     <img
-                      src={mock.image}
+                      src={mock.company.companyImages[1]}
                       className="w-[130px] h-full rounded-l-[12px] "
                     />
                     <div className="w-[250px] h-full flex flex-col justify-center">
-                      <p className="font-semibold">{mock.name}</p>
-                      <p className="text-[14px]">
-                        {mock.date} at {mock.time}
+                      <p className="font-semibold">
+                        {mock.company.companyName}
                       </p>
-                      <p className="text-[12px]">{mock.employee}</p>
+                      <p className="text-[14px]">{mock.selectedTime}</p>
+                      <p className="text-[12px]">
+                        {mock.employee.employeeName}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -176,13 +173,17 @@ export default function Home() {
             {isClicked ? (
               <div className="flex flex-col gap-4">
                 <img
-                  src={isClicked.image}
+                  src={isClicked.company.companyImages[1]}
                   className="w-full h-[400px] object-cover rounded-[8px]"
                 />
-                <h2 className="text-2xl font-bold">{isClicked.name}</h2>
-                <p className="text-lg text-gray-700">📅 {isClicked.date}</p>
-                <p className="text-lg text-gray-700">⏰ {isClicked.time}</p>
-                <p className="text-ls text-gray-700">🧑‍💼{isClicked.employee}</p>
+                <h2 className="text-2xl font-bold">
+                  {isClicked.company.companyName}
+                </h2>
+                <p className="text-lg text-gray-700">📅 2025-06-17</p>
+                <p className="text-lg text-gray-700">⏰ 14:00</p>
+                <p className="text-ls text-gray-700">
+                  🧑‍💼{isClicked.employee.employeeName}
+                </p>
                 <button
                   className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 w-fit"
                   onClick={() => setisClicked(null)}
