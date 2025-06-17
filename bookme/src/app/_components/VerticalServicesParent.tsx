@@ -15,17 +15,7 @@ const serviceData = [
       "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
     color: "from-cyan-400 to-blue-500",
   },
-  {
-    id: "payment",
-    title: "Үйлчлүүлэгчдэд",
-    text: [
-      "Хувийн мэдээлэл болон захиалгаа хамгаалсан, найдвартай нэвтрэлттэй систем. Захиалгаа бүртгүүлж, хянахад хялбар.",
-      "Та аль ч байгууллагын дуртай ажилтнаа сонгон, яг тухайн ажилтны сул цаг дээр суурилсан захиалга өгнө.",
-    ],
-    image:
-      "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
-    color: "from-cyan-400 to-blue-500",
-  },
+
   {
     id: "nochat",
     title: "Хэрэглэгчийн 3 түвшин",
@@ -38,6 +28,17 @@ const serviceData = [
       "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
     color: "from-cyan-400 to-blue-500",
   },
+  // {
+  //   id: "payment",
+  //   title: "Үйлчлүүлэгчдэд",
+  //   text: [
+  //     "Хувийн мэдээлэл болон захиалгаа хамгаалсан, найдвартай нэвтрэлттэй систем. Захиалгаа бүртгүүлж, хянахад хялбар.",
+  //     "Та аль ч байгууллагын дуртай ажилтнаа сонгон, яг тухайн ажилтны сул цаг дээр суурилсан захиалга өгнө.",
+  //   ],
+  //   image:
+  //     "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
+  //   color: "from-cyan-400 to-blue-500",
+  // },
 ];
 
 // Main Component

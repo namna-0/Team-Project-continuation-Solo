@@ -5,8 +5,15 @@ const nextConfig: NextConfig = {
     API_URL: process.env.API_URL,
   },
   images: {
-    domains: ["res.cloudinary.com", "your-cloudinary-domain.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+    ],
   },
+
+  reactStrictMode: true,
 };
 
 export default nextConfig;

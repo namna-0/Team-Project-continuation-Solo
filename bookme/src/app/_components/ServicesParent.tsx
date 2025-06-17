@@ -3,8 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 const serviceData = [
   {
     id: "bookme",
-    title: "Bookme Business",
-    text: "Захиалгыг бүртгэлгүй хүлээн авах боломжтой. Хэрэглэгчид таны үйлчилгээг хялбар захиалах боломжтой.",
+    title: "Сул цагтай уялдуулсан захиалга",
+    text: "Ажилтны бодит сул цагийг хараад, өөрийн чөлөөт цагтай уялдуулан илүү оновчтой захиалга өг.",
     image:
       "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
     color: "from-blue-600 to-indigo-600",
@@ -12,31 +12,31 @@ const serviceData = [
   },
   {
     id: "payment",
-    title: "Online Payment",
-    text: "Stripe, QPay зэрэг төлбөрийн шийдэлтэй. Аюулгүй, хурдан төлбөрийн систем.",
+    title: "Ажилтнаа сонгоод захиалах",
+    text: "Та аль ч байгууллагын дуртай ажилтнаа сонгон, яг тухайн ажилтны сул цаг дээр суурилсан захиалга өгнө.",
     image:
       "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
     color: "from-green-600 to-teal-600",
     accentColor: "bg-blue-500",
   },
   {
-    id: "nochat",
-    title: "No Chat Needed",
-    text: "Нэг ч чат бичихгүйгээр хэрэглэгч захиалга өгч чадна. Автомат системээр бүх үйл явц.",
-    image:
-      "https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?auto=format&fit=crop&w=870&q=80",
-    color: "from-orange-600 to-red-600",
-    accentColor: "bg-blue-500",
-  },
-  {
     id: "analytics",
-    title: "Smart Analytics",
-    text: "Дэлгэрэнгүй тайлан, статистик мэдээлэл. Бизнесийн шийдвэр гаргахад туслах ухаалаг системтэй.",
+    title: "Захиалгаа хянах, цуцлах",
+    text: "Хувийн самбарт захиалгын төлөв, цаг, дэлгэрэнгүйг харах, шаардлагатай бол цуцлах бүрэн боломжтой.",
     image:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=870&q=80",
     color: "from-purple-600 to-pink-600",
     accentColor: "bg-blue-500",
   },
+  // {
+  //   id: "nochat",
+  //   title: "No Chat Needed",
+  //   text: "Нэг ч чат бичихгүйгээр хэрэглэгч захиалга өгч чадна. Автомат системээр бүх үйл явц.",
+  //   image:
+  //     "https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?auto=format&fit=crop&w=870&q=80",
+  //   color: "from-orange-600 to-red-600",
+  //   accentColor: "bg-blue-500",
+  // },
 ];
 
 const ServicesParent = ({ id }: { id: string }) => {
@@ -51,34 +51,55 @@ const ServicesParent = ({ id }: { id: string }) => {
       if (!containerRef.current || !imagesContainerRef.current) return;
 
       const containerRect = containerRef.current.getBoundingClientRect();
-      const imagesRect = imagesContainerRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const containerHeight = containerRect.height;
 
-      // Calculate scroll progress through the entire component
-      const containerStart = containerRect.top;
-      const containerEnd = containerRect.bottom - window.innerHeight;
+      // Calculate scroll progress (0 when top of container at top of viewport, 1 when bottom at bottom)
+      const scrollY = window.scrollY;
+      const containerTop = containerRect.top + scrollY;
+      const containerBottom = containerTop + containerHeight;
+
       const progress = Math.max(
         0,
-        Math.min(1, -containerStart / (containerEnd - containerStart))
+        Math.min(
+          1,
+          (scrollY - containerTop + windowHeight) /
+            (containerHeight - windowHeight)
+        )
       );
 
       setScrollProgress(progress);
 
-      // Calculate which section should be active
-      const sectionProgress = progress * serviceData.length;
+      // Calculate active index based on progress
+      const sectionCount = serviceData.length;
+      const sectionProgress = progress * (sectionCount - 1);
       const newActiveIndex = Math.min(
-        Math.floor(sectionProgress),
-        serviceData.length - 1
+        Math.max(0, Math.floor(sectionProgress)), // Ensure doesn't go below 0
+        sectionCount - 1
       );
       setActiveIndex(newActiveIndex);
 
-      // Pin the text container when the component is in view
+      // Handle text container positioning
       if (textContainerRef.current) {
-        const shouldPin =
-          containerRect.top <= 0 && containerRect.bottom > window.innerHeight;
-        textContainerRef.current.style.position = shouldPin
-          ? "fixed"
-          : "absolute";
-        textContainerRef.current.style.top = shouldPin ? "0px" : "0px";
+        const containerTopInView = containerRect.top <= 0;
+        const containerBottomInView = containerRect.bottom > windowHeight;
+        const isFullyInView = containerTopInView && containerBottomInView;
+        const isPastBottom = containerRect.bottom <= windowHeight;
+
+        if (isFullyInView) {
+          textContainerRef.current.style.position = "fixed";
+          textContainerRef.current.style.top = "0px";
+        } else if (containerRect.top > 0) {
+          // Above the container
+          textContainerRef.current.style.position = "absolute";
+          textContainerRef.current.style.top = "0px";
+        } else if (isPastBottom) {
+          // Below the container
+          textContainerRef.current.style.position = "absolute";
+          textContainerRef.current.style.top = `${
+            containerHeight - windowHeight
+          }px`;
+        }
       }
     };
 

@@ -24,8 +24,8 @@ const carousel = [
   "Bookme",
 ];
 
-export default function Footer() {
-  const scrollVariants: Variants = {
+export default function Footer({ id }: { id: string }) {
+  const scrollVariants = {
     animate: {
       x: ["0%", "-100%"],
       transition: {
@@ -38,7 +38,7 @@ export default function Footer() {
   };
 
   return (
-    <div className="min-h-[500px] w-full bg-[#000a17]">
+    <section className="min-h-[500px] w-full bg-[#000a17]" id={id}>
       {/* Animated text banner - now with controlled gap */}
       <div className="h-16 bg-blue-500 overflow-hidden relative flex items-center">
         <motion.div
@@ -120,6 +120,6 @@ export default function Footer() {
           </p>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

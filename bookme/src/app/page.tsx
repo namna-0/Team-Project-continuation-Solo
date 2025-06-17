@@ -1,103 +1,79 @@
 "use client";
+
+import { useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 import Particles from "./_components/Particles";
-import { Hero } from "./_components/Hero";
-import { BusinessSection } from "./_components/BusinessSection";
 import Header from "./_components/Header";
-import { useEffect, useState } from "react";
-import LoadingPage from "@/loading";
+
 import ServicesParent from "./_components/ServicesParent";
 import VerticalServicesParent from "./_components/VerticalServicesParent";
+import OurTeam from "./_components/OurTeam";
 import Footer from "./_components/Footer";
+import Image from "next/image";
+import { Hero } from "./_components/Hero";
+import Preloader from "./_components/Preloader";
 
+// Initialize GSAP
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-export default function EnhancedHomePage() {
-  const [loading, setLoading] = useState(true);
+export default function HomePage() {
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    let tl = gsap.timeline({
-      onComplete: () => {
-        setLoading(false);
-      },
-    });
-
-    tl.to(".box", {
-      scale: 0,
-      y: 60,
-      rotate: 400,
-      duration: 1,
-      repeat: 1,
-      yoyo: true,
-      delay: 0.5,
-      stagger: {
-        amount: 1.5,
-        from: "end",
-        grid: [3, 3],
-      },
-    });
-    tl.to(".container", {
-      rotate: "-405deg",
-      scale: 0,
-      duration: 1,
-    });
-    tl.to(".wrapper", {
-      opacity: 0,
-      display: "none",
-    });
-  }, []);
-
-  if (loading) {
-    return <LoadingPage />;
-  }
+  // Handle preloader completion
+  const handleLoadComplete = () => {
+    setIsLoading(false);
+    document.body.style.overflow = "auto"; // Ensure scrolling is re-enabled
+  };
 
   return (
-    <div className="relative w-screen overflow-hidden">
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0" />
-        <div className="absolute top-96 left-1/2 -translate-x-1/2 w-[1000px] z-30">
-          {/* glow ring */}
-          <div className="absolute inset-0 rounded-full bg-gradient-radial from-blue-400/20 via-cyan-400/10 to-transparent blur-3xl scale-150 animate-pulse"></div>
+    <>
+      {isLoading && <Preloader onComplete={handleLoadComplete} />}
 
-          <div
-            className="absolute inset-0 rounded-full bg-gradient-radial from-blue-500/30 via-cyan-500/15 to-transparent blur-2xl scale-125 animate-pulse"
-            style={{ animationDelay: "0.5s" }}
-          ></div>
-          <div
-            className="absolute inset-0 rounded-full bg-gradient-radial from-white/20 via-blue-300/20 to-transparent blur-xl scale-110 animate-pulse"
-            style={{ animationDelay: "1s" }}
-          ></div>
-          <img
-            src="https://res.cloudinary.com/dpbmpprw5/image/upload/v1749803749/earth_Large_p9es47.png"
-            alt="Earth"
-            className="relative w-full opacity-40 pointer-events-none rotating-earth"
-            style={{
-              filter:
-                "drop-shadow(0 0 50px rgba(59, 130, 246, 0.8)) drop-shadow(0 0 100px rgba(34, 197, 94, 0.4)) drop-shadow(0 0 150px rgba(147, 51, 234, 0.2))",
-            }}
+      <main
+        className={`relative w-screen overflow-hidden ${
+          isLoading ? "opacity-0" : "opacity-100 animate-fadeIn"
+        }`}
+      >
+        {/* Background Elements */}
+        <div className="absolute inset-0 -z-10">
+          <Particles
+            className="absolute inset-0 z-10"
+            particleColors={["#ffffff", "#ffffff"]}
+            particleCount={200}
           />
+
+          {/* Earth Graphic (Now properly preloaded) */}
+          <div className="absolute top-96 left-1/2 -translate-x-1/2 w-[1000px] h-[1000px] z-30">
+            <div className="absolute inset-0 rounded-full bg-gradient-radial from-blue-400/20 via-cyan-400/10 to-transparent blur-3xl scale-150 animate-pulse"></div>
+
+            <Image
+              src="https://res.cloudinary.com/dpbmpprw5/image/upload/q_auto,f_auto/v1750157865/earth_Large_rwbjag.png"
+              alt="Earth"
+              width={1000}
+              height={1000}
+              priority
+              className="object-contain opacity-40 pointer-events-none rotating-earth"
+              style={{
+                filter: "drop-shadow(0 0 50px rgba(59, 130, 246, 0.8))",
+              }}
+              quality={80} // ← Optional compression
+              unoptimized={false} // ← Let Next.js optimize if possible
+            />
+          </div>
         </div>
-        <Particles
-          className="absolute inset-0 z-10"
-          particleColors={["#ffffff", "#ffffff"]}
-          particleCount={200}
-          particleSpread={10}
-          speed={0.1}
-          particleBaseSize={10}
-          moveParticlesOnHover={true}
-          alphaParticles={false}
-          disableRotation={false}
-        />
-      </div>
-      <Header />
-      <Hero id="hero" />
-      <VerticalServicesParent id="vertical-services" />
-      <ServicesParent id="services" />
-      {/* <BusinessSection /> */}
-      <Footer />
-    </div>
+
+        {/* Page Sections */}
+        <Header />
+        <Hero id="hero" />
+        <VerticalServicesParent id="vertical-services" />
+        <ServicesParent id="services" />
+        <OurTeam id="team" />
+        <Footer id="footer" />
+      </main>
+    </>
   );
 }
