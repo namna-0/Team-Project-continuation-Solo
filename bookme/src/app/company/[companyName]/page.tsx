@@ -524,7 +524,15 @@ export default function CompanyHomepage() {
         </div>
       </section>
       <section>
-        <LocPicker />
+        <LocPicker
+          onSelect={function (result: {
+            lat: number;
+            lng: number;
+            address: string;
+          }): void {
+            throw new Error("Function not implemented.");
+          }}
+        />
       </section>
       <section id="photos" className="bg-white py-12">
         <div className="text-center mb-12">
