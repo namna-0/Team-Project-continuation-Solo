@@ -10,7 +10,7 @@ import {
 const employeeRouter = Router();
 
 employeeRouter
-  .post("/employee", createEmployee)
+  .post("/:companyName/employee", createEmployee)
   .get("/employee/:employeeId", getEmployee)
   .get("/employee", getEmployees)
   .put("/employee/:employeeId", updateEmployee)

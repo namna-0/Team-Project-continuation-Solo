@@ -31,7 +31,7 @@ const companySchema = new Schema({
     default: [],
   },
   address: { type: String, required: true },
-  city: { type: String, required: true },
+  city: { type: String, required: false },
   lat: { type: Number },
   lng: { type: Number },
   employees: [
@@ -89,9 +89,15 @@ const companySchema = new Schema({
     default: {},
   },
   lunchBreak: {
-    type: String,
-    default: "",
+    start: String,
+    end: String,
   },
+  users: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 export default function LocationPicker() {
   const mapRef = useRef<HTMLDivElement>(null);
-  const defaultCenter = { lat: 47.9185, lng: 106.9176 }; 
+  const defaultCenter = { lat: 47.9185, lng: 106.9176 };
   const [destination, setDestination] = useState<{
     lat: number;
     lng: number;
@@ -59,7 +59,7 @@ export default function LocationPicker() {
     document.head.appendChild(script);
 
     return () => {
-      delete window.initMap;
+      window.initMap = () => {};
     };
   }, []);
 

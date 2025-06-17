@@ -4,7 +4,7 @@ import { User } from "../../models";
 export const getUser: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findOne({ _id: id })
+    const user = await User.findOne({ id })
       .populate({
         path: "booking",
         populate: [

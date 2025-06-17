@@ -1,4 +1,3 @@
-// providers/CompanyAuthProvider.tsx
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
@@ -40,9 +39,12 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
 
   const signIn = async (email: string, password: string) => {
     try {
+      console.log("hi");
+
       const { data } = await api.post("/signin", { email, password });
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("company_token", data.token);
       setCompany(data.company);
+      router.push(`/company/${data.company.companyName}`);
       toast.success("Амжилттай нэвтэрлээ!");
     } catch (error) {
       toast.error("Нэвтрэхэд алдаа гарлаа");
@@ -52,9 +54,10 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
   const signUp = async (newCompany: Company) => {
     try {
       const { data } = await api.post("/signup", newCompany);
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("company_token", data.token);
       setCompany(data.company);
       toast.success("Амжилттай бүртгэгдлээ!");
+      router.push(`/company/${data.company.companyName}`);
     } catch (error: any) {
       if (error.response?.status === 409) {
         toast.error("Имэйл бүртгэлтэй байна");
@@ -65,13 +68,13 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
   };
 
   const signOut = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("company_token");
     setCompany(undefined);
     toast("Системээс гарлаа");
   };
 
   const getCompany = async () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("company_token");
     if (!token) return;
     setAuthToken(token);
     try {

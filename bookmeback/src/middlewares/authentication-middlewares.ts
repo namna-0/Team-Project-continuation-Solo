@@ -23,7 +23,7 @@ export const authenticationMiddleware: RequestHandler = (req, res, next) => {
 
     (req as any).userId = userId;
 
-    next(); // ✅ continue
+    next();
   } catch (error) {
     res.status(401).json({ message: "Invalid token", error });
   }

@@ -13,3 +13,4 @@ build/
 
 # Environment files
 .envls
+.vercel
