@@ -31,7 +31,7 @@ const companySchema = new Schema({
     default: [],
   },
   address: { type: String, required: true },
-  city: { type: String, required: true },
+  city: { type: String, required: false },
   lat: { type: Number },
   lng: { type: Number },
   employees: [
@@ -92,11 +92,12 @@ const companySchema = new Schema({
     type: String,
     default: "",
   },
-  users: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-    default: [],
-  },
+  users: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,
