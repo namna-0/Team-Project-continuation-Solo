@@ -28,7 +28,7 @@ const springValues: SpringOptions = {
   mass: 2,
 };
 
-export default function  TiltedCard({
+export default function TiltedCard({
   imageSrc,
   altText = "",
   captionText = "",
@@ -93,7 +93,7 @@ export default function  TiltedCard({
   }
 
   return (
-    <figure
+    <span
       ref={ref}
       className="relative w-full h-full [perspective:800px]  forced-color-adjust-auto flex flex-col items-center justify-center"
       style={{
@@ -110,7 +110,7 @@ export default function  TiltedCard({
         </div>
       )}
 
-      <motion.div
+      <motion.span
         className=" relative flex w-full  [transform-style:preserve-3d]"
         style={{
           width: imageWidth,
@@ -130,16 +130,16 @@ export default function  TiltedCard({
           }}
         />
         {displayOverlayContent && overlayContent && (
-          <motion.div className="  absolute top-10 left-10 z-20 rounded-xl border border-[#d08f2788] forced-color-adjust-auto shadow px-5 [will - change:transform:translateZ(30px)]">
+          <motion.span className="  absolute justify-center items-center rounded-xl w-8%  forced-color-adjust-auto shadow px-5 [will - change:transform:translateZ(30px)]">
             {overlayContent}
-          </motion.div>
+          </motion.span>
         )}
 
-      </motion.div>
+      </motion.span>
 
       {
         showTooltip && (
-          <motion.figcaption
+          <motion.span
             className=" absolute left-0 top-0 rounded-xl border border-[#63626099]  shadow-2xl px-[10px] py-1 text-[10px] bg-gradient-to-r from-sky-500   to-blue-800 bg-clip-text  font-extrabold text-transparent opacity-0 z-30 sm:block hidden"
             style={{
               x,
@@ -149,9 +149,9 @@ export default function  TiltedCard({
             }}
           >
             {captionText}
-          </motion.figcaption>
+          </motion.span>
         )
       }
-    </figure >
+    </span >
   );
 }

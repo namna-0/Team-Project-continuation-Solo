@@ -3,7 +3,7 @@
 import { LucideArrowLeft, X } from "lucide-react"
 import { useEffect, useState } from "react"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
-import LeaveOrder from "./leaveOrderDialog"
+import LeaveOrder from "../(publicItems)/leaveOrderDialog"
 import { motion, useScroll, useTransform } from "framer-motion";
 type OrderNavpropsType = { isStage: string, setIsStage: (stage: string) => void, title: string, Stages: string[] }
 const OrderNavBar = ({ isStage, setIsStage, Stages, title }: OrderNavpropsType) => {
