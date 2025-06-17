@@ -92,6 +92,11 @@ const companySchema = new Schema({
     type: String,
     default: "",
   },
+  users: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    default: [],
+  },
   createdAt: {
     type: Date,
     default: Date.now,
