@@ -1,6 +1,13 @@
 "use client";
+import { api } from "@/axios";
 import axios from "axios";
-import { createContext, PropsWithChildren, useContext, useState } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 type CompanyInformationAuth = {
   handleInputCompanyLogo: (
@@ -12,6 +19,27 @@ type CompanyInformationAuth = {
   ) => Promise<void>; // Update signature to accept form
   companyLogo: string | null;
   employeeImage: string | null;
+  companyData: Company[];
+};
+
+type CompanyDataType = {
+  companies: Company[];
+};
+
+export type Company = {
+  companyName: string;
+  address: string;
+  companyLogo: string;
+  description: string;
+  email: string;
+  employees: EmployeeType[];
+};
+
+export type EmployeeType = {
+  employeeName: string;
+  description: string;
+  profileImage: string;
+  _id: string;
 };
 
 const CompanyInformation = createContext<CompanyInformationAuth | undefined>(
@@ -21,6 +49,18 @@ const CompanyInformation = createContext<CompanyInformationAuth | undefined>(
 export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
   const [companyLogo, setCompanyLogo] = useState<string | null>(null);
   const [employeeImage, setEmployeeImage] = useState<string | null>(null);
+
+  const [companyData, setCompanyData] = useState<Company[]>([]);
+
+  const getCompanyData = async () => {
+    try {
+      const { data } = await api.get<CompanyDataType>("/company");
+
+      setCompanyData(data.companies);
+    } catch (error) {
+      console.error("Сервер алдаа", error);
+    }
+  };
 
   const uploadedImageFunction = async (
     file: File | null
@@ -74,6 +114,10 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  useEffect(() => {
+    getCompanyData();
+  }, []);
+
   return (
     <CompanyInformation.Provider
       value={{
@@ -81,6 +125,7 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
         handleInputEmployeeImage,
         companyLogo,
         employeeImage,
+        companyData,
       }}
     >
       {children}

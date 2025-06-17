@@ -5,9 +5,5 @@ export default function SettingsLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-        <CompanySettingsProvider>
-          {children}
-        </CompanySettingsProvider>
-  );
+  return <CompanySettingsProvider>{children}</CompanySettingsProvider>;
 }

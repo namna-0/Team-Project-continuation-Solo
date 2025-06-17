@@ -6,6 +6,7 @@ import { HeaderSection } from "./_components/HeaderSection";
 import { UploadCompanyLogo } from "./_components/UploadCompanyLogo";
 import { CompanyBasicInformation } from "./_components/CompanyBasicInformation";
 import { CompanyWorkingHours } from "./_components/CompanyWorkingHours";
+import { EmployeeEdit } from "./_components/EmployeeEdit";
 
 export default function Home() {
   return (
@@ -27,6 +28,7 @@ export default function Home() {
             </div>
             <CompanyBasicInformation />
           </div>
+          <EmployeeEdit />
           <CompanyWorkingHours />
         </div>
         <UploadCompanyLogo />
