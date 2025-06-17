@@ -67,7 +67,7 @@ export const EmployeeForm = ({
   ) => {
     setLoading(true);
     try {
-      await api.post(`/employee`, {
+      await api.post(`/${companyNameParam}/employee`, {
         ...values,
         companyName: companyNameParam,
       });
