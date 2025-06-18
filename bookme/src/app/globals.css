@@ -28,6 +28,7 @@ nav a.active {
   color: white !important;
   font-weight: 500 !important;
 }
+
 .preloader {
   will-change: transform, opacity;
 }

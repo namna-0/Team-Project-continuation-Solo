@@ -47,22 +47,15 @@ const team = [
 const OurTeam = ({ id }: { id: string }) => {
   return (
     <section
-      className="flex flex-col gap-20 items-center lg:px-20 pb-40"
+      className="flex flex-col gap-10 md:gap-20 items-center lg:px-20 pb-20 md:pb-40 pt-20 md:pt-0"
       id={id}
     >
-      <h4
-        className="text-5xl md:text-6xl lg:text-7xl font-bold text-transparent bg-clip-text"
-        style={{
-          backgroundImage: "linear-gradient(to bottom, #fff, #007fff)",
-          WebkitBackgroundClip: "text",
-          backgroundClip: "text",
-        }}
-      >
+      <h4 className="text-4xl md:text-5xl lg:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-[#007fff]">
         Манай баг
       </h4>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-4 sm:px-6 md:px-8 lg:px-20 max-w-7xl mx-auto w-full">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 px-4 sm:px-6 md:px-8 lg:px-20 max-w-7xl mx-auto w-full">
         {team.map((member, index) => (
-          <div key={index} className="flex justify-center w-full">
+          <div key={index} className="flex justify-center w-full px-2 md:px-0">
             <ProfileCard
               name={member.name}
               title={member.title}
@@ -70,7 +63,7 @@ const OurTeam = ({ id }: { id: string }) => {
               avatarUrl={member.avatarUrl}
               showUserInfo={false}
               enableTilt={true}
-              className="w-full max-w-xs"
+              className="w-full"
             />
           </div>
         ))}
