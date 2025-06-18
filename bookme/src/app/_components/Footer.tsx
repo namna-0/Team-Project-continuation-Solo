@@ -1,6 +1,6 @@
 import React from "react";
-import { motion, Variants } from "framer-motion";
-import { Copyright, Facebook, Instagram } from "lucide-react";
+import { motion } from "framer-motion";
+import { Copyright } from "lucide-react";
 import FacebookIcon from "./assets/FacebookIcon";
 import InstagramIcon from "./assets/InstagramIcon";
 
@@ -30,9 +30,9 @@ export default function Footer({ id }: { id: string }) {
       x: ["0%", "-100%"],
       transition: {
         repeat: Infinity,
-        repeatType: "loop",
-        duration: 15,
-        ease: "linear", // ✅ Framer Motion supports "linear", "easeIn", etc.
+        repeatType: "loop" as const,
+        duration: 120,
+        ease: "linear",
       },
     },
   };

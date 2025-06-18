@@ -1,15 +1,18 @@
 import { useEffect } from "react";
-import AnimatedContent from "./AnimatedContent";
+import { motion } from "framer-motion";
+
 import Particles from "./Particles";
 import ShinyText from "./ShinyText";
+import Link from "next/link";
 
 export const Hero = ({ id }: { id: string }) => {
   useEffect(() => {
     document.documentElement.classList.add("js-loaded");
   }, []);
+
   return (
     <section
-      className="relative min-h-screen w-screen overflow-hidden flex items-center justify-center"
+      className="relative min-h-screen w-full overflow-hidden flex items-center justify-center px-4 sm:px-6"
       id={id}
     >
       <div className="absolute inset-0 -z-10">
@@ -17,59 +20,91 @@ export const Hero = ({ id }: { id: string }) => {
         <Particles
           className="absolute inset-0 z-10"
           particleColors={["#ffffff", "#ffffff"]}
-          particleCount={300}
+          particleCount={
+            typeof window !== "undefined" && window.innerWidth < 768 ? 100 : 300
+          }
           particleSpread={10}
           speed={0.1}
-          particleBaseSize={10}
+          particleBaseSize={
+            typeof window !== "undefined" && window.innerWidth < 768 ? 5 : 10
+          }
           moveParticlesOnHover={true}
           alphaParticles={false}
           disableRotation={false}
         />
       </div>
 
-      {/* Hero content */}
-      <AnimatedContent>
-        <div className="relative text-center space-y-8 max-w-4xl mx-auto px-6 z-10">
-          <div className="text-7xl font-bold tracking-tight leading-tight">
-            <h1 className="text-white text-7xl font-bold tracking-tight leading-tight">
-              Цаг захиалгын
-            </h1>
-            <h1
-              className="text-white text-7xl font-bold tracking-tight leading-tight"
-              style={{
-                background:
-                  "linear-gradient(to top, #FFFFFF 0%, #E6F3FF 52%, #B3D9FF 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-                color: "transparent",
-                marginBottom: "20px",
-              }}
-            >
-              Нэгдсэн платформ
-            </h1>
-          </div>
+      <div className="relative text-center space-y-4 md:space-y-8 max-w-4xl mx-auto px-4 sm:px-6 z-10">
+        {/* Animated Headings */}
+        <motion.div
+          className="space-y-2 md:space-y-4 tracking-tight leading-tight"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <h1
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight"
+            style={{
+              background:
+                "linear-gradient(to top, #FFFFFF 0%, #E6F3FF 52%, #B3D9FF 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              color: "transparent",
+              lineHeight: 1.2,
+            }}
+          >
+            Цаг захиалгын
+          </h1>
+          <h1
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight"
+            style={{
+              background:
+                "linear-gradient(to top, #FFFFFF 0%, #E6F3FF 52%, #B3D9FF 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              color: "transparent",
+              lineHeight: 1.2,
+            }}
+          >
+            Нэгдсэн платформ
+          </h1>
+        </motion.div>
 
-          <div>
-            <ShinyText
-              text="Монгол дахь шилдэг үйлчилгээ үзүүлэгчидтэй холбогдоод цаг захиалаарай."
-              disabled={false}
-              speed={3}
-              className="text-xl leading-relaxed max-w-2xl mx-auto"
-            />
-          </div>
+        {/* Animated Subtitle */}
+        <motion.div
+          className="px-2 sm:px-0"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+        >
+          <ShinyText
+            text="Монгол дахь шилдэг үйлчилгээ үзүүлэгчидтэй холбогдоод цаг захиалаарай."
+            disabled={false}
+            speed={3}
+            className="text-base sm:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto"
+          />
+        </motion.div>
 
-          <div className="flex justify-center items-center mt-12">
+        {/* Animated Button */}
+        <motion.div
+          className="flex justify-center items-center pt-6 md:pt-12"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+        >
+          <Link href={"/signup"}>
             <button
-              className="group px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25"
+              className="group px-6 py-3 sm:px-8 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25"
               style={{
                 background:
                   "linear-gradient(to right, #FFFFFF 0%, #E6F3FF 52%, #B3D9FF 100%)",
                 color: "#000A17",
-                fontSize: "14px",
+                fontSize: "0.875rem",
                 fontWeight: "600",
-                padding: "10px 24px",
-                borderRadius: "25px",
+                padding: "0.75rem 1.5rem",
+                borderRadius: "1.5rem",
                 textDecoration: "none",
                 transition: "all 0.3s ease",
               }}
@@ -77,7 +112,7 @@ export const Hero = ({ id }: { id: string }) => {
               <span className="flex items-center gap-2">
                 Бүртгүүлэх
                 <svg
-                  className="w-5 h-5 transition-transform group-hover:translate-x-1"
+                  className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -91,9 +126,9 @@ export const Hero = ({ id }: { id: string }) => {
                 </svg>
               </span>
             </button>
-          </div>
-        </div>
-      </AnimatedContent>
+          </Link>
+        </motion.div>
+      </div>
     </section>
   );
 };

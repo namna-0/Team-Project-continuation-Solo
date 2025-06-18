@@ -1,12 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const serviceData = [
+type Service = {
+  id: string;
+  title: string;
+  text: string;
+  image: string;
+  color: string;
+  accentColor: string;
+};
+
+const serviceData: Service[] = [
   {
     id: "bookme",
     title: "Сул цагтай уялдуулсан захиалга",
     text: "Ажилтны бодит сул цагийг хараад, өөрийн чөлөөт цагтай уялдуулан илүү оновчтой захиалга өг.",
     image:
-      "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
+      "https://res.cloudinary.com/dpbmpprw5/image/upload/q_auto:best,f_auto/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
     color: "from-blue-600 to-indigo-600",
     accentColor: "bg-blue-500",
   },
@@ -15,7 +24,7 @@ const serviceData = [
     title: "Ажилтнаа сонгоод захиалах",
     text: "Та аль ч байгууллагын дуртай ажилтнаа сонгон, яг тухайн ажилтны сул цаг дээр суурилсан захиалга өгнө.",
     image:
-      "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
+      "https://res.cloudinary.com/dpbmpprw5/image/upload/q_auto:best,f_auto/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
     color: "from-green-600 to-teal-600",
     accentColor: "bg-blue-500",
   },
@@ -24,77 +33,105 @@ const serviceData = [
     title: "Захиалгаа хянах, цуцлах",
     text: "Хувийн самбарт захиалгын төлөв, цаг, дэлгэрэнгүйг харах, шаардлагатай бол цуцлах бүрэн боломжтой.",
     image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=870&q=80",
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
     color: "from-purple-600 to-pink-600",
     accentColor: "bg-blue-500",
   },
-  // {
-  //   id: "nochat",
-  //   title: "No Chat Needed",
-  //   text: "Нэг ч чат бичихгүйгээр хэрэглэгч захиалга өгч чадна. Автомат системээр бүх үйл явц.",
-  //   image:
-  //     "https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?auto=format&fit=crop&w=870&q=80",
-  //   color: "from-orange-600 to-red-600",
-  //   accentColor: "bg-blue-500",
-  // },
 ];
 
-const ServicesParent = ({ id }: { id: string }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const textContainerRef = useRef<HTMLDivElement>(null);
-  const imagesContainerRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [scrollProgress, setScrollProgress] = useState(0);
+interface ServicesParentProps {
+  id: string;
+}
 
+const ServicesParent: React.FC<ServicesParentProps> = ({ id }) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const textContainerRef = useRef<HTMLDivElement | null>(null);
+  const imagesContainerRef = useRef<HTMLDivElement | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [hasScrolled, setHasScrolled] = useState<boolean>(false);
+  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true);
+  const textRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [entered, setEntered] = useState<boolean>(false);
+  const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Reset animation state when active index changes
+  useEffect(() => {
+    setEntered(false);
+
+    if (animationTimeoutRef.current !== null) {
+      clearTimeout(animationTimeoutRef.current);
+    }
+
+    animationTimeoutRef.current = setTimeout(() => setEntered(true), 50);
+
+    return () => {
+      if (animationTimeoutRef.current !== null) {
+        clearTimeout(animationTimeoutRef.current);
+      }
+    };
+  }, [activeIndex]);
+
+  // Scroll handling with proper thresholds
   useEffect(() => {
     const handleScroll = () => {
-      if (!containerRef.current || !imagesContainerRef.current) return;
+      if (!containerRef.current) return;
 
       const containerRect = containerRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
       const containerHeight = containerRect.height;
-
-      // Calculate scroll progress (0 when top of container at top of viewport, 1 when bottom at bottom)
       const scrollY = window.scrollY;
       const containerTop = containerRect.top + scrollY;
-      const containerBottom = containerTop + containerHeight;
 
+      // Only activate after initial scroll
+      if (scrollY > 10) {
+        setHasScrolled(true);
+      }
+
+      // Calculate progress with threshold
       const progress = Math.max(
         0,
         Math.min(
           1,
-          (scrollY - containerTop + windowHeight) /
-            (containerHeight - windowHeight)
+          (scrollY - containerTop + windowHeight * 0.8) /
+            (containerHeight - windowHeight * 0.8)
         )
       );
 
-      setScrollProgress(progress);
+      // Only update active index after passing threshold
+      if (progress > 0.1 || isInitialLoad) {
+        const sectionCount = serviceData.length;
+        const newActiveIndex = Math.min(
+          Math.max(0, Math.floor(progress * (sectionCount - 1))),
+          sectionCount - 1
+        );
 
-      // Calculate active index based on progress
-      const sectionCount = serviceData.length;
-      const sectionProgress = progress * (sectionCount - 1);
-      const newActiveIndex = Math.min(
-        Math.max(0, Math.floor(sectionProgress)), // Ensure doesn't go below 0
-        sectionCount - 1
-      );
-      setActiveIndex(newActiveIndex);
+        if (newActiveIndex !== activeIndex) {
+          setActiveIndex(newActiveIndex);
+          if (isInitialLoad) setIsInitialLoad(false);
+        }
+      }
 
       // Handle text container positioning
-      if (textContainerRef.current) {
+      if (!isMobile && textContainerRef.current) {
         const containerTopInView = containerRect.top <= 0;
         const containerBottomInView = containerRect.bottom > windowHeight;
-        const isFullyInView = containerTopInView && containerBottomInView;
-        const isPastBottom = containerRect.bottom <= windowHeight;
 
-        if (isFullyInView) {
+        if (containerTopInView && containerBottomInView) {
           textContainerRef.current.style.position = "fixed";
-          textContainerRef.current.style.top = "0px";
+          textContainerRef.current.style.top = "0";
         } else if (containerRect.top > 0) {
-          // Above the container
           textContainerRef.current.style.position = "absolute";
-          textContainerRef.current.style.top = "0px";
-        } else if (isPastBottom) {
-          // Below the container
+          textContainerRef.current.style.top = "0";
+        } else {
           textContainerRef.current.style.position = "absolute";
           textContainerRef.current.style.top = `${
             containerHeight - windowHeight
@@ -103,25 +140,124 @@ const ServicesParent = ({ id }: { id: string }) => {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
-
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isMobile, activeIndex, isInitialLoad]);
 
-  const scrollToSection = (index: number) => {
-    if (!containerRef.current) return;
+  // Mobile version with scroll snap
+  if (isMobile) {
+    return (
+      <section
+        id={id}
+        ref={containerRef}
+        className="relative h-screen w-full overflow-y-auto snap-y snap-mandatory text-white"
+        style={{
+          scrollBehavior: "smooth",
+          scrollSnapType: "y mandatory",
+        }}
+      >
+        {serviceData.map((service, index) => (
+          <div
+            key={service.id}
+            ref={(el) => {
+              textRefs.current[index] = el;
+            }}
+            className="h-screen w-full flex flex-col items-center justify-center snap-start relative p-4"
+          >
+            <div className="absolute inset-0 overflow-hidden">
+              <img
+                src={service.image}
+                alt={service.title}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-black/60" />
+              <div
+                className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-20`}
+              />
+            </div>
 
-    const containerRect = containerRef.current.getBoundingClientRect();
-    const targetScroll =
-      window.scrollY + containerRect.top + index * window.innerHeight;
+            <div className="relative z-10 max-w-md mx-auto text-center px-4">
+              <h2
+                className="text-3xl font-bold mb-4 animate-text"
+                style={{
+                  opacity: entered ? 1 : 0,
+                  transform: entered ? "translateY(0)" : "translateY(20px)",
+                  transition: entered
+                    ? "opacity 0.5s ease 0s, transform 0.7s ease 0s"
+                    : "none",
+                }}
+              >
+                {service.title}
+              </h2>
+              <p
+                className="text-lg mb-8 animate-text"
+                style={{
+                  opacity: entered ? 1 : 0,
+                  transform: entered ? "translateY(0)" : "translateY(20px)",
+                  transition: entered
+                    ? "opacity 0.5s ease 0.2s, transform 0.7s ease 0.2s"
+                    : "none",
+                }}
+              >
+                {service.text}
+              </p>
+              <div
+                className="flex justify-center space-x-2 animate-text"
+                style={{
+                  opacity: entered ? 1 : 0,
+                  transform: entered ? "translateY(0)" : "translateY(20px)",
+                  transition: entered
+                    ? "opacity 0.5s ease 0.4s, transform 0.7s ease 0.4s"
+                    : "none",
+                }}
+              >
+                {serviceData.map((_, i) => (
+                  <div
+                    key={i}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      i === index ? "bg-white w-4" : "bg-white/40"
+                    }`}
+                  />
+                ))}
+              </div>
+              {index === 0 && (
+                <div
+                  className="mt-8 animate-bounce animate-text"
+                  style={{
+                    opacity: entered ? 1 : 0,
+                    transform: entered ? "translateY(0)" : "translateY(20px)",
+                    transition: entered
+                      ? "opacity 0.5s ease 0.6s, transform 0.7s ease 0.6s"
+                      : "none",
+                  }}
+                >
+                  <p className="text-sm text-white/80">Scroll down</p>
+                  <svg
+                    className="w-6 h-6 mx-auto mt-2 text-white"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                    />
+                  </svg>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </section>
+    );
+  }
 
-    window.scrollTo({
-      top: targetScroll,
-      behavior: "smooth",
-    });
-  };
-
+  // Desktop version with synchronized animations
   return (
     <section
       id={id}
@@ -129,10 +265,14 @@ const ServicesParent = ({ id }: { id: string }) => {
       className="relative text-white min-h-screen w-screen"
       style={{ height: `${serviceData.length * 100}vh` }}
     >
-      {/* Fixed/Pinned Text Container */}
+      {/* Text container - only visible after scroll */}
       <div
         ref={textContainerRef}
         className="absolute left-0 top-0 w-full lg:w-1/2 h-screen flex items-center justify-center z-20"
+        style={{
+          opacity: hasScrolled ? 1 : 0,
+          transition: "opacity 0.5s ease-out",
+        }}
       >
         <div className="px-8 lg:px-16 max-w-lg">
           {serviceData.map((service, index) => (
@@ -145,13 +285,13 @@ const ServicesParent = ({ id }: { id: string }) => {
                   ? "opacity-0 -translate-y-8"
                   : "opacity-0 translate-y-8"
               }`}
+              style={{
+                transitionDelay: index === activeIndex ? "0.2s" : "0s",
+              }}
             >
-              {/* Title */}
               <h2 className="text-5xl lg:text-6xl font-bold leading-tight mb-6 text-white">
                 {service.title}
               </h2>
-
-              {/* Description */}
               <p className="text-lg lg:text-xl leading-relaxed text-white/80 mb-8">
                 {service.text}
               </p>
@@ -160,7 +300,7 @@ const ServicesParent = ({ id }: { id: string }) => {
         </div>
       </div>
 
-      {/* Scrollable Images Container */}
+      {/* Images container */}
       <div
         ref={imagesContainerRef}
         className="lg:ml-[50%] w-full lg:w-1/2 relative"
@@ -170,18 +310,7 @@ const ServicesParent = ({ id }: { id: string }) => {
             key={service.id}
             className="h-screen flex items-center justify-center p-8 lg:p-16 relative"
           >
-            {/* Background gradient overlay */}
-            {/* <div
-              className={`absolute inset-0 bg-gradient-to-br ${
-                service.color
-              } opacity-5 transition-opacity duration-700 ${
-                index === activeIndex ? "opacity-10" : "opacity-5"
-              }`}
-            /> */}
-
-            {/* Image container */}
             <div className="relative w-full max-w-lg">
-              {/* Glow effect */}
               <div
                 className={`absolute -inset-4 bg-gradient-to-r ${
                   service.color
@@ -190,9 +319,10 @@ const ServicesParent = ({ id }: { id: string }) => {
                     ? "opacity-30 scale-105"
                     : "opacity-10 scale-95"
                 }`}
+                style={{
+                  transitionDelay: index === activeIndex ? "0s" : "0.1s",
+                }}
               />
-
-              {/* Main image */}
               <div className="relative">
                 <img
                   src={service.image}
@@ -202,10 +332,11 @@ const ServicesParent = ({ id }: { id: string }) => {
                       ? "scale-100 opacity-100"
                       : "scale-95 opacity-70"
                   }`}
+                  style={{
+                    transitionDelay: index === activeIndex ? "0s" : "0.1s",
+                  }}
                   loading="lazy"
                 />
-
-                {/* Image overlay */}
                 <div className="absolute inset-0 bg-black/20 rounded-3xl" />
               </div>
             </div>
@@ -213,7 +344,7 @@ const ServicesParent = ({ id }: { id: string }) => {
         ))}
       </div>
 
-      {/* Background elements */}
+      {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />

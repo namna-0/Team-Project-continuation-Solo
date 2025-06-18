@@ -58,7 +58,7 @@
   touch-action: none;
 }
 
-/* This is the key part for background glow */
+/* Background glow */
 .pc-card-wrapper::before {
   content: "";
   position: absolute;
@@ -85,19 +85,15 @@
   transform: scale(0.9) translate3d(0, 0, 0.1px);
 }
 
+/* Desktop card styling (original) */
 .pc-card {
   width: 100%;
   max-width: 300px;
   height: 450px;
-  display: grid;
-  aspect-ratio: 1/1;
-  object-fit: cover;
   border-radius: var(--card-radius);
   position: relative;
   background-blend-mode: color-dodge, normal, normal, normal;
   animation: glow-bg 12s linear infinite;
-  box-shadow: rgba(0, 0, 0, 0.8) calc((var(--pointer-from-left) * 10px) - 3px)
-    calc((var(--pointer-from-top) * 20px) - 6px) 20px -5px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   transform: translate3d(0, 0, 0.1px) rotateX(0deg) rotateY(0deg);
   background-size: cover, 35% 52%, 100% 100%, cover;
@@ -311,9 +307,8 @@
 
 .pc-user-text {
   display: flex;
-  align-items: flex-start;
   flex-direction: column;
-  gap: 6px;
+  gap: 0.25rem;
 }
 
 .pc-handle {
@@ -363,7 +358,7 @@
 .pc-details {
   width: 100%;
   position: absolute;
-  top: 3em;
+  top: 2em;
   display: flex;
   flex-direction: column;
 }
@@ -385,9 +380,8 @@
   position: relative;
   top: -12px;
   white-space: nowrap;
-  font-size: 16px;
+  font-size: 12px;
   margin: 0 auto;
-  width: min-content;
   background-image: linear-gradient(to bottom, #fff, #007fff);
   background-size: 1em 1.5em;
   -webkit-text-fill-color: transparent;
@@ -413,5 +407,72 @@
   }
 }
 
+/* Mobile Responsive Adjustments */
 @media (max-width: 768px) {
+  .pc-card {
+    height: auto;
+    min-height: 300px;
+    aspect-ratio: 3/4;
+  }
+
+  .pc-details {
+    top: 1.5em;
+  }
+
+  .pc-details h3 {
+    font-size: clamp(1.5rem, 4vw, 2em);
+    margin-bottom: 0.25rem;
+  }
+
+  .pc-user-info {
+    padding: 0.75rem;
+    bottom: 15px;
+    left: 15px;
+    right: 15px;
+  }
+
+  .pc-mini-avatar {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pc-card {
+    aspect-ratio: 2/3;
+    min-height: 260px;
+  }
+
+  .pc-details h3 {
+    font-size: clamp(1.25rem, 5vw, 1.5rem);
+  }
+
+  .pc-details p {
+    white-space: normal;
+    max-width: 100%;
+    font-size: 10px;
+    top: -8px;
+  }
+
+  .pc-user-info {
+    padding: 0.5rem;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+  }
+
+  .pc-mini-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .pc-handle,
+  .pc-status {
+    font-size: 12px;
+  }
+
+  .pc-contact-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
 }
