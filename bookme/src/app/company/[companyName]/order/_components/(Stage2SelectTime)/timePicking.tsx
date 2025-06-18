@@ -1,21 +1,39 @@
-"use client"
+"use client";
 
-export function DayAndTimePicking() {
+import { useState } from "react";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css";
+import { CalendarIcon } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+
+export default function CalendarTriggerScroll() {
+    const [selected, setSelected] = useState<Date | undefined>();
     return (
-        <div className="flex flex-col items-center justify-center h-screen">
-            <h1 className="text-2xl font-bold mb-4">Цаг сонгох</h1>
-            <p className="text-gray-600 mb-6">Та доорх товчлууруудыг ашиглан цаг сонгоно уу.</p>
-            <div className="grid grid-cols-3 gap-4">
-                {Array.from({ length: 12 }, (_, i) => (
-                    <button
-                        key={i}
-                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                    >
-                        {i + 9}:00
-                    </button>
-                ))}
-            </div>
+        <div className="w-full max-w-sm mx-auto mt-10">
+            <Popover open={!!selected} onOpenChange={(open) => !open && setSelected(undefined)}>
+                <PopoverTrigger className="inline-flex items-center px-4 py-2 text-sm bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50">
+                    <CalendarIcon className="w-4 h-4 mr-2" />
+                </PopoverTrigger>
+                <PopoverContent className="absolute z-10 mt-2 bg-white border rounded-lg shadow-lg">
+                    <div className="max-h-96 overflow-y-auto p-2">
+                        <DayPicker
+                            mode="single"
+                            selected={selected}
+                            onSelect={setSelected}
+                            numberOfMonths={2} // Scroll хийх үед 2 сар харагдана
+                            pagedNavigation={false} // Scroll маягаар олон сар шилжих боломж
+                            captionLayout="dropdown" // Dropdown хэлбэртэй navigation
+                            fromMonth={new Date()} // Өнөөдрөөс эхэлнэ
+                            toMonth={new Date(new Date().getFullYear(), new Date().getMonth() + 6)} // 6 сар хүртэлх хугацааг харуулна
+                            onMonthChange={(month) => {
+                                setSelected(new Date(month.getFullYear(), month.getMonth(), 1));
+                            }}
+                        />
+                    </div>
+                </PopoverContent>
+            </Popover>
         </div>
-    )
+    );
 }
+
 

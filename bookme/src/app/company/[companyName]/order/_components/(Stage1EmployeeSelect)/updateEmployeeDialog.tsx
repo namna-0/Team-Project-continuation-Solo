@@ -9,7 +9,7 @@ import {
 import { CompanyType } from "../../page";
 import EmployeeCard from "./employeeCard";
 type UpdateEmployeeProps = {
-  isSelectEmployee: string;
+  isSelectEmployee: string | string[];
   zurag?: string;
   company: CompanyType;
   setIsSelectEmployee: (value: string) => void;

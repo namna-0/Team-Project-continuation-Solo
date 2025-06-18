@@ -4,21 +4,23 @@ import { api } from "@/axios";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { CompanyType, employeeType } from "../page";
-import { string } from "zod";
-import { is } from "date-fns/locale";
+import { date, string } from "zod";
 import { Dialog } from "@radix-ui/react-dialog";
 import { DialogTrigger } from "@/components/ui/dialog";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/app/_providers/UserAuthProvider";
 import UpdateEmployee from "./(Stage1EmployeeSelect)/updateEmployeeDialog";
-
+import { Calendar, Calendar1Icon, Clock5Icon } from "lucide-react";
 type OrderImformationType = {
-    HandleNextStage: () => void, isSelectEmployee: string
+    HandleNextStage: () => void, isSelectEmployee: string | string[]
     company?: CompanyType
     isStage: string
     Stages: string[]
-    setIsSelectEmployee: (emoloyee: string) => void
-
+    setIsSelectEmployee: (employee: string) => void
+    date: Date
+    selectedTime: Date | undefined
+    setSelectedTime: (time: Date) => void
+    selectedEmployeeImf: string | undefined
 }
 export type OrderType = {
     _id?: string;
@@ -37,26 +39,35 @@ type user = {
     role: string,
     companyId: string[],
 }
-
-function OrderImformation({ HandleNextStage, setIsSelectEmployee, isSelectEmployee, company, isStage, Stages }: OrderImformationType) {
+function OrderImformation({
+    HandleNextStage,
+    setIsSelectEmployee,
+    isSelectEmployee,
+    selectedTime,
+    setSelectedTime,
+    selectedEmployeeImf,
+    company, isStage, Stages }: OrderImformationType) {
     const { user } = useAuth()
     const [order, setOrder] = useState<OrderType | undefined>(undefined)
-    const [selectedTime, setSelectedTime] = useState<Date>()
+
+
     const i = company?.employees.find((employee) => employee.employeeName === isSelectEmployee);
     const addOrder = async () => {
         api.post("/order", {
-            company: company?._id,
+            company: "684f8b0a76ced7d73b215599",
             user: user?._id,
-            employee: i?._id,
-            selectedTime: selectedTime
-
+            employee: selectedEmployeeImf,
+            selectedTime: selectedTime?.toISOString(),
         }).then((response) => {
             console.log("Order added successfully", response.data);
+
+
         }
         ).catch((error) => {
             console.error("Error adding order", error);
         })
     }
+
     return (
         <div className="flex border absolute top-56 border-gray-300 p-6 flex-col rounded-xl w-100 min-h-130 justify-between ">
             <div className="w-full flex flex-col gap-4">
@@ -85,8 +96,27 @@ function OrderImformation({ HandleNextStage, setIsSelectEmployee, isSelectEmploy
                             </Dialog>
                             : <div className=" flex flex-col ">{isSelectEmployee}</div>}
                     </div>}
+                {selectedTime !== undefined &&
+                    (<div>
+                        <div className="flex gap-3 text-gray-300 ">
+                            <Calendar /> {selectedTime.toDateString()}
+                        </div>
+                        <div><Clock5Icon />{selectedTime.toLocaleTimeString('en-US', {
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            hour12: true,
+                        })}</div>
+                    </div>)}
             </div>
-            <Button className={isSelectEmployee == "" ? " relative w-full bg-gray-300 text-white" : " raltive w-full bg-black text-white "} onClick={HandleNextStage}>continue</Button>
+            <Button className={isSelectEmployee == "" ? " relative w-full bg-gray-300 text-white" : " relative w-full bg-black text-white "} onClick={() => {
+                HandleNextStage()
+                if (isStage == Stages[2]) {
+                    addOrder()
+                    setIsSelectEmployee("")
+                    setSelectedTime(new Date())
+
+                }
+            }}>continue</Button>
         </div >
     )
 }
