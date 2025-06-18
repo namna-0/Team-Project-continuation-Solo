@@ -8,6 +8,7 @@ import { Step1 } from "./_components/Step1";
 import axios from "axios";
 import { FormDataType } from "./_components/Types";
 import { useCompanyAuth } from "../_providers/CompanyAuthProvider";
+import { toast } from "sonner";
 
 const UPLOAD_PRESET = "bookMe";
 const CLOUD_NAME = "dazhij9zy";
@@ -125,15 +126,13 @@ export default function CompanySetupPage() {
       console.log("Илгээж буй өгөгдөл:", apiData);
 
       const response = await signUp(apiData);
-      setLoading(true);
-
-      if (response.status === 201) {
-        alert("Салоны мэдээлэл амжилттай бүртгэгдлээ!");
-        console.log("Response:", response.data);
+      if (response) {
+        toast.success("Таны компани амжилттай бүртгэгдлээ!");
       }
+      setLoading(true);
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("Алдаа гарлаа. Дахин оролдоно уу.");
+      toast.error("Алдаа гарлаа. Дахин оролдоно уу.");
     } finally {
       setIsSubmitting(false);
     }

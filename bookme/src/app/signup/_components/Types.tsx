@@ -5,7 +5,7 @@ export interface Employee {
   profileImage: string;
 }
 
-interface DaySchedule {
+export interface DaySchedule {
   open: string;
   close: string;
   closed: boolean;
@@ -73,4 +73,25 @@ export const dayLabels: Record<string, string> = {
   friday: "Баасан",
   saturday: "Бямба",
   sunday: "Ням",
+};
+
+export interface Employee {
+  _id: string;
+  employeeName: string;
+  description: string;
+  profileImage: string;
+}
+
+export interface WorkingHours {
+  [key: string]: {
+    open: string;
+    close: string;
+    closed: boolean;
+  };
+}
+
+export type Location = {
+  lat: number;
+  lng: number;
+  address: string;
 };

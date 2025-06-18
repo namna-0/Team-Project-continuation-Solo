@@ -10,7 +10,9 @@ import { Company } from "../signup/_components/Types";
 type AuthContextType = {
   company?: Company;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (company: Company) => Promise<void>;
+  signUp: (
+    company: Company
+  ) => Promise<{ data: any; status: number } | undefined>;
   signOut: () => void;
 };
 
@@ -32,22 +34,25 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const signUp = async (newCompany: Company) => {
+  const signUp = async (
+    newCompany: Company
+  ): Promise<{ data: any; status: number } | undefined> => {
     try {
-      const { data } = await api.post("/signup", newCompany);
-      localStorage.setItem("company_token", data.token);
-      setCompany(data.company);
+      const response = await api.post("/signup", newCompany);
+      localStorage.setItem("company_token", response.data.token);
+      setCompany(response.data.company);
       toast.success("Амжилттай бүртгэгдлээ!");
-      router.push(`/company/${data.company.companyName}`);
+      router.push(`/company/${response.data.company.companyName}`);
+      return { data: response.data, status: response.status };
     } catch (error: any) {
       if (error?.response?.status === 409) {
         toast.error("Имэйл бүртгэлтэй байна");
       } else {
         toast.error("Бүртгэл амжилтгүй боллоо");
       }
+      return undefined;
     }
   };
-
   const signOut = () => {
     localStorage.removeItem("company_token");
     setCompany(undefined);
@@ -59,7 +64,7 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
     if (!token) return;
     setAuthToken(token);
     try {
-      const { data } = await api.get("/company/me");
+      const { data } = await api.get("/me");
       setCompany(data);
     } catch (error) {
       console.error("Компаний мэдээлэл авахад алдаа:", error);
