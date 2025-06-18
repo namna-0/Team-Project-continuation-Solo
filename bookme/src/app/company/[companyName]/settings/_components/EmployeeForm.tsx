@@ -85,7 +85,6 @@ export const EmployeeForm = ({
     await handleCreateEmployee(values);
     setOpen(false);
   };
-  console.log(employeeImage);
 
   return (
     <Form {...form}>
@@ -282,7 +281,7 @@ export const EmployeeForm = ({
               <FormItem className="w-full">
                 <FormLabel>Ажиллах цаг</FormLabel>
                 <FormControl>
-                  <Input type="text" placeholder="9:00-18:00" {...field} />
+                  <Input type="text" placeholder="09:00-18:00" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
