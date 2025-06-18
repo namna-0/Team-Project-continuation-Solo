@@ -12,6 +12,8 @@ import { CompanyBackgroundImageText } from "./_components/CompanyBackgroundImage
 import { Company } from "./_components/CompanyTypes";
 import { CompanyLocation } from "./_components/CompanyLocation";
 import { CompanyLibrary } from "./_components/CompanyLibrary";
+import { AboutCompany } from "./_components/AboutCompany";
+import { BusinessSection } from "./_components/BusinessSection";
 
 export default function CompanyHomepage() {
   const { companyName } = useParams<{ companyName: string }>();
@@ -148,10 +150,16 @@ export default function CompanyHomepage() {
 
       <CompanyBackgroundImageText companyName={companyName} company={company} />
 
+      <AboutCompany company={company} />
+
       {company.workingHours && <CompanyWorkingHours company={company} />}
 
       {company.employees && company.employees.length > 0 && (
         <CompanyEmployees company={company} />
+      )}
+
+      {company.employees && company.employees.length > 0 && (
+        <BusinessSection company={company} />
       )}
 
       <CompanyLocation company={company} companyLocation={companyLocation} />

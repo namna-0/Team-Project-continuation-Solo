@@ -13,7 +13,7 @@ type AuthContextType = {
   signUp: (
     company: Company
   ) => Promise<{ data: any; status: number } | undefined>;
-  signOut: () => void;
+  signOutCompany: () => void;
 };
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -53,7 +53,7 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
       return undefined;
     }
   };
-  const signOut = () => {
+  const signOutCompany = () => {
     localStorage.removeItem("company_token");
     setCompany(undefined);
     toast("Системээс гарлаа");
@@ -77,7 +77,7 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ company, signIn, signOut, signUp }}>
+    <AuthContext.Provider value={{ company, signIn, signOutCompany, signUp }}>
       {children}
     </AuthContext.Provider>
   );

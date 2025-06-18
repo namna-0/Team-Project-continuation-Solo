@@ -2,7 +2,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Heart } from "lucide-react";
-import { Company } from "../page";
+import { useAuth } from "@/app/_providers/UserAuthProvider";
+import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
+import { Company } from "./CompanyTypes";
 
 type CompanyNavBarProps = {
   company: Company;
@@ -17,6 +19,8 @@ export const CompanyNavBar = ({
   isMenuOpen,
   toggleMenu,
 }: CompanyNavBarProps) => {
+  const { user, signOut } = useAuth();
+  const { company: loggedInCompany, signOutCompany } = useCompanyAuth();
   return (
     <nav
       className={`fixed top-0 w-full z-50 transition-all duration-500 ease-in-out ${
@@ -56,10 +60,56 @@ export const CompanyNavBar = ({
             </div>
           </div>
           <div className="hidden md:block">
-            <button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group">
-              <span className="relative z-10">Нэвтрэх</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-            </button>
+            {loggedInCompany && (
+              <div className="flex gap-[10px]">
+                <Link href={`/company/${company.companyName}/dashboard`}>
+                  <button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group">
+                    <span className="relative z-10">Хяналтын самбар</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                  </button>
+                </Link>
+                <button
+                  className="border-[2px] text-black px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group"
+                  onClick={signOutCompany}
+                >
+                  <span className="relative z-10">Гарах</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                </button>
+              </div>
+            )}
+            {!loggedInCompany && !user && (
+              <div className="flex gap-[10px]">
+                <Link href={`${company.companyName}/login`}>
+                  <button className="border-[2px] text-black px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group">
+                    <span className="relative z-10">Нэвтрэх</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                  </button>
+                </Link>
+                <Link href={`/${company.companyName}/signup`}>
+                  <button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group">
+                    <span className="relative z-10">Бүртгүүлэх</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                  </button>
+                </Link>
+              </div>
+            )}
+            {!loggedInCompany && user && (
+              <div className="flex gap-[10px]">
+                <Link href={`/company/${company.companyName}/userprofile`}>
+                  <button className="border-[2px] text-black px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group">
+                    <span className="relative z-10">Хэрэглэгчийн мэдээлэл</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                  </button>
+                </Link>
+                <button
+                  className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group"
+                  onClick={signOut}
+                >
+                  <span className="relative z-10">Гарах</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                </button>
+              </div>
+            )}
           </div>
           <div className="md:hidden">
             <button
