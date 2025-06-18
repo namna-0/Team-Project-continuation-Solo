@@ -6,6 +6,7 @@ import { User } from "../../models";
 export const CreateOrderController: RequestHandler = async (req, res) => {
   try {
     const { company, user, status, employee, selectedTime } = req.body;
+    console.log(req.body);
 
     // if (!company || !user || !selectedTime || !employee) {
     //   res.status(400).json({ message: "Бүх талбарыг бөглө" });
