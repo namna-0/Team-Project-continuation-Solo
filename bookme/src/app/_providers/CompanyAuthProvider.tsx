@@ -63,6 +63,7 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
     const token = localStorage.getItem("company_token");
     if (!token) return;
     setAuthToken(token);
+
     try {
       const { data } = await api.get("/me");
       setCompany(data);

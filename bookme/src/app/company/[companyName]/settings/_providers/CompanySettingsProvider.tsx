@@ -49,7 +49,7 @@ const CompanyInformation = createContext<CompanyInformationAuth | undefined>(
 export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
   const [companyLogo, setCompanyLogo] = useState<string | null>(null);
   const [employeeImage, setEmployeeImage] = useState<string | null>(null);
-
+  const [companyLocation, setCompanyLocation] = useState();
   const [companyData, setCompanyData] = useState<Company[]>([]);
 
   const getCompanyData = async () => {

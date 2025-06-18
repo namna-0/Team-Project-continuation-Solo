@@ -8,7 +8,7 @@ export const updateCompanyController: RequestHandler = async (req, res) => {
 
     if (!companyId) {
       res.status(400).json({ message: "Компаний ID олдсонгүй" });
-      return; 
+      return;
     }
 
     const {
@@ -24,6 +24,8 @@ export const updateCompanyController: RequestHandler = async (req, res) => {
       companyImages,
       employees,
       bookings,
+      lat,
+      lng,
     } = req.body;
 
     const updatedData: any = {
@@ -38,13 +40,32 @@ export const updateCompanyController: RequestHandler = async (req, res) => {
       companyImages,
       employees,
       bookings,
-      updatedAt: new Date(), 
+      lat,
+      lng,
+      updatedAt: new Date(),
     };
 
-    if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      updatedData.password = hashedPassword;
-    }
+    //   email,
+    //   password: hashedPassword,
+    //   companyName,
+    //   address,
+    //   city,
+    //   lat,
+    //   lng,
+    //   companyLogo: companyLogo || "",
+    //   phoneNumber,
+    //   description: description || "",
+    //   companyImages: companyImages || [],
+    //   workingHours: workingHours || {},
+    //   lunchBreak: lunchBreak || {},
+    //   website: website || "",
+    //   createdAt: new Date(),
+    //   updatedAt: new Date(),
+
+    // if (password) {
+    //   const hashedPassword = await bcrypt.hash(password, 10);
+    //   updatedData.password = hashedPassword;
+    // }
 
     const updatedCompany = await Company.findByIdAndUpdate(
       companyId,
@@ -54,17 +75,17 @@ export const updateCompanyController: RequestHandler = async (req, res) => {
 
     if (!updatedCompany) {
       res.status(404).json({ message: "Компани олдсонгүй" });
-      return; 
+      return;
     }
 
     res.status(200).json({
       message: "Компанийн мэдээлэл амжилттай шинэчлэгдлээ",
       company: updatedCompany,
     });
-    return; 
+    return;
   } catch (error) {
     console.error("Компанийн мэдээлэл шинэчлэхэд алдаа гарлаа:", error);
     res.status(500).json({ message: "Server error" });
-    return 
+    return;
   }
 };
