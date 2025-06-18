@@ -241,9 +241,7 @@ export default function CompanyHomepage() {
                   <Image
                     src={company.companyLogo}
                     alt="Company Logo"
-                    fill
                     className="object-contain"
-                    priority
                   />
                 </div>
               </Link>

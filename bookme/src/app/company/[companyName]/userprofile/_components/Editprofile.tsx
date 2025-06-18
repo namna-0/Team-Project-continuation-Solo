@@ -73,7 +73,7 @@ export const Editprofile = () => {
   return (
     <>
       <Dialog>
-        <DialogTrigger className="text-pink-500 underline cursor-pointer">
+        <DialogTrigger className="text-[#77b8fa] underline cursor-pointer">
           Засах
         </DialogTrigger>
         <DialogContent>

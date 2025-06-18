@@ -1,7 +1,6 @@
 "use client";
 import { useAuth } from "@/app/_providers/UserAuthProvider";
 import { api } from "@/axios";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Navbar } from "../userprofile/_components/Navbar";
 
@@ -12,6 +11,7 @@ type OrderType = {
   company: {
     _id: string;
     companyName: string;
+    companyLogo: string;
     companyImages: string[];
     address: string;
   };
@@ -39,12 +39,10 @@ export default function Home() {
       try {
         const response = await api.get(`/order/user/${user._id}`);
         setOrders(response.data.bookings);
-        console.log("hahhaha", response.data.bookings);
       } catch (error) {
         console.error(error);
       }
     };
-
     fetchOrders();
   }, [user]);
 
@@ -91,7 +89,7 @@ export default function Home() {
             <div className="w-fit">
               <p className="text-[24px] font-semibold flex items-center gap-2">
                 Цуцлагдсан цагууд{" "}
-                <span className="w-6 h-6 flex items-center justify-center text-[14px] text-white bg-blue-600 rounded-full">
+                <span className="w-6 h-6 flex items-center justify-center text-[14px] text-white bg-red-600 rounded-full">
                   {cancelledOrders.length}
                 </span>
               </p>
@@ -103,7 +101,7 @@ export default function Home() {
                     className="w-[400px] h-[120px] bg-white border border-gray-400 rounded-[12px] flex cursor-pointer gap-4"
                   >
                     <img
-                      src={mock.company.companyImages[1]}
+                      src={mock.company.companyImages?.[0]}
                       className="w-[130px] h-full rounded-l-[12px] "
                     />
                     <div className="w-[250px] h-full flex flex-col justify-center">
@@ -112,7 +110,7 @@ export default function Home() {
                       </p>
                       <p className="text-[14px]">{mock.selectedTime}</p>
                       <p className="text-[12px]">
-                        {mock.employee.employeeName}
+                        {mock?.employee.employeeName}
                       </p>
                     </div>
                   </div>
@@ -124,7 +122,7 @@ export default function Home() {
             {isClicked ? (
               <div className="flex flex-col gap-4">
                 <img
-                  src={isClicked.company.companyImages[1]}
+                  src={isClicked?.company.companyImages?.[0]}
                   className="w-full h-[400px] object-cover rounded-[8px]"
                 />
                 <h2 className="text-2xl font-bold">
@@ -133,7 +131,7 @@ export default function Home() {
                 <p className="text-lg text-gray-700">📅 2025-06-17</p>
                 <p className="text-lg text-gray-700">⏰ 14:00</p>
                 <p className="text-ls text-gray-700">
-                  🧑‍💼{isClicked.employee.employeeName}
+                  🧑‍💼{isClicked?.employee.employeeName}
                 </p>
                 <button
                   className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 w-fit"

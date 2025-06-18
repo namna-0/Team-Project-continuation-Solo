@@ -50,7 +50,7 @@ export default function Home() {
                 </div>
               </div>
               <Link href="/company/test-company/appointments">
-                <Button className="w-full cursor-pointer">
+                <Button className="w-full cursor-pointer bg-[#77b8fa] hover:bg-blue-500">
                   Захиалгын түүх харах
                 </Button>
               </Link>

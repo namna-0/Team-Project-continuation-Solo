@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -10,11 +11,28 @@ import {
 import { useAuth } from "@/app/_providers/UserAuthProvider";
 import { History, LogOutIcon, SquareUserRound } from "lucide-react";
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { api } from "@/axios";
+
 export const Navbar = () => {
   const { user, signOut } = useAuth();
+  const [companyLogo, setCompanyLogo] = useState<string | null>(null);
   const params = useParams();
   const companyName = params?.companyName as string;
 
+  useEffect(() => {
+    if (!companyName) return;
+    const fetchCompany = async () => {
+      try {
+        const res = await api.get(`/company/${companyName}`);
+        const logo = res.data.company?.companyLogo;
+        if (logo) setCompanyLogo(logo);
+      } catch (err) {
+        console.error("Failed to fetch company:", err);
+      }
+    };
+    fetchCompany();
+  }, [companyName]);
   return (
     <>
       {" "}
@@ -22,45 +40,19 @@ export const Navbar = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex-shrink-0">
-              <Link
-                href="/"
-                className="text-2xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent"
-              >
-                Nailsy
+              <Link href="/" className="text-lg font-bold">
+                {companyLogo && (
+                  <img
+                    src={companyLogo}
+                    alt="Company Logo"
+                    className="w-10 h-10 object-cover rounded-full"
+                  />
+                )}
               </Link>
             </div>
             <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-8">
-                <Link
-                  href="#home"
-                  className="text-gray-700 hover:text-pink-500 transition-colors"
-                >
-                  Home
-                </Link>
-                <Link
-                  href="#services"
-                  className="text-gray-700 hover:text-pink-500 transition-colors"
-                >
-                  Services
-                </Link>
-                <Link
-                  href="#about"
-                  className="text-gray-700 hover:text-pink-500 transition-colors"
-                >
-                  About
-                </Link>
-                <Link
-                  href="#contact"
-                  className="text-gray-700 hover:text-pink-500 transition-colors"
-                >
-                  Contact
-                </Link>
-              </div>
-            </div>
-
-            <div className="hidden md:block">
               <DropdownMenu>
-                <DropdownMenuTrigger className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all transform hover:scale-105 cursor-pointer">
+                <DropdownMenuTrigger className="bg-[#77b8fa] text-white px-6 py-2 rounded-full hover:scale-105 hover:bg-blue-500 cursor-pointer">
                   {user?.username}
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>

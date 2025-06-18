@@ -39,7 +39,7 @@ export const UserAuthProvider = ({ children }: PropsWithChildren) => {
       });
       localStorage.setItem("token", data.token);
       setUser(data.user);
-      router.push("/company/test-company");
+      router.push("/company/asd/userprofile");
       return data.user;
     } catch (error) {
       toast.error("Нэвтрэхэд алдаа гарлаа.");
