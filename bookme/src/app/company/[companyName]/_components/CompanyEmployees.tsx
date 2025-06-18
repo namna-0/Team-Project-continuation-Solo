@@ -4,6 +4,8 @@ import ProfileCard from "@/blocks/Components/ProfileCard/ProfileCard";
 import { Company, Employee } from "./CompanyTypes";
 
 export const CompanyEmployees = ({ company }: { company: Company }) => {
+  console.log(company.employees);
+
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -26,6 +28,7 @@ export const CompanyEmployees = ({ company }: { company: Company }) => {
               status="Online"
               contactText="Цаг захиалах"
               avatarUrl={member.profileImage}
+              miniAvatarUrl={member.profileImage}
               showUserInfo={true}
               enableTilt={true}
               onContactClick={() =>
