@@ -7,6 +7,7 @@ import { UploadCompanyLogo } from "./_components/UploadCompanyLogo";
 import { CompanyBasicInformation } from "./_components/CompanyBasicInformation";
 import { CompanyWorkingHours } from "./_components/CompanyWorkingHours";
 import { CompanyAllEmployees } from "./_components/CompanyAllEmployees";
+import { CompanyLocationGetData } from "./_components/CompanyLocationGetData";
 
 export default function Home() {
   return (
@@ -29,6 +30,7 @@ export default function Home() {
             <CompanyBasicInformation />
           </div>
           <CompanyAllEmployees />
+          <CompanyLocationGetData />
           <CompanyWorkingHours />
         </div>
         <UploadCompanyLogo />

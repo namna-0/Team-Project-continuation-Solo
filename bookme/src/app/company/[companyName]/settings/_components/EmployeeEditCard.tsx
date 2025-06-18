@@ -29,8 +29,6 @@ export const EmployeeEditCard = ({ employee, employeeIndex }: Props) => {
   };
 
   const handleSaveData = async () => {
-    console.log(newData);
-
     try {
       const request = await api.put(`/employee/${employee._id}`, {
         employeeName: newData.employeeName,
