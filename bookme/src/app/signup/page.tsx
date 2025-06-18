@@ -6,8 +6,8 @@ import { Step3 } from "./_components/Step3";
 import { Step2 } from "./_components/Step2";
 import { Step1 } from "./_components/Step1";
 import axios from "axios";
-import { api } from "@/axios";
 import { FormDataType } from "./_components/Types";
+import { useCompanyAuth } from "../_providers/CompanyAuthProvider";
 
 const UPLOAD_PRESET = "bookMe";
 const CLOUD_NAME = "dazhij9zy";
@@ -19,6 +19,8 @@ export default function CompanySetupPage() {
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const { signUp } = useCompanyAuth();
 
   const [formData, setFormData] = useState<FormDataType>({
     email: "",
@@ -101,13 +103,29 @@ export default function CompanySetupPage() {
         description: formData.description,
         companyImages: imageUrls,
         employees: [],
-        workingHours: formData.openingHours,
-        lunchBreak: formData.lunchBreak,
+        workingHours: {
+          type: {
+            monday: formData.openingHours.monday,
+            tuesday: formData.openingHours.tuesday,
+            wednesday: formData.openingHours.wednesday,
+            thursday: formData.openingHours.thursday,
+            friday: formData.openingHours.friday,
+            saturday: formData.openingHours.saturday,
+            sunday: formData.openingHours.sunday,
+          },
+          default: {},
+        },
+        lunchBreak: {
+          start: formData.lunchBreak.start,
+          end: formData.lunchBreak.end,
+        },
+        website: formData.website,
       };
 
       console.log("Илгээж буй өгөгдөл:", apiData);
 
-      const response = await api.post("/signup", apiData);
+      const response = await signUp(apiData);
+      setLoading(true);
 
       if (response.status === 201) {
         alert("Салоны мэдээлэл амжилттай бүртгэгдлээ!");

@@ -26,6 +26,10 @@ const companySchema = new Schema({
     type: String,
     default: "",
   },
+  website: {
+    type: String,
+    default: "",
+  },
   companyImages: {
     type: [String],
     default: [],

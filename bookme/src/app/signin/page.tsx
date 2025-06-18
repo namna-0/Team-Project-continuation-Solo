@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { api } from "@/axios";
 import { useCompanyAuth } from "../_providers/CompanyAuthProvider";
 
 const step1Schema = z.object({

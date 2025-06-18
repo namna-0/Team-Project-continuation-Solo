@@ -5,24 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { PropsWithChildren } from "react";
 import { api, setAuthToken } from "@/axios";
-
-export type Company = {
-  _id?: string;
-  email: string;
-  password?: string;
-  confirmPassword?: string;
-  companyName: string;
-  description: string;
-  address: string;
-  lat?: number;
-  lng?: number;
-  city: string;
-  phoneNumber: string;
-  companyLogo: string;
-  companyImages: string[];
-  workingHours?: any;
-  lunchBreak?: string;
-};
+import { Company } from "../signup/_components/Types";
 
 type AuthContextType = {
   company?: Company;
@@ -39,8 +22,6 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      console.log("hi");
-
       const { data } = await api.post("/signin", { email, password });
       localStorage.setItem("company_token", data.token);
       setCompany(data.company);
@@ -59,7 +40,7 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
       toast.success("Амжилттай бүртгэгдлээ!");
       router.push(`/company/${data.company.companyName}`);
     } catch (error: any) {
-      if (error.response?.status === 409) {
+      if (error?.response?.status === 409) {
         toast.error("Имэйл бүртгэлтэй байна");
       } else {
         toast.error("Бүртгэл амжилтгүй боллоо");
