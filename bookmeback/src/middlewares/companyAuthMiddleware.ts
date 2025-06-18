@@ -13,12 +13,12 @@ export const companyAuthMiddleware: RequestHandler = (req, res, next) => {
   console.log("company_token:", token);
 
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET!) as {
+    const { companyId } = jwt.verify(token, process.env.JWT_SECRET!) as {
       companyId: string;
     };
-    console.log("middleware-company", payload);
+    console.log("middleware-companysueirhisuhyusrt", companyId);
 
-    (req as any).companyId = payload.companyId;
+    (req as any).companyId = companyId;
     next();
   } catch (error) {
     res.status(401).json({ message: "Invalid token", error });

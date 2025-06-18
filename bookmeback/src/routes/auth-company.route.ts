@@ -9,6 +9,6 @@ const authCompanyRouter = Router();
 authCompanyRouter
   .post("/signup", signupCompanyController)
   .post("/signin", signInCompanyController)
-  .get("/company/me", companyAuthMiddleware, getCompanyAuthMe);
+  .get("/me", companyAuthMiddleware, getCompanyAuthMe);
 
 export default authCompanyRouter;
