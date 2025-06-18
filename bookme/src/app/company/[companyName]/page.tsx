@@ -174,12 +174,10 @@ export default function CompanyHomepage() {
               <Link href="/">
                 <div className="relative w-32 h-10">
                   {" "}
-                  <Image
+                  <img
                     src={company.companyLogo}
                     alt="Company Logo"
-                    fill
                     className="object-contain"
-                    priority
                   />
                 </div>
               </Link>
