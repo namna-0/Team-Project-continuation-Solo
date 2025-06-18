@@ -9,14 +9,13 @@ export const getCompanyAuthMe: RequestHandler = async (req, res) => {
     const company = await Company.findById(companyId)
       .select("-password")
       .populate({
-        path: "booking",
+        path: "bookings",
         populate: [
           {
             path: "user",
-            select: "username address avatarImage booking phoneNumber ",
+            select: "username address avatarImage booking phoneNumber",
           },
           { path: "employee" },
-          { path: "booking" },
         ],
       })
       .populate("employees")
@@ -26,8 +25,16 @@ export const getCompanyAuthMe: RequestHandler = async (req, res) => {
       return;
     }
     res.status(200).json(company);
-  } catch (error) {
-    res.status(500).json({ message: "Get me company error", error });
-    return;
+  } catch (error: unknown) {
+    console.error("GetCompanyAuthMe error:", error);
+    if (error instanceof Error) {
+      res
+        .status(500)
+        .json({ message: "Get me company error", error: error.message });
+    } else {
+      res
+        .status(500)
+        .json({ message: "Get me company error", error: String(error) });
+    }
   }
 };

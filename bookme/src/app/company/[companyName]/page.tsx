@@ -11,6 +11,23 @@ import { api } from "@/axios";
 import Image from "next/image";
 import ScrollFloat from "@/blocks/TextAnimations/ScrollFloat/ScrollFloat";
 import { LocPicker } from "./userprofile/_components/Location";
+import { LocPickerCompany } from "@/app/signup/_components/LocPicker";
+
+export interface WorkingHoursType {
+  monday: DaySchedule;
+  tuesday: DaySchedule;
+  wednesday: DaySchedule;
+  thursday: DaySchedule;
+  friday: DaySchedule;
+  saturday: DaySchedule;
+  sunday: DaySchedule;
+}
+
+export interface DaySchedule {
+  open: string;
+  close: string;
+  closed: boolean;
+}
 
 export interface Employee {
   _id: string;
@@ -19,29 +36,53 @@ export interface Employee {
   profileImage: string;
 }
 
-interface WorkingHours {
-  [key: string]: {
-    open: string;
-    close: string;
-    closed: boolean;
-  };
-}
-
-export interface Company {
-  _id: string;
+export type Company = {
+  _id?: string;
+  email: string;
+  password?: string;
+  confirmPassword?: string;
   companyName: string;
   description: string;
   address: string;
+  lat?: number;
+  lng?: number;
   city: string;
   phoneNumber: string;
-  email: string;
   companyLogo: string;
   companyImages: string[];
-  workingHours: WorkingHours;
-  employees: Employee[];
+  employees?: Employee[]; // Added employees property
+  workingHours: {
+    type: WorkingHoursType;
+    default: {};
+  };
+  lunchBreak?: {
+    start: string;
+    end: string;
+  };
+};
+
+export interface FormDataType {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  companyName: string;
+  description: string;
+  address: string;
+  lat?: number;
+  lng?: number;
+  city: string;
+  phone: string;
+  website: string;
+  logo: string;
+  openingHours: WorkingHoursType;
+  lunchBreak: {
+    start: string;
+    end: string;
+  };
 }
 
-const dayLabels: Record<string, string> = {
+// Add the missing dayLabels object
+const dayLabels: { [key: string]: string } = {
   monday: "Даваа",
   tuesday: "Мягмар",
   wednesday: "Лхагва",
@@ -60,6 +101,10 @@ export default function CompanyHomepage() {
   const [email, setEmail] = useState("");
   const [isScrolled, setIsScrolled] = useState(false);
   const [visibleCards, setVisibleCards] = useState<number[]>([]);
+  const [companyLocation, setCompanyLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -123,6 +168,26 @@ export default function CompanyHomepage() {
     }
   }, [companyName]);
 
+  useEffect(() => {
+    if (company) {
+      // Check if company has lat/lng coordinates
+      if (company.lat && company.lng) {
+        setCompanyLocation({
+          lat: company.lat,
+          lng: company.lng,
+        });
+      } else if (company.address) {
+        // If no coordinates but has address, you might want to geocode it
+        // Here you could call an API endpoint to geocode the address
+        // For now we'll just use default UB coordinates
+        setCompanyLocation({
+          lat: 47.9185,
+          lng: 106.9176,
+        });
+      }
+    }
+  }, [company]);
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -173,8 +238,7 @@ export default function CompanyHomepage() {
             <div className="flex-shrink-0">
               <Link href="/">
                 <div className="relative w-32 h-10">
-                  {" "}
-                  <img
+                  <Image
                     src={company.companyLogo}
                     alt="Company Logo"
                     className="object-contain"
@@ -282,7 +346,7 @@ export default function CompanyHomepage() {
       </nav>
 
       <section
-        className="relative bg-cover bg-center bg-no-repeat min-h-screen"
+        className="relative bg-cover bg-center bg-no-repeat h-[800px]"
         style={{
           backgroundImage: company.companyImages?.length
             ? `url('${company.companyImages[0]}')`
@@ -378,8 +442,13 @@ export default function CompanyHomepage() {
           <div className="grid lg:grid-cols-2 gap-24 items-center">
             <div className="relative">
               <motion.img
-                src={company.companyImages[1]}
-                alt="Bertie Capone"
+                src={
+                  company.companyImages && company.companyImages.length > 1
+                    ? company.companyImages[1]
+                    : company.companyImages?.[0] ||
+                      "https://res.cloudinary.com/dxhmgs7wt/image/upload/v1749803046/heroback_wzxjtk.jpg"
+                }
+                alt="Company Image"
                 className="rounded-2xl shadow-2xl w-full h-auto"
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -429,6 +498,7 @@ export default function CompanyHomepage() {
           </div>
         </div>
       </section>
+
       {company.workingHours && (
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -453,7 +523,8 @@ export default function CompanyHomepage() {
               ]
                 .filter((day) => company.workingHours.hasOwnProperty(day))
                 .map((day) => {
-                  const hours = company.workingHours[day];
+                  const hours =
+                    company.workingHours[day as keyof WorkingHoursType];
                   const dayIndex = [
                     "monday",
                     "tuesday",
@@ -475,12 +546,16 @@ export default function CompanyHomepage() {
                       <p className="font-bold text-gray-700 mb-2">
                         {dayLabels[day]}
                       </p>
-                      {hours.closed ? (
+                      {hours?.closed ? (
                         <p className="text-red-500 font-medium">Хаалттай</p>
                       ) : (
                         <div className="space-y-1">
-                          <p className="text-gray-600">Нээх: {hours.open}</p>
-                          <p className="text-gray-600">Хаах: {hours.close}</p>
+                          <p className="text-gray-600">
+                            Нээх: {hours?.open || "N/A"}
+                          </p>
+                          <p className="text-gray-600">
+                            Хаах: {hours?.close || "N/A"}
+                          </p>
                         </div>
                       )}
                     </motion.div>
@@ -490,71 +565,92 @@ export default function CompanyHomepage() {
           </div>
         </section>
       )}
+
+      {company.employees && company.employees.length > 0 && (
+        <section className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                Бидний хамт олон
+              </h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Манай мэргэжлийн баг танд төгс үйлчилгээг үзүүлэхэд бэлэн байна.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {company.employees.map((member) => (
+                <ProfileCard
+                  key={member._id}
+                  name={member.employeeName}
+                  title={member.description}
+                  handle={member.employeeName.toLowerCase().replace(/\s/g, "")}
+                  status="Online"
+                  contactText="Цаг захиалах"
+                  avatarUrl={member.profileImage}
+                  showUserInfo={true}
+                  enableTilt={true}
+                  onContactClick={() =>
+                    console.log(`${member.employeeName} руу холбогдлоо`)
+                  }
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-xl md:text-5xl font-bold text-gray-900 mb-6">
-              Бидний хамт олон
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Байршил
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Манай мэргэжлийн баг танд төгс үйлчилгээг үзүүлэхэд бэлэн байна.
+              Манай салоны байршил
             </p>
           </div>
+          <div className="w-full h-[400px] rounded-xl overflow-hidden shadow-lg">
+            <LocPicker
+              initialLocation={
+                companyLocation || { lat: 47.9185, lng: 106.9176 }
+              }
+              companyAddress={company?.address}
+            />
+          </div>
+          {company?.address && (
+            <div className="mt-6 text-center text-gray-700">
+              <p className="font-medium">{company.address}</p>
+            </div>
+          )}
+        </div>
+      </section>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {company.employees.map((member) => (
-              <ProfileCard
-                key={member._id}
-                name={member.employeeName}
-                title={member.description}
-                handle={member.employeeName.toLowerCase().replace(/\s/g, "")}
-                status="Online"
-                contactText="Цаг захиалах"
-                avatarUrl={member.profileImage}
-                showUserInfo={true}
-                enableTilt={true}
-                onContactClick={() =>
-                  console.log(`${member.employeeName} руу холбогдлоо`)
-                }
-              />
+      {company.companyImages && company.companyImages.length > 0 && (
+        <section id="photos" className="bg-white py-12">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Бидний зураг
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Сүүлийн үеийн бүтээл болон манай орчин
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-6 max-w-7xl mx-auto">
+            {company.companyImages.slice(0, 6).map((imageUrl, idx) => (
+              <BlurFade key={imageUrl} delay={0.25 + idx * 0.05} inView>
+                <div className="overflow-hidden rounded-xl shadow-lg hover:scale-105 transition-transform">
+                  <img
+                    className="w-full h-[350px] object-cover"
+                    src={imageUrl}
+                    alt={`Image ${idx + 1}`}
+                  />
+                </div>
+              </BlurFade>
             ))}
           </div>
-        </div>
-      </section>
-      <section>
-        <LocPicker
-          onSelect={function (result: {
-            lat: number;
-            lng: number;
-            address: string;
-          }): void {
-            throw new Error("Function not implemented.");
-          }}
-        />
-      </section>
-      <section id="photos" className="bg-white py-12">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Бидний зураг
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Сүүлийн үеийн бүтээл болон манай орчин
-          </p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-6 max-w-7xl mx-auto">
-          {company.companyImages.slice(0, 6).map((imageUrl, idx) => (
-            <BlurFade key={imageUrl} delay={0.25 + idx * 0.05} inView>
-              <div className="overflow-hidden rounded-xl shadow-lg hover:scale-105 transition-transform">
-                <img
-                  className="w-full h-[350px] object-cover"
-                  src={imageUrl}
-                  alt={`Image ${idx + 1}`}
-                />
-              </div>
-            </BlurFade>
-          ))}
-        </div>
-      </section>
+        </section>
+      )}
 
       <footer className="bg-gray-900 text-white py-12 h-[450px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
