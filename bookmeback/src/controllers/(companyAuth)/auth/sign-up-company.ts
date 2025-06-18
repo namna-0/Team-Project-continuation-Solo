@@ -18,7 +18,8 @@ export const signupCompanyController: RequestHandler = async (req, res) => {
       description,
       companyImages,
       workingHours,
-      lunchBreak = "",
+      lunchBreak,
+      website,
     } = req.body;
 
     if (!email || !password || !companyName || !address || !phoneNumber) {
@@ -48,7 +49,8 @@ export const signupCompanyController: RequestHandler = async (req, res) => {
       description: description || "",
       companyImages: companyImages || [],
       workingHours: workingHours || {},
-      lunchBreak,
+      lunchBreak: lunchBreak || {},
+      website: website || "",
       createdAt: new Date(),
       updatedAt: new Date(),
     });

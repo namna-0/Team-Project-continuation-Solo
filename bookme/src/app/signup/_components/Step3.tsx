@@ -1,10 +1,10 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { FormDataType } from "../page";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { step3Schema, Step3SchemaType } from "./Schemas";
+import { FormDataType } from "./Types";
 
 type Step3Props = {
   formData: FormDataType;
@@ -98,6 +98,39 @@ export const Step3 = ({ formData, setFormData, dayLabels }: Step3Props) => {
             </div>
           );
         })}
+      </div>
+      <h2 className="text-xl font-bold mt-8">Цайны цаг</h2>
+      <div className="flex items-center gap-3">
+        <span className="w-24">Эхлэх</span>
+        <Input
+          type="time"
+          value={formData.lunchBreak.start}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              lunchBreak: {
+                ...formData.lunchBreak,
+                start: e.target.value,
+              },
+            })
+          }
+          className="w-28 bg-white/10 text-white border-white"
+        />
+        <span className="text-white">→</span>
+        <Input
+          type="time"
+          value={formData.lunchBreak.end}
+          onChange={(e) =>
+            setFormData({
+              ...formData,
+              lunchBreak: {
+                ...formData.lunchBreak,
+                end: e.target.value,
+              },
+            })
+          }
+          className="w-28 bg-white/10 text-white border-white"
+        />
       </div>
     </div>
   );

@@ -42,6 +42,10 @@ export const step3Schema = z.object({
     saturday: dayScheduleSchema,
     sunday: dayScheduleSchema,
   }),
+  lunchBreak: z.object({
+    start: z.string(),
+    end: z.string(),
+  }),
 });
 
 export type Step1SchemaType = z.infer<typeof step1Schema>;
