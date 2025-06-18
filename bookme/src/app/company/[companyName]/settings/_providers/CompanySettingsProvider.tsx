@@ -36,10 +36,10 @@ export type Company = {
 };
 
 export type EmployeeType = {
+  _id: string;
   employeeName: string;
   description: string;
   profileImage: string;
-  _id: string;
 };
 
 const CompanyInformation = createContext<CompanyInformationAuth | undefined>(
