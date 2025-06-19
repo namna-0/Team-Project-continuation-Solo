@@ -11,6 +11,7 @@ import { api } from "@/axios";
 import { useParams } from "next/navigation";
 import { Toaster } from "@/components/ui/sonner";
 import { useSettings } from "../_providers/CompanySettingsProvider";
+import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
 
 export type EmployeesType = {
   employees: EmployeeType[];
@@ -36,7 +37,8 @@ type CompanyType = {
 };
 
 export const UploadCompanyLogo = () => {
-  const { handleInputCompanyLogo, companyLogo } = useSettings();
+  const { company } = useCompanyAuth();
+  const { companyLogo, handleInputCompanyLogo } = useSettings();
 
   const [companyId, setCompanyId] = useState<string | null>(null);
   const [employeeCount, setEmployeeCount] = useState<number>();
@@ -135,4 +137,3 @@ export const UploadCompanyLogo = () => {
     </div>
   );
 };
-
