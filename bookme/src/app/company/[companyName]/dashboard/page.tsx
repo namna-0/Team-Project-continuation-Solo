@@ -20,38 +20,8 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
-import { api } from "@/axios";
-import { useParams } from "next/navigation";
-
-interface Booking {
-  _id: string;
-  customerName: string;
-  serviceName: string;
-  time: string;
-}
-
-interface Employee {
-  _id: string;
-  employeeName: string;
-  description: string;
-  profileImage: string;
-}
-
-interface Service {
-  _id: string;
-  name: string;
-  price: number;
-}
-
-interface Company {
-  _id: string;
-  companyName: string;
-  employees: Employee[];
-  services: Service[];
-  bookings: Booking[];
-}
+import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
+import { useState } from "react";
 
 const Sidebar = () => (
   <aside className="w-64 min-h-screen bg-white border-r p-6 flex flex-col justify-between fixed">
@@ -94,30 +64,8 @@ const StatCard = ({ icon: Icon, label, value, color }: any) => (
 );
 
 export default function DashboardPage() {
-  const { companyName } = useParams<{ companyName: string }>();
-  const [company, setCompany] = useState<Company | null>(null);
+  const { company } = useCompanyAuth();
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchCompany = async () => {
-      try {
-        setLoading(true);
-        const res = await api.get(`/company/${companyName}`);
-        if (res.data && res.data.company) {
-          setCompany(res.data.company);
-        } else {
-          toast.error("Компани олдсонгүй");
-        }
-      } catch (err) {
-        console.error("Алдаа:", err);
-        toast.error("Компаний мэдээлэл авахад алдаа гарлаа");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (companyName) fetchCompany();
-  }, [companyName]);
 
   return (
     <Tabs defaultValue="bookings" className="flex">
@@ -141,12 +89,7 @@ export default function DashboardPage() {
             value={company?.bookings.length ?? 0}
             color="bg-pink-500"
           />
-          <StatCard
-            icon={DollarSign}
-            label="Нийт үйлчилгээ"
-            value={company?.services.length ?? 0}
-            color="bg-yellow-500"
-          />
+
           <StatCard
             icon={Users}
             label="Ажилчид"
@@ -165,7 +108,7 @@ export default function DashboardPage() {
               </Button>
             </div>
             <ul className="space-y-2">
-              {company?.bookings.map((booking) => (
+              {company?.bookings?.map((booking) => (
                 <li
                   key={booking._id}
                   className="border p-3 rounded-lg bg-gray-100 text-sm"
@@ -197,7 +140,7 @@ export default function DashboardPage() {
             </ul>
           </TabsContent>
 
-          <TabsContent value="services">
+          {/* <TabsContent value="services">
             <h2 className="text-xl font-bold mb-2">Үйлчилгээнүүд</h2>
             <ul className="space-y-2">
               {company?.services.map((srv) => (
@@ -209,7 +152,7 @@ export default function DashboardPage() {
                 </li>
               ))}
             </ul>
-          </TabsContent>
+          </TabsContent> */}
 
           <TabsContent value="settings">
             <h2 className="text-xl font-bold mb-2">Тохиргоо</h2>
