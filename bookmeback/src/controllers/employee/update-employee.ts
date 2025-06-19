@@ -15,7 +15,10 @@ export const updateEmployee: RequestHandler = async (req, res) => {
       profileImage,
       availability,
       duration,
-      workingHours,
+      startTime,
+      endTime,
+      lunchTimeStart,
+      lunchTimeEnd,
     } = req.body;
 
     const updatedData = {
@@ -24,7 +27,10 @@ export const updateEmployee: RequestHandler = async (req, res) => {
       profileImage,
       availability,
       duration,
-      workingHours,
+      startTime,
+      endTime,
+      lunchTimeStart,
+      lunchTimeEnd,
       updatedAt: new Date(),
     };
 

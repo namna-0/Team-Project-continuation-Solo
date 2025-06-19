@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { EmployeeType } from "../_providers/CompanySettingsProvider";
 import { Input } from "@/components/ui/input";

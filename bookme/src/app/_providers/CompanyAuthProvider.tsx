@@ -67,6 +67,7 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
     try {
       const { data } = await api.get("/me");
       setCompany(data);
+      console.log(data);
     } catch (error) {
       console.error("Компаний мэдээлэл авахад алдаа:", error);
     }
@@ -75,7 +76,6 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     getCompany();
   }, []);
-
 
   return (
     <AuthContext.Provider value={{ company, signIn, signOutCompany, signUp }}>

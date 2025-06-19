@@ -1,10 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useRef, useEffect, useState } from "react";
-import { useSettings } from "../_providers/CompanySettingsProvider";
-import { useParams } from "next/navigation";
-import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
+import { useRef, useEffect } from "react";
 import { api } from "@/axios";
 import { toast } from "sonner";
 

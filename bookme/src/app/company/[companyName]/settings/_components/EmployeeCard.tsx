@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { EmployeeType } from "../_providers/CompanySettingsProvider";
 export const EmployeeCard = ({
   employeeName,
