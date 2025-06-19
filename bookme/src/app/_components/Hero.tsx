@@ -1,14 +1,27 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
 import Particles from "./Particles";
 import ShinyText from "./ShinyText";
 import Link from "next/link";
+import VariableProximity from "./VariableProximity";
 
 export const Hero = ({ id }: { id: string }) => {
   useEffect(() => {
     document.documentElement.classList.add("js-loaded");
+
+    const link = document.createElement("link");
+    link.href =
+      "https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap";
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+
+    return () => {
+      document.head.removeChild(link);
+    };
   }, []);
+
+  const containerRef = useRef<HTMLDivElement>(null);
 
   return (
     <section
@@ -18,7 +31,7 @@ export const Hero = ({ id }: { id: string }) => {
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 -z-10" />
         <Particles
-          className="absolute inset-0 z-10"
+          className="w-full absolute inset-0 z-10"
           particleColors={["#ffffff", "#ffffff"]}
           particleCount={
             typeof window !== "undefined" && window.innerWidth < 768 ? 100 : 300
@@ -34,45 +47,63 @@ export const Hero = ({ id }: { id: string }) => {
         />
       </div>
 
-      <div className="relative text-center space-y-4 md:space-y-8 max-w-4xl mx-auto px-4 sm:px-6 z-10">
-        {/* Animated Headings */}
+      <div
+        ref={containerRef}
+        className="relative text-center space-y-4 md:space-y-8 max-w-4xl mx-auto px-4 sm:px-6 z-10"
+        style={{ position: "relative" }}
+      >
         <motion.div
           className="space-y-2 md:space-y-4 tracking-tight leading-tight"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight"
-            style={{
-              background:
-                "linear-gradient(to top, #FFFFFF 0%, #E6F3FF 52%, #B3D9FF 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              color: "transparent",
-              lineHeight: 1.2,
-            }}
-          >
-            Цаг захиалгын
-          </h1>
-          <h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight"
-            style={{
-              background:
-                "linear-gradient(to top, #FFFFFF 0%, #E6F3FF 52%, #B3D9FF 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              color: "transparent",
-              lineHeight: 1.2,
-            }}
-          >
-            Нэгдсэн платформ
-          </h1>
+          <div className="mb-4">
+            <VariableProximity
+              label="Цаг захиалгын"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight block"
+              fromFontVariationSettings="'wght' 400, 'opsz' 14"
+              toFontVariationSettings="'wght' 900, 'opsz' 40"
+              containerRef={containerRef as React.RefObject<HTMLDivElement>}
+              radius={150}
+              falloff="exponential"
+              style={{
+                background:
+                  "linear-gradient(to top, #FFFFFF 0%, #E6F3FF 52%, #B3D9FF 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                color: "transparent",
+                lineHeight: 1.2,
+                fontFamily: '"Roboto Flex", sans-serif',
+                fontFeatureSettings: '"cv02", "cv03", "cv04", "cv11"',
+              }}
+            />
+          </div>
+          <div className="mb-4">
+            <VariableProximity
+              label="Нэгдсэн платформ"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight block"
+              fromFontVariationSettings="'wght' 400, 'opsz' 14"
+              toFontVariationSettings="'wght' 900, 'opsz' 40"
+              containerRef={containerRef as React.RefObject<HTMLDivElement>}
+              radius={150}
+              falloff="exponential"
+              style={{
+                background:
+                  "linear-gradient(to top, #FFFFFF 0%, #E6F3FF 52%, #B3D9FF 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                color: "transparent",
+                lineHeight: 1.2,
+                fontFamily: '"Roboto Flex", sans-serif',
+                fontFeatureSettings: '"cv02", "cv03", "cv04", "cv11"',
+              }}
+            />
+          </div>
         </motion.div>
 
-        {/* Animated Subtitle */}
         <motion.div
           className="px-2 sm:px-0"
           initial={{ opacity: 0, y: 30 }}
@@ -87,7 +118,6 @@ export const Hero = ({ id }: { id: string }) => {
           />
         </motion.div>
 
-        {/* Animated Button */}
         <motion.div
           className="flex justify-center items-center pt-6 md:pt-12"
           initial={{ opacity: 0, y: 30 }}

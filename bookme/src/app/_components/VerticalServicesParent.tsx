@@ -88,7 +88,7 @@ const VerticalServicesParent = ({ id }: { id: string }) => {
     <section
       id={id}
       ref={containerRef}
-      className="min-h-screen text-white relative overflow-hidden"
+      className="min-h-screen text-white relative overflow-hidden w-full"
       style={{
         backgroundImage:
           "radial-gradient(circle at 50% 50%, rgba(120, 113, 255, 0.1) 0%, transparent 70%)",

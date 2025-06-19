@@ -262,7 +262,7 @@ const ServicesParent: React.FC<ServicesParentProps> = ({ id }) => {
     <section
       id={id}
       ref={containerRef}
-      className="relative text-white min-h-screen w-screen"
+      className="relative text-white min-h-screen w-full"
       style={{ height: `${serviceData.length * 100}vh` }}
     >
       {/* Text container - only visible after scroll */}
