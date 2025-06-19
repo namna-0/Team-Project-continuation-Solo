@@ -67,7 +67,7 @@ export default function CompanyHomepage() {
     const fetchCompany = async () => {
       try {
         setLoading(true);
-        const response = await api.get(`/company/${companyName}`);
+        const response = await api.get(`/company/name/${companyName}`);
         if (response.data && response.data.company) {
           setCompany(response.data.company);
         } else {
