@@ -1,3 +1,5 @@
+import { User } from "@/app/_providers/UserAuthProvider";
+
 export interface WorkingHoursType {
   monday: DaySchedule;
   tuesday: DaySchedule;
@@ -6,6 +8,15 @@ export interface WorkingHoursType {
   friday: DaySchedule;
   saturday: DaySchedule;
   sunday: DaySchedule;
+}
+
+export interface Booking {
+  _id: string;
+  company: Company;
+  user: User;
+  employee: Employee;
+  status: string;
+  selectedTime: string;
 }
 
 export interface DaySchedule {
@@ -47,6 +58,7 @@ export type Company = {
     start: string;
     end: string;
   };
+  bookings?: Booking[];
 };
 
 export interface FormDataType {
