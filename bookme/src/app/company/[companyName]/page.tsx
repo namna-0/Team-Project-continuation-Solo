@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/axios";
 import { CompanyFooter } from "./_components/CompanyFooter";
 import { GlobalStyles } from "./_components/GlobalStyles";
-import { CompanyEmployees } from "./_components/CompanyEmployees";
 import { CompanyWorkingHours } from "./_components/CompanyWorkingHours";
 import { CompanyNavBar } from "./_components/CompanyNavBar";
 import { CompanyBackgroundImageText } from "./_components/CompanyBackgroundImageText";
@@ -13,7 +12,6 @@ import { Company } from "./_components/CompanyTypes";
 import { CompanyLocation } from "./_components/CompanyLocation";
 import { CompanyLibrary } from "./_components/CompanyLibrary";
 import { AboutCompany } from "./_components/AboutCompany";
-import { BusinessSection } from "./_components/BusinessSection";
 import { EmployeeCardColorfulList } from "./_components/CompanyEmployeeCard";
 
 export default function CompanyHomepage() {
@@ -154,14 +152,6 @@ export default function CompanyHomepage() {
       <AboutCompany company={company} />
 
       {company.workingHours && <CompanyWorkingHours company={company} />}
-
-      {company.employees && company.employees.length > 0 && (
-        <CompanyEmployees company={company} />
-      )}
-
-      {company.employees && company.employees.length > 0 && (
-        <BusinessSection company={company} />
-      )}
 
       {company.employees && company.employees.length > 0 && (
         <EmployeeCardColorfulList company={company} />
