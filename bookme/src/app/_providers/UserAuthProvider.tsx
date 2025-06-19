@@ -1,6 +1,6 @@
 "use client";
 import { api, setAuthToken } from "@/axios";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import {
   createContext,
   PropsWithChildren,
@@ -30,6 +30,8 @@ const AuthContext = createContext({} as AuthContextType);
 export const UserAuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User>();
   const router = useRouter();
+  const params = useParams();
+  const companyName = params?.companyName as string;
 
   const signIn = async (email: string, password: string) => {
     try {
@@ -39,7 +41,7 @@ export const UserAuthProvider = ({ children }: PropsWithChildren) => {
       });
       localStorage.setItem("token", data.token);
       setUser(data.user);
-      router.push("/company/asd/userprofile");
+      router.push(`/company/${companyName}`);
       return data.user;
     } catch (error) {
       toast.error("Нэвтрэхэд алдаа гарлаа.");
@@ -59,6 +61,7 @@ export const UserAuthProvider = ({ children }: PropsWithChildren) => {
 
       localStorage.setItem("token", data.token);
       setUser(data.user);
+      router.push(`/company/${companyName}`);
       if (status === 200 || status === 201) {
         toast.success("Амжилттай бүртгэгдлээ!", {
           position: "top-center",
