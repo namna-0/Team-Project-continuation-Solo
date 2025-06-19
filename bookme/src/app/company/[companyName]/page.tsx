@@ -118,7 +118,7 @@ export default function CompanyHomepage() {
           <span className="block sm:inline"> {error}</span>
         </div>
         <Button className="mt-4" onClick={() => window.location.reload()}>
-          Дахин оролдох
+          Дахин оролдох...
         </Button>
       </div>
     );
