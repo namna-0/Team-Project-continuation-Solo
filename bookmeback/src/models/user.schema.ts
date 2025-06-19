@@ -13,6 +13,8 @@ const userSchema = new Schema({
   companyId: [{ type: Schema.Types.ObjectId, ref: "Company", default: [] }],
   createdAt: { type: Date, required: true, default: Date.now },
   updatedAt: { type: Date, required: true, default: Date.now },
+  resetCode: { type: String },
+  resetCodeExpires: { type: Date },
 });
 
 export const User = model("User", userSchema);
