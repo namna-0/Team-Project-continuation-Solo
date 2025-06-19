@@ -32,7 +32,7 @@ export default function Footer({ id }: { id: string }) {
         repeat: Infinity,
         repeatType: "loop" as const,
         duration: 120,
-        ease: "linear",
+        ease: "linear" as const,
       },
     },
   };
