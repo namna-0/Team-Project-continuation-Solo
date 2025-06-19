@@ -1,7 +1,7 @@
 "use client";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,33 +12,28 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useAuth } from "@/app/_providers/UserAuthProvider";
-import Link from "next/link";
-
+import { api } from "@/axios";
+import { toast } from "sonner";
 const formSchema = z.object({
   email: z.string().email({
-    message: "Нууц үг email хаяг шалгана уу.",
-  }),
-  password: z.string().min(3, {
     message: "Нууц үг email хаяг шалгана уу.",
   }),
 });
 
 export default function Home() {
-  const { signIn, user } = useAuth();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await signIn(values.email, values.password);
-      if (!user) return;
+      await api.post("/authuser/forgot-password", values);
+      toast("Нууц үг сэргээх линк амжилттай илгээгдлээ.");
     } catch (error) {
-      console.error("Login error:", error);
+      console.error(error);
+      toast("Email илгээхэд алдаа гарлаа. Та дахин оролдоно уу.");
     }
   }
   return (
@@ -47,9 +42,9 @@ export default function Home() {
         <div className="w-[50%] h-full flex justify-center items-center ">
           <div className="w-[404px] h-[638px] flex flex-col gap-[10px] ">
             <div className="w-fit h-[53px] flex flex-col mb-[30px]">
-              <p className="font-medium text-[32px] ">Тавтай морил</p>
+              <p className="font-medium text-[32px] ">Нууц үгээ мартсан уу?</p>
               <p className="font-medium text-[16px]">
-                Бүртгэлтэй хэрэглэгчээр нэвтэрнэ үү.
+                Бүртгэлтэй Email хаягаа оруулж код сэргээнэ үү.
               </p>
             </div>
             <Form {...form}>
@@ -74,45 +69,21 @@ export default function Home() {
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Нууц үг</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Нууц үг оруулна уу."
-                          className="border border-gray-200"
-                          type="password"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+
                 <Button
                   type="submit"
                   className="h-8 bg-[#007fff] text-[13px] font-bold text-white rounded-[10px] cursor-pointer"
                 >
-                  Нэвтрэх
+                  Илгээх
                 </Button>
               </form>
             </Form>
             <div className="flex justify-between w-[400px]">
               <p className="font-medium text-[14px] ">
                 <span className="text-[14px] text-[#0f3dde] underline cursor-pointer">
-                  Бүртгүүлэх
+                  Буцах
                 </span>
               </p>
-              <Link href="/company/cloudy/forgotpass">
-                <p className="font-medium text-[14px] ">
-                  <span className="text-[14px] text-[#0f3dde] underline cursor-pointer">
-                    Нууц үг сэргээх
-                  </span>
-                </p>
-              </Link>
             </div>
           </div>
         </div>
