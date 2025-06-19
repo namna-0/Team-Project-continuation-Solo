@@ -5,7 +5,7 @@ export const getEmployee: RequestHandler = async (req, res) => {
   try {
     const { employeeId } = req.params;
 
-    const employee = await Employee.findById(employeeId).populate("company");
+    const employee = await Employee.findById(employeeId);
     if (!employee) {
       res.status(404).json({ message: "Employee олдсонгүй" });
       return;
