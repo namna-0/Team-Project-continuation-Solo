@@ -35,10 +35,7 @@ export type Company = {
   phoneNumber: string;
   companyLogo: string;
   companyImages: string[];
-  workingHours: {
-    type: WorkingHoursType;
-    default: {};
-  };
+  workingHours: WorkingHoursType;
   lunchBreak?: {
     start: string;
     end: string;
