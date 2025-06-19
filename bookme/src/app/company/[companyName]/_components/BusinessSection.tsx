@@ -55,7 +55,7 @@ export const BusinessSection = ({ company }: { company: Company }) => {
                     {employee.description}
                   </p>
                   <Link href={`/company/${company.companyName}/order`}>
-                    <button className="mt-1 px-4 py-2 rounded-lg bg-gradient-to-r from-blue-400 to-blue-600 text-white font-semibold hover:from-blue-500 hover:to-blue-700 transition">
+                    <button className="mt-1 px-4 py-2 cursor-pointer rounded-lg bg-gradient-to-r from-blue-400 to-blue-600 text-white font-semibold hover:from-blue-500 hover:to-blue-700 transition">
                       Цаг захиалах
                     </button>
                   </Link>

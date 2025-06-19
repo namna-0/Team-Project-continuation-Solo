@@ -73,7 +73,7 @@ export const HomeAddress = () => {
           )}
 
           <Button
-            className="w-full h-10 mt-6 bg-blue-500 text-white"
+            className="w-full h-10 mt-6 bg-blue-500 text-white cursor-pointer"
             onClick={handleSave}
             disabled={loading}
           >

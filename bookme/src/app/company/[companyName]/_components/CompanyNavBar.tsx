@@ -63,13 +63,13 @@ export const CompanyNavBar = ({
             {loggedInCompany && (
               <div className="flex gap-[10px]">
                 <Link href={`/company/${company.companyName}/dashboard`}>
-                  <button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group">
+                  <button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 cursor-pointer rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group">
                     <span className="relative z-10">Хяналтын самбар</span>
                     <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
                   </button>
                 </Link>
                 <button
-                  className="border-[2px] text-black px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group"
+                  className="border-[2px] text-black cursor-pointer px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group"
                   onClick={signOutCompany}
                 >
                   <span className="relative z-10">Гарах</span>
@@ -80,13 +80,13 @@ export const CompanyNavBar = ({
             {!loggedInCompany && !user && (
               <div className="flex gap-[10px]">
                 <Link href={`${company.companyName}/login`}>
-                  <button className="border-[2px] text-black px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group">
+                  <button className="border-[2px] text-black cursor-pointer px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group">
                     <span className="relative z-10">Нэвтрэх</span>
                     <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
                   </button>
                 </Link>
                 <Link href={`/${company.companyName}/signup`}>
-                  <button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group">
+                  <button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white cursor-pointer px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group">
                     <span className="relative z-10">Бүртгүүлэх</span>
                     <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
                   </button>
@@ -96,13 +96,13 @@ export const CompanyNavBar = ({
             {!loggedInCompany && user && (
               <div className="flex gap-[10px]">
                 <Link href={`/company/${company.companyName}/userprofile`}>
-                  <button className="border-[2px] text-black px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group">
+                  <button className="border-[2px] text-black px-6 py-2 cursor-pointer rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group">
                     <span className="relative z-10">Хэрэглэгчийн мэдээлэл</span>
                     <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
                   </button>
                 </Link>
                 <button
-                  className="bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group"
+                  className="bg-gradient-to-r from-pink-500 to-purple-600 text-white cursor-pointer px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group"
                   onClick={signOut}
                 >
                   <span className="relative z-10">Гарах</span>
@@ -114,7 +114,7 @@ export const CompanyNavBar = ({
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="text-gray-700 hover:text-pink-500 transition-all duration-300 relative z-50"
+              className="text-gray-700 hover:text-pink-500 transition-all cursor-pointer duration-300 relative z-50"
             >
               <div className="w-6 h-6 flex flex-col justify-center items-center">
                 <span
@@ -173,7 +173,7 @@ export const CompanyNavBar = ({
 
             <button
               onClick={toggleMenu}
-              className={`w-full mt-6 bg-gradient-to-r from-pink-500 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 ${
+              className={`w-full mt-6 bg-gradient-to-r from-pink-500 to-purple-600 text-white cursor-pointer px-6 py-3 rounded-xl hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 ${
                 isMenuOpen ? "animate-slideInRight" : ""
               }`}
               style={{ animationDelay: "400ms" }}

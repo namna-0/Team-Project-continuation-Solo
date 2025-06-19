@@ -65,7 +65,7 @@ export const Navbar = () => {
                       <SquareUserRound /> Нүүр хуудас
                     </DropdownMenuItem>
                   </Link>
-                  <Link href="/company/test-company/appointments">
+                  <Link href={`/company/${companyName}/appointments`}>
                     <DropdownMenuItem className="cursor-pointer">
                       <History />
                       Захиалгын түүх

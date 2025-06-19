@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { HomeAddress } from "./_components/Homeaddress";
-import { WorkAddress } from "./_components/Workaddress";
 import { useAuth } from "@/app/_providers/UserAuthProvider";
 import { Button } from "@/components/ui/button";
 import { Editprofile } from "./_components/Editprofile";
