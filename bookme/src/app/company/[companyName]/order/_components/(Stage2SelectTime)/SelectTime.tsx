@@ -19,7 +19,7 @@ type TimingProps = {
     selectedEmployeeImf: string | undefined
     date: Date, setDate: (date: Date) => void
     setSelectedTime: (time: Date) => void
-    selectedTime: Date | undefined
+    selectedTime: Date | null
 }
 function StageTwoTimePicking({ isSelectEmployee, zurag, company, date, selectedTime, setSelectedTime, setDate, setIsSelectEmployee, selectedEmployeeImf }: TimingProps) {
     const [open, setOpen] = useState(false)
@@ -34,7 +34,6 @@ function StageTwoTimePicking({ isSelectEmployee, zurag, company, date, selectedT
     const dayArrays = () => {
         const days = [];
         let current = new Date();
-
         const end = new Date();
         end.setMonth(end.getMonth() + 6); // 6 сарын дараах өдөр
         while (current <= end) {
@@ -47,11 +46,14 @@ function StageTwoTimePicking({ isSelectEmployee, zurag, company, date, selectedT
     const start = getEmployee ? parseInt(getEmployee.startTime) : 0;
     const duration = getEmployee ? parseInt(getEmployee.duration.toString()) : 0;
     const end = getEmployee ? parseInt(getEmployee.endTime) : 0;
-    const lunchTime = getEmployee ? parseInt(getEmployee.lunchTimeStart) : 0;
+    const lunchTime = getEmployee ? parseInt(getEmployee.lunchTimeStart) : 0; console.log(lunchTime);
+
+    const LunchTimeEnd = getEmployee ? parseInt(getEmployee.lunchTimeEnd) : 0; console.log(LunchTimeEnd);
+
     const availabilityTimes = () => {
         const times = [];
         for (let i = getTime(start); i < getTime(end); i += duration) {
-            if (i !== getTime(lunchTime)) {
+            if (!(i >= getTime(lunchTime) && i < getTime(LunchTimeEnd))) {
                 times.push(i);
             }
         }
@@ -125,9 +127,8 @@ function StageTwoTimePicking({ isSelectEmployee, zurag, company, date, selectedT
                     );
                 })}</div>
             </div>
-            <div className="flex gap-2 flex-wrap" >
+            <div className="grid gap-3 grid-cols-3" >
                 {availabilityTimes().map((time, index) => {
-                    console.log(availabilityTimes());
                     const hour = Math.floor(time / 60);
                     const minute = time % 60;
                     const formattedTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
@@ -136,16 +137,12 @@ function StageTwoTimePicking({ isSelectEmployee, zurag, company, date, selectedT
                             const newDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, minute);
                             setDate(newDate);
                             setSelectedTime(newDate);
-                            console.log("Selected time:", selectedTime,);
-
-
-
                         }}>
                             {formattedTime}
                         </span>
                     );
                 })}
-            </div>
+            </div >
         </div >
     )
 

@@ -10,7 +10,8 @@ import { DialogTrigger } from "@/components/ui/dialog";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/app/_providers/UserAuthProvider";
 import UpdateEmployee from "./(Stage1EmployeeSelect)/updateEmployeeDialog";
-import { Calendar, Calendar1Icon, Clock5Icon } from "lucide-react";
+import { Calendar, Calendar1Icon, Clock, Clock5Icon } from "lucide-react";
+import { setDate } from "date-fns";
 type OrderImformationType = {
     HandleNextStage: () => void, isSelectEmployee: string | string[]
     company?: CompanyType
@@ -18,8 +19,8 @@ type OrderImformationType = {
     Stages: string[]
     setIsSelectEmployee: (employee: string) => void
     date: Date
-    selectedTime: Date | undefined
-    setSelectedTime: (time: Date) => void
+    selectedTime: Date | null
+    setSelectedTime: (time: Date | null) => void
     selectedEmployeeImf: string | undefined
 }
 export type OrderType = {
@@ -51,13 +52,13 @@ function OrderImformation({
     const [order, setOrder] = useState<OrderType | undefined>(undefined)
 
 
-    const i = company?.employees.find((employee) => employee.employeeName === isSelectEmployee);
+    const i = company?.employees.find((employee) => employee._id === selectedEmployeeImf);
     const addOrder = async () => {
         api.post("/order", {
-            company: "684f8b0a76ced7d73b215599",
+            company: company?._id,
             user: user?._id,
             employee: selectedEmployeeImf,
-            selectedTime: selectedTime?.toISOString(),
+            selectedTime: selectedTime,
         }).then((response) => {
             console.log("Order added successfully", response.data);
 
@@ -96,16 +97,24 @@ function OrderImformation({
                             </Dialog>
                             : <div className=" flex flex-col ">{isSelectEmployee}</div>}
                     </div>}
-                {selectedTime !== undefined &&
+                {selectedTime !== null &&
                     (<div>
                         <div className="flex gap-3 text-gray-300 ">
-                            <Calendar /> {selectedTime.toDateString()}
+                            {selectedTime ? (
+                                <>
+                                    <Calendar />
+                                    {selectedTime?.toDateString()}
+                                </>
+                            ) : ""}
                         </div>
-                        <div><Clock5Icon />{selectedTime.toLocaleTimeString('en-US', {
-                            hour: 'numeric',
-                            minute: '2-digit',
-                            hour12: true,
-                        })}</div>
+                        <div className="flex gap-3 text-gray-300 ">
+                            {selectedTime ? (
+                                <>
+                                    <Clock />
+                                    {selectedTime?.toTimeString().split(" ")[0]}
+                                </>
+                            ) : ""}
+                        </div>
                     </div>)}
             </div>
             <Button className={isSelectEmployee == "" ? " relative w-full bg-gray-300 text-white" : " relative w-full bg-black text-white "} onClick={() => {
@@ -113,8 +122,7 @@ function OrderImformation({
                 if (isStage == Stages[2]) {
                     addOrder()
                     setIsSelectEmployee("")
-                    setSelectedTime(new Date())
-
+                    setSelectedTime(null)
                 }
             }}>continue</Button>
         </div >

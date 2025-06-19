@@ -39,21 +39,22 @@ export type CompanyType = {
     bookings: string[]
 }
 export default function OrderPage() {
-    const Stages = ["Ажилтан", "Огноо", "Баталгаажуулалт", "амжилттай захиалагдлаа"]
+    const Stages = ["Ажилтан", "Огноо", "амжилттай захиалагдлаа"]
     const [isStage, setIsStage] = useState<string>(Stages[0])
     const [isSelectEmployee, setIsSelectEmployee] = useState<string | string[]>("")
     const { company } = useCompanyAuth();
     const { companyName } = useParams<{ companyName: string }>();
     const [companyData, setCompany] = useState<CompanyType | undefined>(undefined);
     const [date, setDate] = useState<Date>(new Date)
-    const [selectedTime, setSelectedTime] = useState<Date | undefined>(undefined)
+    const [selectedTime, setSelectedTime] = useState<Date | null>(null)
     const [selectedEmployeeImf, setSelectedEmployeeImf] = useState<string | undefined>(undefined)
+
     const title = () => {
         return (isStage === Stages[2]) ? `${isStage} хйих` : `${isStage} сонгох`;
     }
     const getCompany = async () => {
         try {
-            const response = await api.get(`/company/${companyName}`);
+            const response = await api.get(`/company/name/${companyName}`);
             setCompany(response.data.company);
 
         } catch (error) {
