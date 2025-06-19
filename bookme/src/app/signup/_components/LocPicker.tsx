@@ -54,19 +54,23 @@ export const LocPickerCompany = ({
           zoomControl: true,
         });
 
-        // Маркер үүсгэх (draggable: false гэж тохируулсан)
         markerRef.current = new window.google.maps.Marker({
           position: initialLocation,
           map: map,
           title: companyAddress || "Компаний байршил",
-          draggable: false, // Маркер зөөх боломжгүй
+          draggable: false,
           animation: window.google.maps.Animation.DROP,
         });
 
-        // Маркер дээр дарах үйлдлийг хаах
-        markerRef.current.addListener("click", () => {
-          map.setZoom(17);
-          map.setCenter(markerRef.current!.getPosition()!);
+        markerRef.current?.addListener("click", () => {
+          const marker = markerRef.current;
+          if (!marker) return;
+
+          const position = marker.getPosition();
+          if (position) {
+            map.setZoom(17);
+            map.setCenter(position);
+          }
         });
 
         setIsLoading(false);

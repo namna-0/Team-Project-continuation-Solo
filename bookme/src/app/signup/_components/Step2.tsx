@@ -8,17 +8,12 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormDataType } from "./Types";
-import { step2Schema } from "./Schemas";
 import { LocPicker } from "@/app/company/[companyName]/userprofile/_components/Location";
+import { z } from "zod";
+import { step2Schema } from "./Schemas";
 
-type Step2SchemaType = {
-  description: string;
-  address: string;
-  city: string;
-  phone: string;
-  website?: string;
-  logo: string;
-};
+type Step2SchemaType = z.infer<typeof step2Schema>;
+
 type Step2Props = {
   formData: FormDataType;
   setFormData: React.Dispatch<React.SetStateAction<FormDataType>>;

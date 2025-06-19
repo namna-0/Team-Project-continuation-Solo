@@ -1,6 +1,6 @@
 "use client";
 
-import { FormDataType } from "../page";
+import { FormDataType } from "./Types";
 
 type Step4Props = {
   formData: FormDataType;
