@@ -57,6 +57,7 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
     localStorage.removeItem("company_token");
     setCompany(undefined);
     toast("Системээс гарлаа");
+    router.push("/");
   };
 
   const getCompany = async () => {
@@ -75,7 +76,6 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     getCompany();
   }, []);
-
 
   return (
     <AuthContext.Provider value={{ company, signIn, signOutCompany, signUp }}>

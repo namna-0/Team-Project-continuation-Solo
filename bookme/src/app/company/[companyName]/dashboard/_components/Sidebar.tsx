@@ -9,14 +9,14 @@ type SideBarProps = {
 };
 
 export const Sidebar = ({ activeTab, setActiveTab }: SideBarProps) => {
-  const { signOutCompany } = useCompanyAuth();
+  const { signOutCompany, company } = useCompanyAuth();
 
   return (
-    <aside className="w-64 min-h-screen bg-gradient-to-b from-purple-600 to-purple-800 text-white p-6 flex flex-col justify-between fixed shadow-2xl">
+    <aside className="w-64 min-h-screen bg-gradient-to-b from-purple-600 to-purple-800 text-white p-6 flex flex-col justify-between fixed shadow-2xl opacity-80">
       <div>
         <div className="mb-8">
           <h2 className="text-2xl font-bold bg-gradient-to-r from-pink-200 to-purple-200 bg-clip-text text-transparent">
-            💄 Beauty Salon
+            {company?.companyName}
           </h2>
           <p className="text-purple-200 text-sm">Удирдлагын самбар</p>
         </div>
@@ -34,12 +34,7 @@ export const Sidebar = ({ activeTab, setActiveTab }: SideBarProps) => {
               label: "Ажилчид",
               color: "from-blue-400 to-blue-600",
             },
-            {
-              id: "services",
-              icon: Scissors,
-              label: "Үйлчилгээнүүд",
-              color: "from-green-400 to-green-600",
-            },
+
             {
               id: "settings",
               icon: Settings,

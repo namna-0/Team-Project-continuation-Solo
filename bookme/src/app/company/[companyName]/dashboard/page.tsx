@@ -31,7 +31,7 @@ export default function DashboardPage() {
     const fetchCompany = async () => {
       try {
         setLoading(true);
-        const response = await api.get(`/company/${loggedInCompany?._id}`);
+        const response = await api.get(`/company/id/${loggedInCompany?._id}`);
         if (response.data && response.data.company) {
           setCompany(response.data.company);
         }
@@ -47,6 +47,7 @@ export default function DashboardPage() {
       fetchCompany();
     }
   }, [loggedInCompany?._id]);
+  console.log("company", company);
 
   if (loading) {
     return (
@@ -101,7 +102,7 @@ export default function DashboardPage() {
       <main className="ml-64 flex-1 p-8">
         <header className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
-            🌟 Салон Хяналтын Самбар
+            🌟 Хяналтын Самбар
           </h1>
           <p className="text-gray-600">Захиалга болон үйлчилгээний мэдээлэл</p>
         </header>
@@ -109,23 +110,16 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard
             icon={Calendar}
-            label="Өнөөдрийн захиалга"
+            label="Захиалга"
             value={company?.bookings?.length ?? 0}
-            gradient="from-pink-500 to-rose-600"
+            gradient="from-pink-500 to-rose-600 opacity-40"
             iconBg="bg-white/20"
           />
           <StatCard
             icon={Users}
             label="Ажилчид"
             value={company?.employees?.length ?? 0}
-            gradient="from-blue-500 to-indigo-600"
-            iconBg="bg-white/20"
-          />
-          <StatCard
-            icon={TrendingUp}
-            label="Сарын орлого"
-            value={"2.4M₮"}
-            gradient="from-purple-500 to-violet-600"
+            gradient="from-blue-500 to-indigo-600 opacity-40"
             iconBg="bg-white/20"
           />
         </div>

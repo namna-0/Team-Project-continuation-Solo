@@ -13,8 +13,8 @@ const companyRouter = Router();
 companyRouter
   .post("/company", createCompanyController)
   .get("/company", getCompaniesController)
-  .get("/company/:companyName", getCompanyController)
+  .get("/company/name/:companyName", getCompanyController)
+  .get("/company/id/:companyId", getCompanyByIdController)
   .put("/company/:companyId", updateCompanyController)
-  .delete("/company/:companyId", deleteCompanyController)
-  .get("/company/:companyId", getCompanyByIdController);
+  .delete("/company/:companyId", deleteCompanyController);
 export default companyRouter;
