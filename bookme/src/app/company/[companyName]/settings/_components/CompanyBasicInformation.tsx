@@ -1,191 +1,57 @@
 "use client";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+
+import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
 import { api } from "@/axios";
-import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
-import { Textarea } from "@/components/ui/textarea";
-
-
-type CompanyType = {
-  _id: string;
-  companyName: string | undefined;
-  companyLogo: string
-  description: string | null
-  phoneNumber: string
-};
-
-const companyProfileSchema = z.object({
-  companyName: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  webSite: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  description: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  phone: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  email: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  address: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-});
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export const CompanyBasicInformation = () => {
-  const [companyInfo, setCompanyInfo] = useState<CompanyType | null>(null);
-  const params = useParams();
-  const companyName = params?.companyName as string
-  const form = useForm<z.infer<typeof companyProfileSchema>>({
-    resolver: zodResolver(companyProfileSchema),
-    defaultValues: {
-      companyName: "",
-      webSite: "",
-      description: "",
-      phone: "",
-      email: "",
-      address: "",
-    },
-  });
+  const { company } = useCompanyAuth()
+  const [updatedCompany, setUpdatedCompany] = useState({
+    companyName: company?.companyName,
+    email: company?.email
+  })
 
-  const getCompanyData = async () => {
+
+
+
+  const handleChangeData = async () => {
     try {
-      const response = await api.get(`/company`);
-      const companies: CompanyType[] = response.data.companies;
-
-      const currentCompany = companies.find(
-        (company) => company.companyName === companyName
-      );
-
-      if (currentCompany && currentCompany._id) {
-        setCompanyInfo(currentCompany)
-      }
+      const updateData = await api.put("/company")
 
     } catch (error) {
-      console.error(error);
+      console.error("Компанийн мэдээлэл шинэчлэхэд алдаа гарлаа.", error);
+      toast.error("Компанийн мэдээлэл шинэчлэхэд алдаа гарлаа.")
     }
-  };
 
-  useEffect(() => {
-    getCompanyData();
-  }, []);
-
-  function onSubmit(values: z.infer<typeof companyProfileSchema>) {
-    console.log(values);
   }
 
 
 
 
   return (
-    <div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="flex gap-5">
-            <FormField
-              control={form.control}
-              name="companyName"
-              render={({ field }) => (
-                <FormItem className="w-full ">
-                  <FormLabel>Company name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder={companyInfo?.companyName ?? ""}
-                      {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="webSite"
-              render={({ field }) => (
-                <FormItem className="w-full ">
-                  <FormLabel>Web site URL</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Web site URL" {...field} />
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Description</FormLabel>
-                <FormControl className="flex justify-start">
-                  <Textarea
-                    placeholder={`${companyInfo?.description}`}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="flex gap-5">
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Company phone</FormLabel>
-                  <FormControl>
-                    <Input placeholder={`${companyInfo?.phoneNumber}`} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>E-mail</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Write email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <FormField
-            control={form.control}
-            name="address"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Address</FormLabel>
-                <FormControl>
-                  <Input placeholder="Company address" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="w-full flex justify-end">  <Button type="submit">Save changes</Button></div>
-        </form>
-      </Form>
+    <div className="bg-white w-full rounded-2xl p-4 flex flex-col gap-4">
+      <div>
+        <div className="text-[20px] font-bold">Basic information</div>
+        <div className="text-[14px] font-normal text-[#aaa]">
+          Update your business details.
+        </div>
+      </div>
+      <div className="flex gap-5">
+        <div className="flex flex-col gap-2 w-full">
+          <p className="text-[17px] font-semibold">Компанийн нэр</p>
+          <Input value={updatedCompany.companyName} />
+        </div>
+        <div className="flex flex-col gap-2 w-full">
+          <p className="text-[17px] font-semibold">Цахим хаяг</p>
+          <Input value={updatedCompany.email} />
+        </div>
+      </div>
+      <div className="w-full flex justify-end">
+        <Button onClick={handleChangeData}>Хадгалах</Button>
+      </div>
     </div>
   );
 };

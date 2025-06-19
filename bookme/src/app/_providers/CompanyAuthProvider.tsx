@@ -76,6 +76,7 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
     getCompany();
   }, []);
 
+
   return (
     <AuthContext.Provider value={{ company, signIn, signOutCompany, signUp }}>
       {children}

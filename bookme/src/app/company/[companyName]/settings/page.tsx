@@ -20,15 +20,7 @@ export default function Home() {
       </div>
       <div className="w-[1440px] flex justify-between gap-2 ">
         <div className="flex flex-col w-[80%] gap-5">
-          <div className="bg-white w-full rounded-2xl p-4 flex flex-col gap-4">
-            <div>
-              <div className="text-[20px] font-bold">Basic information</div>
-              <div className="text-[14px] font-normal text-[#aaa]">
-                Update your business details.
-              </div>
-            </div>
-            <CompanyBasicInformation />
-          </div>
+          <CompanyBasicInformation />
           <CompanyAllEmployees />
           <CompanyLocationGetData />
           <CompanyWorkingHours />
