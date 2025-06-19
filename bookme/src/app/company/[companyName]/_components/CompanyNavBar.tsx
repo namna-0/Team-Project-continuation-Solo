@@ -33,14 +33,22 @@ export const CompanyNavBar = ({
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
             <Link href="/">
-              <div className="relative w-32 h-10">
-                <Image
-                  src={company.companyLogo}
-                  alt="Company Logo"
-                  fill
-                  className="object-contain"
-                  priority
-                />
+              <div className="relative w-32 h-10 rounded-full">
+                {company.companyLogo && company.companyLogo.trim() !== "" ? (
+                  <Image
+                    src={company.companyLogo}
+                    alt="Company Logo"
+                    fill
+                    className="object-contain"
+                  />
+                ) : (
+                  <Image
+                    src="/Images/default-logo.jpg"
+                    alt="Default Logo"
+                    fill
+                    className="object-contain"
+                  />
+                )}
               </div>
             </Link>
           </div>

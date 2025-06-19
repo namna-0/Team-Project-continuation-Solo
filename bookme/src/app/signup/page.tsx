@@ -104,18 +104,7 @@ export default function CompanySetupPage() {
         description: formData.description,
         companyImages: imageUrls,
         employees: [],
-        workingHours: {
-          type: {
-            monday: formData.openingHours.monday,
-            tuesday: formData.openingHours.tuesday,
-            wednesday: formData.openingHours.wednesday,
-            thursday: formData.openingHours.thursday,
-            friday: formData.openingHours.friday,
-            saturday: formData.openingHours.saturday,
-            sunday: formData.openingHours.sunday,
-          },
-          default: {},
-        },
+        workingHours: formData.openingHours,
         lunchBreak: {
           start: formData.lunchBreak.start,
           end: formData.lunchBreak.end,

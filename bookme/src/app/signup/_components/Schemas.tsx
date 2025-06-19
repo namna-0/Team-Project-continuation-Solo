@@ -1,5 +1,10 @@
-"use client";
 import { z } from "zod";
+
+const dayScheduleSchema = z.object({
+  open: z.string(),
+  close: z.string(),
+  closed: z.boolean(),
+});
 
 export const step1Schema = z
   .object({
@@ -26,14 +31,8 @@ export const step2Schema = z.object({
   logo: z.string().min(1, "Лого оруулна уу"),
 });
 
-export const dayScheduleSchema = z.object({
-  open: z.string(),
-  close: z.string(),
-  closed: z.boolean(),
-});
-
 export const step3Schema = z.object({
-  openingHours: z.object({
+  workingHours: z.object({
     monday: dayScheduleSchema,
     tuesday: dayScheduleSchema,
     wednesday: dayScheduleSchema,
