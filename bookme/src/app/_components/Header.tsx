@@ -46,8 +46,9 @@ const Header = () => {
           animationRef.current = gsap.to(nav, {
             duration: 0.5,
             ease: "power2.out",
-            marginLeft: shouldShrink ? "25%" : "10%",
-            marginRight: shouldShrink ? "25%" : "10%",
+            // Reduced shrink margins to prevent content overlap
+            marginLeft: shouldShrink ? "17%" : "10%",
+            marginRight: shouldShrink ? "17%" : "10%",
             backdropFilter: shouldShrink ? "blur(8px)" : "blur(0px)",
             background: shouldShrink ? "rgba(0,0,0,0.8)" : "rgba(0,0,0,0)",
             overwrite: "auto",
@@ -56,7 +57,6 @@ const Header = () => {
       });
     }
 
-    // Section detection
     const links = gsap.utils.toArray<HTMLAnchorElement>("nav a[href^='#']");
     const sections = gsap.utils.toArray<HTMLElement>("section[id]");
     const triggers: ScrollTrigger[] = [];
@@ -82,7 +82,6 @@ const Header = () => {
       }
     }
 
-    // Smooth scroll
     const handleClick = (e: MouseEvent, link: HTMLAnchorElement) => {
       e.preventDefault();
       const target = link.getAttribute("href");
@@ -118,11 +117,11 @@ const Header = () => {
   return (
     <nav
       ref={navRef}
-      className={`fixed top-4 left-0 right-0 z-50 h-14 px-8 rounded-full transition-all duration-300
+      className={`fixed top-4 left-0 right-0 z-50 h-14 px-4 rounded-full transition-all duration-300
         ${
           isMobile
             ? "flex justify-between items-center"
-            : "grid grid-cols-12 items-center" // Changed to 12-column grid
+            : "grid grid-cols-12 items-center gap-2"
         }`}
       style={{
         marginLeft: isMobile ? "5%" : "10%",
@@ -133,80 +132,80 @@ const Header = () => {
           "inset 0 1px 0px rgba(255,255,255,0.2), 0 2px 8px rgba(0,0,0,0.16)",
       }}
     >
-      {/* Logo - spans 3 columns */}
-      <div className="text-white text-lg font-bold col-span-3">Bookme</div>
+      <div className="text-white text-lg font-bold col-span-2 min-w-0">
+        Bookme
+      </div>
 
-      {/* Navigation Links - spans 6 columns and centered */}
       <ul
         className={`${
           isMobile
             ? "hidden"
-            : "flex items-center justify-center gap-4 list-none col-span-6"
+            : "flex items-center justify-center gap-2 list-none col-span-8 min-w-0"
         }`}
       >
-        <li>
+        <li className="flex-shrink-0">
           <a
             href="#hero"
-            className="text-white/90 text-sm font-medium px-4 py-2 rounded-full transition hover:bg-white/10 hover:text-white"
+            className="text-white/90 text-sm font-medium px-3 py-2 rounded-full transition hover:bg-white/10 hover:text-white whitespace-nowrap"
           >
             Home
           </a>
         </li>
-        <li>
+        <li className="flex-shrink-0">
           <a
             href="#vertical-services"
-            className="text-white/90 text-sm font-medium px-4 py-2 rounded-full transition hover:bg-white/10 hover:text-white"
+            className="text-white/90 text-sm font-medium px-3 py-2 rounded-full transition hover:bg-white/10 hover:text-white whitespace-nowrap"
           >
             Байгууллага
           </a>
         </li>
-        <li>
+        <li className="flex-shrink-0">
           <a
             href="#services"
-            className="text-white/90 text-sm font-medium px-4 py-2 rounded-full transition hover:bg-white/10 hover:text-white"
+            className="text-white/90 text-sm font-medium px-3 py-2 rounded-full transition hover:bg-white/10 hover:text-white whitespace-nowrap"
           >
             Үйлчлүүлэгч
           </a>
         </li>
-        <li>
+        <li className="flex-shrink-0">
           <a
             href="#team"
-            className="text-white/90 text-sm font-medium px-4 py-2 rounded-full transition hover:bg-white/10 hover:text-white whitespace-nowrap"
+            className="text-white/90 text-sm font-medium px-3 py-2 rounded-full transition hover:bg-white/10 hover:text-white whitespace-nowrap"
           >
             Манай баг
           </a>
         </li>
-        <li>
+        <li className="flex-shrink-0">
           <a
             href="#footer"
-            className="text-white/90 text-sm font-medium px-4 py-2 rounded-full transition hover:bg-white/10 hover:text-white whitespace-nowrap"
+            className="text-white/90 text-sm font-medium px-3 py-2 rounded-full transition hover:bg-white/10 hover:text-white whitespace-nowrap"
           >
             Холбоо барих
           </a>
         </li>
       </ul>
 
-      {/* Button - spans 3 columns and right-aligned */}
+      {/* Button - spans 2 columns (reduced from 3) and right-aligned */}
       <div
-        className={`${isMobile ? "ml-auto" : "col-span-3 flex justify-end"}`}
+        className={`${
+          isMobile ? "ml-auto" : "col-span-2 flex justify-end min-w-0"
+        }`}
       >
         <Link href={"/signin"}>
           <button
-            className="group px-4 py-2 sm:px-6 sm:py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25"
+            className="group px-3 py-2 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 whitespace-nowrap text-xs"
             style={{
               background:
                 "linear-gradient(to right, #FFFFFF 0%, #E6F3FF 52%, #B3D9FF 100%)",
               color: "#000A17",
-              fontSize: "0.875rem",
+              fontSize: "0.75rem", // Smaller font size
               fontWeight: "600",
-              padding: "0.5rem 1rem",
-              borderRadius: "1.5rem",
             }}
           >
-            <span className="flex items-center gap-2">
+            <span className="flex items-center gap-1">
               Нэвтрэх
               <svg
-                className="w-4 h-4 transition-transform group-hover:translate-x-1"
+                className="w-3 h-3 transition-transform group-hover:translate-x-1"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
