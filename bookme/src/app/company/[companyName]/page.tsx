@@ -14,6 +14,7 @@ import { CompanyLocation } from "./_components/CompanyLocation";
 import { CompanyLibrary } from "./_components/CompanyLibrary";
 import { AboutCompany } from "./_components/AboutCompany";
 import { BusinessSection } from "./_components/BusinessSection";
+import { EmployeeCardColorfulList } from "./_components/CompanyEmpolyeeCard";
 
 export default function CompanyHomepage() {
   const { companyName } = useParams<{ companyName: string }>();
@@ -160,6 +161,10 @@ export default function CompanyHomepage() {
 
       {company.employees && company.employees.length > 0 && (
         <BusinessSection company={company} />
+      )}
+
+      {company.employees && company.employees.length > 0 && (
+        <EmployeeCardColorfulList company={company} />
       )}
 
       <CompanyLocation company={company} companyLocation={companyLocation} />
