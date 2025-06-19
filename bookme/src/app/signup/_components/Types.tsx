@@ -40,6 +40,7 @@ export type Company = {
     start: string;
     end: string;
   };
+  employees: Employee[];
 };
 
 export interface FormDataType {

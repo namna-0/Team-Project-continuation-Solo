@@ -1,91 +1,35 @@
 "use client";
-import { toast } from "sonner";
 import { ImageSVG } from "./assets/ImageSVG";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { EmployeeSvg } from "./assets/EmployeeSvg";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { CompanyStatus } from "./CompanyStatus";
-import { api } from "@/axios";
-import { useParams } from "next/navigation";
-import { Toaster } from "@/components/ui/sonner";
 import { useSettings } from "../_providers/CompanySettingsProvider";
 import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
-
-export type EmployeesType = {
-  employees: EmployeeType[];
-};
-
-type EmployeeType = {
-  availability: boolean;
-  description: string;
-  duration: string;
-  employeeName: string;
-  endTime: string;
-  lunchTimeEnd: string;
-  lunchTimeStart: string;
-  profileImage: string;
-  startTime: string;
-};
-
-type CompanyType = {
-  _id: string;
-  companyName: string;
-  companyLogo: string;
-  employees: EmployeesType[] | undefined;
-};
-
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { api } from "@/axios";
+import { toast } from "sonner";
+import { ClickSVG } from "./assets/ClickSVG";
 export const UploadCompanyLogo = () => {
   const { company } = useCompanyAuth();
-  const { companyLogo, handleInputCompanyLogo } = useSettings();
-
-  const [companyId, setCompanyId] = useState<string | null>(null);
-  const [employeeCount, setEmployeeCount] = useState<number>();
-  const params = useParams();
-  const companyName = params?.companyName as string;
-
-  const getCompanyData = async () => {
+  const { companyLogo, companyLogoTest, handleInputCompanyLogo } =
+    useSettings();
+  const handleUploadNewLogo = async () => {
     try {
-      const response = await api.get(`/company`);
-      const companies: CompanyType[] = response.data.companies;
-
-      const currentCompany = companies.find(
-        (company) => company.companyName === companyName
-      );
-
-      if (currentCompany && currentCompany._id) {
-        setCompanyId(currentCompany._id);
-        setEmployeeCount(currentCompany?.employees?.length || 0);
-      } else {
-        console.warn("Company not found");
-      }
-    } catch (error) {
-      console.error("Байгууллагын мэдээлэл дуудахад алдаа гарлаа:", error);
-    }
-  };
-
-  useEffect(() => {
-    getCompanyData();
-  }, []);
-
-  const handleCompanyData = async () => {
-    if (!companyId || !companyLogo) {
-      toast.error("Зураг оруулна уу.");
-      console.warn("companyId эсвэл зураг алга");
-      return;
-    }
-
-    try {
-      const response = await api.put(`/company/${companyId}`, {
+      const data = await api.put(`/company/${company?._id}`, {
         companyLogo: companyLogo,
       });
-      toast.success("Зураг амжилттай шинэчлэгдлээ.");
-      console.log("Update success", response.data);
+      toast.success("Компанийн лого амжилттай солигдлоо.");
     } catch (error) {
-      console.error("Update алдаа:", error);
+      console.error("Компанийн лого шинэчилэхэд алдаа гарлаа.");
+      toast.error("Компанийн лого шинэчилэхэд алдаа гарлаа.");
     }
   };
+
+  if (!company) return null;
 
   return (
     <div className="rounded-2xl w-[20%] h-fit flex flex-col gap-5 ">
@@ -93,28 +37,38 @@ export const UploadCompanyLogo = () => {
         <div className="text-[20px] font-bold">Business logo</div>
         <div className="w-full h-fit flex justify-center p-4">
           <div className="w-[100px] h-[100px] rounded-2xl  bg-[#e4e4e4] overflow-hidden">
-            {!companyLogo ? (
-              <div className="w-full h-full flex flex-col justify-center items-center relative">
+            {company.companyLogo || companyLogoTest ? (
+              <div className="relative flex items-center justify-center w-full h-full">
                 <div className="absolute">
-                  <ImageSVG />
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <img
+                        src={companyLogoTest ?? company.companyLogo}
+                        alt="Company Logo Preview"
+                        className="w-full h-full object-cover cursor-pointer"
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <div className="flex gap-1 items-center">
+                        <ClickSVG />
+                        <p>Click to change logo</p>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
                 <Input
-                  className="w-full h-full opacity-0"
+                  className="flex w-full h-full opacity-0 z-10 absolute cursor-pointer"
                   type="file"
                   onChange={handleInputCompanyLogo}
                 />
               </div>
             ) : (
-              <div className="w-full h-full flex flex-col justify-center items-center relative ">
-                <div className="absolute ">
-                  <img
-                    src={companyLogo}
-                    alt="Company Logo Preview"
-                    className="w-full h-full object-cover "
-                  />
+              <div className="w-full h-full flex flex-col justify-center items-center relative">
+                <div className="absolute">
+                  <ImageSVG />
                 </div>
                 <Input
-                  className="w-full h-full opacity-0"
+                  className="w-full h-full opacity-0 cursor-pointer"
                   type="file"
                   onChange={handleInputCompanyLogo}
                 />
@@ -125,15 +79,15 @@ export const UploadCompanyLogo = () => {
         <div className="w-full">
           <Button
             className="w-full"
-            onClick={handleCompanyData}
             variant={"outline"}
+            onClick={handleUploadNewLogo}
           >
             Upload new logo
           </Button>
         </div>
       </div>
 
-      <CompanyStatus employeeCount={employeeCount ?? 0} />
+      <CompanyStatus employeeCount={company.employees.length ?? 0} />
     </div>
   );
 };

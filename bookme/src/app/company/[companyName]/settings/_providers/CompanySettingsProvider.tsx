@@ -16,10 +16,11 @@ type CompanyInformationAuth = {
   handleInputEmployeeImage: (
     e: React.ChangeEvent<HTMLInputElement>,
     form: any
-  ) => Promise<void>; // Update signature to accept form
+  ) => Promise<void>;
   companyLogo: string | null;
   employeeImage: string | null;
   companyData: Company[];
+  companyLogoTest: string | null;
 };
 
 type CompanyDataType = {
@@ -49,8 +50,8 @@ const CompanyInformation = createContext<CompanyInformationAuth | undefined>(
 export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
   const [companyLogo, setCompanyLogo] = useState<string | null>(null);
   const [employeeImage, setEmployeeImage] = useState<string | null>(null);
-  const [companyLocation, setCompanyLocation] = useState();
   const [companyData, setCompanyData] = useState<Company[]>([]);
+  const [companyLogoTest, setCompanyLogoTest] = useState<string | null>(null);
 
   const getCompanyData = async () => {
     try {
@@ -82,6 +83,7 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
+      setCompanyLogoTest(response.data.url);
       return response.data.url;
     } catch (error) {
       console.error("Failed to upload image", error);
@@ -93,8 +95,11 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = e.target.files?.[0];
+
     if (file) {
       const result = await uploadedImageFunction(file);
+      console.log("asdasd", result);
+
       if (result) setCompanyLogo(result);
     }
   };
@@ -108,7 +113,6 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
       const uploadedImageUrl = await uploadedImageFunction(file);
       if (uploadedImageUrl) {
         setEmployeeImage(uploadedImageUrl);
-
         form.setValue("profileImage", uploadedImageUrl);
       }
     }
@@ -126,14 +130,13 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
         companyLogo,
         employeeImage,
         companyData,
+        companyLogoTest,
       }}
     >
       {children}
     </CompanyInformation.Provider>
   );
 };
-
-// Custom hook for consuming the context
 export const useSettings = (): CompanyInformationAuth => {
   const context = useContext(CompanyInformation);
   if (context === undefined) {

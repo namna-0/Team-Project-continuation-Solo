@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -20,6 +19,7 @@ import { api } from "@/axios";
 import { toast } from "sonner";
 import { useParams } from "next/navigation";
 import { useSettings } from "../_providers/CompanySettingsProvider";
+import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
 
 const employeeSchema = z.object({
   companyName: z.string(),
@@ -40,6 +40,7 @@ export const EmployeeForm = ({
   setEmployeeData,
   setOpen,
 }: FormDataType) => {
+  const { company } = useCompanyAuth();
   const { employeeImage, handleInputEmployeeImage } = useSettings();
   const [loading, setLoading] = useState(false);
   const params = useParams();
@@ -67,7 +68,7 @@ export const EmployeeForm = ({
   ) => {
     setLoading(true);
     try {
-      await api.post(`/${companyNameParam}/employee`, {
+      await api.post(`/${company?.companyName}/employee`, {
         ...values,
         companyName: companyNameParam,
       });
@@ -310,7 +311,6 @@ export const EmployeeForm = ({
             </FormItem>
           )}
         />
-
         <Button disabled={loading === true} type="submit" className="w-full">
           Нэмэх
         </Button>

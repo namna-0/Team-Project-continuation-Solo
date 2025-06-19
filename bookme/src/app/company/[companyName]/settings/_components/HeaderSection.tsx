@@ -15,7 +15,6 @@ export type FormDataType = {
   setEmployeeData: React.Dispatch<React.SetStateAction<EmployeeData>>;
   setOpen: Dispatch<SetStateAction<boolean>>;
 };
-
 export type EmployeeData = {
   companyName: string;
   startTime: string;
