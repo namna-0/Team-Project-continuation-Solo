@@ -13,6 +13,7 @@ import { History, LogOutIcon, SquareUserRound } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api } from "@/axios";
+import { Button } from "@/components/ui/button";
 
 export const Navbar = () => {
   const { user, signOut } = useAuth();
@@ -40,7 +41,10 @@ export const Navbar = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex-shrink-0">
-              <Link href="/" className="text-lg font-bold">
+              <Link
+                href={`/company/${companyName}`}
+                className="text-lg font-bold"
+              >
                 {companyLogo && (
                   <img
                     src={companyLogo}
@@ -50,10 +54,18 @@ export const Navbar = () => {
                 )}
               </Link>
             </div>
-            <div className="hidden md:block">
+
+            <div className=" flex items-center gap-4">
+              <Link href={`/company/${companyName}`}>
+                <Button className="relative bg-[#77b8fa] group w-[77px] h-10 px-6 py-2 rounded-full overflow-hidden text-white cursor-pointer">
+                  <span className="absolute inset-0 bg-gradient-to-r from-[#77b8fa] to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-full" />
+                  <span className="relative z-10">Буцах</span>
+                </Button>
+              </Link>
               <DropdownMenu>
-                <DropdownMenuTrigger className="bg-[#77b8fa] text-white px-6 py-2 rounded-full hover:scale-105 hover:bg-blue-500 cursor-pointer">
-                  {user?.username}
+                <DropdownMenuTrigger className="relative bg-[#77b8fa] group w-[77px] h-10 px-6 py-2 rounded-full overflow-hidden text-white cursor-pointer">
+                  <span className="absolute inset-0 bg-gradient-to-r from-[#77b8fa] to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-full" />
+                  <span className="relative z-10"> Цэс</span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuLabel className="font-bold">

@@ -49,8 +49,9 @@ export default function Home() {
                 </div>
               </div>
               <Link href="/company/test-company/appointments">
-                <Button className="w-full cursor-pointer bg-[#77b8fa] hover:bg-blue-500">
-                  Захиалгын түүх харах
+                <Button className="relative bg-[#77b8fa] group w-full px-6 py-2 overflow-hidden text-white cursor-pointer">
+                  <span className="absolute inset-0 bg-gradient-to-r from-[#77b8fa] to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left " />
+                  <span className="relative z-10"> Захиалгын түүх харах</span>
                 </Button>
               </Link>
             </div>
