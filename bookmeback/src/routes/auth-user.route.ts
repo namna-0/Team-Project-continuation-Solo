@@ -4,7 +4,8 @@ import { postUserAuthSignIn } from "../controllers/(userAuth)/auth/post-userauth
 import { getUserAuthMe } from "../controllers/(userAuth)/auth/get-userauth-me";
 import { authenticationMiddleware } from "../middlewares/authentication-middlewares";
 import { Forgotpass } from "../controllers/(userAuth)/auth/post-forgotpassword";
-import { VerifyResetCode } from "../controllers/(userAuth)/auth/post-verifyResetCode";
+import { VerifyCode } from "../controllers/(userAuth)/auth/post-verifyResetCode";
+import { ResetPassword } from "../controllers/(userAuth)/auth/post-resetpass";
 
 const authUserRouter = Router();
 
@@ -13,5 +14,6 @@ authUserRouter
   .post("/login", postUserAuthSignIn)
   .get("/me", authenticationMiddleware, getUserAuthMe)
   .post("/forgot-password", Forgotpass)
-  .post("/verify-resetcode", VerifyResetCode);
+  .post("/verify-code", VerifyCode)
+  .post("/reset-password", ResetPassword);
 export default authUserRouter;
