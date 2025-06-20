@@ -56,14 +56,14 @@ export default function Home() {
         </div>
         <div className="flex w-full h-fit gap-10 justify-between ">
           <div className="w-fit h-fit flex flex-col gap-5">
-            <div className="w-fit h-[450px] overflow-scroll">
+            <div className="w-fit ">
               <p className="text-[24px] font-semibold flex items-center gap-2">
                 Батлгаажсан цагууд{" "}
                 <span className="w-6 h-6 flex items-center justify-center text-[14px] text-white bg-blue-600 rounded-full">
                   {confirmedOrders.length}
                 </span>
               </p>
-              <div className="flex flex-col gap-4 mt-[10px]">
+              <div className="flex flex-col gap-4 mt-[10px] h-[400px] overflow-scroll">
                 {confirmedOrders.map((order, index) => (
                   <div
                     onClick={() => setisClicked(order)}
@@ -87,14 +87,14 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <div className="w-fit h-[450px] overflow-scroll">
+            <div className="w-fit ">
               <p className="text-[24px] font-semibold flex items-center gap-2">
                 Цуцлагдсан цагууд{" "}
                 <span className="w-6 h-6 flex items-center justify-center text-[14px] text-white bg-red-600 rounded-full">
                   {cancelledOrders.length}
                 </span>
               </p>
-              <div className="flex flex-col gap-4 mt-[10px]">
+              <div className="flex flex-col gap-4 mt-[10px] h-[400px] overflow-scroll">
                 {cancelledOrders.map((mock, index) => (
                   <div
                     onClick={() => setisClicked(mock)}
@@ -119,7 +119,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="w-[900px] h-fit bg-white border border-gray-300 rounded-[12px] p-6">
+          <div className="w-[900px] h-fit bg-white border border-gray-300 rounded-[12px] p-6 mt-12">
             {isClicked ? (
               <div className="flex flex-col gap-4">
                 <img
