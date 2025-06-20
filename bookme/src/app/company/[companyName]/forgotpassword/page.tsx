@@ -149,7 +149,7 @@ export default function Home() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" className="bg-blue-600">
+                  <Button type="submit" className="bg-blue-600 cursor-pointer">
                     Илгээх
                   </Button>
                 </form>
@@ -176,7 +176,10 @@ export default function Home() {
                     )}
                   />
                   <div className="flex justify-between">
-                    <Button type="submit" className="bg-green-600">
+                    <Button
+                      type="submit"
+                      className="bg-green-600 cursor-pointer"
+                    >
                       Баталгаажуулах
                     </Button>
                     <Button
@@ -214,7 +217,7 @@ export default function Home() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" className="bg-blue-600">
+                  <Button type="submit" className="bg-blue-600 cursor-pointer">
                     Нууц үг шинэчлэх
                   </Button>
                 </form>
