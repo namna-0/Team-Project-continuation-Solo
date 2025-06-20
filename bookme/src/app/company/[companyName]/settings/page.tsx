@@ -7,7 +7,6 @@ import { CompanyAllEmployees } from "./_components/CompanyAllEmployees";
 import { CompanyLocationGetData } from "./_components/CompanyLocationGetData";
 import { CompanyImagesSection } from "./_components/CompanyImagesSection";
 
-
 export default function Home() {
   return (
     <div className="w-full flex flex-col justify-center items-center bg-[#f7f7f7] p-4 gap-2">

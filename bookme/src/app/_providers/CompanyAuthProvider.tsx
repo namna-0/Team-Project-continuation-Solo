@@ -68,7 +68,6 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
     try {
       const { data } = await api.get("/me");
       setCompany(data);
-      console.log(data);
     } catch (error) {
       console.error("Компаний мэдээлэл авахад алдаа:", error);
     }
