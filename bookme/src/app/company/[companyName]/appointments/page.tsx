@@ -18,6 +18,7 @@ type OrderType = {
   employee: {
     _id: string;
     employeeName: string;
+    profileImage: string;
   };
 };
 
@@ -47,7 +48,7 @@ export default function Home() {
   }, [user]);
 
   return (
-    <div className="w-screen h-screen bg-[#f9f9f9] flex  items-center flex-col gap-[60px]">
+    <div className="w-screen h-screen bg-[#f9f9f9] flex  items-center flex-col gap-[60px] ">
       <Navbar />
       <div className="w-[1440px] h-fit flex flex-col items-center justify-center gap-[60px] p-5">
         <div className="w-full h-[36px]">
@@ -55,7 +56,7 @@ export default function Home() {
         </div>
         <div className="flex w-full h-fit gap-10 justify-between ">
           <div className="w-fit h-fit flex flex-col gap-5">
-            <div className="w-fit">
+            <div className="w-fit h-[450px] overflow-scroll">
               <p className="text-[24px] font-semibold flex items-center gap-2">
                 Батлгаажсан цагууд{" "}
                 <span className="w-6 h-6 flex items-center justify-center text-[14px] text-white bg-blue-600 rounded-full">
@@ -86,7 +87,7 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <div className="w-fit">
+            <div className="w-fit h-[450px] overflow-scroll">
               <p className="text-[24px] font-semibold flex items-center gap-2">
                 Цуцлагдсан цагууд{" "}
                 <span className="w-6 h-6 flex items-center justify-center text-[14px] text-white bg-red-600 rounded-full">
@@ -110,7 +111,7 @@ export default function Home() {
                       </p>
                       <p className="text-[14px]">{mock.selectedTime}</p>
                       <p className="text-[12px]">
-                        {mock?.employee.employeeName}
+                        {mock.employee.employeeName}
                       </p>
                     </div>
                   </div>
@@ -130,9 +131,12 @@ export default function Home() {
                 </h2>
                 <p className="text-lg text-gray-700">📅 2025-06-17</p>
                 <p className="text-lg text-gray-700">⏰ 14:00</p>
-                <p className="text-ls text-gray-700">
-                  🧑‍💼{isClicked?.employee.employeeName}
-                </p>
+                <div className="flex items-center gap-[12px]">
+                  <p className="text-ls text-gray-700">
+                    🧑‍💼{isClicked?.employee.employeeName}
+                  </p>
+                  <img src={isClicked.employee.profileImage} />
+                </div>
                 <button
                   className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 w-fit"
                   onClick={() => setisClicked(null)}
