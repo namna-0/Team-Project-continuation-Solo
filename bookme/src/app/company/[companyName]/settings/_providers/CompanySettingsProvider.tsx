@@ -17,6 +17,10 @@ type CompanyInformationAuth = {
     e: React.ChangeEvent<HTMLInputElement>,
     form: any
   ) => Promise<void>;
+  handleInputCompanyImage: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    form: any
+  ) => Promise<void>;
   companyLogo: string | null;
   employeeImage: string | null;
   companyData: Company[];
@@ -95,11 +99,8 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = e.target.files?.[0];
-
     if (file) {
       const result = await uploadedImageFunction(file);
-      console.log("asdasd", result);
-
       if (result) setCompanyLogo(result);
     }
   };
@@ -118,6 +119,17 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const handleInputCompanyImage = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      const result = await uploadedImageFunction(file);
+
+    }
+  };
+
   useEffect(() => {
     getCompanyData();
   }, []);
@@ -127,10 +139,12 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
       value={{
         handleInputCompanyLogo,
         handleInputEmployeeImage,
+        handleInputCompanyImage,
         companyLogo,
         employeeImage,
         companyData,
         companyLogoTest,
+
       }}
     >
       {children}
