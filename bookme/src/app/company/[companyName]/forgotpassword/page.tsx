@@ -16,32 +16,42 @@ import { api } from "@/axios";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 
-const formSchema = z.object({
-  email: z.string().email({
-    message: "Нууц үг email хаяг шалгана уу.",
-  }),
+const emailSchema = z.object({
+  email: z.string().email("Email хаяг буруу байна"),
 });
 
-const verifySchema = z.object({
-  code: z.string().min(4, "4 оронтой код оруулна уу."),
+const codeSchema = z.object({
+  code: z.string().length(4, "4 оронтой код оруулна уу."),
+});
+
+const passwordSchema = z.object({
   newPassword: z
     .string()
     .min(4, "Шинэ нууц үг хамгийн багадаа 4 тэмдэгт байх ёстой."),
 });
+
+type Step = "email" | "code" | "resetPassword";
+
 export default function Home() {
-  const [step, setStep] = useState<"email" | "verify">("email");
+  const [step, setStep] = useState<Step>("email");
   const [email, setEmail] = useState("");
   const [cooldown, setCooldown] = useState(0);
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-    },
+
+  const emailForm = useForm<z.infer<typeof emailSchema>>({
+    resolver: zodResolver(emailSchema),
+    defaultValues: { email: "" },
   });
-  const verifyForm = useForm<z.infer<typeof verifySchema>>({
-    resolver: zodResolver(verifySchema),
-    defaultValues: { code: "", newPassword: "" },
+
+  const codeForm = useForm<z.infer<typeof codeSchema>>({
+    resolver: zodResolver(codeSchema),
+    defaultValues: { code: "" },
   });
+
+  const passwordForm = useForm<z.infer<typeof passwordSchema>>({
+    resolver: zodResolver(passwordSchema),
+    defaultValues: { newPassword: "" },
+  });
+
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
     if (cooldown > 0) {
@@ -57,33 +67,50 @@ export default function Home() {
     };
   }, [cooldown]);
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const handleSendEmail = async (values: z.infer<typeof emailSchema>) => {
     try {
       await api.post("/authuser/forgot-password", values);
-      toast.success("Нууц үг сэргээх код амжилттай илгээгдлээ.");
+      toast.success("4 оронтой код илгээгдлээ.");
       setEmail(values.email);
-      setStep("verify");
+      setStep("code");
       setCooldown(60);
     } catch (error) {
       console.error(error);
-      toast.error("Email илгээхэд алдаа гарлаа. Та дахин оролдоно уу.");
+      toast.error("Email илгээхэд алдаа гарлаа.");
     }
-  }
-  async function handleVerify(values: z.infer<typeof verifySchema>) {
+  };
+  const handleVerifyCode = async (values: z.infer<typeof codeSchema>) => {
     try {
-      await api.post("/authuser/verify-resetcode", {
+      await api.post("/authuser/verify-code", {
         email,
-        ...values,
+        code: values.code,
+      });
+      toast.success("Код амжилттай баталгаажлаа.");
+      setStep("resetPassword");
+    } catch (error) {
+      console.error(error);
+      toast.error("Код буруу эсвэл хугацаа дууссан байна.");
+    }
+  };
+
+  const handleResetPassword = async (
+    values: z.infer<typeof passwordSchema>
+  ) => {
+    try {
+      await api.post("/authuser/reset-password", {
+        email,
+        newPassword: values.newPassword,
       });
       toast.success("Нууц үг амжилттай шинэчлэгдлээ.");
       setStep("email");
-      verifyForm.reset();
-      form.reset();
+      emailForm.reset();
+      codeForm.reset();
+      passwordForm.reset();
     } catch (error) {
       console.error(error);
-      toast.error("Код буруу эсвэл хугацаа нь дууссан байна.");
+      toast.error("Нууц үг шинэчлэхэд алдаа гарлаа.");
     }
-  }
+  };
   async function resendCode() {
     if (cooldown > 0) return;
     try {
@@ -95,99 +122,62 @@ export default function Home() {
     }
   }
   return (
-    <div className="w-screen h-screen flex justify-center items-center bg-radial-[at_50%_75%] from-indigo-900 via-blue-400 to-sky-200 to-90% text-white">
-      <div className="w-[1440px] h-fit flex  rounded-[23px] justify-center items-center shadow-xl ">
-        <div className="w-[50%] h-full flex justify-center items-center ">
-          <div className="w-[404px] h-[638px] flex flex-col gap-[10px] ">
-            <div className="w-fit h-[53px] flex flex-col mb-[30px]">
-              <p className="font-medium text-[32px] ">Нууц үгээ мартсан уу?</p>
-              <p className="font-medium text-[16px]">
-                {step === "email"
-                  ? "Бүртгэлтэй Email хаягаа оруулж код сэргээнэ үү."
-                  : `${email} хаяг руу илгээгдсэн 4 оронтой код болон шинэ нууц үгээ оруулна уу.`}
-              </p>
-            </div>
-            {step === "email" ? (
-              <Form {...form}>
+    <div className="w-screen h-screen flex justify-center items-center bg-gradient-to-br from-indigo-900 via-blue-400 to-sky-200 text-white">
+      <div className="w-[1440px] h-fit flex rounded-[23px] justify-center items-center shadow-xl">
+        <div className="w-[50%] h-full flex justify-center items-center">
+          <div className="w-[404px] flex flex-col gap-[10px]">
+            <p className="text-[32px] font-medium mb-4">
+              Нууц үгээ мартсан уу?
+            </p>
+
+            {step === "email" && (
+              <Form {...emailForm}>
                 <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="flex flex-col gap-[32px] h-fit"
+                  onSubmit={emailForm.handleSubmit(handleSendEmail)}
+                  className="flex flex-col gap-6"
                 >
                   <FormField
-                    control={form.control}
+                    control={emailForm.control}
                     name="email"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Email хаяг</FormLabel>
                         <FormControl>
-                          <Input
-                            placeholder="Email хаяг оруулна уу."
-                            className="border border-gray-200"
-                            {...field}
-                          />
+                          <Input {...field} placeholder="email@example.com" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-
-                  <Button
-                    type="submit"
-                    className="h-8 bg-[#007fff] text-[13px] font-bold text-white rounded-[10px] cursor-pointer"
-                  >
+                  <Button type="submit" className="bg-blue-600">
                     Илгээх
                   </Button>
                 </form>
               </Form>
-            ) : (
-              <Form {...verifyForm}>
+            )}
+
+            {step === "code" && (
+              <Form {...codeForm}>
                 <form
-                  onSubmit={verifyForm.handleSubmit(handleVerify)}
-                  className="flex flex-col gap-[24px]"
+                  onSubmit={codeForm.handleSubmit(handleVerifyCode)}
+                  className="flex flex-col gap-6"
                 >
                   <FormField
-                    control={verifyForm.control}
+                    control={codeForm.control}
                     name="code"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>4 оронтой код</FormLabel>
                         <FormControl>
-                          <Input
-                            type="text"
-                            placeholder="Код"
-                            className="border border-gray-200"
-                            value={field.value}
-                            onChange={(e) => {
-                              console.log("Input changed:", e.target.value);
-                              field.onChange(e);
-                            }}
-                          />
+                          <Input {...field} placeholder="1234" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <FormField
-                    control={verifyForm.control}
-                    name="newPassword"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Шинэ нууц үг</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="password"
-                            placeholder="Шинэ нууц үг"
-                            className="border border-gray-200"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-between">
                     <Button type="submit" className="bg-green-600">
-                      Илгээх
+                      Баталгаажуулах
                     </Button>
                     <Button
                       type="button"
@@ -201,23 +191,51 @@ export default function Home() {
               </Form>
             )}
 
-            <div className="flex justify-between w-[400px]">
-              <p className="font-medium text-[14px] ">
-                <span
-                  className="text-[14px] text-[#0f3dde] underline cursor-pointer"
-                  onClick={() => {
-                    setStep("email");
-                    verifyForm.reset();
-                  }}
+            {step === "resetPassword" && (
+              <Form {...passwordForm}>
+                <form
+                  onSubmit={passwordForm.handleSubmit(handleResetPassword)}
+                  className="flex flex-col gap-6"
                 >
-                  Буцах
-                </span>
-              </p>
-            </div>
+                  <FormField
+                    control={passwordForm.control}
+                    name="newPassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Шинэ нууц үг</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="password"
+                            placeholder="••••••••"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type="submit" className="bg-blue-600">
+                    Нууц үг шинэчлэх
+                  </Button>
+                </form>
+              </Form>
+            )}
+
+            <p
+              className="mt-4 text-sm underline cursor-pointer"
+              onClick={() => setStep("email")}
+            >
+              Буцах
+            </p>
           </div>
         </div>
-        <div className="w-[50%] h-full ">
-          <img src="/rectanglelogin.png" className="w-full h-full"></img>
+
+        <div className="w-[50%] h-full">
+          <img
+            src="/rectanglelogin.png"
+            className="w-full h-full"
+            alt="Illustration"
+          />
         </div>
       </div>
     </div>
