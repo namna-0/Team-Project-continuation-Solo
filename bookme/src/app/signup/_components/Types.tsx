@@ -41,6 +41,10 @@ export type Company = {
     end: string;
   };
   employees: Employee[];
+  backGroundImage: string;
+  aboutUsImage: string;
+  experience: string;
+  clientNumber: string;
 };
 
 export interface FormDataType {

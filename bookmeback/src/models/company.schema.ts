@@ -26,13 +26,25 @@ const companySchema = new Schema({
     type: String,
     default: "",
   },
-  website: {
-    type: String,
-    default: "",
-  },
   companyImages: {
     type: [String],
     default: [],
+  },
+  backGroundImage: {
+    type: String,
+    required: false,
+  },
+  aboutUsImage: {
+    type: String,
+    required: false,
+  },
+  experience: {
+    type: String,
+    required: false,
+  },
+  clientNumber: {
+    type: String,
+    required: false,
   },
   address: { type: String, required: true },
   city: { type: String, required: false },
