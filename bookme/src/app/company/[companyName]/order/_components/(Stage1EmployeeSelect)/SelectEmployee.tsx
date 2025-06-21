@@ -2,9 +2,7 @@
 
 import { CompanyType } from "@/app/company/[companyName]/order/page";
 import EmployeeCard from "./employeeCard";
-import { useParams } from "next/navigation";
-import { api } from "@/axios";
-import { useEffect, useState } from "react";
+
 
 type StagOneProps = {
   company: CompanyType;
@@ -19,9 +17,9 @@ export default function StagaOneSelectEmployee({
   setIsSelectEmployee,
   selectedEmployeeImf, setSelectedEmployeeImf
 }: StagOneProps) {
-  const { companyName } = useParams()
+
   return (
-    <div className="flex w-fit gap-10 justify-between ">
+    <div className=" grid grid-cols-3 w-fit gap-5 justify-between items-center p-5">
       {company?.employees.map((item, index) => (
         <div
           key={index}
@@ -36,8 +34,8 @@ export default function StagaOneSelectEmployee({
           }}
           className={
             item._id == selectedEmployeeImf
-              ? ` relative justify-center flex-1 items-center w-full p-3  rounded-xl border h-fit border-sky-600`
-              : "  flex-1 p-3 relative h-fit items-center justify-center w-full rounded-xl  border border-gray-400"
+              ? ` relative justify-start flex h-full items-start p-3  rounded-xl border   bg-gray-300   border-zinc-600`
+              : " p-3 relative h-full flex items-start justify-start rounded-xl bg-gray-300/50 "
           }
         >
           {item.availability == true && (
@@ -47,9 +45,9 @@ export default function StagaOneSelectEmployee({
               captionText={
                 selectedEmployeeImf == item._id
                   ? `${item.employeeName} дээр цаг захиалсан байна`
-                  : ` ${item.description}  ${item.employeeName}-д захиалга өгөх`
+                  : ` ${item.employeeName}-д захиалга өгөх`
               }
-              zurag="/images.jpeg"
+              zurag={item.profileImage || ""}
             />
           )}
         </div>

@@ -4,14 +4,12 @@ import { api } from "@/axios";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { CompanyType, employeeType } from "../page";
-import { date, string } from "zod";
 import { Dialog } from "@radix-ui/react-dialog";
 import { DialogTrigger } from "@/components/ui/dialog";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/app/_providers/UserAuthProvider";
 import UpdateEmployee from "./(Stage1EmployeeSelect)/updateEmployeeDialog";
-import { Calendar, Calendar1Icon, Clock, Clock5Icon } from "lucide-react";
-import { setDate } from "date-fns";
+import { Calendar,  Clock} from "lucide-react";
 type OrderImformationType = {
     HandleNextStage: () => void, isSelectEmployee: string | string[]
     company?: CompanyType
@@ -21,6 +19,7 @@ type OrderImformationType = {
     date: Date
     selectedTime: Date | null
     setSelectedTime: (time: Date | null) => void
+    setSelectEmployee: (employee: string ) => void
     selectedEmployeeImf: string | undefined
 }
 export type OrderType = {
@@ -47,9 +46,9 @@ function OrderImformation({
     selectedTime,
     setSelectedTime,
     selectedEmployeeImf,
+    setSelectEmployee,
     company, isStage, Stages }: OrderImformationType) {
     const { user } = useAuth()
-    const [order, setOrder] = useState<OrderType | undefined>(undefined)
 
 
     const i = company?.employees.find((employee) => employee._id === selectedEmployeeImf);
@@ -93,7 +92,7 @@ function OrderImformation({
                                 <DialogTrigger className="w-fit flex gap-3  rounded-full items-centerp-1">
                                     <div className="text-sky-600">{isSelectEmployee}</div>
                                 </DialogTrigger>
-                                <UpdateEmployee setIsSelectEmployee={setIsSelectEmployee} zurag={i?.profileImage || ""} company={company as CompanyType} isSelectEmployee={isSelectEmployee} />
+                                <UpdateEmployee selectedEmployeeImf={selectedEmployeeImf} setSelectedEmployee={setSelectEmployee} setIsSelectEmployee={setIsSelectEmployee} zurag={i?.profileImage || ""} company={company as CompanyType} isSelectEmployee={isSelectEmployee} />
                             </Dialog>
                             : <div className=" flex flex-col ">{isSelectEmployee}</div>}
                     </div>}

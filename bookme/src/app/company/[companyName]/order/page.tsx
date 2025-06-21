@@ -42,7 +42,6 @@ export default function OrderPage() {
     const Stages = ["Ажилтан", "Огноо", "амжилттай захиалагдлаа"]
     const [isStage, setIsStage] = useState<string>(Stages[0])
     const [isSelectEmployee, setIsSelectEmployee] = useState<string | string[]>("")
-    const { company } = useCompanyAuth();
     const { companyName } = useParams<{ companyName: string }>();
     const [companyData, setCompany] = useState<CompanyType | undefined>(undefined);
     const [date, setDate] = useState<Date>(new Date)
@@ -89,12 +88,12 @@ export default function OrderPage() {
                     }
                     {isStage == Stages[1] &&
                         (<div className="w-full">
-                            <StageTwo setIsSelectEmployee={setIsSelectEmployee} zurag={companyData?.employees?.find((employee: employeeType) => employee._id === selectedEmployeeImf)?.profileImage || ""}
+                            <StageTwo setSelectedEmployee={setSelectedEmployeeImf} setIsSelectEmployee={setIsSelectEmployee} zurag={companyData?.employees?.find((employee: employeeType) => employee._id === selectedEmployeeImf)?.profileImage || ""}
                                 date={date} setDate={setDate} setSelectedTime={setSelectedTime} selectedTime={selectedTime} selectedEmployeeImf={selectedEmployeeImf} company={companyData as CompanyType} isSelectEmployee={isSelectEmployee} />
                         </div>)}
                 </div>
                 <div className="flex flex-2 w-full relative justify-start items-center  ">
-                    <OrderImformation HandleNextStage={HandleNextStage} setIsSelectEmployee={setIsSelectEmployee} selectedTime={selectedTime} setSelectedTime={setSelectedTime} isSelectEmployee={isSelectEmployee} date={date} selectedEmployeeImf={selectedEmployeeImf} company={companyData} isStage={isStage} Stages={Stages} />
+                    <OrderImformation HandleNextStage={HandleNextStage} setIsSelectEmployee={setIsSelectEmployee} setSelectEmployee={(employee: string) => setSelectedEmployeeImf(employee)} selectedTime={selectedTime} setSelectedTime={setSelectedTime} isSelectEmployee={isSelectEmployee} date={date} selectedEmployeeImf={selectedEmployeeImf} company={companyData} isStage={isStage} Stages={Stages} />
                 </div>
             </div >
         </div >
