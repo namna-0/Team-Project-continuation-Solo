@@ -5,13 +5,16 @@ import { useEffect, useState } from "react";
 import { api } from "@/axios";
 import { toast } from "sonner";
 import { AddCompanyImage } from "./AddCompanyImage";
+import { LoadingSvg } from "@/app/_components/assets/LoadingSvg";
+import { useSettings } from "../_providers/CompanySettingsProvider";
 
 export const CompanyImagesSection = () => {
   const { company } = useCompanyAuth();
-
+  const { loading, setLoading } = useSettings();
   const [images, setImages] = useState<string[]>([]);
 
   const handleDeleteImage = async (index: number) => {
+    setLoading(true);
     try {
       const updatedImages = [...images];
       updatedImages.splice(index, 1);
@@ -25,6 +28,8 @@ export const CompanyImagesSection = () => {
     } catch (error) {
       console.error("Зураг устгахад алдаа гарлаа.", error);
       toast.error("Зураг устгахад алдаа гарлаа.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -37,25 +42,39 @@ export const CompanyImagesSection = () => {
   return (
     <div className="bg-white w-full rounded-2xl p-4 flex flex-col gap-4">
       <div>
-        <div className="text-[20px] font-bold">Нийт зургууд</div>
+        <div className="text-[20px] font-bold">Компанийн зургууд</div>
         <div className="text-[14px] font-normal text-[#aaa]">
-          Зураг солих хэсэг
+          Зураг засварлах хэсэг
         </div>
       </div>
 
-      <div className="grid grid-cols-4 gap-3 justify-between">
+      <div className="grid grid-cols-4 gap-3 justify-between items-center ">
         <AddCompanyImage />
-        {images.map((image, index) => (
-          <div key={index} className="w-[270px] h-[204px] relative">
-            <CompanyImageCard
-              image={image}
-              index={index}
-              newImage={null}
-              id={company?._id}
-              handleDeleteImage={() => handleDeleteImage(index)}
-            />
+        {loading && (
+          <div className="w-[270px] h-[204px] flex items-center justify-center">
+            <LoadingSvg />
           </div>
-        ))}
+        )}
+        {images.length === 0 && !loading ? (
+          <div className="w-[270px] h-[204px] flex justify-center items-center border-2 rounded-2xl opacity-50">
+            Компанийн зураг оруулна уу.
+          </div>
+        ) : (
+          images.map((image, index) => (
+            <div
+              key={index}
+              className="w-[200px] h-[204px] relative justify-center border-2 rounded-2xl bg-red-500"
+            >
+              <CompanyImageCard
+                image={image}
+                index={index}
+                newImage={null}
+                id={company?._id}
+                handleDeleteImage={() => handleDeleteImage(index)}
+              />
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

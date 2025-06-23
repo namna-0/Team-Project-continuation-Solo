@@ -23,7 +23,7 @@ export const CompanyLocationGetData = () => {
   }, [company]);
 
   if (!selectedPosition) {
-    return <Skeleton className="w-full h-[500px]] rounded-full " />; // эсвэл loading skeleton
+    return <Skeleton className="w-full h-[500px]] rounded-full " />;
   }
 
   return (

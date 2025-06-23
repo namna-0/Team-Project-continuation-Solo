@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
@@ -7,13 +6,13 @@ import { useState } from "react";
 export const CompanyWorkingHours = () => {
   const [openDays, setOpenDays] = useState({
     openingHours: {
-      Monday: { open: "09:00", close: "18:00", closed: false },
-      Tuesday: { open: "09:00", close: "18:00", closed: false },
-      Wednesday: { open: "09:00", close: "18:00", closed: false },
-      Thursday: { open: "09:00", close: "18:00", closed: false },
-      Friday: { open: "09:00", close: "18:00", closed: false },
-      Saturday: { open: "10:00", close: "18:00", closed: false },
-      Sunday: { open: "10:00", close: "16:00", closed: false },
+      Даваа: { open: "09:00", close: "18:00", closed: false },
+      Мямар: { open: "09:00", close: "18:00", closed: false },
+      Лхагва: { open: "09:00", close: "18:00", closed: false },
+      Пүрэв: { open: "09:00", close: "18:00", closed: false },
+      Баасан: { open: "09:00", close: "18:00", closed: false },
+      Бямба: { open: "10:00", close: "18:00", closed: false },
+      Ням: { open: "10:00", close: "16:00", closed: false },
     },
   });
 
@@ -24,9 +23,9 @@ export const CompanyWorkingHours = () => {
   return (
     <div className="bg-white w-full rounded-2xl p-4 flex flex-col gap-4">
       <div>
-        <div className="text-[20px] font-bold">Working hours</div>
+        <div className="text-[20px] font-bold">Ажлын цаг засварлах</div>
         <div className="text-[14px] font-normal text-[#aaa]">
-          Set up your business operating hours
+          Даваа - Ням гараг
         </div>
       </div>
 

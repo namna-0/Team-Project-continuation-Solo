@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { PenSvg } from "./assets/PenSvg";
 import { api } from "@/axios";
 import { toast } from "sonner";
+import { LoadingSvg } from "@/app/_components/assets/LoadingSvg";
 
 type Props = {
   employee: EmployeeType;
@@ -13,6 +14,7 @@ type Props = {
 };
 export const EmployeeEditCard = ({ employee, employeeIndex }: Props) => {
   const [edit, setEdit] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [newData, setNewData] = useState({
     employeeName: employee.employeeName,
     description: employee.description,
@@ -28,6 +30,7 @@ export const EmployeeEditCard = ({ employee, employeeIndex }: Props) => {
   };
 
   const handleSaveData = async () => {
+    setLoading(true);
     try {
       const request = await api.put(`/employee/${employee._id}`, {
         employeeName: newData.employeeName,
@@ -37,11 +40,13 @@ export const EmployeeEditCard = ({ employee, employeeIndex }: Props) => {
     } catch (error) {
       console.error(error, "Ажилтны мэдээлэл хадгалахад алдаа гарлаа.");
       toast.error("Ажилтны мэдээлэл хадгалахад алдаа гарлаа.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex gap-5 items-center w-full h-fit border-[1px] rounded-2xl p-3">
+    <div className="flex gap-5 items-end w-full h-fit border-[1px] rounded-2xl p-3 ">
       <div className="flex flex-col items-center gap-2">
         <div>№</div>
         <div>{employeeIndex + 1}</div>
@@ -57,7 +62,7 @@ export const EmployeeEditCard = ({ employee, employeeIndex }: Props) => {
           />
         </div>
       </div>
-      <div className="flex flex-col items-center  gap-2">
+      <div className="flex flex-col items-center  gap-2 ">
         <div>Нэмэлт мэдээлэл</div>
         <div className="w-[200px]  overflow-hidden">
           <Input
@@ -68,10 +73,16 @@ export const EmployeeEditCard = ({ employee, employeeIndex }: Props) => {
           />
         </div>
       </div>
+
       <Button variant={"outline"} onClick={() => setEdit(!edit)}>
-        <PenSvg />
+        Засах
       </Button>
-      {!edit && <Button onClick={handleSaveData}>Хадгалах</Button>}
+
+      {!edit && (
+        <Button onClick={handleSaveData}>
+          {loading ? <LoadingSvg /> : "Хадгалах"}
+        </Button>
+      )}
     </div>
   );
 };
