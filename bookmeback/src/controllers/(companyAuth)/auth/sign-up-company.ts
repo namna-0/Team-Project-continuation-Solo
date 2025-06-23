@@ -23,8 +23,6 @@ export const signupCompanyController: RequestHandler = async (req, res) => {
       aboutUsImage,
       experience,
       clientNumber,
-      instagramLink,
-      facebookLink,
     } = req.body;
 
     if (!email || !password || !companyName || !address || !phoneNumber) {
@@ -59,8 +57,6 @@ export const signupCompanyController: RequestHandler = async (req, res) => {
       aboutUsImage: aboutUsImage || "",
       experience: experience || "",
       clientNumber: clientNumber || "",
-      instagramLink: instagramLink || "",
-      facebookLink: facebookLink || "",
       createdAt: new Date(),
       updatedAt: new Date(),
     });

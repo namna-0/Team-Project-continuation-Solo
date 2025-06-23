@@ -43,10 +43,10 @@ export type Company = {
   workingHours: WorkingHoursType;
   lunchBreak?: LunchBreak;
   employees: Employee[];
-  backGroundImage: string;
-  aboutUsImage: string;
-  experience: string;
-  clientNumber: string;
+  backGroundImage?: string;
+  aboutUsImage?: string;
+  experience?: string;
+  clientNumber?: string;
 };
 
 export interface FormDataType {
@@ -72,6 +72,8 @@ export interface FormDataType {
   employeeData?: Employee[];
   setEmployeeData?: (data: Employee[]) => void;
   setOpen?: (open: boolean) => void;
+  aboutUsImage?: "";
+  backgroundImage?: "";
 }
 
 export type Location = {
