@@ -23,12 +23,13 @@ type CompanyInformationAuth = {
   handleInputCompanyImage: (
     e: React.ChangeEvent<HTMLInputElement>
   ) => Promise<void>;
-
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   companyLogo: string | null;
   employeeImage: string | null;
   companyData: Company[];
   companyLogoTest: string | null;
   companyAddedImage: string | null;
+  loading: boolean;
 };
 
 type CompanyDataType = {
@@ -64,6 +65,7 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
   const [companyData, setCompanyData] = useState<Company[]>([]);
   const [companyLogoTest, setCompanyLogoTest] = useState<string | null>(null);
   const { company, getCompany } = useCompanyAuth();
+  const [loading, setLoading] = useState(false);
 
   const getCompanyData = async () => {
     try {
@@ -147,12 +149,14 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
   const handleInputCompanyImage = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
+    setLoading(true);
     const file = e.target.files?.[0];
     if (file) {
       const result = await uploadedImageFunction(file);
       await handleAddCompanyImage(result);
       await getCompany();
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -165,6 +169,8 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
         handleInputCompanyLogo,
         handleInputEmployeeImage,
         handleInputCompanyImage,
+        setLoading,
+        loading,
         companyLogo,
         employeeImage,
         companyData,

@@ -53,9 +53,9 @@ export const CompanyAllEmployees = () => {
       </div>
       <div>
         {selectedTab === "Ажилтнууд" && (
-          <div className="grid grid-cols-3 gap-3 ">
+          <div className="grid grid-cols-3 gap-3">
             {companyEmployees.length === 0 && (
-              <p className="opacity-50">Ажилтны мэдээлэл хоосон байна.</p>
+              <p className="opacity-50 ">Ажилтны мэдээлэл хоосон байна.</p>
             )}
             {companyEmployees.map((employ, i) => (
               <div key={i}>
