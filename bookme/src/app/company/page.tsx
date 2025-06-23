@@ -1,3 +1,124 @@
+"use client";
+import { api } from "@/axios";
+import { useEffect, useState } from "react";
+import { Company } from "./[companyName]/_components/CompanyTypes";
+import { CompanyNavBar } from "./[companyName]/_components/CompanyNavBar";
+import Image from "next/image";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+
+// export type Company = {
+//   _id?: string;
+//   email: string;
+//   password?: string;
+//   confirmPassword?: string;
+//   companyName: string;
+//   description: string;
+//   address: string;
+//   lat?: number;
+//   lng?: number;
+//   city: string;
+//   phoneNumber: string;
+//   companyLogo: string;
+//   companyImages: string[];
+//   employees?: Employee[];
+//   workingHours: WorkingHoursType;
+//   lunchBreak?: {
+//     start: string;
+//     end: string;
+//   };
+//   bookings?: Booking[];
+// };;
+
 export default function Home() {
-  return <>Page.tsx</>;
+  const [companies, setCompanies] = useState<Company[]>([]);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    const getCompanies = async () => {
+      try {
+        const response = await api.get("/company");
+        setCompanies(response.data.companies);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getCompanies();
+  }, []);
+
+  const filteredCompanies = companies.filter((company) =>
+    company.companyName.toLowerCase().startsWith(search.toLowerCase())
+  );
+  return (
+    <div className="w-screen h-screen bg-[#f9f9f9] flex flex-col items-center">
+      <nav className=" top-0 w-full bg-white/80 backdrop-blur-md z-50 shadow-sm relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex-shrink-0">
+              <div className="relative w-32 h-10 rounded-full">
+                <Image
+                  src="/default-logo.jpg"
+                  alt="Company Logo"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            </div>
+            <div className="hidden md:block">
+              <div className="flex gap-[10px] items-center">
+                <Search />
+                <Input
+                  placeholder="Компаний нэрээр хайна уу."
+                  className="w-[210px]"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <div className="w-[534px] h-fit flex flex-col gap-6 mt-[50px]">
+        <div className="w-full h-[128px]  px-[30px] justify-center flex flex-col items-center">
+          <Image
+            src="/default-logo.jpg"
+            alt="Company Logo"
+            width={40}
+            height={40}
+          />
+          <div className="flex flex-col justify-center items-center">
+            <p className="font-semibold text-[20px]">
+              Bookme системид бүртгэлтэй компаниуд
+            </p>
+            <p className="text-gray-500 text-[12px]">
+              Өөрийн сонирхсон компани дээр дарж цагаа захиална уу.
+            </p>
+          </div>
+        </div>
+        {filteredCompanies.map((company) => (
+          <div
+            key={company._id}
+            className="border border-gray-300 p-4 rounded-md shadow bg-white w-full flex flex-col gap-5"
+          >
+            <div className="flex items-center gap-2">
+              <img
+                src={company.companyLogo}
+                className="h-[40px] w-[40px] "
+              ></img>
+              <h2 className="text-[24px] font-semibold">
+                {company.companyName}
+              </h2>
+            </div>
+            <div>
+              <p className="text-sm text-gray-700">{company.description}</p>
+              <p className="text-xs text-gray-500 mt-2">
+                <span className="font-semibold">Хаяг:</span>
+                {company.address}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
