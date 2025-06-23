@@ -1,15 +1,13 @@
-
 "use client"
-import { use, useEffect, useState } from "react";
-import OrderNavBar from "./_components/(publicItems)/header";
+import { useEffect, useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { Pacifico } from 'next/font/google'
-import OrderImformation from "./_components/orderImformation";
 import { api } from "@/axios";
+import { useParams } from "next/navigation";
+import OrderNavBar from "./_components/(publicItems)/header";
+import OrderImformation from "./_components/(publicItems)/orderImformation";
 import StageTwo from "./_components/(Stage2SelectTime)/SelectTime"; // Adjust the path based on your project structur;
 import StagaOne from "./_components/(Stage1EmployeeSelect)/SelectEmployee";
-import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
-import { useParams } from "next/navigation";
 const pacifico = Pacifico({
     subsets: ['latin'],
     weight: '400', // Pacifico зөвхөн 400 жинтэй байдаг
@@ -39,15 +37,15 @@ export type CompanyType = {
     bookings: string[]
 }
 export default function OrderPage() {
+
     const Stages = ["Ажилтан", "Огноо", "амжилттай захиалагдлаа"]
     const [isStage, setIsStage] = useState<string>(Stages[0])
     const [isSelectEmployee, setIsSelectEmployee] = useState<string | string[]>("")
     const { companyName } = useParams<{ companyName: string }>();
     const [companyData, setCompany] = useState<CompanyType | undefined>(undefined);
-    const [date, setDate] = useState<Date>(new Date)
+    const [date, setDate] = useState<Date | null>(null)
     const [selectedTime, setSelectedTime] = useState<Date | null>(null)
     const [selectedEmployeeImf, setSelectedEmployeeImf] = useState<string | undefined>(undefined)
-
     const title = () => {
         return (isStage === Stages[2]) ? `${isStage} хйих` : `${isStage} сонгох`;
     }
@@ -77,11 +75,11 @@ export default function OrderPage() {
                                     setIsStage(item)
                                 }
                             }} className={item == isStage ? " font-bold h-fit flex gap-1  text-xl items-center" : " flex text-xl gap-1 font-normal items-center"} key={index}>
-                                <p>{item}</p><ChevronRight size={16} />
+                                <p>{item}</p><ChevronRight size={18} />
                             </div>)
                         })}
                         </div>
-                        <div className="font-pacifico text-3xl">{title()}</div>
+                        {/* <div className="font-pacifico text-3xl">{title()}</div> */}
                     </div>
                     {isStage == Stages[0] &&
                         <StagaOne isSelectEmployee={isSelectEmployee} setIsSelectEmployee={setIsSelectEmployee} selectedEmployeeImf={selectedEmployeeImf} setSelectedEmployeeImf={setSelectedEmployeeImf} company={companyData as CompanyType} />
@@ -93,7 +91,7 @@ export default function OrderPage() {
                         </div>)}
                 </div>
                 <div className="flex flex-2 w-full relative justify-start items-center  ">
-                    <OrderImformation HandleNextStage={HandleNextStage} setIsSelectEmployee={setIsSelectEmployee} setSelectEmployee={(employee: string) => setSelectedEmployeeImf(employee)} selectedTime={selectedTime} setSelectedTime={setSelectedTime} isSelectEmployee={isSelectEmployee} date={date} selectedEmployeeImf={selectedEmployeeImf} company={companyData} isStage={isStage} Stages={Stages} />
+                    <OrderImformation setIsStage={setIsStage} HandleNextStage={HandleNextStage} setIsSelectEmployee={setIsSelectEmployee} setSelectEmployee={(employee: string) => setSelectedEmployeeImf(employee)} setDate={setDate} selectedTime={selectedTime} setSelectedTime={setSelectedTime} isSelectEmployee={isSelectEmployee} date={date} selectedEmployeeImf={selectedEmployeeImf} company={companyData} isStage={isStage} Stages={Stages} />
                 </div>
             </div >
         </div >

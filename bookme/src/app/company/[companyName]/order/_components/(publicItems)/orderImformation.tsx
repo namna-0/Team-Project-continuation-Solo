@@ -3,24 +3,26 @@
 import { api } from "@/axios";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { CompanyType, employeeType } from "../page";
+import { CompanyType, employeeType } from "../../page";
 import { Dialog } from "@radix-ui/react-dialog";
 import { DialogTrigger } from "@/components/ui/dialog";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/app/_providers/UserAuthProvider";
-import UpdateEmployee from "./(Stage1EmployeeSelect)/updateEmployeeDialog";
-import { Calendar,  Clock} from "lucide-react";
+import UpdateEmployee from "../(Stage1EmployeeSelect)/updateEmployeeDialog";
+import { Calendar, Clock } from "lucide-react";
 type OrderImformationType = {
     HandleNextStage: () => void, isSelectEmployee: string | string[]
     company?: CompanyType
     isStage: string
     Stages: string[]
     setIsSelectEmployee: (employee: string) => void
-    date: Date
+    date: Date | null
     selectedTime: Date | null
     setSelectedTime: (time: Date | null) => void
-    setSelectEmployee: (employee: string ) => void
+    setSelectEmployee: (employee: string) => void
     selectedEmployeeImf: string | undefined
+    setIsStage: (stage: string) => void
+    setDate: (date: Date | null) => void
 }
 export type OrderType = {
     _id?: string;
@@ -46,28 +48,33 @@ function OrderImformation({
     selectedTime,
     setSelectedTime,
     selectedEmployeeImf,
-    setSelectEmployee,
-    company, isStage, Stages }: OrderImformationType) {
+    setSelectEmployee, setDate,
+    company, isStage, setIsStage, Stages }: OrderImformationType) {
+
     const { user } = useAuth()
-
-
     const i = company?.employees.find((employee) => employee._id === selectedEmployeeImf);
     const addOrder = async () => {
         api.post("/order", {
             company: company?._id,
             user: user?._id,
             employee: selectedEmployeeImf,
-            selectedTime: selectedTime,
+            selectedTime: selectedTime?.toLocaleDateString("mn-Mn", {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                weekday: 'short',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+            }),
+
         }).then((response) => {
             console.log("Order added successfully", response.data);
-
-
         }
         ).catch((error) => {
             console.error("Error adding order", error);
         })
     }
-
     return (
         <div className="flex border absolute top-56 border-gray-300 p-6 flex-col rounded-xl w-100 min-h-130 justify-between ">
             <div className="w-full flex flex-col gap-4">
@@ -75,7 +82,7 @@ function OrderImformation({
                     <div className="w-24 h-24 rounded border hover:border-blue-700 transition flex justify-center items-center p-3 ">
                         <img
                             src={company ? company.companyImages[0] : undefined}
-                            onClick={() => window.open(`http://localhost:3000/company/[companyName]`, '_blank')}
+                            onClick={() => window.open(`http://localhost:3000/company/${company?.companyName}`, '_blank')}
                             className="w-full h-full object-cover rounded "
                         />
                     </div>
@@ -84,7 +91,7 @@ function OrderImformation({
                         <div className="text-10 text-gray-300">{company?.address}</div>
                     </div></div>
 
-                {isSelectEmployee && isStage <= Stages[1] &&
+                {isSelectEmployee &&
                     <div className="flex w-full justify-between ">
                         <div className="text-sm  text-gray-400 font-bold">үйлчилгээний ажилтан: </div>
                         {isStage == Stages[1]
@@ -92,36 +99,40 @@ function OrderImformation({
                                 <DialogTrigger className="w-fit flex gap-3  rounded-full items-centerp-1">
                                     <div className="text-sky-600">{isSelectEmployee}</div>
                                 </DialogTrigger>
-                                <UpdateEmployee selectedEmployeeImf={selectedEmployeeImf} setSelectedEmployee={setSelectEmployee} setIsSelectEmployee={setIsSelectEmployee} zurag={i?.profileImage || ""} company={company as CompanyType} isSelectEmployee={isSelectEmployee} />
+                                <UpdateEmployee selectedEmployeeImf={selectedEmployeeImf} setSelectedTime={setSelectedTime} setSelectedEmployee={setSelectEmployee} setIsSelectEmployee={setIsSelectEmployee} zurag={i?.profileImage || ""} company={company as CompanyType} isSelectEmployee={isSelectEmployee} />
                             </Dialog>
                             : <div className=" flex flex-col ">{isSelectEmployee}</div>}
-                    </div>}
-                {selectedTime !== null &&
-                    (<div>
-                        <div className="flex gap-3 text-gray-300 ">
+                    </div>
+                }
+                {selectedTime !== null ?
+                    (<div className="flex flex-col gap-4">
+                        <div className="flex gap-3 ">
                             {selectedTime ? (
                                 <>
-                                    <Calendar />
-                                    {selectedTime?.toDateString()}
+                                    <Calendar className="text-gray-400" />
+                                    {selectedTime?.toDateString().split(" ")[0]} {selectedTime?.toDateString().split(" ")[2]} {selectedTime?.toDateString().split(" ")[1]}
                                 </>
                             ) : ""}
                         </div>
-                        <div className="flex gap-3 text-gray-300 ">
+                        <div className="flex gap-3 ">
                             {selectedTime ? (
                                 <>
-                                    <Clock />
-                                    {selectedTime?.toTimeString().split(" ")[0]}
+                                    <Clock className="text-gray-400" />
+                                    {selectedTime?.toTimeString().split(" ")[0].slice(0, 2)}:{selectedTime?.toTimeString().split(" ")[0].slice(3, 5)}
                                 </>
                             ) : ""}
                         </div>
-                    </div>)}
+                    </div>) : undefined}
             </div>
             <Button className={isSelectEmployee == "" ? " relative w-full bg-gray-300 text-white" : " relative w-full bg-black text-white "} onClick={() => {
                 HandleNextStage()
-                if (isStage == Stages[2]) {
+                if (isStage == Stages[Stages.length - 1]) {
                     addOrder()
                     setIsSelectEmployee("")
+                    setSelectEmployee("")
+                    setDate(null)
                     setSelectedTime(null)
+                    setIsStage(Stages[0])
                 }
             }}>continue</Button>
         </div >
