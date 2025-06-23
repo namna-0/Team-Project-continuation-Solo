@@ -17,12 +17,12 @@ const OrderNavBar = ({
   Stages,
   title,
 }: OrderNavpropsType) => {
-  const initialValue = 107;
-  const finalValue = 88;
-  const thresholdY = 95; // set the scroll position where you want the state change
-  const speed = 1;
+  const initialValue = 70;
+  const finalValue = 80;
+  const thresholdY = 38; // set the scroll position where you want the state change
+  const speed = 200;
   const scrollDistance = (initialValue - finalValue) / speed;
-  const startY = 0; // scroll position when transition starts
+  const startY = 100; // scroll position when transition starts
   const endY = startY + scrollDistance;
   const { scrollY } = useScroll();
   const scrollOutput = useTransform(
@@ -48,49 +48,51 @@ const OrderNavBar = ({
   };
   return (
     <>
-      <div className="flex w-[1440px]  h-fit py-2 bg-white z-10 fixed top-0 shadow ">
-        <div className="w-full flex justify-between items-center ">
-          <div className="flex gap-6">
-            {isStage == Stages[0] ? (
-              <Dialog>
-                <DialogTrigger>
+
+      <div className="flex w-[1440px]  justify-between h-fit py-2 bg-white z-10 fixed top-0 shadow ">
+        <motion.div
+          className="font-bold text-xl normal-case "
+          initial={{ opacity: 0, scale: 0.5}}
+          animate={{
+            opacity: isPastThreshold ? 1 : 0,
+            scale: isPastThreshold ? 1 : 0.5,
+          }}
+        >
+          <div className="w-full flex justify-between gap-10 items-center ">
+            <div className="flex gap-6">
+              {isStage == Stages[0] ? (
+                <Dialog>
+                  <DialogTrigger>
+                    <LucideArrowLeft className="text-gray-300" />
+                  </DialogTrigger>
+                  <LeaveOrder />
+                </Dialog>
+              ) : (
+                <div
+                  onClick={() => {
+                    {
+                      HandlePrevStage();
+                    }
+                  }}
+                >
                   <LucideArrowLeft />
-                </DialogTrigger>
-                <LeaveOrder />
-              </Dialog>
-            ) : (
-              <div
-                onClick={() => {
-                  {
-                    HandlePrevStage();
-                  }
-                }}
-              >
-                <LucideArrowLeft />
-              </div>
-            )}
-            <motion.div
-              className="font-bold text-xl normal-case "
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{
-                opacity: isPastThreshold ? 1 : 0,
-                scale: isPastThreshold ? 1 : 0.5,
-              }}
-            >
-              {title}
-            </motion.div>
+                </div>
+              )}
+            </div>
+            {title}
           </div>
-          <div>
-            {" "}
-            <Dialog>
-              <DialogTrigger>
-                <X />
-              </DialogTrigger>
-              <LeaveOrder />
-            </Dialog>
-          </div>
+        </motion.div>
+        <div>
+          {" "}
+          <Dialog>
+            <DialogTrigger>
+              <X />
+            </DialogTrigger>
+            <LeaveOrder />
+          </Dialog>
         </div>
       </div>
+
     </>
   );
 };
