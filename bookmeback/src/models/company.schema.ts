@@ -115,14 +115,6 @@ const companySchema = new Schema({
       ref: "User",
     },
   ],
-  facebookLink: {
-    type: String,
-    default: "",
-  },
-  instagramLink: {
-    type: String,
-    default: "",
-  },
   createdAt: {
     type: Date,
     default: Date.now,

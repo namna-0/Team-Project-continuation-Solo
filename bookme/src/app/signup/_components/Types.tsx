@@ -21,6 +21,11 @@ export interface WorkingHoursType {
   sunday: DaySchedule;
 }
 
+export interface LunchBreak {
+  start: string;
+  end: string;
+}
+
 export type Company = {
   _id?: string;
   email: string;
@@ -36,10 +41,7 @@ export type Company = {
   companyLogo: string;
   companyImages: string[];
   workingHours: WorkingHoursType;
-  lunchBreak?: {
-    start: string;
-    end: string;
-  };
+  lunchBreak?: LunchBreak;
   employees: Employee[];
   backGroundImage: string;
   aboutUsImage: string;
@@ -65,9 +67,20 @@ export interface FormDataType {
     start: string;
     end: string;
   };
+  experience?: string;
+  clientNumber?: string;
+  employeeData?: Employee[];
+  setEmployeeData?: (data: Employee[]) => void;
+  setOpen?: (open: boolean) => void;
 }
 
-export const dayLabels: Record<string, string> = {
+export type Location = {
+  lat: number;
+  lng: number;
+  address: string;
+};
+
+export const dayLabels: Record<keyof WorkingHoursType, string> = {
   monday: "Даваа",
   tuesday: "Мягмар",
   wednesday: "Лхагва",
@@ -75,25 +88,4 @@ export const dayLabels: Record<string, string> = {
   friday: "Баасан",
   saturday: "Бямба",
   sunday: "Ням",
-};
-
-export interface Employee {
-  _id: string;
-  employeeName: string;
-  description: string;
-  profileImage: string;
-}
-
-export interface WorkingHours {
-  [key: string]: {
-    open: string;
-    close: string;
-    closed: boolean;
-  };
-}
-
-export type Location = {
-  lat: number;
-  lng: number;
-  address: string;
 };

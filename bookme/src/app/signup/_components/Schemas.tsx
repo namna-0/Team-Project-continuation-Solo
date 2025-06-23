@@ -23,12 +23,8 @@ export const step2Schema = z.object({
   address: z.string().min(5, "Хаяг дор хаяж 5 тэмдэгт байх ёстой"),
   city: z.string().min(2, "Хот дор хаяж 2 тэмдэгт байх ёстой"),
   phone: z.string().min(8, "Утасны дугаар дор хаяж 8 тэмдэгт байх ёстой"),
-  website: z
-    .string()
-    .url("Зөв URL хаяг оруулна уу")
-    .optional()
-    .or(z.literal("")),
-  logo: z.string().min(1, "Лого оруулна уу"),
+  experience: z.string().min(1, "Ажилласан жилээ оруулна уу"),
+  clientNumbers: z.string().min(1, "Нийт үйлчлүүлэгчдийн тоог оруулна уу"),
 });
 
 export const step3Schema = z.object({
@@ -47,6 +43,11 @@ export const step3Schema = z.object({
   }),
 });
 
+export const step4Schema = z.object({
+  logo: z.string().optional(),
+});
+
 export type Step1SchemaType = z.infer<typeof step1Schema>;
 export type Step2SchemaType = z.infer<typeof step2Schema>;
 export type Step3SchemaType = z.infer<typeof step3Schema>;
+export type Step4SchemaType = z.infer<typeof step4Schema>;
