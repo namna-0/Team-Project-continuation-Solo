@@ -112,13 +112,13 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
     >
       <div
         ref={containerRef}
-        className="container relative w-[210px] h-[210px]"
+        className="container relative grid grid-cols-3 grid-rows-3  w-[210px] h-[210px] p-4 bg-black "
       >
         {/* 3x3 grid of glowing boxes */}
         {[...Array(9)].map((_, i) => (
           <div
             key={i}
-            className="box absolute w-10 h-10 bg-cyan-400/90 rounded-sm"
+            className="box  w-9 h-9 bg-cyan-400/90 rounded-sm"
             style={{
               left: `${(i % 3) * 33.33}%`,
               top: `${Math.floor(i / 3) * 33.33}%`,
