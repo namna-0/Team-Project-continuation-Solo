@@ -5,7 +5,7 @@ import { Company } from "./CompanyTypes";
 
 export const CompanyLibrary = ({ company }: { company: Company }) => {
   return (
-    <section id="photos" className="bg-white py-12">
+    <section id="photos" className=" py-12">
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
           Бидний зураг

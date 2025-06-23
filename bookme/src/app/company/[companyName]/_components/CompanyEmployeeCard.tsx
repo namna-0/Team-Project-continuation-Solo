@@ -3,17 +3,12 @@ import { Star, Calendar, Award, Heart, Sparkles, Clock } from "lucide-react";
 import { Company, Employee } from "./CompanyTypes";
 import Link from "next/link";
 
-const gradientBackgrounds = [
-  "from-pink-400 via-purple-500 to-indigo-600",
-  "from-blue-400 via-cyan-500 to-teal-600",
-  "from-green-400 via-emerald-500 to-cyan-600",
-  "from-orange-400 via-pink-500 to-purple-600",
-];
+const gradientBackgrounds = ["from-blue-400 via-cyan-500 to-teal-600"];
 
 const cardColors = [
   {
-    primary: "from-pink-500 to-rose-600",
-    secondary: "from-pink-100 to-rose-100",
+    primary: "from-blue-500 to-cyan-600",
+    secondary: "from-blue-100 to-cyan-100",
     accent: "pink",
   },
   {
@@ -22,13 +17,13 @@ const cardColors = [
     accent: "blue",
   },
   {
-    primary: "from-green-500 to-emerald-600",
-    secondary: "from-green-100 to-emerald-100",
+    primary: "from-blue-500 to-cyan-600",
+    secondary: "from-blue-100 to-cyan-100",
     accent: "green",
   },
   {
-    primary: "from-purple-500 to-indigo-600",
-    secondary: "from-purple-100 to-indigo-100",
+    primary: "from-blue-500 to-cyan-600",
+    secondary: "from-blue-100 to-cyan-100",
     accent: "purple",
   },
 ];
