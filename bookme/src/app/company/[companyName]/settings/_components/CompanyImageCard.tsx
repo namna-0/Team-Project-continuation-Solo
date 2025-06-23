@@ -7,9 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useSettings } from "../_providers/CompanySettingsProvider";
 import { useState } from "react";
-import { ClickSVG } from "./assets/ClickSVG";
 import { LoadingSvg } from "@/app/_components/assets/LoadingSvg";
 
 type Props = {
@@ -25,7 +23,6 @@ export const CompanyImageCard = ({
   newImage,
   handleDeleteImage,
 }: Props) => {
-  const { companyAddedImage } = useSettings();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -43,7 +40,7 @@ export const CompanyImageCard = ({
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger>
           <Button
-            type="button"
+            // type="button"
             className="rounded-full absolute right-2 top-2 opacity-70"
           >
             x
@@ -57,20 +54,19 @@ export const CompanyImageCard = ({
           </DialogHeader>
           <div className="grid gap-4">
             <div className="w-full h-full">
-              <img src={image} className="w-full h-full rounded-3xl" />
+              <img src={image} className="w-[500px] h-[250px] rounded-3xl" />
             </div>
             <div className="w-full flex justify-center gap-3 items-center">
               <Button
-                type="button"
+                // type="button"
                 onClick={async () => {
                   setLoading(true);
                   await handleDeleteImage();
                   setLoading(false);
                 }}
               >
-                Тийм
+                {!loading ? "Тийм" : <LoadingSvg />}
               </Button>
-              {loading && <LoadingSvg />}
             </div>
           </div>
         </DialogContent>

@@ -14,6 +14,7 @@ type AuthContextType = {
     company: Company
   ) => Promise<{ data: any; status: number } | undefined>;
   signOutCompany: () => void;
+  getCompany: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -78,7 +79,9 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ company, signIn, signOutCompany, signUp }}>
+    <AuthContext.Provider
+      value={{ company, signIn, signOutCompany, signUp, getCompany }}
+    >
       {children}
     </AuthContext.Provider>
   );

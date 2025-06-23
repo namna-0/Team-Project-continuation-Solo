@@ -1,6 +1,9 @@
 "use client";
+import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
 import { api } from "@/axios";
 import axios from "axios";
+import { toast } from "sonner";
+
 import {
   createContext,
   PropsWithChildren,
@@ -53,11 +56,14 @@ const CompanyInformation = createContext<CompanyInformationAuth | undefined>(
 );
 
 export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
-  const [companyAddedImage, setCompanyAddedImage] = useState("");
+  const [companyAddedImage, setCompanyAddedImage] = useState<string | null>(
+    null
+  );
   const [companyLogo, setCompanyLogo] = useState<string | null>(null);
   const [employeeImage, setEmployeeImage] = useState<string | null>(null);
   const [companyData, setCompanyData] = useState<Company[]>([]);
   const [companyLogoTest, setCompanyLogoTest] = useState<string | null>(null);
+  const { company, getCompany } = useCompanyAuth();
 
   const getCompanyData = async () => {
     try {
@@ -89,7 +95,7 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-      setCompanyLogoTest(response.data.url);
+
       return response.data.url;
     } catch (error) {
       console.error("Failed to upload image", error);
@@ -103,6 +109,8 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
     const file = e.target.files?.[0];
     if (file) {
       const result = await uploadedImageFunction(file);
+      setCompanyLogoTest(result);
+
       if (result) setCompanyLogo(result);
     }
   };
@@ -121,13 +129,29 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const handleAddCompanyImage = async (result: string | null) => {
+    try {
+      const currentImages = company?.companyImages || [];
+      const updatedImages = [...currentImages, result];
+      await api.put(`/company/${company?._id}`, {
+        companyImages: updatedImages,
+      });
+
+      toast.success("Зураг амжилттай нэмэгдлээ.");
+    } catch (error) {
+      console.error("Зураг нэмэхэд алдаа гарлаа:", error);
+      toast.error("Зураг нэмэхэд алдаа гарлаа.");
+    }
+  };
+
   const handleInputCompanyImage = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = e.target.files?.[0];
     if (file) {
       const result = await uploadedImageFunction(file);
-      if (result) setCompanyAddedImage(result);
+      await handleAddCompanyImage(result);
+      await getCompany();
     }
   };
 
