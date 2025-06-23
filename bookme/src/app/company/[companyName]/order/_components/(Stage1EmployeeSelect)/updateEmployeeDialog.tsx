@@ -13,8 +13,9 @@ type UpdateEmployeeProps = {
   zurag?: string;
   company: CompanyType;
   setIsSelectEmployee: (value: string) => void;
-  selectedEmployeeImf: string|undefined;
+  selectedEmployeeImf: string | undefined;
   setSelectedEmployee: (employeeId: string) => void;
+  setSelectedTime: (date: Date | null) => void
 };
 function UpdateEmployee({
   isSelectEmployee,
@@ -22,6 +23,8 @@ function UpdateEmployee({
   setIsSelectEmployee,
   selectedEmployeeImf,
   setSelectedEmployee,
+  setSelectedTime
+
 }: UpdateEmployeeProps) {
   return (
     <DialogContent
@@ -44,10 +47,12 @@ function UpdateEmployee({
               onClick={() => {
                 if (
                   isSelectEmployee === "" ||
-                 item.employeeName !== isSelectEmployee
+                  item.employeeName !== isSelectEmployee
                 )
                   setIsSelectEmployee(item.employeeName);
-                  setSelectedEmployee(item._id)
+                setSelectedEmployee(item._id)
+                setSelectedTime(null)
+
               }}
             >
               {item.availability == true && (
@@ -60,7 +65,7 @@ function UpdateEmployee({
                         ? `${item.employeeName} дээр цаг захиалсан байна`
                         : `${item.employeeName} дээр цаг захиалах`
                     }
-                    zurag={item.profileImage || ""} 
+                    zurag={item.profileImage || ""}
                   />
                 </DialogClose>
               )}
