@@ -1,7 +1,7 @@
 // "use client";
 // import { useState } from "react";
 // import Stepper, { Step } from "@/blocks/Components/Stepper/Stepper";
-// import { Step4 } from "./_components/Step4";
+// import { Step6 } from "./_components/Step6";
 // import { Step3 } from "./_components/Step3";
 // import { Step2 } from "./_components/Step2";
 // import { Step1 } from "./_components/Step1";
@@ -10,6 +10,7 @@
 // import { useCompanyAuth } from "../_providers/CompanyAuthProvider";
 // import { toast } from "sonner";
 // import { Step5 } from "./_components/Step5";
+// import { Step4 } from "./_components/Step4";
 
 // const UPLOAD_PRESET = "bookMe";
 // const CLOUD_NAME = "dazhij9zy";
@@ -169,16 +170,7 @@
 //         </Step>
 
 //         <Step>
-//           <Step2
-//             formData={formData}
-//             setFormData={setFormData}
-//             handleImageChange={handleImageChange}
-//             companyImagePreview={companyImagePreview}
-//             removeCompanyImage={removeCompanyImage}
-//             handleLogoChange={handleLogoChange}
-//             logoPreview={logoPreview}
-//             removeLogo={removeLogo}
-//           />
+//           <Step2 formData={formData} setFormData={setFormData} />
 //         </Step>
 
 //         <Step>
@@ -193,13 +185,25 @@
 //           <Step4
 //             formData={formData}
 //             setFormData={setFormData}
-//             dayLabels={dayLabels}
+//             handleImageChange={handleImageChange}
 //             companyImagePreview={companyImagePreview}
+//             removeCompanyImage={removeCompanyImage}
+//             handleLogoChange={handleLogoChange}
 //             logoPreview={logoPreview}
+//             removeLogo={removeLogo}
 //           />
 //         </Step>
 //         <Step>
 //           <Step5 formData={formData} setFormData={setFormData} />
+//         </Step>
+//         <Step>
+//           <Step6
+//             formData={formData}
+//             setFormData={setFormData}
+//             dayLabels={dayLabels}
+//             companyImagePreview={companyImagePreview}
+//             logoPreview={logoPreview}
+//           />
 //         </Step>
 //       </Stepper>
 //     </div>
