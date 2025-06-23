@@ -8,6 +8,9 @@ import OrderNavBar from "./_components/(publicItems)/header";
 import OrderImformation from "./_components/(publicItems)/orderImformation";
 import StageTwo from "./_components/(Stage2SelectTime)/SelectTime"; // Adjust the path based on your project structur;
 import StagaOne from "./_components/(Stage1EmployeeSelect)/SelectEmployee";
+import { WorkingHours } from "@/app/signup/_components/Types";
+import { WorkingHoursType } from "../_components/CompanyTypes";
+
 const pacifico = Pacifico({
     subsets: ['latin'],
     weight: '400', // Pacifico зөвхөн 400 жинтэй байдаг
@@ -24,9 +27,10 @@ export type employeeType = {
     companyId: string
     bookings: string[]
 }
+
 export type CompanyType = {
     _id: string,
-    workingHours: string,
+    workingHours: WorkingHours
     companyName: string
     address: string
     companyLogo: string
@@ -39,6 +43,7 @@ export type CompanyType = {
 export default function OrderPage() {
 
     const Stages = ["Ажилтан", "Огноо", "амжилттай захиалагдлаа"]
+    const [loading, setLoading] = useState<boolean>(false)
     const [isStage, setIsStage] = useState<string>(Stages[0])
     const [isSelectEmployee, setIsSelectEmployee] = useState<string | string[]>("")
     const { companyName } = useParams<{ companyName: string }>();
@@ -49,22 +54,36 @@ export default function OrderPage() {
     const title = () => {
         return (isStage === Stages[2]) ? `${isStage} хйих` : `${isStage} сонгох`;
     }
-    const getCompany = async () => {
-        try {
-            const response = await api.get(`/company/name/${companyName}`);
-            setCompany(response.data.company);
+    useEffect(() => {
+        const fetchCompany = async () => {
+            try {
+                setLoading(true);
+                const response = await api.get(`/company/name/${companyName}`);
+                if (response.data && response.data.company) {
+                    setCompany(response.data.company);
+                    console.log(response.data);
 
-        } catch (error) {
-            console.error(error)
+
+                } else {
+                    return ("Компани олдсонгүй");
+                }
+            } catch (err) {
+                console.error("Компаний мэдээлэл авахад алдаа гарлаа:", err);
+
+            } finally {
+                setLoading(false);
+            }
+        };
+        if (companyName) {
+            fetchCompany();
         }
-    };
-    useEffect(() => { getCompany() }, [companyName])
+    }, [companyName]);
     const HandleNextStage = () => {
         if (isStage == Stages[0] && !(isSelectEmployee == "")) { setIsStage(Stages[1]) }
         if (isStage == Stages[1]) { setIsStage(Stages[2]) }
     };
     return (
-        <div className="w-full flex flex-col h-fit jusify-center items-center bg-white">
+        <div className="w-full flex flex-col h-fit jusify-center overflow-hidden items-center bg-white">
             <div className="w-[1440px] relative h-[120vh] flex  justify-center bg-gray-100" >
                 <OrderNavBar isStage={typeof isStage === "string" ? isStage : ""} setIsStage={setIsStage} title={title()} Stages={Stages} />
                 <div className="flex-3 relative flex flex-col p-16 gap-8">

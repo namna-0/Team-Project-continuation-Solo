@@ -6,7 +6,6 @@ import { useState } from "react";
 import { CompanyType, employeeType } from "../../page";
 import { Dialog } from "@radix-ui/react-dialog";
 import { DialogTrigger } from "@/components/ui/dialog";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/app/_providers/UserAuthProvider";
 import UpdateEmployee from "../(Stage1EmployeeSelect)/updateEmployeeDialog";
 import { Calendar, Clock } from "lucide-react";
@@ -58,7 +57,7 @@ function OrderImformation({
             company: company?._id,
             user: user?._id,
             employee: selectedEmployeeImf,
-            selectedTime: selectedTime?.toLocaleDateString("mn-Mn", {
+            selectedTime: selectedTime?.toLocaleDateString("mn-MN", {
                 year: 'numeric',
                 month: '2-digit',
                 day: '2-digit',
@@ -89,8 +88,8 @@ function OrderImformation({
                     <div className="flex-1 flex flex-col gap-2">
                         <div className="text-2xl font-bold">{company?.companyName}</div>
                         <div className="text-10 text-gray-300">{company?.address}</div>
-                    </div></div>
-
+                    </div>
+                </div>
                 {isSelectEmployee &&
                     <div className="flex w-full justify-between ">
                         <div className="text-sm  text-gray-400 font-bold">үйлчилгээний ажилтан: </div>

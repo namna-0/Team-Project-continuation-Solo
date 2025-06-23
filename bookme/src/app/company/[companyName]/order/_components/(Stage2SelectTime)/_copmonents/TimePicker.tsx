@@ -46,7 +46,7 @@ function TimePicker({
                             className={
                                 isBooked && new Date()
                                     ? "bg-gray-600 flex w-full items-center p-4 text-gray-500 cursor-not-allowed pointer-events-none"
-                                    : "bg-gray-200 flex w-full items-center justify-center p-4 hover:bg-gray-300 cursor-pointer"
+                                    : "bg-gray-200 flex w-full items-center justify-center p-4 line-through hover:bg-gray-300 cursor-pointer"
                             }
                             onClick={() => {
                                 if (date && !isBooked) {

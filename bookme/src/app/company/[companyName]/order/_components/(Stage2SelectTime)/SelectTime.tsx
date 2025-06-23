@@ -25,17 +25,23 @@ function StageTwoTimePicking({
     const getEmployee = company?.employees.find((employee: employeeType) => employee._id === selectedEmployeeImf);
     const getTime = (hour: number) => hour * 60;
     const dayArrays = () => {
-        const days = [];
+        const days: Date[] = [];
         let current = new Date();
         const end = new Date();
-        end.setMonth(end.getMonth() + 6); // 6 сарын дараах өдөр
+        end.setMonth(end.getMonth() + 3);
+        const dayKeyMap = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
         while (current <= end) {
-            const dayOfWeek = current.getDay();
-            days.push(new Date(current)); // copy date
-            current.setDate(current.getDate() + 1); // дараагийн өдөр рүү
+          const dayIndex = current.getDay();
+          const key = dayKeyMap[dayIndex];
+          const dayInfo = company.workingHours[key];
+            days.push(new Date(current));
+      
+      
+          current.setDate(current.getDate() + 1);
         }
+      
         return days;
-    }
+      };  
     const start = getEmployee ? parseInt(getEmployee.startTime) : 0;
     const duration = getEmployee ? parseInt(getEmployee.duration.toString()) : 0;
     const end = getEmployee ? parseInt(getEmployee.endTime) : 0;
