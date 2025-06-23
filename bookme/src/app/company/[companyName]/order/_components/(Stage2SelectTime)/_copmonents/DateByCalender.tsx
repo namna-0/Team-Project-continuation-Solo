@@ -37,10 +37,15 @@ function SelectDayOnCalendar({ open, setOpen, setDate, date }: CalendarProps) {
                     fromYear={new Date().getFullYear()} // өнөөдрийн оноос эхэлнэ
                     toYear={new Date().getFullYear() + 1} // дараа жилийн эхний сар хүртэл
                     onMonthChange={(month) => {
-                        setDate(new Date(month.getFullYear(), month.getMonth(), isToday(new Date()) ? new Date().getDate() : 1));
+                        const today = new Date();
+                        const isCurrentMonth = month.getFullYear() === today.getFullYear() && month.getMonth() === today.getMonth();
+                        const newDate = isCurrentMonth
+                            ? today
+                            : new Date(month.getFullYear(), month.getMonth(), 1);
+                        setDate(newDate);
                     }}
                     fromMonth={new Date(new Date().getFullYear(), new Date().getMonth())} // өнөөдрийн сар
-                    toMonth={new Date(new Date().getFullYear(), new Date().getMonth() + 6)}
+                    toMonth={new Date(new Date().getFullYear(), new Date().getMonth() + 3)}
                     modifiers={{ today: (date) => isToday(date) }}
                     disabled={{ before: new Date() }}
                     onSelect={(date) => {
