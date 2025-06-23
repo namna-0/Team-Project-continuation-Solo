@@ -19,7 +19,12 @@ export const signupCompanyController: RequestHandler = async (req, res) => {
       companyImages,
       workingHours,
       lunchBreak,
-      website,
+      backGroundImage,
+      aboutUsImage,
+      experience,
+      clientNumber,
+      instagramLink,
+      facebookLink,
     } = req.body;
 
     if (!email || !password || !companyName || !address || !phoneNumber) {
@@ -50,7 +55,12 @@ export const signupCompanyController: RequestHandler = async (req, res) => {
       companyImages: companyImages || [],
       workingHours: workingHours || {},
       lunchBreak: lunchBreak || {},
-      website: website || "",
+      backGroundImage: backGroundImage || "",
+      aboutUsImage: aboutUsImage || "",
+      experience: experience || "",
+      clientNumber: clientNumber || "",
+      instagramLink: instagramLink || "",
+      facebookLink: facebookLink || "",
       createdAt: new Date(),
       updatedAt: new Date(),
     });

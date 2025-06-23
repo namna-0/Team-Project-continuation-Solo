@@ -46,6 +46,7 @@ const companySchema = new Schema({
     type: String,
     required: false,
   },
+
   address: { type: String, required: true },
   city: { type: String, required: false },
   lat: { type: Number },
@@ -114,6 +115,14 @@ const companySchema = new Schema({
       ref: "User",
     },
   ],
+  facebookLink: {
+    type: String,
+    default: "",
+  },
+  instagramLink: {
+    type: String,
+    default: "",
+  },
   createdAt: {
     type: Date,
     default: Date.now,
