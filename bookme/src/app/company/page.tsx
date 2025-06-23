@@ -6,6 +6,7 @@ import { CompanyNavBar } from "./[companyName]/_components/CompanyNavBar";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 // export type Company = {
 //   _id?: string;
@@ -110,11 +111,21 @@ export default function Home() {
               </h2>
             </div>
             <div>
-              <p className="text-sm text-gray-700">{company.description}</p>
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-[14px] text-gray-700">{company.description}</p>
+              <p className="text-[12px] text-gray-500 mt-2">
                 <span className="font-semibold">Хаяг:</span>
                 {company.address}
               </p>
+              <p className="text-[12px] text-gray-500 mt-2">
+                <span className="font-semibold"> Email хаяг:</span>
+                {company.email}
+              </p>
+            </div>
+            <div className="flex justify-end">
+              <Button className="relative bg-[#77b8fa] group w-[77px] h-10 px-6 py-2 rounded-full overflow-hidden text-white cursor-pointer">
+                <span className="absolute inset-0 bg-gradient-to-r from-[#77b8fa] to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-full" />
+                <span className="relative z-10">Зочлох</span>
+              </Button>
             </div>
           </div>
         ))}
