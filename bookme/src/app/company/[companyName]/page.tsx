@@ -1,75 +1,38 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { api } from "@/axios";
-import { CompanyFooter } from "./_components/CompanyFooter";
-import { GlobalStyles } from "./_components/GlobalStyles";
-import { CompanyWorkingHours } from "./_components/CompanyWorkingHours";
-import { CompanyNavBar } from "./_components/CompanyNavBar";
-import { CompanyBackgroundImageText } from "./_components/CompanyBackgroundImageText";
+import {
+  Check,
+  Star,
+  ChevronLeft,
+  ChevronRight,
+  Eye,
+  Maximize2,
+} from "lucide-react";
 import { Company } from "./_components/CompanyTypes";
-import { CompanyLocation } from "./_components/CompanyLocation";
-import { CompanyLibrary } from "./_components/CompanyLibrary";
-import { AboutCompany } from "./_components/AboutCompany";
-import { EmployeeCardColorfulList } from "./_components/CompanyEmployeeCard";
 
-export default function CompanyHomepage() {
+import { Template1 } from "./_components/_templates/Template1";
+import { Template2 } from "./_components/_templates/Template2";
+import { Template3 } from "./_components/_templates/Template3";
+import { SelectTemplate } from "./_components/_templates/SelectTemplate";
+
+export default function CompanyTemplateSelector() {
   const { companyName } = useParams<{ companyName: string }>();
+  const router = useRouter();
   const [company, setCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [email, setEmail] = useState("");
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [visibleCards, setVisibleCards] = useState<number[]>([]);
-  const [companyLocation, setCompanyLocation] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = parseInt(
-              entry.target.getAttribute("data-index") || "0"
-            );
-            setVisibleCards((prev) => [...prev, index]);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const cards = document.querySelectorAll("[data-index]");
-    cards.forEach((card) => observer.observe(card));
-
-    return () => observer.disconnect();
-  }, []);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const [templateNumber, setTemplateNumber] = useState(2);
 
   useEffect(() => {
     const fetchCompany = async () => {
       try {
         setLoading(true);
         const response = await api.get(`/company/name/${companyName}`);
-        if (response.data && response.data.company) {
+        if (response.data?.company) {
           setCompany(response.data.company);
-        } else {
-          setError("Компани олдсонгүй");
         }
       } catch (err) {
         console.error("Компаний мэдээлэл авахад алдаа гарлаа:", err);
@@ -83,24 +46,6 @@ export default function CompanyHomepage() {
       fetchCompany();
     }
   }, [companyName]);
-
-  console.log("company medeelel", company);
-
-  useEffect(() => {
-    if (company) {
-      if (company.lat && company.lng) {
-        setCompanyLocation({
-          lat: company.lat,
-          lng: company.lng,
-        });
-      } else if (company.address) {
-        setCompanyLocation({
-          lat: 47.9185,
-          lng: 106.9176,
-        });
-      }
-    }
-  }, [company]);
 
   if (loading) {
     return (
@@ -118,7 +63,7 @@ export default function CompanyHomepage() {
           <span className="block sm:inline"> {error}</span>
         </div>
         <Button className="mt-4" onClick={() => window.location.reload()}>
-          Дахин оролдох...
+          Дахин оролдох
         </Button>
       </div>
     );
@@ -133,40 +78,17 @@ export default function CompanyHomepage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50 relative overflow-x-hidden">
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-pink-200/30 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-purple-200/30 rounded-full blur-xl animate-pulse delay-1000"></div>
-        <div className="absolute bottom-40 left-20 w-40 h-40 bg-rose-200/30 rounded-full blur-xl animate-pulse delay-2000"></div>
-        <div className="absolute bottom-20 right-10 w-28 h-28 bg-pink-300/30 rounded-full blur-xl animate-pulse delay-3000"></div>
-      </div>
-      <CompanyNavBar
-        company={company}
-        isScrolled={isScrolled}
-        isMenuOpen={isMenuOpen}
-        toggleMenu={toggleMenu}
-      />
-
-      <CompanyBackgroundImageText companyName={companyName} company={company} />
-
-      <AboutCompany company={company} />
-
-      {company.workingHours && <CompanyWorkingHours company={company} />}
-
-      {company.employees && company.employees.length > 0 && (
-        <EmployeeCardColorfulList company={company} />
+    <div className="min-h-screen bg-gray-50">
+      {templateNumber === 0 && <SelectTemplate />}
+      {templateNumber === 1 && (
+        <Template1 data={company} companyName={companyName} />
       )}
-
-      <CompanyLocation company={company} companyLocation={companyLocation} />
-
-      {company.companyImages && company.companyImages.length > 0 && (
-        <CompanyLibrary company={company} />
+      {templateNumber === 2 && (
+        <Template2 data={company} companyName={companyName} />
       )}
-      <footer className="bg-gray-900 text-white py-12 h-[450px]">
-        <CompanyFooter companyName={companyName} />
-      </footer>
-
-      <GlobalStyles />
+      {templateNumber === 3 && (
+        <Template3 data={company} companyName={companyName} />
+      )}
     </div>
   );
 }
