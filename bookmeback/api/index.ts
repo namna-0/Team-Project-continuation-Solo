@@ -23,8 +23,6 @@ app.use(express.json());
 app.use(authCompanyRouter);
 app.use(companyRouter);
 app.use(BookingRouter);
-app.use(authCompanyRouter);
-app.use(companyRouter);
 app.use("/authuser", authUserRouter);
 app.use("/email", emailRouter);
 app.use(employeeRouter);

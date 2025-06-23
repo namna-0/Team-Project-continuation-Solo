@@ -11,7 +11,7 @@ import {
 const companyRouter = Router();
 
 companyRouter
-  .post("/company/:companyId", createCompanyController)
+  .post("/company", createCompanyController)
   .get("/company", getCompaniesController)
   .get("/company/name/:companyName", getCompanyController)
   .get("/company/id/:companyId", getCompanyByIdController)
