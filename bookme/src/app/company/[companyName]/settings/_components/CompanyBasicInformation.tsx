@@ -1,5 +1,6 @@
 "use client";
 
+import { LoadingSvg } from "@/app/_components/assets/LoadingSvg";
 import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
 import { api } from "@/axios";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import { toast } from "sonner";
 
 export const CompanyBasicInformation = () => {
   const { company } = useCompanyAuth();
+  const [loading, setLoading] = useState(false);
 
   const [updatedCompany, setUpdatedCompany] = useState({
     companyName: "",
@@ -32,6 +34,7 @@ export const CompanyBasicInformation = () => {
   }, [company]);
 
   const handleChangeData = async () => {
+    setLoading(true);
     try {
       const updateData = await api.put(`/company/${company?._id}`, {
         companyName: updatedCompany.companyName,
@@ -44,6 +47,8 @@ export const CompanyBasicInformation = () => {
     } catch (error) {
       console.error("Компанийн мэдээлэл шинэчлэхэд алдаа гарлаа.", error);
       toast.error("Компанийн мэдээлэл шинэчлэхэд алдаа гарлаа.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -122,7 +127,11 @@ export const CompanyBasicInformation = () => {
         />
       </div>
       <div className="w-full flex justify-end">
-        <Button onClick={handleChangeData}>Хадгалах</Button>
+        {loading === false ? (
+          <Button onClick={handleChangeData}>Хадгалах</Button>
+        ) : (
+          <LoadingSvg />
+        )}
       </div>
     </div>
   );
