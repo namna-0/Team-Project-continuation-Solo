@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { WorkingHoursType } from "../../_components/CompanyTypes";
+import { Company } from "@/app/signup/_components/Types";
 import { LoadingSvg } from "@/app/_components/assets/LoadingSvg";
 
 const dayLabels: Record<keyof WorkingHoursType, string> = {
@@ -18,12 +19,15 @@ const dayLabels: Record<keyof WorkingHoursType, string> = {
   sunday: "Ням",
 };
 
-export const CompanyWorkingHours = () => {
-  const { company } = useCompanyAuth();
-  const [loading, setLoading] = useState(false);
-  if (!company) return <LoadingSvg />;
+type PropsType = {
+  company: Company;
+};
+
+export const CompanyWorkingHours = ({ company }: PropsType) => {
+  const [loadingDay, setLoadingDay] = useState<string | null>(null);
+
   const [changedTimeSchedule, setChangedTimeSchedule] = useState(
-    company?.workingHours
+    company.workingHours
   );
 
   return (
@@ -80,6 +84,7 @@ export const CompanyWorkingHours = () => {
                   variant="outline"
                   onClick={async () => {
                     const updatedClosed = !data.closed;
+
                     setChangedTimeSchedule((prev) => ({
                       ...prev!,
                       [day]: {
@@ -88,6 +93,7 @@ export const CompanyWorkingHours = () => {
                       },
                     }));
                     try {
+                      setLoadingDay(day);
                       await api.put(`company/${company._id}`, {
                         workingHours: {
                           ...changedTimeSchedule,
@@ -102,15 +108,22 @@ export const CompanyWorkingHours = () => {
                       toast.success(
                         `${
                           dayLabels[day as keyof WorkingHoursType]
-                        } амжилттай шинэчлэгдлээ`
+                        } гариг амжилттай шинэчлэгдлээ`
                       );
+                      setLoadingDay(null); // бүх loading-ийг цэвэрлэнэ
                     } catch (error) {
                       console.error("Хүсэлт илгээхэд алдаа:", error);
                       toast.error("Сервертэй холбогдоход алдаа гарлаа.");
                     }
                   }}
                 >
-                  {data.closed ? "Нээх" : "Хаах"}
+                  {loadingDay === day ? (
+                    <LoadingSvg />
+                  ) : data.closed ? (
+                    "Ажиллах"
+                  ) : (
+                    "Амрах"
+                  )}
                 </Button>
               </div>
             ))}
