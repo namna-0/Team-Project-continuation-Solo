@@ -24,27 +24,39 @@ interface BookingCalendarProps {
 const getEventColor = (status: string) => {
   switch (status?.toLowerCase()) {
     case "confirmed":
-      return "#3b82f6";
+      return "#1a73e8"; // Google Blue
     case "cancelled":
-      return "#ef4444";
+      return "#ea4335"; // Google Redsss
     case "completed":
-      return "#22c55e";
+      return "#34a853"; // Google Green
     case "pending":
-      return "#facc15";
+      return "#fbbc04"; // Google Yellow
     default:
-      return "#6b7280";
+      return "#9aa0a6"; // Google Gray
   }
 };
 
-const formatSelectedTime = (date: Date): string => {
-  const weekday = date.toLocaleDateString("en-US", { weekday: "short" });
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const day = date.getDate().toString().padStart(2, "0");
-  const year = date.getFullYear();
-  const hour = date.getHours().toString().padStart(2, "0");
-  const minute = date.getMinutes().toString().padStart(2, "0");
+const getEventStyle = (status: string) => {
+  const baseColor = getEventColor(status);
+  return {
+    backgroundColor: baseColor,
+    borderColor: baseColor,
+    color: "#ffffff",
+  };
+};
 
-  return `${weekday}, ${month}/${day}/${year}, ${hour}:${minute}`;
+const formatSelectedTime = (date: Date): string => {
+  const weekday = date.toLocaleDateString("en-US", { weekday: "long" });
+  const month = date.toLocaleDateString("en-US", { month: "long" });
+  const day = date.getDate();
+  const year = date.getFullYear();
+  const time = date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  return `${weekday}, ${month} ${day}, ${year} at ${time}`;
 };
 
 export default function BookingCalendar({
@@ -56,6 +68,7 @@ export default function BookingCalendar({
   const { company: loggedInCompany } = useCompanyAuth();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState<Date | null>(null);
+  const [currentView, setCurrentView] = useState("timeGridWeek");
 
   useEffect(() => {
     const calendarEvents: EventInput[] = bookings.map((booking) => {
@@ -63,17 +76,23 @@ export default function BookingCalendar({
         ? parseInt(booking.employee.duration)
         : 60;
 
+      const style = getEventStyle(booking.status);
+
       return {
         id: booking._id,
-        title: `${booking.employee?.employeeName || "—"} - ${
-          booking.user?.username || "Guest"
-        }`,
+        title: `${booking.user?.username || "Guest"}`,
         start: new Date(booking.selectedTime),
         end: new Date(
           new Date(booking.selectedTime).getTime() + duration * 60 * 1000
         ),
-        backgroundColor: getEventColor(booking.status),
-        borderColor: getEventColor(booking.status),
+        backgroundColor: style.backgroundColor,
+        borderColor: style.borderColor,
+        textColor: style.color,
+        extendedProps: {
+          employee: booking.employee?.employeeName || "—",
+          status: booking.status,
+          customerName: booking.user?.username || "Guest",
+        },
       };
     });
 
@@ -112,13 +131,20 @@ export default function BookingCalendar({
           ? Number(selectedEmployee.duration)
           : 60;
 
+        const style = getEventStyle("confirmed");
         const newEvent: EventInput = {
           id: response.data.order._id,
-          title: `${selectedEmployee.employeeName} - Guest`,
+          title: "Guest",
           start: selectedSlot,
           end: new Date(selectedSlot.getTime() + durationInMinutes * 60 * 1000),
-          backgroundColor: getEventColor("confirmed"),
-          borderColor: getEventColor("confirmed"),
+          backgroundColor: style.backgroundColor,
+          borderColor: style.borderColor,
+          textColor: style.color,
+          extendedProps: {
+            employee: selectedEmployee.employeeName,
+            status: "confirmed",
+            customerName: "Guest",
+          },
         };
 
         setEvents((prev) => [...prev, newEvent]);
@@ -136,99 +162,238 @@ export default function BookingCalendar({
     setSelectedSlot(null);
   };
 
-  return (
-    <>
-      <div className="max-w-7xl mx-auto p-4 bg-white shadow rounded-lg">
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-2">
-            {selectedEmployee
-              ? `${selectedEmployee.employeeName}-ийн календар`
-              : "Бүх ажилтнуудын календар"}
-          </h3>
-          <div className="flex gap-4 text-sm">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded bg-yellow-400" />
-              <span>Хүлээгдэж буй</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded bg-blue-500" />
-              <span>Баталгаажсан</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded bg-green-500" />
-              <span>Дууссан</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded bg-red-500" />
-              <span>Цуцлагдсан</span>
-            </div>
-          </div>
-        </div>
+  const statusLegend = [
+    { status: "pending", label: "Хүлээгдэж буй", color: "#fbbc04" },
+    { status: "confirmed", label: "Баталгаажсан", color: "#1a73e8" },
+    { status: "completed", label: "Дууссан", color: "#34a853" },
+    { status: "cancelled", label: "Цуцлагдсан", color: "#ea4335" },
+  ];
 
-        <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          initialView="timeGridWeek"
-          headerToolbar={{
-            left: "prev,next today",
-            center: "title",
-            right: "dayGridMonth,timeGridWeek,timeGridDay",
-          }}
-          editable
-          selectable
-          nowIndicator
-          selectMirror
-          dayMaxEvents
-          allDaySlot={false}
-          slotMinTime="08:00:00"
-          slotMaxTime="20:00:00"
-          slotDuration="00:30:00"
-          events={events}
-          dateClick={selectedEmployee ? handleDateClick : undefined}
-          height="auto"
-          locale="en"
-          firstDay={1}
-          eventContent={(arg) => (
-            <div className="p-1 text-xs">
-              <div className="font-semibold truncate">{arg.event.title}</div>
-              <div className="text-xs opacity-75">
-                {arg.event.start?.toLocaleTimeString("mn-MN", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
+  const handleViewChange = (view: string) => {
+    setCurrentView(view);
+  };
+
+  return (
+    <div className="min-h-screen bg-white">
+      <div className="border-b border-gray-200 bg-white sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-6">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8 4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z" />
+                  </svg>
+                </div>
+                <div>
+                  <h1 className="text-xl font-medium text-gray-900">
+                    {selectedEmployee
+                      ? selectedEmployee.employeeName
+                      : "Бүх ажилтнууд"}
+                  </h1>
+                  <p className="text-sm text-gray-500">
+                    Цаг захиалгын календар
+                  </p>
+                </div>
               </div>
             </div>
-          )}
-        />
-      </div>
-      {dialogOpen && selectedSlot && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-          <div className="bg-white rounded-lg p-6 w-96 shadow-lg">
-            <h2 className="text-xl font-bold mb-4">
-              Цаг захиалга баталгаажуулах
-            </h2>
-            <p className="mb-2">
-              Ажилтан: <b>{selectedEmployee?.employeeName}</b>
-            </p>
-            <p className="mb-4">
-              Сонгосон цаг: <b>{formatSelectedTime(selectedSlot)}</b>
-            </p>
-            <div className="flex justify-end gap-4">
+
+            <div className="flex items-center bg-gray-100 rounded-lg p-1">
               <button
-                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-                onClick={handleCancelBooking}
+                onClick={() => handleViewChange("dayGridMonth")}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                  currentView === "dayGridMonth"
+                    ? "bg-white text-gray-900 shadow-sm"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`}
               >
-                Болих
+                Сар
               </button>
               <button
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                onClick={handleConfirmBooking}
+                onClick={() => handleViewChange("timeGridWeek")}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                  currentView === "timeGridWeek"
+                    ? "bg-white text-gray-900 shadow-sm"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`}
               >
-                Баталгаажуулах
+                7 хоног
+              </button>
+              <button
+                onClick={() => handleViewChange("timeGridDay")}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
+                  currentView === "timeGridDay"
+                    ? "bg-white text-gray-900 shadow-sm"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                }`}
+              >
+                Өдөр
+              </button>
+            </div>
+          </div>
+
+          {/* Status Legend */}
+          <div className="mt-4 flex flex-wrap gap-6">
+            {statusLegend.map((item) => (
+              <div key={item.status} className="flex items-center gap-2">
+                <div
+                  className="w-3 h-3 rounded-full"
+                  style={{ backgroundColor: item.color }}
+                />
+                <span className="text-sm text-gray-600 font-medium">
+                  {item.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Calendar Container */}
+      <div className="max-w-7xl mx-auto px-6 py-6">
+        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+          <FullCalendar
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            initialView="timeGridWeek"
+            headerToolbar={{
+              left: "prev,next today",
+              center: "title",
+              right: "", // Hide default view buttons since we have our own
+            }}
+            buttonText={{
+              today: "Өнөөдөр",
+              month: "Сар",
+              week: "7 хоног",
+              day: "Өдөр",
+            }}
+            view={currentView}
+            editable={false}
+            selectable={!!selectedEmployee}
+            nowIndicator={true}
+            selectMirror={true}
+            dayMaxEvents={false}
+            allDaySlot={false}
+            slotMinTime="08:00:00"
+            slotMaxTime="20:00:00"
+            slotDuration="00:30:00"
+            events={events}
+            dateClick={selectedEmployee ? handleDateClick : undefined}
+            height="auto"
+            contentHeight="600px"
+            locale="en"
+            firstDay={1}
+            eventContent={(arg) => (
+              <div className="px-2 py-1 h-full overflow-hidden">
+                <div className="text-xs font-semibold truncate mb-1">
+                  {arg.event.extendedProps.customerName}
+                </div>
+                <div className="text-xs opacity-90 truncate">
+                  {arg.event.extendedProps.employee}
+                </div>
+                <div className="text-xs opacity-75 mt-1">
+                  {arg.event.start?.toLocaleTimeString("en-US", {
+                    hour: "numeric",
+                    minute: "2-digit",
+                    hour12: true,
+                  })}
+                </div>
+              </div>
+            )}
+            eventClassNames="rounded-md border-l-4 cursor-pointer hover:shadow-lg transition-shadow duration-200"
+            dayHeaderClassNames="bg-gray-50 border-b border-gray-200 py-3 text-center text-sm font-medium text-gray-700"
+            slotLabelClassNames="text-xs text-gray-500 pr-2"
+            viewClassNames="p-4"
+            // Custom CSS for Google Calendar styling
+            eventDidMount={(info) => {
+              // Add custom styling to match Google Calendar
+              info.el.style.border = "none";
+              info.el.style.borderRadius = "4px";
+              info.el.style.fontSize = "12px";
+              info.el.style.fontWeight = "500";
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Google Calendar Style Modal */}
+      {dialogOpen && selectedSlot && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50 p-4">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-md mx-auto">
+            {/* Modal Header */}
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h2 className="text-lg font-medium text-gray-900">
+                Цаг захиалга үүсгэх
+              </h2>
+            </div>
+
+            {/* Modal Content */}
+            <div className="px-6 py-4 space-y-4">
+              {/* Employee Info */}
+              <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
+                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                  <svg
+                    className="w-5 h-5 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-sm font-medium text-gray-900">
+                    {selectedEmployee?.employeeName}
+                  </div>
+                  <div className="text-xs text-gray-500">Ажилтан</div>
+                </div>
+              </div>
+
+              {/* Time Info */}
+              <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                <div className="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center">
+                  <svg
+                    className="w-5 h-5 text-white"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-sm font-medium text-gray-900">
+                    {formatSelectedTime(selectedSlot)}
+                  </div>
+                  <div className="text-xs text-gray-500">Сонгосон цаг</div>
+                </div>
+              </div>
+
+              {/* Duration Info */}
+              <div className="text-xs text-gray-500 px-3">
+                Үргэлжлэх хугацаа: {selectedEmployee?.duration || 60} минут
+              </div>
+            </div>
+
+            {/* Modal Actions */}
+            <div className="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+              <button
+                onClick={handleCancelBooking}
+                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+              >
+                Цуцлах
+              </button>
+              <button
+                onClick={handleConfirmBooking}
+                className="px-6 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 transition-colors shadow-sm"
+              >
+                Хадгалах
               </button>
             </div>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
