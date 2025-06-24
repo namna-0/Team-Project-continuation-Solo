@@ -113,7 +113,7 @@ export const Step4 = ({
         )}
       </div>
       <div>
-        <Label className="block mb-2 text-white">
+        <Label className="block mb-2 text-white mt-2">
           Компаний background зураг *
         </Label>
         <div className="border-2 border-dashed border-white/30 rounded-lg p-6 bg-white/5 hover:bg-white/10">
@@ -127,7 +127,7 @@ export const Step4 = ({
             </div>
           ) : (
             <div className="relative text-center cursor-pointer">
-              <Upload className="w-8 h-8 mx-auto text-white/70 mb-2" />
+              <Upload className="w-8 h-8 mx-auto text-white/70 mb-2 mt-2" />
               <p className="text-sm text-white/70">Зураг оруулах</p>
               <input
                 type="file"
@@ -143,7 +143,7 @@ export const Step4 = ({
       </div>
 
       <div>
-        <Label className="block mb-2 text-white">
+        <Label className="block mb-2 text-white mt-2">
           Компаний танилцуулга зураг *
         </Label>
         <div className="border-2 border-dashed border-white/30 rounded-lg p-6 bg-white/5 hover:bg-white/10">
@@ -172,7 +172,7 @@ export const Step4 = ({
         </div>
       </div>
       <div className="mt-8">
-        <Label className="block mb-2 text-white">
+        <Label className="block mb-2 text-white mt-2">
           Компаний зургууд (олон зураг)
         </Label>
         <div className="border-2 border-dashed border-white/30 rounded-lg p-4 bg-white/5 hover:bg-white/10">
@@ -197,7 +197,7 @@ export const Step4 = ({
                 ))}
               </div>
               <div className="relative text-center cursor-pointer border-t border-white/20 pt-4">
-                <Upload className="w-6 h-6 mx-auto text-white/70 mb-1" />
+                <Upload className="w-6 h-6 mx-auto text-white/70 mb-1 mt-2" />
                 <p className="text-sm text-white/70">Нэмэлт зураг оруулах</p>
                 <input
                   type="file"
@@ -210,7 +210,7 @@ export const Step4 = ({
             </>
           ) : (
             <div className="relative text-center cursor-pointer py-8">
-              <Upload className="w-8 h-8 mx-auto text-white/70 mb-2" />
+              <Upload className="w-8 h-8 mx-auto text-white/70 mb-2 mt-2" />
               <p className="text-sm text-white/70">Зургууд оруулах</p>
               <p className="text-xs text-white/50 mt-1">
                 Олон зураг сонгож болно
