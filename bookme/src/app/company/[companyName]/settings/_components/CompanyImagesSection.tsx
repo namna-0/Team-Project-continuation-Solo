@@ -63,7 +63,7 @@ export const CompanyImagesSection = () => {
           images.map((image, index) => (
             <div
               key={index}
-              className="w-[200px] h-[204px] relative justify-center border-2 rounded-2xl bg-red-500"
+              className="w-[270px] h-[204px] relative justify-center rounded-3xl border-2"
             >
               <CompanyImageCard
                 image={image}
