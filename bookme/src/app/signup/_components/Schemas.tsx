@@ -24,7 +24,7 @@ export const step2Schema = z.object({
   city: z.string().min(2, "Хот дор хаяж 2 тэмдэгт байх ёстой"),
   phone: z.string().min(8, "Утасны дугаар дор хаяж 8 тэмдэгт байх ёстой"),
   experience: z.string().min(1, "Ажилласан жилээ оруулна уу"),
-  clientNumbers: z.string().min(1, "Нийт үйлчлүүлэгчдийн тоог оруулна уу"),
+  clientNumber: z.string().min(1, "Нийт үйлчлүүлэгчдийн тоог оруулна уу"),
 });
 
 export const step3Schema = z.object({

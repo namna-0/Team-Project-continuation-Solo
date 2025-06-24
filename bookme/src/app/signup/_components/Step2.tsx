@@ -98,7 +98,7 @@ export const Step2 = ({ formData, setFormData, errors = {} }: Step2Props) => {
           className="bg-white/10 text-white border-white/30 placeholder-white/70 focus:border-white/50 focus:ring-white/20"
           placeholder="10"
         />
-        {(formErrors.experience || errors.website) && (
+        {(formErrors.experience || errors.experience) && (
           <p className="text-red-400 text-sm mt-1">
             {formErrors.experience?.message || errors.website?.[0]}
           </p>
@@ -110,17 +110,17 @@ export const Step2 = ({ formData, setFormData, errors = {} }: Step2Props) => {
           Нийт үйлчлүүлэгчдийн тоо
         </Label>
         <Input
-          {...register("clientNumbers")}
-          id="clientNumbers"
-          type="clientNumbers"
+          {...register("clientNumber")}
+          id="clientNumber"
+          type="number"
           value={formData.clientNumber}
-          onChange={(e) => handleInputChange("clientNumbers", e.target.value)}
+          onChange={(e) => handleInputChange("clientNumber", e.target.value)}
           className="bg-white/10 text-white border-white/30 placeholder-white/70 focus:border-white/50 focus:ring-white/20"
           placeholder="100"
         />
-        {(formErrors.clientNumbers || errors.clientNumbers) && (
+        {(formErrors.clientNumber || errors.clientNumber) && (
           <p className="text-red-400 text-sm mt-1">
-            {formErrors.clientNumbers?.message || errors.clientNumbers?.[0]}
+            {formErrors.clientNumber?.message || errors.clientNumbers?.[0]}
           </p>
         )}
       </div>
