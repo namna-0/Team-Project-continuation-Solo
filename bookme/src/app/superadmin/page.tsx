@@ -18,7 +18,7 @@ import {
   Star,
 } from "lucide-react";
 
-export function CompanyApprovalPage() {
+export default function CompanyApprovalPage() {
   const pendingCompany = {
     id: "COMP-001",
     name: "Elite Services Co.",

@@ -115,6 +115,11 @@ const companySchema = new Schema({
       ref: "User",
     },
   ],
+  isActive: {
+    type: Boolean,
+    required: false,
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,
