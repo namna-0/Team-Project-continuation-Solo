@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Users, Plus, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { EmployeeAddSection } from "./EmployeeAddSection";
 
 export function EmployeesPage() {
   const employees = [
@@ -36,10 +37,7 @@ export function EmployeesPage() {
           <h1 className="text-3xl font-bold tracking-tight">Employees</h1>
           <p className="text-muted-foreground">Manage your company employees</p>
         </div>
-        <Button className="bg-[#007FFF] hover:bg-[#007FFF]/90">
-          <Plus className="mr-2 h-4 w-4" />
-          Add Employee
-        </Button>
+        <EmployeeAddSection />
       </div>
 
       <div className="flex items-center space-x-2">

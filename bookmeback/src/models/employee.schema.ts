@@ -20,8 +20,20 @@ const employeeSchema = new Schema({
     required: true,
   },
   duration: {
-    type: String,
-    required: true,
+    type: {
+      halfTime: {
+        type: String,
+        default: "30",
+      },
+      fulltime: {
+        type: String,
+        default: "60",
+      },
+      none: {
+        type: String,
+        default: "",
+      },
+    },
   },
   startTime: {
     type: String,

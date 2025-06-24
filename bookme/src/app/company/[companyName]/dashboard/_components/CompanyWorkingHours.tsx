@@ -31,7 +31,7 @@ export const CompanyWorkingHours = ({ company }: PropsType) => {
   );
 
   return (
-    <div className="w-full h-fit rounded-2xl p-3  ">
+    <div className="w-full h-fit rounded-2xl p-3">
       <div className="flex flex-col p-3">
         <div className="text-[20px] font-bold">Ажлын цаг</div>
         <div className="text-[14px] font-normal text-[#aaa]">
@@ -45,7 +45,7 @@ export const CompanyWorkingHours = ({ company }: PropsType) => {
             .map(([day, data]) => (
               <div
                 key={day}
-                className="w-full flex justify-between gap-3 p-3 border-1 rounded-2xl"
+                className="w-full flex justify-between gap-3 p-3 border-1 rounded-2xl shadow-md hover:shadow-lg"
               >
                 <div className="flex items-center space-x-2">
                   <Switch
