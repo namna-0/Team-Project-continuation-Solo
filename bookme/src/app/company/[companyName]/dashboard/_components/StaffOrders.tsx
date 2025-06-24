@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardContent,
@@ -17,10 +19,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { Users, Calendar, Clock } from "lucide-react";
 import { Company, Employee, Booking } from "../../_components/CompanyTypes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BookingCalendar from "@/app/calendar-test/page";
 
-// Статус өнгө тодорхойлох функц
 const getStatusColor = (status: string) => {
   switch (status?.toLowerCase()) {
     case "pending":
@@ -41,8 +42,9 @@ export function StaffOrdersPage({ company }: { company: Company }) {
     null
   );
   const [selectedBookings, setSelectedBookings] = useState<Booking[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
-  // Тухайн ажилтны захиалгуудыг шүүх функц
   const getEmployeeBookings = (employeeId: string): Booking[] => {
     if (!company.bookings) return [];
     return company.bookings.filter(
@@ -50,25 +52,33 @@ export function StaffOrdersPage({ company }: { company: Company }) {
     );
   };
 
-  // Ажилтан сонгох функц
   const handleEmployeeSelect = (employee: Employee) => {
     setSelectedEmployee(employee);
     const bookings = getEmployeeBookings(employee._id);
     setSelectedBookings(bookings);
   };
 
-  // Бүх захиалга харуулах
   const showAllBookings = () => {
     setSelectedEmployee(null);
     setSelectedBookings(company.bookings || []);
   };
 
-  // Одоогоор харуулах захиалгууд
   const displayBookings = selectedEmployee
     ? selectedBookings
     : company.bookings || [];
 
-  // Статистик тооцоолох
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentBookings = displayBookings.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+  const totalPages = Math.ceil(displayBookings.length / itemsPerPage);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   const activeStaff =
     company.employees?.filter((emp) => emp.availability)?.length || 0;
   const pendingOrders = displayBookings.filter(
@@ -81,6 +91,10 @@ export function StaffOrdersPage({ company }: { company: Company }) {
       .split("T")[0];
     return bookingDate === today && booking.status === "completed";
   }).length;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedEmployee]);
 
   return (
     <div className="space-y-6">
@@ -143,7 +157,6 @@ export function StaffOrdersPage({ company }: { company: Company }) {
         </Card>
       </div>
 
-      {/* Ажилтнуудын жагсаалт */}
       <Card>
         <CardHeader>
           <CardTitle>Ажилтнууд</CardTitle>
@@ -173,7 +186,6 @@ export function StaffOrdersPage({ company }: { company: Company }) {
         </CardContent>
       </Card>
 
-      {/* Захиалгуудын хүснэгт */}
       <Card>
         <CardHeader>
           <CardTitle>
@@ -195,71 +207,102 @@ export function StaffOrdersPage({ company }: { company: Company }) {
                 : "Захиалга байхгүй байна"}
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Захиалгын ID</TableHead>
-                  <TableHead>Ажилтан</TableHead>
-                  <TableHead>Үйлчлүүлэгч</TableHead>
-                  <TableHead>Статус</TableHead>
-                  <TableHead>Огноо/Цаг</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {displayBookings.map((booking) => (
-                  <TableRow key={booking._id}>
-                    <TableCell className="font-medium">
-                      {booking._id.slice(-6)}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        {booking.employee.profileImage && (
-                          <img
-                            src={booking.employee.profileImage}
-                            alt={booking.employee.employeeName}
-                            className="w-6 h-6 rounded-full"
-                          />
-                        )}
-                        {booking.employee.employeeName}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      {booking.user?.username || "Хэрэглэгч"}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={getStatusColor(booking.status) as any}>
-                        {booking.status === "pending" && "Хүлээгдэж буй"}
-                        {booking.status === "confirmed" && "Баталгаажсан"}
-                        {booking.status === "completed" && "Дууссан"}
-                        {booking.status === "cancelled" && "Цуцлагдсан"}
-                        {![
-                          "pending",
-                          "confirmed",
-                          "completed",
-                          "cancelled",
-                        ].includes(booking.status) && booking.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      {new Date(booking.selectedTime).toLocaleDateString(
-                        "mn-MN"
-                      )}{" "}
-                      {new Date(booking.selectedTime).toLocaleTimeString(
-                        "mn-MN",
-                        {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        }
-                      )}
-                    </TableCell>
+            <>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Захиалгын ID</TableHead>
+                    <TableHead>Ажилтан</TableHead>
+                    <TableHead>Үйлчлүүлэгч</TableHead>
+                    <TableHead>Статус</TableHead>
+                    <TableHead>Огноо/Цаг</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {currentBookings.map((booking) => (
+                    <TableRow key={booking._id}>
+                      <TableCell className="font-medium">
+                        {booking._id.slice(-6)}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          {booking.employee.profileImage && (
+                            <img
+                              src={booking.employee.profileImage}
+                              alt={booking.employee.employeeName}
+                              className="w-6 h-6 rounded-full"
+                            />
+                          )}
+                          {booking.employee.employeeName}
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        {booking.user?.username || "Хэрэглэгч"}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={getStatusColor(booking.status) as any}>
+                          {booking.status === "pending" && "Хүлээгдэж буй"}
+                          {booking.status === "confirmed" && "Баталгаажсан"}
+                          {booking.status === "completed" && "Дууссан"}
+                          {booking.status === "cancelled" && "Цуцлагдсан"}
+                          {![
+                            "pending",
+                            "confirmed",
+                            "completed",
+                            "cancelled",
+                          ].includes(booking.status) && booking.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        {new Date(booking.selectedTime).toLocaleDateString(
+                          "mn-MN"
+                        )}{" "}
+                        {new Date(booking.selectedTime).toLocaleTimeString(
+                          "mn-MN",
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              {totalPages > 1 && (
+                <div className="flex justify-center items-center gap-2 mt-4 flex-wrap">
+                  <Button
+                    variant="outline"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  >
+                    Өмнөх
+                  </Button>
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                    (page) => (
+                      <Button
+                        key={page}
+                        variant={page === currentPage ? "default" : "outline"}
+                        onClick={() => handlePageChange(page)}
+                        className="w-9 p-0"
+                      >
+                        {page}
+                      </Button>
+                    )
+                  )}
+                  <Button
+                    variant="outline"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                  >
+                    Дараах
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </CardContent>
       </Card>
-
       <BookingCalendar
         company={company}
         selectedEmployee={selectedEmployee}

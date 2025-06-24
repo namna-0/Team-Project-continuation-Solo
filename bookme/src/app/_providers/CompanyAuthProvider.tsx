@@ -58,7 +58,11 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
     localStorage.removeItem("company_token");
     setCompany(undefined);
     toast("Системээс гарлаа");
-    router.push("/");
+    if (company?.companyName) {
+      router.push(`company/${company?.companyName}`);
+    } else {
+      router.push("/");
+    }
   };
 
   const getCompany = async () => {

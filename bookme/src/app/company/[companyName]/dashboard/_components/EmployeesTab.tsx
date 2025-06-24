@@ -33,7 +33,6 @@ export const EmployeesTab = ({ company }: EmployeesTabProps) => {
     (b) => b.employee._id === selectedEmployee?._id
   );
 
-  // Calendar helper functions
   const getCurrentMonth = () => {
     const now = new Date();
     return now.getMonth();
@@ -140,7 +139,6 @@ export const EmployeesTab = ({ company }: EmployeesTabProps) => {
     const days = [];
     const weekDays = ["Ня", "Да", "Мя", "Лх", "Пү", "Ба", "Бя"];
 
-    // Week headers
     const weekHeaders = weekDays.map((day) => (
       <div
         key={day}
