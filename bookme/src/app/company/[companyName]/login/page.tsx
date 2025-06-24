@@ -101,11 +101,13 @@ export default function Home() {
               </form>
             </Form>
             <div className="flex justify-between w-[400px]">
-              <p className="font-medium text-[14px] ">
-                <span className="text-[14px] text-[#0f3dde] underline cursor-pointer">
-                  Бүртгүүлэх
-                </span>
-              </p>
+              <Link href="/company/cloudy/signup">
+                <p className="font-medium text-[14px] ">
+                  <span className="text-[14px] text-[#0f3dde] underline cursor-pointer">
+                    Бүртгүүлэх
+                  </span>
+                </p>
+              </Link>
               <Link href="/company/cloudy/forgotpass">
                 <p className="font-medium text-[14px] ">
                   <span className="text-[14px] text-[#0f3dde] underline cursor-pointer">
