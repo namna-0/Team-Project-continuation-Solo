@@ -37,7 +37,8 @@ export const Step6 = ({
         <p>Хаяг: {formData.address}</p>
         <p>Хот: {formData.city}</p>
         <p>Утас: {formData.phone}</p>
-        <p>Вебсайт: {formData.website || "—"}</p>
+        <p>Тогвортой ажилласан жил: {formData.experience || "—"}</p>
+        <p>Нийт үйлчлүүлэгчдийн тоо: {formData.clientNumber || ""}</p>
 
         {logoPreview && (
           <div className="mt-2">

@@ -21,8 +21,15 @@ export default function Dashboard() {
   const [company, setCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
   const router = useRouter();
+
+  useEffect(() => {
+    if (!loggedInCompany) return;
+
+    if (!loggedInCompany._id) {
+      router.push("/signin");
+    }
+  }, [loggedInCompany]);
 
   useEffect(() => {
     const fetchCompany = async () => {
