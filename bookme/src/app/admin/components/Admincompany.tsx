@@ -6,39 +6,9 @@ import { Search } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-type User = {
-  _id: string;
-  name: string;
-  email: string;
-};
-export const AdminHome = () => {
+export const AdminCompany = () => {
   const [companies, setCompanies] = useState<Company[]>([]);
   const [search, setSearch] = useState("");
-  const [users, setUsers] = useState<User[]>([]);
-  const [currentDate, setCurrentDate] = useState("");
-
-  useEffect(() => {
-    const today = new Date().toLocaleDateString("mn-MN", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-    setCurrentDate(today);
-  }, []);
-
-  useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const response = await api.get("/user");
-        console.log("Users data:", response.data);
-        setUsers(response.data.users);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getUsers();
-  }, []);
 
   useEffect(() => {
     const getCompanies = async () => {
@@ -56,26 +26,9 @@ export const AdminHome = () => {
     company.companyName.toLowerCase().startsWith(search.toLowerCase())
   );
   return (
-    <div className="flex flex-col gap-5">
-      <p className="font-semibold text-[22px]">{currentDate}</p>
-      <div className="flex gap-5">
-        <div className="bg-white w-[150px] h-[100px] rounded-[8px] p-4">
-          <p className="font-semibold">Компани</p>
-          <p className="text-blue-500 font-bold text-[32px]">
-            {companies.length}
-          </p>
-        </div>
-        <div className="bg-white w-[150px] h-[100px] rounded-[8px] p-4">
-          <p className="font-semibold">Хэрэглэгч</p>
-          <p className="text-blue-500 font-bold text-[32px]">{users.length}</p>
-        </div>
-        <div className="bg-white w-[150px] h-[100px] rounded-[8px] p-4">
-          <p className="font-semibold">Админ</p>
-          <p className="text-blue-500 font-bold text-[32px]">5</p>
-        </div>
-      </div>
+    <div className=" w-full  bg-white rounded-2xl shadow-2xl  flex flex-col gap-[70px] justify-between ">
       <div className="bg-white w-fit h-screen rounded-[8px] p-5 overflow-scroll flex flex-col gap-5 items-center">
-        <div className="hidden md:block">
+        <div className=" flex flex-col items-center">
           <div className="w-[500px] h-10 flex items-center gap-2 px-3 border border-gray-300 rounded-lg shadow-sm bg-white focus-within:ring-2 focus-within:ring-blue-400 transition">
             <Search className="text-gray-500 w-4 h-4" />
             <input
@@ -84,6 +37,14 @@ export const AdminHome = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
+          </div>
+          <div className="flex mt-5 gap-5">
+            <Button className="bg-green-500 text-black cursor-pointer hover:text-white">
+              Идэвхтэй компаниуд
+            </Button>
+            <Button className="bg-red-500 text-white cursor-pointer">
+              Идэвхгүй компаниуд
+            </Button>
           </div>
         </div>
         {filteredCompanies.map((company) => (

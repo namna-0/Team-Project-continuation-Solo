@@ -3,7 +3,7 @@ import { User } from "../../models";
 
 export const getUsers: RequestHandler = async (req, res) => {
   try {
-    const users = await User.findOne({});
+    const users = await User.find({});
 
     if (!users) {
       res.status(404).json({ message: "хэрэглэгчид байхгүй байна" });

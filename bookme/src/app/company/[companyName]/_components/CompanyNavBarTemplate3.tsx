@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { Heart } from "lucide-react";
 import { useAuth } from "@/app/_providers/UserAuthProvider";
 import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
 import { Company } from "./CompanyTypes";
