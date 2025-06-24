@@ -284,7 +284,7 @@ export const EmployeeForm = ({
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
-                  <FormControl>
+                  <FormControl className="w-full">
                     <SelectTrigger>
                       <SelectValue placeholder="Сонгох" />
                     </SelectTrigger>
@@ -298,29 +298,29 @@ export const EmployeeForm = ({
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="availability"
+            render={({ field }) => (
+              <FormItem className="w-full flex items-center gap-2 ">
+                <FormControl>
+                  <input
+                    type="checkbox"
+                    checked={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                    ref={field.ref}
+                    className="checkbox"
+                  />
+                </FormControl>
+                <FormLabel>Боломжтой эсэх</FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
 
-        <FormField
-          control={form.control}
-          name="availability"
-          render={({ field }) => (
-            <FormItem className="w-full flex items-center gap-2">
-              <FormControl>
-                <input
-                  type="checkbox"
-                  checked={field.value}
-                  onChange={field.onChange}
-                  onBlur={field.onBlur}
-                  name={field.name}
-                  ref={field.ref}
-                  className="checkbox"
-                />
-              </FormControl>
-              <FormLabel>Боломжтой эсэх</FormLabel>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <Button disabled={loading === true} type="submit" className="w-full">
           Нэмэх
         </Button>

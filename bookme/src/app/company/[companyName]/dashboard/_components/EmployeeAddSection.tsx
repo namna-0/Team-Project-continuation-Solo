@@ -25,11 +25,16 @@ export type EmployeeData = {
   description: string;
   profileImage: string;
   availability: boolean;
-  duration: string;
+  duration: DurationType;
   workingHours: string;
 };
 
-export const HeaderSection = () => {
+export type DurationType = {
+  halfTime: "";
+  fullTime: "";
+};
+
+export const EmployeeAddSection = () => {
   const [open, setOpen] = useState(false);
   const [employeeData, setEmployeeData] = useState<EmployeeData>({
     companyName: "",
@@ -41,7 +46,7 @@ export const HeaderSection = () => {
     description: "",
     profileImage: "",
     availability: true,
-    duration: "",
+    duration: { halfTime: "", fullTime: "" },
     workingHours: "",
   });
 
@@ -60,7 +65,9 @@ export const HeaderSection = () => {
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button>+ Add employee</Button>
+            <Button className="bg-[#007FFF] hover:bg-[#007FFF]/90">
+              + Add employee
+            </Button>
           </DialogTrigger>
           <DialogContent className="bg-white w-[600px]">
             <DialogHeader>
