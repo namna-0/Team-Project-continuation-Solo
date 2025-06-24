@@ -14,6 +14,7 @@ import { Company } from "../_components/CompanyTypes";
 import { useRouter } from "next/navigation";
 import { api } from "@/axios";
 import { toast } from "sonner";
+import { CompanyWorkingHours } from "./_components/CompanyWorkingHours";
 
 export default function Dashboard() {
   const [currentPage, setCurrentPage] = useState("employees");
@@ -75,6 +76,8 @@ export default function Dashboard() {
         return <ImagesSettingsPage />;
       case "location-settings":
         return <LocationSettingsPage />;
+      case "working-hours-settings":
+        return company ? <CompanyWorkingHours company={company} /> : null;
       default:
         return <EmployeesPage />;
     }

@@ -20,6 +20,7 @@ export function DashboardHeader({ currentPage }: DashboardHeaderProps) {
       "general-settings": "General Settings",
       "images-settings": "Company Images",
       "location-settings": "Location Settings",
+      "working-hours-settings": "Байгууллагын цаг",
     };
     return titles[page] || "Dashboard";
   };

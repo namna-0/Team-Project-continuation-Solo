@@ -90,6 +90,11 @@ export function AppSidebar({ currentPage, setCurrentPage }: AppSidebarProps) {
           key: "location-settings",
           onClick: () => setCurrentPage("location-settings"),
         },
+        {
+          title: "Ажлын цаг",
+          key: "working-hours-settings",
+          onClick: () => setCurrentPage("working-hours-settings"),
+        },
       ],
     },
   ];
