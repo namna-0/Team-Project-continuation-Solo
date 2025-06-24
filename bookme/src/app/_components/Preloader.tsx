@@ -112,7 +112,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
     >
       <div
         ref={containerRef}
-        className="container relative grid grid-cols-3 grid-rows-3  w-[210px] h-[210px] p-4 bg-black "
+        className="container relative grid grid-cols-3 grid-rows-3  w-[210px] h-[220px] p-4 bg-black "
       >
         {/* 3x3 grid of glowing boxes */}
         {[...Array(9)].map((_, i) => (
