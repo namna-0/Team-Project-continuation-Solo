@@ -1,7 +1,9 @@
-" use client";
+"use client";
 
-import { Heart } from "lucide-react";
+import { Award, Calendar, Heart, Sparkles, Star, Users } from "lucide-react";
 import { Company } from "./CompanyTypes";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 export const CompanyBackgroundImageText = ({
   companyName,
@@ -10,93 +12,90 @@ export const CompanyBackgroundImageText = ({
   companyName: string;
   company: Company;
 }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
     <section
-      className="relative bg-cover bg-center bg-no-repeat h-[800px]"
+      className="relative bg-cover bg-center bg-no-repeat h-[800px] flex flex-col items-center justify-center"
       style={{
         backgroundImage: company.companyImages?.length
           ? `url('${company.companyImages[0]}')`
           : "url('https://res.cloudinary.com/dxhmgs7wt/image/upload/v1749803046/heroback_wzxjtk.jpg')",
       }}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8">
-            <div className="space-y-4 mt-[300px]">
-              <p
-                className="text-white font-medium tracking-wider uppercase animate-fadeInUp opacity-0"
-                style={{
-                  animationDelay: "200ms",
-                  animationFillMode: "forwards",
-                }}
+      <div className="absolute inset-0 bg-black/30" />
+      <div className="relative z-10 min-h-screen flex items-center">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-8 text-center lg:text-left">
+              <motion.div
+                initial="hidden"
+                animate={isVisible ? "visible" : "hidden"}
+                variants={fadeInUp}
+                transition={{ duration: 0.7 }}
+                className="inline-flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full border border-white/20"
               >
-                Premium Hair Salon
-              </p>
-              <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
-                <span
-                  className="inline-block animate-fadeInUp opacity-0"
-                  style={{
-                    animationDelay: "400ms",
-                    animationFillMode: "forwards",
-                  }}
-                >
-                  {companyName}
+                <Sparkles className="w-5 h-5 text-yellow-400" />
+                <span className="text-white font-semibold tracking-wider uppercase text-sm">
+                  онлайн цаг захиалга
                 </span>
-                <span
-                  className="block bg-gradient-to-r from-white to-purple-600 bg-clip-text text-transparent animate-fadeInUp opacity-0"
-                  style={{
-                    animationDelay: "600ms",
-                    animationFillMode: "forwards",
-                  }}
-                ></span>
-              </h1>
-              <p
-                className="text-xl text-white leading-relaxed animate-fadeInUp opacity-0"
-                style={{
-                  animationDelay: "800ms",
-                  animationFillMode: "forwards",
-                }}
+                <div className="w-2 h-2 bg-gradient-to-r from-rose-400 to-pink-500 rounded-full animate-pulse" />
+              </motion.div>
+
+              <motion.div
+                initial="hidden"
+                animate={isVisible ? "visible" : "hidden"}
+                variants={fadeInUp}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="space-y-4"
               >
-                Өндөр зэрэглэлийн салон
-              </p>
-            </div>
+                <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold leading-tight">
+                  <span className="block bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
+                    {companyName}
+                  </span>
+                  <span className="block text-4xl md:text-5xl lg:text-6xl bg-gradient-to-r from-rose-400 via-pink-500 to-purple-500 bg-clip-text text-transparent mt-2">
+                    компанийн хуудас
+                  </span>
+                </h1>
+              </motion.div>
 
-            <div
-              className="flex flex-col sm:flex-row gap-4 animate-fadeInUp opacity-0"
-              style={{
-                animationDelay: "1000ms",
-                animationFillMode: "forwards",
-              }}
-            >
-              <button className="bg-gradient-to-r from-white-500 to-pink-600 text-white px-8 py-4 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 text-center font-semibold relative overflow-hidden group">
-                <span className="relative z-10 flex items-center justify-center gap-2">
-                  <Heart className="w-5 h-5" />
-                  Цаг захиалах
+              <motion.p
+                initial="hidden"
+                animate={isVisible ? "visible" : "hidden"}
+                variants={fadeInUp}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="text-xl md:text-2xl text-gray-200 leading-relaxed max-w-2xl"
+              >
+                Өндөр зэрэглэлийн мэргэжлийн үйлчилгээ,
+                <span className="text-transparent bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text font-semibold">
+                  таны цагийг хэмнэх ухаалаг бизнес
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-              </button>
-            </div>
+              </motion.p>
 
-            <div className="flex items-center space-x-8 pt-8">
-              {[
-                { number: "500+", label: "Happy Clients" },
-                { number: "5★", label: "Rating" },
-                { number: "3+", label: "Years" },
-              ].map((stat, index) => (
-                <div
-                  key={stat.label}
-                  className="text-center animate-fadeInUp opacity-0"
-                  style={{
-                    animationDelay: `${1200 + index * 200}ms`,
-                    animationFillMode: "forwards",
-                  }}
-                >
-                  <div className="text-3xl font-bold text-gray-900 hover:text-pink-500 transition-colors duration-300">
-                    {stat.number}
+              <motion.div
+                initial="hidden"
+                animate={isVisible ? "visible" : "hidden"}
+                variants={fadeInUp}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="flex flex-col sm:flex-row gap-6 pt-4"
+              >
+                <button className="group relative px-8 py-4 bg-gradient-to-r from-rose-500 to-pink-600 rounded-2xl overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-rose-500/25">
+                  <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-rose-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                  <div className="relative z-10 flex items-center justify-center gap-3 text-white font-bold text-lg">
+                    <Heart className="w-6 h-6 group-hover:animate-pulse" />
+                    Цаг захиалах
                   </div>
-                  <div className="text-gray-600">{stat.label}</div>
-                </div>
-              ))}
+                </button>
+              </motion.div>
             </div>
           </div>
         </div>

@@ -1,25 +1,22 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Company } from "../CompanyTypes";
-import { CompanyNavBar } from "../CompanyNavBar";
-import { AboutCompany } from "../AboutCompany";
-import { CompanyWorkingHours } from "../CompanyWorkingHours";
 import { CompanyLocation } from "../CompanyLocation";
 import { CompanyFooter } from "../CompanyFooter";
 import { GlobalStyles } from "../GlobalStyles";
 import Image from "next/image";
-import { Heart, Phone, Mail, MapPin } from "lucide-react";
+import { Heart, Mail, MapPin } from "lucide-react";
 import { Template3WorkingHours } from "../Template3WorkingHours";
+import { CompanyNavBarTemplate3 } from "../CompanyNavBarTemplate3";
 
 interface MinimalTemplateProps {
   data: Company;
-  companyName: string;
+
   isPreview?: boolean;
 }
 
 export const Template3: React.FC<MinimalTemplateProps> = ({
   data,
-  companyName,
   isPreview = false,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -69,7 +66,7 @@ export const Template3: React.FC<MinimalTemplateProps> = ({
         </div>
       )}
 
-      <CompanyNavBar
+      <CompanyNavBarTemplate3
         company={data}
         isScrolled={isScrolled}
         isMenuOpen={isMenuOpen}
@@ -77,10 +74,10 @@ export const Template3: React.FC<MinimalTemplateProps> = ({
       />
 
       {/* Hero Section */}
-      {data?.companyImages[0] && (
-        <div className="relative h-[500px] w-[80%] m-auto">
+      {data?.backGroundImage && (
+        <div className="relative h-[500px] w-[80%] m-auto mt-16">
           <Image
-            src={data.companyImages[0]}
+            src={data.backGroundImage}
             alt="Company Cover"
             layout="fill"
             objectFit="cover"
@@ -90,31 +87,25 @@ export const Template3: React.FC<MinimalTemplateProps> = ({
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-4 sm:px-6 lg:px-8 py-12 max-w-7xl mx-auto -mt-16 z-20">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 px-4 sm:px-6 lg:px-8 py-12 max-w-7xl mx-auto -mt-18 z-20">
         {/* Left section */}
         <div className="lg:col-span-2 space-y-10 z-20">
-          {data.workingHours && (
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
-              <Template3WorkingHours company={data} />
-            </div>
-          )}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
+            <Template3WorkingHours company={data} />
+          </div>
 
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
             <CompanyLocation company={data} companyLocation={companyLocation} />
           </div>
-
-          {/* <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
-            <AboutCompany company={data} />
-          </div> */}
         </div>
         {/* Right section */}
         <div className="sticky top-6 h-fit space-y-6 bg-white rounded-2xl shadow-sm border border-gray-100 p-6 lg:p-8">
           <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 tracking-tight">
-            {companyName}
+            {data.companyName}
           </h1>
 
           <p className="text-lg text-gray-600 leading-relaxed">
-            {data.description || "Манай компаний тухай"}
+            company.description
           </p>
 
           <div className="space-y-3 pt-2">
@@ -147,9 +138,8 @@ export const Template3: React.FC<MinimalTemplateProps> = ({
 
           <div className="grid grid-cols-3 gap-4 text-center pt-6 border-t border-gray-100 mt-6">
             {[
-              { number: "500+", label: "Хэрэглэгч" },
-              { number: "5★", label: "Үнэлгээ" },
-              { number: "3+", label: "Жил" },
+              { number: data.clientNumber, label: "Хэрэглэгч" },
+              { number: data.experience, label: "Жил" },
             ].map((stat) => (
               <div key={stat.label} className="p-2">
                 <div className="text-2xl font-bold text-gray-900">
@@ -165,7 +155,7 @@ export const Template3: React.FC<MinimalTemplateProps> = ({
       <footer className="relative bg-gradient-to-br from-gray-900 to-gray-800 text-white py-16">
         <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <CompanyFooter companyName={companyName} />
+          <CompanyFooter companyName={data.companyName} />
         </div>
       </footer>
 
