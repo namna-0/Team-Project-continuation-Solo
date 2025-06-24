@@ -2,14 +2,15 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { Company } from "../CompanyTypes";
 import { CompanyNavBar } from "../CompanyNavBar";
-import { CompanyBackgroundImageText } from "../CompanyBackgroundImageText";
-import { AboutCompany } from "../AboutCompany";
-import { CompanyWorkingHours } from "../CompanyWorkingHours";
-import { EmployeeCardColorfulList } from "../CompanyEmployeeCard";
-import { CompanyLocation } from "../CompanyLocation";
-import { CompanyLibrary } from "../CompanyLibrary";
-import { CompanyFooter } from "../CompanyFooter";
 import { GlobalStyles } from "../GlobalStyles";
+import { AboutCompanyTemplate2 } from "../AboutCompanyTemplate2";
+import { CompanyWorkingHoursTemplate2 } from "../CompanyWorkingHoursTemplate2";
+import { CompanyEmployeeTemplate2 } from "../CompanyEmployeeTemplate2";
+import { CompanyLocationTemplate2 } from "../CompanyLocationTemplate2";
+import { CompanyLibraryTemplate2 } from "../CompanyLibraryTemplate2";
+import { CompanyFooterTemplate2 } from "../CompanyFooterTemplate2";
+import { CompanyBackgroundTemplate2 } from "../CompanyBackgroundTemplate2";
+import { CompanyNavBarTemplate2 } from "../CompanyNavBarTemplate2";
 
 interface ClassicTemplateProps {
   data: Company;
@@ -107,94 +108,53 @@ export const Template2: React.FC<ClassicTemplateProps> = ({
     setIsMenuOpen((prev) => !prev);
   }, []);
 
-  // Decorative elements
   const renderDecorativeElements = !isPreview && (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {/* Subtle texture overlay */}
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48cmVjdCB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIGZpbGw9IiMwMDAwMDAiLz48cGF0aCBkPSJNMCAwTDYwIDBNNjAgMEwwIDYwIiBzdHJva2U9IiMxMTExMTEiIHN0cm9rZS13aWR0aD0iMSIvPjwvc3ZnPg==')] opacity-10"></div>
 
-      {/* Subtle accent lights */}
       <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gray-800 rounded-full blur-[100px] opacity-5"></div>
       <div className="absolute bottom-1/3 right-1/4 w-72 h-72 bg-gray-800 rounded-full blur-[100px] opacity-5"></div>
     </div>
   );
 
   return (
-    <div
+    <section
       className={`min-h-screen relative overflow-x-hidden ${
         isPreview ? "pointer-events-none" : ""
       }`}
+      id="home"
     >
-      {/* Dark background */}
       <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-gray-950 to-gray-900"></div>
 
       {renderDecorativeElements}
 
-      <CompanyNavBar
+      <CompanyNavBarTemplate2
         company={data}
         isScrolled={isScrolled}
         isMenuOpen={isMenuOpen}
         toggleMenu={toggleMenu}
-        // className="bg-gray-900/80 backdrop-blur-md border-b border-gray-800"
       />
 
-      <CompanyBackgroundImageText companyName={companyName} company={data} />
+      <CompanyBackgroundTemplate2 companyName={companyName} company={data} />
 
       <main className="relative z-10 space-y-8 pb-20 pt-4">
-        {/* About Company Section */}
-        <div
-          className="bg-gray-900/80 backdrop-blur-sm border border-gray-800 rounded-xl mx-4 sm:mx-8 lg:mx-16 p-6 sm:p-8 lg:p-10 shadow-lg hover:shadow-gray-800/20 transition-shadow duration-300"
-          data-index="0"
-        >
-          <AboutCompany company={data} />
-        </div>
+        <AboutCompanyTemplate2 company={data} />
 
-        {/* Working Hours Section */}
-        {data.workingHours && (
-          <div
-            className="bg-gray-900/80 backdrop-blur-sm border border-gray-800 rounded-xl mx-4 sm:mx-8 lg:mx-16 p-6 sm:p-8 lg:p-10 shadow-lg hover:shadow-gray-800/20 transition-shadow duration-300"
-            data-index="1"
-          >
-            <CompanyWorkingHours company={data} />
-          </div>
-        )}
+        <CompanyWorkingHoursTemplate2 company={data} />
 
-        {/* Employees Section */}
-        {hasEmployees && (
-          <div
-            className="bg-gray-900/80 backdrop-blur-sm border border-gray-800 rounded-xl mx-4 sm:mx-8 lg:mx-16 p-6 sm:p-8 lg:p-10 shadow-lg hover:shadow-gray-800/20 transition-shadow duration-300"
-            data-index="2"
-          >
-            <EmployeeCardColorfulList company={data} />
-          </div>
-        )}
+        <CompanyEmployeeTemplate2 company={data} />
 
-        {/* Location Section */}
-        <div
-          className="bg-gray-900/80 backdrop-blur-sm border border-gray-800 rounded-xl mx-4 sm:mx-8 lg:mx-16 p-6 sm:p-8 lg:p-10 shadow-lg hover:shadow-gray-800/20 transition-shadow duration-300"
-          data-index="3"
-        >
-          <CompanyLocation company={data} companyLocation={companyLocation} />
-        </div>
+        <CompanyLocationTemplate2
+          company={data}
+          companyLocation={companyLocation}
+        />
 
-        {/* Gallery Section */}
-        {hasImages && (
-          <div
-            className="bg-gray-900/80 backdrop-blur-sm border border-gray-800 rounded-xl mx-4 sm:mx-8 lg:mx-16 p-6 sm:p-8 lg:p-10 shadow-lg hover:shadow-gray-800/20 transition-shadow duration-300"
-            data-index="4"
-          >
-            <CompanyLibrary company={data} />
-          </div>
-        )}
+        <CompanyLibraryTemplate2 company={data} />
       </main>
 
-      <footer className="relative z-10 bg-gray-900 border-t border-gray-800 pt-16 pb-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <CompanyFooter companyName={companyName} />
-        </div>
-      </footer>
+      <CompanyFooterTemplate2 companyName={companyName} />
 
       <GlobalStyles />
-    </div>
+    </section>
   );
 };

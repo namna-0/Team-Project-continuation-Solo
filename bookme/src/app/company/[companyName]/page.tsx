@@ -3,16 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { api } from "@/axios";
-import {
-  Check,
-  Star,
-  ChevronLeft,
-  ChevronRight,
-  Eye,
-  Maximize2,
-} from "lucide-react";
 import { Company } from "./_components/CompanyTypes";
-
 import { Template1 } from "./_components/_templates/Template1";
 import { Template2 } from "./_components/_templates/Template2";
 import { Template3 } from "./_components/_templates/Template3";
@@ -24,7 +15,7 @@ export default function CompanyTemplateSelector() {
   const [company, setCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [templateNumber, setTemplateNumber] = useState(2);
+  const [templateNumber, setTemplateNumber] = useState(0);
 
   useEffect(() => {
     const fetchCompany = async () => {
@@ -86,9 +77,7 @@ export default function CompanyTemplateSelector() {
       {templateNumber === 2 && (
         <Template2 data={company} companyName={companyName} />
       )}
-      {templateNumber === 3 && (
-        <Template3 data={company} companyName={companyName} />
-      )}
+      {templateNumber === 3 && <Template3 data={company} />}
     </div>
   );
 }

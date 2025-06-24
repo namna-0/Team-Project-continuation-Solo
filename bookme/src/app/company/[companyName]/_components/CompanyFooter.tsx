@@ -6,7 +6,7 @@ type CompanyFooterProps = {
 };
 export const CompanyFooter = ({ companyName }: CompanyFooterProps) => {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="contact">
       <div className="text-center">
         <div className="text-3xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent mb-4 pt-[100px]">
           {companyName}
@@ -22,6 +22,6 @@ export const CompanyFooter = ({ companyName }: CompanyFooterProps) => {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };

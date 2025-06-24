@@ -13,7 +13,7 @@ type CompanyNavBarProps = {
   toggleMenu: () => void;
 };
 
-export const CompanyNavBar = ({
+export const CompanyNavBarTemplate3 = ({
   company,
   isScrolled,
   isMenuOpen,
@@ -24,7 +24,6 @@ export const CompanyNavBar = ({
 
   const navItems = [
     { label: "Home", href: "#home" },
-    { label: "Бидний тухай", href: "#about" },
     { label: "Байршил", href: "#location" },
     { label: "Холбоо барих", href: "#contact" },
   ];
@@ -41,22 +40,25 @@ export const CompanyNavBar = ({
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
             <Link href="/">
-              <div className="relative size-13 rounded-full overflow-hidden">
-                {company?.companyLogo && company.companyLogo.trim() !== "" ? (
-                  <Image
-                    src={company.companyLogo}
-                    alt="Company Logo"
-                    fill
-                    className="object-cover"
-                  />
-                ) : (
-                  <Image
-                    src="/Images/default-logo.jpg"
-                    alt="Default Logo"
-                    fill
-                    className="object-contain"
-                  />
-                )}
+              <div className="relative group">
+                <div className="absolute -inset-2 bg-gradient-to-r from-blue-400 via-blue-500 to-cyan-500 blur opacity-20 group-hover:opacity-40 transition-all duration-500 rounded-full"></div>
+                <div className="relative size-13 rounded-full overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm shadow-xl">
+                  {company?.companyLogo && company.companyLogo.trim() !== "" ? (
+                    <Image
+                      src={company.companyLogo}
+                      alt="Company Logo"
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <Image
+                      src="/Images/default-logo.jpg"
+                      alt="Default Logo"
+                      fill
+                      className="object-contain p-2"
+                    />
+                  )}
+                </div>
               </div>
             </Link>
           </div>

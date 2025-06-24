@@ -59,6 +59,10 @@ export type Company = {
     end: string;
   };
   bookings?: Booking[];
+  backGroundImage: string;
+  aboutUsImage: string;
+  clientNumber: string;
+  experience: string;
 };
 
 export interface FormDataType {
