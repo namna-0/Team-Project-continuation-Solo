@@ -119,6 +119,11 @@ const companySchema = new Schema({
     type: Boolean,
     required: false,
   },
+  templateNumber: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
 
   createdAt: {
     type: Date,
