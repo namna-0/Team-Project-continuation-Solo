@@ -13,7 +13,7 @@ const Loader = () => (
 
 export default function Home() {
   const [select, setSelect] = useState<"home" | "companies">("home");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const handleSelect = (value: "home" | "companies") => {
     setLoading(true);

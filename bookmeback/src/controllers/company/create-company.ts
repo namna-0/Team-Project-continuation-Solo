@@ -13,6 +13,7 @@ export const createCompanyController: RequestHandler = async (req, res) => {
       employees,
       workingHours,
       lunchBreak,
+      isActive,
     } = req.body;
 
     if (
@@ -42,6 +43,7 @@ export const createCompanyController: RequestHandler = async (req, res) => {
       employees,
       workingHours,
       lunchBreak,
+      isActive,
       updatedAt: new Date(),
       createdAt: new Date(),
     });
