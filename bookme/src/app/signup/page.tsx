@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import Stepper, { Step } from "@/blocks/Components/Stepper/Stepper";
 import { Step6 } from "./_components/Step6";
@@ -11,6 +12,9 @@ import { toast } from "sonner";
 import { Step5 } from "./_components/Step5";
 import { Step2 } from "./_components/Step2";
 import { Step4 } from "./_components/Step4";
+import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { fullSchema, FullSchemaType } from "./_components/Schemas";
 
 const UPLOAD_PRESET = "bookMe";
 const CLOUD_NAME = "dazhij9zy";
@@ -22,7 +26,6 @@ export default function CompanySetupPage() {
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [loading, setLoading] = useState<boolean>(false);
   const { signUp } = useCompanyAuth();
 
   const [formData, setFormData] = useState<FormDataType>({
@@ -53,6 +56,12 @@ export default function CompanySetupPage() {
     backgroundImage: "",
     experience: "",
     clientNumber: "",
+  });
+
+  const methods = useForm<FullSchemaType>({
+    resolver: zodResolver(fullSchema),
+    mode: "onChange",
+    defaultValues: formData,
   });
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,6 +98,9 @@ export default function CompanySetupPage() {
   const handleFinalSubmit = async () => {
     setIsSubmitting(true);
     try {
+      const values = methods.getValues();
+      setFormData((prev) => ({ ...prev, ...values } as FormDataType));
+
       let logoUrl = "";
       if (logoFile) {
         logoUrl = await uploadToCloudinary(logoFile);
@@ -98,27 +110,27 @@ export default function CompanySetupPage() {
       );
 
       const apiData = {
-        email: formData.email,
-        password: formData.password,
-        companyName: formData.companyName,
-        address: formData.address,
-        city: formData.city,
-        lat: formData.lat,
-        lng: formData.lng,
+        email: values.email,
+        password: values.password,
+        companyName: values.companyName,
+        address: values.address,
+        city: values.city,
+        lat: values.lat,
+        lng: values.lng,
         companyLogo: logoUrl,
-        phoneNumber: formData.phone,
-        description: formData.description,
+        phoneNumber: values.phone,
+        description: formData.description ?? "",
         companyImages: imageUrls,
         employees: [],
-        workingHours: formData.openingHours,
+        workingHours: values.openingHours,
         lunchBreak: {
-          start: formData.lunchBreak.start,
-          end: formData.lunchBreak.end,
+          start: values.lunchBreak.start,
+          end: values.lunchBreak.end,
         },
-        aboutUsImage: formData.website,
-        backgroundImage: formData.backgroundImage,
-        clientNumber: formData.clientNumber,
-        experience: formData.experience,
+        aboutUsImage: values.aboutUsImage,
+        backgroundImage: values.backgroundImage,
+        clientNumber: values.clientNumber,
+        experience: values.experience,
       };
 
       console.log("Илгээж буй өгөгдөл:", apiData);
@@ -127,7 +139,6 @@ export default function CompanySetupPage() {
       if (response) {
         toast.success("Таны компани амжилттай бүртгэгдлээ!");
       }
-      setLoading(true);
     } catch (error) {
       console.error("Error submitting form:", error);
       toast.error("Алдаа гарлаа. Дахин оролдоно уу.");
@@ -163,56 +174,90 @@ export default function CompanySetupPage() {
   };
 
   return (
-    <div className="bg-gradient-to-b from-indigo-900 via-blue-400 to-sky-200 min-h-screen h-fit">
-      <Stepper
-        initialStep={1}
-        onStepChange={(step) => setCurrentStep(step)}
-        onFinalStepCompleted={handleFinalSubmit}
-        backButtonText="Буцах"
-        nextButtonText={isSubmitting ? "Илгээж байна..." : "Дараах"}
-        disabled={isSubmitting}
-      >
-        <Step>
-          <Step1 formData={formData} setFormData={setFormData} />
-        </Step>
+    <div className="bg-gradient-to-b from-indigo-900 via-blue-400 to-sky-200 min-h-screen h-fit relative">
+      <FormProvider {...methods}>
+        <Stepper
+          initialStep={1}
+          onStepChange={(step) => {
+            setCurrentStep(step);
+            const values = methods.getValues();
+            setFormData((prev) => ({ ...prev, ...values } as FormDataType));
+          }}
+          onFinalStepCompleted={handleFinalSubmit}
+          backButtonText="Буцах"
+          nextButtonText={isSubmitting ? "Илгээж байна..." : "Дараах"}
+          disabled={isSubmitting}
+        >
+          <Step>
+            <Step1 />
+          </Step>
+          <Step>
+            <Step2 />
+          </Step>
+          <Step>
+            <Step3
+              formData={formData}
+              setFormData={setFormData}
+              dayLabels={dayLabels}
+            />
+          </Step>
+          <Step>
+            <Step4
+              formData={formData}
+              setFormData={setFormData}
+              handleImageChange={handleImageChange}
+              companyImagePreview={companyImagePreview}
+              removeCompanyImage={removeCompanyImage}
+              handleLogoChange={handleLogoChange}
+              logoPreview={logoPreview}
+              removeLogo={removeLogo}
+            />
+          </Step>
+          <Step>
+            <Step5 formData={formData} setFormData={setFormData} />
+          </Step>
+          <Step>
+            <Step6
+              formData={formData}
+              setFormData={setFormData}
+              dayLabels={dayLabels}
+              companyImagePreview={companyImagePreview}
+              logoPreview={logoPreview}
+            />
+          </Step>
+        </Stepper>
+      </FormProvider>
 
-        <Step>
-          <Step2 formData={formData} setFormData={setFormData} />
-        </Step>
-
-        <Step>
-          <Step3
-            formData={formData}
-            setFormData={setFormData}
-            dayLabels={dayLabels}
-          />
-        </Step>
-
-        <Step>
-          <Step4
-            formData={formData}
-            setFormData={setFormData}
-            handleImageChange={handleImageChange}
-            companyImagePreview={companyImagePreview}
-            removeCompanyImage={removeCompanyImage}
-            handleLogoChange={handleLogoChange}
-            logoPreview={logoPreview}
-            removeLogo={removeLogo}
-          />
-        </Step>
-        <Step>
-          <Step5 formData={formData} setFormData={setFormData} />
-        </Step>
-        <Step>
-          <Step6
-            formData={formData}
-            setFormData={setFormData}
-            dayLabels={dayLabels}
-            companyImagePreview={companyImagePreview}
-            logoPreview={logoPreview}
-          />
-        </Step>
-      </Stepper>
+      {/* ✅ LOADING OVERLAY */}
+      {isSubmitting && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg shadow-xl text-center flex flex-col items-center gap-2">
+            <svg
+              className="animate-spin h-6 w-6 text-blue-600"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              />
+            </svg>
+            <p className="text-lg font-medium text-gray-700 animate-pulse">
+              Компаний мэдээлэл илгээж байна...
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

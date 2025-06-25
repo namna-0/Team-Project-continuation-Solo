@@ -3,31 +3,28 @@
 import { useEffect, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { LocPicker } from "@/app/company/[companyName]/userprofile/_components/Location";
-import { z } from "zod";
-import { step2Schema } from "./Schemas";
+import { useFormContext } from "react-hook-form";
+import { FullSchemaType } from "./Schemas";
 import { FormDataType } from "./Types";
-
-type Step2SchemaType = z.infer<typeof step2Schema>;
+import { LocPickerCompany } from "./LocPicker";
 
 type Step5Props = {
   formData: FormDataType;
   setFormData: React.Dispatch<React.SetStateAction<FormDataType>>;
-  errors?: Record<string, string[]>;
-  formErrors?: any;
 };
 
-export const Step5 = ({
-  formData,
-  setFormData,
-  errors = {},
-  formErrors = {},
-}: Step5Props) => {
+export const Step5 = ({ formData, setFormData }: Step5Props) => {
   const [location, setLocation] = useState<{
     lat: number;
     lng: number;
     address: string;
   } | null>(null);
+
+  const {
+    setValue,
+    trigger, // ✅ Add trigger from RHF
+    formState: { errors },
+  } = useFormContext<FullSchemaType>();
 
   useEffect(() => {
     if (formData.address && formData.lat && formData.lng) {
@@ -45,6 +42,15 @@ export const Step5 = ({
     address: string;
   }) => {
     setLocation(loc);
+
+    // Set form values
+    setValue("address", loc.address, { shouldValidate: true });
+    setValue("city", "Улаанбаатар", { shouldValidate: true });
+
+    // Force validation to show or clear errors
+    trigger(["address", "city"]);
+
+    // Local state sync
     setFormData((prev) => ({
       ...prev,
       address: loc.address,
@@ -60,15 +66,28 @@ export const Step5 = ({
 
       <div>
         <Label className="block mb-2 text-white">Хаяг сонгох *</Label>
-        <div className="bg-white/5 rounded-lg p-3 border border-white/20">
-          <LocPicker onSelect={handleLocationSelect} />
+        <div
+          className={`bg-white/5 rounded-lg p-3 border ${
+            errors.address ? "border-red-500" : "border-white/20"
+          }`}
+        >
+          <LocPickerCompany
+            onSelect={handleLocationSelect}
+            defaultLocation={
+              formData.lat && formData.lng
+                ? {
+                    lat: formData.lat,
+                    lng: formData.lng,
+                    address: formData.address,
+                  }
+                : undefined
+            }
+          />
         </div>
 
-        {(formErrors.address || errors.address) && !location && (
+        {errors.address && !location && (
           <p className="text-red-400 text-sm mt-1">
-            {formErrors.address?.message ||
-              errors.address?.[0] ||
-              "Хаяг сонгох шаардлагатай"}
+            {errors.address.message || "Хаяг сонгох шаардлагатай"}
           </p>
         )}
       </div>
@@ -85,12 +104,13 @@ export const Step5 = ({
             className="bg-white/10 text-white border-white/30 focus:border-white/50 cursor-default"
             placeholder="Хаяг сонгосны дараа харагдана"
           />
-          {(formErrors.address || errors.address) && (
+          {errors.address && (
             <p className="text-red-400 text-sm mt-1">
-              {formErrors.address?.message || errors.address?.[0]}
+              {errors.address.message}
             </p>
           )}
         </div>
+
         <div>
           <Label htmlFor="city" className="block mb-2 text-white">
             Хот *
@@ -102,10 +122,8 @@ export const Step5 = ({
             className="bg-white/10 text-white border-white/30 focus:border-white/50 cursor-default"
             placeholder="Автоматаар бөглөгдөнө"
           />
-          {(formErrors.city || errors.city) && (
-            <p className="text-red-400 text-sm mt-1">
-              {formErrors.city?.message || errors.city?.[0]}
-            </p>
+          {errors.city && (
+            <p className="text-red-400 text-sm mt-1">{errors.city.message}</p>
           )}
         </div>
       </div>
