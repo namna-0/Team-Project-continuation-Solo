@@ -24,7 +24,6 @@ export type EmployeeData = {
   employeeName: string;
   description: string;
   profileImage: string;
-  availability: boolean;
   duration: string;
   workingHours: string;
 };
@@ -33,14 +32,13 @@ export const EmployeeAddSection = () => {
   const [open, setOpen] = useState(false);
   const [employeeData, setEmployeeData] = useState<EmployeeData>({
     companyName: "",
-    startTime: "",
-    endTime: "",
-    lunchTimeStart: "",
-    lunchTimeEnd: "",
+    startTime: "09:00",
+    endTime: "18:00",
+    lunchTimeStart: "12:00",
+    lunchTimeEnd: "13:00",
     employeeName: "",
     description: "",
     profileImage: "",
-    availability: true,
     duration: "",
     workingHours: "",
   });
