@@ -25,12 +25,14 @@ export const Step6 = ({
     <div className="text-white max-w-2xl mx-auto p-6 rounded-lg space-y-6">
       <h2 className="text-xl font-bold">Нийт мэдээлэл</h2>
 
+      {/* Бүртгэлийн мэдээлэл */}
       <div>
         <h3 className="font-semibold mb-2">Бүртгэлийн мэдээлэл</h3>
         <p>Имэйл: {formData.email}</p>
         <p>Салоны нэр: {formData.companyName}</p>
       </div>
 
+      {/* Салоны дэлгэрэнгүй */}
       <div>
         <h3 className="font-semibold mb-2">Салоны дэлгэрэнгүй</h3>
         <p>Тайлбар: {formData.description || "—"}</p>
@@ -47,6 +49,28 @@ export const Step6 = ({
               src={logoPreview}
               alt="Лого"
               className="h-16 object-contain border rounded"
+            />
+          </div>
+        )}
+
+        {formData.backgroundImage && (
+          <div className="mt-2">
+            <p className="text-sm mb-1">Background зураг:</p>
+            <img
+              src={formData.backgroundImage}
+              alt="Background"
+              className="h-24 w-full object-cover border rounded"
+            />
+          </div>
+        )}
+
+        {formData.aboutUsImage && (
+          <div className="mt-2">
+            <p className="text-sm mb-1">Бидний тухай зураг:</p>
+            <img
+              src={formData.aboutUsImage}
+              alt="About Us"
+              className="h-24 w-full object-cover border rounded"
             />
           </div>
         )}
@@ -68,6 +92,7 @@ export const Step6 = ({
         )}
       </div>
 
+      {/* Ажлын цаг */}
       <div>
         <h3 className="font-semibold mb-2">Ажлын цаг</h3>
         <ul className="space-y-1">

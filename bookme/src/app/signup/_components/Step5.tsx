@@ -22,7 +22,7 @@ export const Step5 = ({ formData, setFormData }: Step5Props) => {
 
   const {
     setValue,
-    trigger, // ✅ Add trigger from RHF
+    trigger,
     formState: { errors },
   } = useFormContext<FullSchemaType>();
 
@@ -43,14 +43,16 @@ export const Step5 = ({ formData, setFormData }: Step5Props) => {
   }) => {
     setLocation(loc);
 
-    // Set form values
+    // ✅ Register values in RHF
     setValue("address", loc.address, { shouldValidate: true });
     setValue("city", "Улаанбаатар", { shouldValidate: true });
+    setValue("lat", loc.lat); // 🟢
+    setValue("lng", loc.lng); // 🟢
 
-    // Force validation to show or clear errors
-    trigger(["address", "city"]);
+    // ✅ Validate
+    trigger(["address", "city", "lat", "lng"]);
 
-    // Local state sync
+    // ✅ Update formData state
     setFormData((prev) => ({
       ...prev,
       address: loc.address,

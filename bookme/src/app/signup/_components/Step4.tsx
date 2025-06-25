@@ -33,21 +33,30 @@ export const Step4 = ({
   removeLogo,
 }: Step4Props) => {
   const {
+    setValue,
     formState: { errors },
   } = useFormContext<FullSchemaType>();
 
   const [bgPreview, setBgPreview] = useState(formData.backgroundImage || "");
   const [aboutPreview, setAboutPreview] = useState(formData.aboutUsImage || "");
+  const [isUploading, setIsUploading] = useState(false);
 
   const uploadImageToCloudinary = async (file: File): Promise<string> => {
-    const form = new FormData();
-    form.append("file", file);
-    form.append("upload_preset", UPLOAD_PRESET);
-    const res = await axios.post(
-      `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-      form
-    );
-    return res.data.secure_url;
+    setIsUploading(true); // 👈 start loading
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      form.append("upload_preset", UPLOAD_PRESET);
+
+      const res = await axios.post(
+        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+        form
+      );
+
+      return res.data.secure_url;
+    } finally {
+      setIsUploading(false); // 👈 stop loading
+    }
   };
 
   const handleSingleImageUpload = async (
@@ -55,12 +64,21 @@ export const Step4 = ({
     key: "backgroundImage" | "aboutUsImage",
     setPreview: React.Dispatch<React.SetStateAction<string>>
   ) => {
+    if (isUploading) {
+      alert("Өмнөх зураг хуулагдаж дуусаагүй байна. Түр хүлээнэ үү.");
+      return;
+    }
+
     const file = e.target.files?.[0];
     if (!file) return;
+
     const previewURL = URL.createObjectURL(file);
     setPreview(previewURL);
+
     const url = await uploadImageToCloudinary(file);
+
     setFormData((prev) => ({ ...prev, [key]: url }));
+    setValue(key, url);
   };
 
   return (
@@ -97,6 +115,13 @@ export const Step4 = ({
             </div>
           )}
         </div>
+        {/* 🌀 Loading UI */}
+        {isUploading && (
+          <div className="flex items-center gap-2 mt-2">
+            <div className="h-4 w-4 rounded-full border-2 border-t-white border-white/30 animate-spin"></div>
+            <p className="text-white text-sm">Зураг байршуулж байна...</p>
+          </div>
+        )}
         {errors.logo && (
           <p className="text-red-400 text-sm mt-1">{errors.logo.message}</p>
         )}
@@ -131,6 +156,14 @@ export const Step4 = ({
             </div>
           )}
         </div>
+
+        {/* 🌀 Loading UI */}
+        {isUploading && (
+          <div className="flex items-center gap-2 mt-2">
+            <div className="h-4 w-4 rounded-full border-2 border-t-white border-white/30 animate-spin"></div>
+            <p className="text-white text-sm">Зураг байршуулж байна...</p>
+          </div>
+        )}
       </div>
 
       {/* About Us Image Upload */}
@@ -162,6 +195,13 @@ export const Step4 = ({
             </div>
           )}
         </div>
+        {/* 🌀 Loading UI */}
+        {isUploading && (
+          <div className="flex items-center gap-2 mt-2">
+            <div className="h-4 w-4 rounded-full border-2 border-t-white border-white/30 animate-spin"></div>
+            <p className="text-white text-sm">Зураг байршуулж байна...</p>
+          </div>
+        )}
       </div>
 
       {/* Multiple Images Upload */}
@@ -201,6 +241,13 @@ export const Step4 = ({
                   className="absolute inset-0 opacity-0 cursor-pointer"
                 />
               </div>
+              {/* 🌀 Loading UI */}
+              {isUploading && (
+                <div className="flex items-center gap-2 mt-2">
+                  <div className="h-4 w-4 rounded-full border-2 border-t-white border-white/30 animate-spin"></div>
+                  <p className="text-white text-sm">Зураг байршуулж байна...</p>
+                </div>
+              )}
             </>
           ) : (
             <div className="relative text-center cursor-pointer py-8">
