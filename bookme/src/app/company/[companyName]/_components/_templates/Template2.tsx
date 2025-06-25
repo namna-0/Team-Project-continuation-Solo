@@ -31,7 +31,6 @@ export const Template2: React.FC<ClassicTemplateProps> = ({
     lng: number;
   } | null>(null);
 
-  // Memoized values
   const hasEmployees = useMemo(
     () => data.employees && data.employees.length > 0,
     [data.employees]
@@ -119,12 +118,33 @@ export const Template2: React.FC<ClassicTemplateProps> = ({
 
   return (
     <section
-      className={`min-h-screen relative overflow-x-hidden ${
-        isPreview ? "pointer-events-none" : ""
+      className={`min-h-screen relative overflow-x-hidden${
+        isPreview ? " pointer-events-none" : ""
       }`}
       id="home"
     >
-      <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-gray-950 to-gray-900"></div>
+      <div
+        className={`${
+          isPreview
+            ? "absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-950 to-gray-900"
+            : "fixed inset-0 bg-gradient-to-br from-gray-900 via-gray-950 to-gray-900"
+        }`}
+      ></div>
+
+      {!isPreview && (
+        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48cmVjdCB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIGZpbGw9IiMwMDAwMDAiLz48cGF0aCBkPSJNMCAwTDYwIDBNNjAgMEwwIDYwIiBzdHJva2U9IiMxMTExMTEiIHN0cm9rZS13aWR0aD0iMSIvPjwvc3ZnPg==')] opacity-10"></div>
+          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gray-800 rounded-full blur-[100px] opacity-5"></div>
+          <div className="absolute bottom-1/3 right-1/4 w-72 h-72 bg-gray-800 rounded-full blur-[100px] opacity-5"></div>
+        </div>
+      )}
+      {isPreview && (
+        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48cmVjdCB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIGZpbGw9IiMwMDAwMDAiLz48cGF0aCBkPSJNMCAwTDYwIDBNNjAgMEwwIDYwIiBzdHJva2U9IiMxMTExMTEiIHN0cm9rZS13aWR0aD0iMSIvPjwvc3ZnPg==')] opacity-10"></div>
+          <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-gray-800 rounded-full blur-[50px] opacity-5"></div>
+          <div className="absolute bottom-1/3 right-1/4 w-36 h-36 bg-gray-800 rounded-full blur-[50px] opacity-5"></div>
+        </div>
+      )}
 
       {renderDecorativeElements}
 
@@ -142,7 +162,7 @@ export const Template2: React.FC<ClassicTemplateProps> = ({
 
         <CompanyWorkingHoursTemplate2 company={data} />
 
-        <CompanyEmployeeTemplate2 company={data} />
+        {hasEmployees && <CompanyEmployeeTemplate2 company={data} />}
 
         <CompanyLocationTemplate2
           company={data}

@@ -1,8 +1,9 @@
-" use client";
+"use client";
 
 import { Calendar, ChevronDown, Heart, Sparkles, Star } from "lucide-react";
 import { Company } from "./CompanyTypes";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export const CompanyBackgroundTemplate2 = ({
   companyName,
@@ -17,7 +18,6 @@ export const CompanyBackgroundTemplate2 = ({
   useEffect(() => {
     setIsVisible(true);
 
-    // Image carousel if multiple images
     if (company.companyImages && company.companyImages.length > 1) {
       const interval = setInterval(() => {
         setCurrentImageIndex((prev) =>
@@ -28,16 +28,21 @@ export const CompanyBackgroundTemplate2 = ({
     }
   }, [company.companyImages]);
 
-  console.log("hour", company.workingHours.monday);
   return (
     <section className="relative min-h-screen overflow-hidden">
       <div className="absolute inset-0">
         {company.backGroundImage ? (
-          <img
-            className="w-full bg-cover bg-center bg-no-repeat transition-all duration-1000 transform scale-105"
-            src={company.backGroundImage}
-            alt="Background"
-          />
+          <div className="relative w-full h-full">
+            <Image
+              src={company.backGroundImage}
+              alt={`${companyName} background`}
+              fill
+              sizes="100vw"
+              className="object-cover transition-all duration-1000 transform scale-105"
+              priority
+              quality={85}
+            />
+          </div>
         ) : (
           <div className="w-full h-full bg-gray-900" />
         )}
@@ -61,11 +66,9 @@ export const CompanyBackgroundTemplate2 = ({
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="relative z-10 min-h-screen flex items-center">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Left Content */}
+        <div className="max-w-9xl mx-auto px-6 sm:px-8 lg:px-12 w-full ">
+          <div className="grid lg:grid-cols-2 gap-26 items-center mb-30">
             <div className="space-y-8 text-center lg:text-left">
               <div
                 className={`inline-flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full border border-white/20 transition-all duration-700 ${
@@ -81,26 +84,23 @@ export const CompanyBackgroundTemplate2 = ({
                 <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-grey-500 rounded-full animate-pulse"></div>
               </div>
 
-              {/* Main Heading */}
               <div className="space-y-4">
                 <h1
-                  className={`text-6xl md:text-7xl lg:text-8xl font-bold leading-tight transition-all duration-1000 delay-200 ${
+                  className={`text-4xl md:text-5xl lg:text-6xl font-bold leading-tight transition-all duration-1000 delay-200 ${
                     isVisible
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 translate-y-12"
                   }`}
                 >
-                  <span className="block bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
-                    {companyName}
-                  </span>
-                  <span className="block text-4xl md:text-5xl lg:text-6xl bg-gradient-to-r from-blue-400 via-white-500 to-black-500 bg-clip-text text-transparent mt-2">
+                  <span className="block text-white">{companyName}</span>
+                  <span className="block text-3xl md:text-4xl lg:text-5xl bg-gradient-to-r from-blue-400 via-white-500 to-black-500 bg-clip-text text-transparent mt-2">
                     компанийн хуудас
                   </span>
                 </h1>
               </div>
 
               <p
-                className={`text-xl md:text-2xl text-gray-200 leading-relaxed max-w-2xl transition-all duration-1000 delay-400 ${
+                className={`text-xs md:text-xl text-gray-200 leading-relaxed max-w-2xl transition-all duration-1000 delay-400 ${
                   isVisible
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-8"
@@ -112,28 +112,24 @@ export const CompanyBackgroundTemplate2 = ({
                 </span>
               </p>
 
-              {/* CTA Buttons */}
               <div
-                className={`flex flex-col sm:flex-row gap-6 pt-4 transition-all duration-1000 delay-600 ${
+                className={`flex flex-col sm:flex-row gap-4 sm:gap-6 pt-4 transition-all duration-1000 delay-600 ${
                   isVisible
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-8"
                 }`}
               >
-                {/* Primary CTA */}
-                <button className="group relative px-8 py-4 bg-gradient-to-r from-blue-500 to-black-600 rounded-2xl overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-rose-500/25">
+                <button className="group relative px-4 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg sm:rounded-xl overflow-hidden transform transition-all duration-300 hover:scale-[1.02] sm:hover:scale-105 hover:shadow-md sm:hover:shadow-lg hover:shadow-blue-500/20 w-full sm:w-auto">
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-                  <div className="relative z-10 flex items-center justify-center gap-3 text-white font-bold text-lg">
-                    <Heart className="w-6 h-6 group-hover:animate-pulse" />
+                  <div className="relative z-10 flex items-center justify-center gap-2 text-white font-medium sm:font-bold text-sm sm:text-base">
+                    <Heart className="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse" />
                     Цаг захиалах
                   </div>
                 </button>
               </div>
             </div>
 
-            {/* Right Content - Floating Elements */}
             <div className="relative hidden lg:block">
-              {/* Main Floating Card */}
               <div
                 className={`relative bg-white/10 backdrop-blur-xl rounded-3xl p-8 border border-white/20 shadow-2xl transform transition-all duration-1000 delay-1000 ${
                   isVisible
@@ -175,7 +171,6 @@ export const CompanyBackgroundTemplate2 = ({
         </div>
       </div>
 
-      {/* Scroll Indicator */}
       <div
         className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 transition-all duration-1000 delay-1600 ${
           isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -183,7 +178,7 @@ export const CompanyBackgroundTemplate2 = ({
       >
         <div className="flex flex-col items-center gap-2 animate-bounce">
           <span className="text-white/70 text-sm font-medium">
-            Доош скролл хийх
+            Доошоо скролл хийх
           </span>
           <ChevronDown className="w-6 h-6 text-white/70" />
         </div>

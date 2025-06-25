@@ -62,7 +62,7 @@ export const CompanyNavBarTemplate3 = ({
             </Link>
           </div>
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-8">
+            <div className="ml-10 flex items-baseline space-x-8g">
               {navItems.map((item, index) => (
                 <Link
                   key={item.href}
@@ -171,7 +171,7 @@ export const CompanyNavBarTemplate3 = ({
             isMenuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          <div className="p-6 pt-20">
+          <div className="p-6 pt-20  bg-white rounded-b-lg">
             <div className="space-y-4">
               {navItems.map((item, index) => (
                 <Link
