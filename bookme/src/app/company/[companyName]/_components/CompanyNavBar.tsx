@@ -170,8 +170,8 @@ export const CompanyNavBar = ({
             isMenuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          <div className="p-6 pt-20">
-            <div className="space-y-4">
+          <div className="p-6 pt-20 bg-white rounded-b-lg">
+            <div className="space-y-4 sm:bg-white">
               {navItems.map((item, index) => (
                 <Link
                   key={item.href}

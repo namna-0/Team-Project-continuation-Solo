@@ -1,9 +1,10 @@
 "use client";
 
-import { Award, Calendar, Heart, Sparkles, Star, Users } from "lucide-react";
+import { Heart, Sparkles } from "lucide-react";
 import { Company } from "./CompanyTypes";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export const CompanyBackgroundImageText = ({
   companyName,
@@ -23,17 +24,25 @@ export const CompanyBackgroundImageText = ({
     visible: { opacity: 1, y: 0 },
   };
 
+  const backgroundImage = company.backGroundImage?.length
+    ? company.backGroundImage
+    : "https://res.cloudinary.com/dxhmgs7wt/image/upload/v1749803046/heroback_wzxjtk.jpg";
+
   return (
-    <section
-      className="relative bg-cover bg-center bg-no-repeat h-[800px] flex flex-col items-center justify-center"
-      style={{
-        backgroundImage: company.companyImages?.length
-          ? `url('${company.companyImages[0]}')`
-          : "url('https://res.cloudinary.com/dxhmgs7wt/image/upload/v1749803046/heroback_wzxjtk.jpg')",
-      }}
-    >
-      <div className="absolute inset-0 bg-black/30" />
-      <div className="relative z-10 min-h-screen flex items-center">
+    <section className="relative h-[800px] flex flex-col items-center justify-center overflow-hidden">
+      <Image
+        src={backgroundImage}
+        alt={`${companyName} background`}
+        fill
+        sizes="100vw"
+        className="object-cover object-center"
+        priority
+        quality={85}
+      />
+
+      <div className="absolute inset-0 bg-black/30 z-10" />
+
+      <div className="relative z-20 min-h-screen flex items-center w-full">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8 text-center lg:text-left">
@@ -58,11 +67,9 @@ export const CompanyBackgroundImageText = ({
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="space-y-4"
               >
-                <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold leading-tight">
-                  <span className="block bg-gradient-to-r from-white via-gray-100 to-white bg-clip-text text-transparent">
-                    {companyName}
-                  </span>
-                  <span className="block text-4xl md:text-5xl lg:text-6xl bg-gradient-to-r from-rose-400 via-pink-500 to-purple-500 bg-clip-text text-transparent mt-2">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                  <span className="block text-white ">{companyName}</span>
+                  <span className="block text-2xl md:text-3xl lg:text-4xl bg-gradient-to-r from-rose-400 via-pink-500 to-purple-500 bg-clip-text text-transparent mt-2">
                     компанийн хуудас
                   </span>
                 </h1>
@@ -73,7 +80,7 @@ export const CompanyBackgroundImageText = ({
                 animate={isVisible ? "visible" : "hidden"}
                 variants={fadeInUp}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className="text-xl md:text-2xl text-gray-200 leading-relaxed max-w-2xl"
+                className="text-xs md:text-xl text-gray-200 leading-relaxed"
               >
                 Өндөр зэрэглэлийн мэргэжлийн үйлчилгээ,
                 <span className="text-transparent bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text font-semibold">
@@ -86,12 +93,12 @@ export const CompanyBackgroundImageText = ({
                 animate={isVisible ? "visible" : "hidden"}
                 variants={fadeInUp}
                 transition={{ duration: 0.8, delay: 0.6 }}
-                className="flex flex-col sm:flex-row gap-6 pt-4"
+                className="flex flex-col sm:flex-row gap-4 sm:gap-6 pt-4"
               >
-                <button className="group relative px-8 py-4 bg-gradient-to-r from-rose-500 to-pink-600 rounded-2xl overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-rose-500/25">
+                <button className="group relative px-5 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-rose-500 to-pink-600 rounded-xl sm:rounded-2xl overflow-hidden transform transition-all duration-300 hover:scale-[1.02] sm:hover:scale-105 hover:shadow-lg sm:hover:shadow-2xl hover:shadow-rose-500/25 w-auto">
                   <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-rose-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-                  <div className="relative z-10 flex items-center justify-center gap-3 text-white font-bold text-lg">
-                    <Heart className="w-6 h-6 group-hover:animate-pulse" />
+                  <div className="relative z-10 flex items-center justify-center gap-2 sm:gap-3 text-white font-semibold sm:font-bold text-sm sm:text-lg">
+                    <Heart className="w-5 h-5 sm:w-6 sm:h-6 group-hover:animate-pulse" />
                     Цаг захиалах
                   </div>
                 </button>

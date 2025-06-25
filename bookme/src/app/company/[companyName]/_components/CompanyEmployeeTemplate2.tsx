@@ -140,7 +140,7 @@ export const CompanyEmployeeTemplate2 = ({ company }: { company: Company }) => {
         <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent mb-4">
           Манай Баг
         </h2>
-        <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+        <p className="text-gray-600 max-w-xs sm:max-w-2xl mx-auto sm:text-base lg:text-lg sm:leading-normal">
           Мэргэжлийн багийнхан таны хэрэгцээг хангахад бэлэн
         </p>
       </div>

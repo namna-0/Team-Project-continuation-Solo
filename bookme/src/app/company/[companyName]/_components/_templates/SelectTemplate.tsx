@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { api } from "@/axios";
 import { Check, Star, ChevronLeft, ChevronRight } from "lucide-react";
@@ -13,7 +13,6 @@ import { Company } from "../CompanyTypes";
 
 export const SelectTemplate = ({ fetchCompany }: any) => {
   const { companyName } = useParams<{ companyName: string }>();
-  const router = useRouter();
   const [company, setCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,15 +23,14 @@ export const SelectTemplate = ({ fetchCompany }: any) => {
     {
       templateNumber: 1,
       name: "Template1",
-      description:
-        "Clean, contemporary design with bold gradients and animations",
+      description: "A clean, modern design with a soft pink theme",
       component: Template1,
     },
     {
       templateNumber: 2,
       name: "Template2",
       description:
-        "Traditional, elegant design with warm tones and serif fonts",
+        "A sleek, modern design with futuristic elements and bold visual impact.",
       component: Template2,
     },
     {
@@ -153,22 +151,8 @@ export const SelectTemplate = ({ fetchCompany }: any) => {
 
       <div className="max-w-7xl mx-auto p-6 flex flex-col gap-5">
         <div className="flex justify-between items-center">
-          <Button
-            variant="outline"
-            onClick={() => router.back()}
-            disabled={saving}
-            className="flex items-center gap-2"
-          >
-            <ChevronLeft size={16} />
-            Буцах
-          </Button>
-
           <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-500">
-              Дизайн {currentTemplateIndex + 1} / {templates.length}
-            </span>
-
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
               <Button
                 variant="outline"
                 onClick={goToPrevTemplate}
@@ -178,6 +162,10 @@ export const SelectTemplate = ({ fetchCompany }: any) => {
               >
                 <ChevronLeft size={16} />
               </Button>
+              <span className="text-sm text-gray-500">
+                Дизайн {currentTemplateIndex + 1} / {templates.length}
+              </span>
+
               <Button
                 variant="outline"
                 onClick={goToNextTemplate}
@@ -197,7 +185,7 @@ export const SelectTemplate = ({ fetchCompany }: any) => {
               <h3 className="font-semibold text-gray-900 mb-4">
                 Урьдчилан харах
               </h3>
-              <div className="border rounded-lg overflow-hidden bg-gray-50 h-[600px]">
+              <div className="border rounded-lg overflow-hidden h-[600px]">
                 <div className="h-full w-full overflow-auto flex justify-center">
                   {renderTemplatePreview(false)}
                 </div>
@@ -209,7 +197,7 @@ export const SelectTemplate = ({ fetchCompany }: any) => {
             <div className="bg-white rounded-lg p-6 border border-gray-200 h-fit">
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Star className="text-blue-600" size={24} />
+                  <Star className="text-black-600" size={24} />
                 </div>
                 <div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
