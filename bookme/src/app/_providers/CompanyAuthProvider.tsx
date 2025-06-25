@@ -59,7 +59,7 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
     setCompany(undefined);
     toast("Системээс гарлаа");
     if (company?.companyName) {
-      router.push(`company/${company?.companyName}`);
+      router.push(`/company/${company?.companyName}`);
     } else {
       router.push("/");
     }
