@@ -135,7 +135,10 @@ export default function Home() {
                   <p className="text-ls text-gray-700">
                     🧑‍💼{isClicked?.employee.employeeName}
                   </p>
-                  <img src={isClicked.employee.profileImage} />
+                  <img
+                    className="w-10 h-10 rounded-full"
+                    src={isClicked.employee.profileImage}
+                  />
                 </div>
                 <button
                   className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 w-fit"
