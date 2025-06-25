@@ -152,7 +152,7 @@ export function AllOrdersPage({ company }: AllOrdersPageProps) {
               <SelectItem value="all">Бүгд</SelectItem>
               <SelectItem value="today">Өнөөдөр</SelectItem>
               <SelectItem value="week">7 хоног</SelectItem>
-              <SelectItem value="month">Сар</SelectItem>
+              <SelectItem value="month">Энэ сар</SelectItem>
               <SelectItem value="confirmed">Баталгаажсан</SelectItem>
               <SelectItem value="cancelled">Цуцлагдсан</SelectItem>
               <SelectItem value="past">Дууссан</SelectItem>
