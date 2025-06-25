@@ -124,13 +124,13 @@ function OrderImformation({
             </div>
             <Button className={isSelectEmployee == "" ? " relative w-full bg-gray-300 text-white" : " relative w-full bg-black text-white "} onClick={() => {
                 HandleNextStage()
-                if (isStage == Stages[Stages.length - 1]) {
+                if (isStage == Stages[2]) {
                     addOrder()
                     setIsSelectEmployee("")
                     setSelectEmployee("")
                     setDate(null)
                     setSelectedTime(null)
-                    setIsStage(Stages[0])
+                    setIsStage(Stages[3])
                 }
             }}>continue</Button>
         </div >
