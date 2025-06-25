@@ -58,7 +58,6 @@ export const CompanyImageCard = ({
             </div>
             <div className="w-full flex justify-center gap-3 items-center">
               <Button
-                // type="button"
                 onClick={async () => {
                   setLoading(true);
                   await handleDeleteImage();

@@ -23,7 +23,7 @@ export default function Home() {
           <CompanyImagesSection />
           <CompanyBasicInformation />
           <CompanyAllEmployees />
-          <CompanyLocationGetData />
+          {/* <CompanyLocationGetData /> */}
         </div>
         <UploadCompanyLogo />
       </div>

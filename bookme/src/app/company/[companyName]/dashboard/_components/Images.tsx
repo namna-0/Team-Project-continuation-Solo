@@ -1,21 +1,6 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Upload, X, ImageIcon } from "lucide-react";
+import { CompanyLogoEdit } from "./CompanyLogoEdit";
 
 export function ImagesSettingsPage() {
-  const galleryImages = [
-    "/placeholder.svg?height=200&width=300",
-    "/placeholder.svg?height=200&width=300",
-    "/placeholder.svg?height=200&width=300",
-    "/placeholder.svg?height=200&width=300",
-  ];
-
   return (
     <div className="space-y-6">
       <div>
@@ -26,35 +11,9 @@ export function ImagesSettingsPage() {
       </div>
 
       <div className="grid gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Company Logo</CardTitle>
-            <CardDescription>
-              Upload your company logo (recommended: 200x200px)
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-4">
-              <div className="flex h-24 w-24 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
-                <ImageIcon className="h-8 w-8 text-muted-foreground" />
-              </div>
-              <div className="space-y-2">
-                <Button
-                  variant="outline"
-                  className="border-[#007FFF] text-[#007FFF] hover:bg-[#007FFF]/10"
-                >
-                  <Upload className="mr-2 h-4 w-4" />
-                  Upload Logo
-                </Button>
-                <p className="text-sm text-muted-foreground">
-                  PNG, JPG up to 2MB
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <CompanyLogoEdit />
 
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>Background Image</CardTitle>
             <CardDescription>
@@ -80,9 +39,9 @@ export function ImagesSettingsPage() {
               </Button>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
 
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>Gallery Images</CardTitle>
             <CardDescription>
@@ -120,7 +79,7 @@ export function ImagesSettingsPage() {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
     </div>
   );
