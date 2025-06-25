@@ -95,13 +95,13 @@ export const CompanyNavBar = ({
             )}
             {!loggedInCompany && !user && (
               <div className="flex gap-[10px]">
-                <Link href={`/${company?.companyName}/login`}>
+                <Link href={`/company/${company?.companyName}/login`}>
                   <button className="border-[2px] text-black cursor-pointer px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group">
                     <span className="relative z-10">Нэвтрэх</span>
                     <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
                   </button>
                 </Link>
-                <Link href={`/${company?.companyName}/signup`}>
+                <Link href={`/company/${company?.companyName}/signup`}>
                   <button className="bg-gradient-to-r from-pink-500 to-purple-600 text-white cursor-pointer px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group">
                     <span className="relative z-10">Бүртгүүлэх</span>
                     <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>

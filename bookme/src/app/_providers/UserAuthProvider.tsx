@@ -84,7 +84,7 @@ export const UserAuthProvider = ({ children }: PropsWithChildren) => {
   const signOut = async () => {
     localStorage.removeItem("token");
     setUser(undefined);
-    router.push("/");
+    router.push(`/company/${companyName}`);
   };
 
   const getUser = async () => {
