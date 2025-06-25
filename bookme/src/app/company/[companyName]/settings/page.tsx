@@ -20,7 +20,7 @@ export default function Home() {
       <div className="w-[1440px] flex justify-between gap-2 ">
         <div className="flex flex-col w-[80%] gap-5">
           {/* {company && <CompanyWorkingHours company={company} />} */}
-          <CompanyImagesSection />
+          {/* <CompanyImagesSection /> */}
           <CompanyBasicInformation />
           <CompanyAllEmployees />
           {/* <CompanyLocationGetData /> */}

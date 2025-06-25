@@ -35,10 +35,7 @@ const employeeSchema = z.object({
   profileImage: z.string().nonempty("Ажилтны зураг оруулна уу."),
   employeeName: z.string().nonempty("Ажилтны нэрийг оруулна уу."),
   description: z.string().nonempty("Ажилтны таницуулгаа оруулна уу."),
-  duration: z.enum(["30", "60"], {
-    required_error: "Үйлчилгээний хугацаа сонгоно уу.",
-  }),
-
+  duration: z.string().nonempty("Үйлчилгээний хугацаа сонгоно уу."),
   startTime: z.string().nonempty("Ажлын цаг сонгоно уу."),
   endTime: z.string().nonempty("Ажлын цаг сонгоно уу."),
   lunchTimeStart: z.string().nonempty("Цайны цагаа сонгоно уу."),
@@ -65,10 +62,7 @@ export const EmployeeForm = ({
       employeeName: employeeData.employeeName,
       description: employeeData.description,
       availability: employeeData.availability,
-      duration:
-        employeeData.duration?.halfTime ||
-        employeeData.duration?.fullTime ||
-        "30",
+      duration: employeeData.duration,
       startTime: employeeData.startTime,
       endTime: employeeData.endTime,
       lunchTimeStart: employeeData.lunchTimeStart,
