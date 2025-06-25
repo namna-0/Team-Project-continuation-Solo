@@ -25,14 +25,12 @@ export const Step6 = ({
     <div className="text-white max-w-2xl mx-auto p-6 rounded-lg space-y-6">
       <h2 className="text-xl font-bold">Нийт мэдээлэл</h2>
 
-      {/* Бүртгэлийн мэдээлэл */}
       <div>
         <h3 className="font-semibold mb-2">Бүртгэлийн мэдээлэл</h3>
         <p>Имэйл: {formData.email}</p>
         <p>Салоны нэр: {formData.companyName}</p>
       </div>
 
-      {/* Салоны дэлгэрэнгүй */}
       <div>
         <h3 className="font-semibold mb-2">Салоны дэлгэрэнгүй</h3>
         <p>Тайлбар: {formData.description || "—"}</p>

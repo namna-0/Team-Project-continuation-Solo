@@ -43,16 +43,13 @@ export const Step5 = ({ formData, setFormData }: Step5Props) => {
   }) => {
     setLocation(loc);
 
-    // ✅ Register values in RHF
     setValue("address", loc.address, { shouldValidate: true });
     setValue("city", "Улаанбаатар", { shouldValidate: true });
-    setValue("lat", loc.lat); // 🟢
-    setValue("lng", loc.lng); // 🟢
+    setValue("lat", loc.lat);
+    setValue("lng", loc.lng);
 
-    // ✅ Validate
     trigger(["address", "city", "lat", "lng"]);
 
-    // ✅ Update formData state
     setFormData((prev) => ({
       ...prev,
       address: loc.address,

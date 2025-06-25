@@ -37,7 +37,7 @@ export const Step1 = () => {
           {...register("password")}
           type="password"
           placeholder="••••••••"
-          className="bg-white/10 text-white border-white placeholder-white"
+          className="bg-white/10 text-white border-white placeholder-white placeholder-text-white"
         />
         {errors.password && (
           <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
@@ -52,7 +52,7 @@ export const Step1 = () => {
           {...register("confirmPassword")}
           type="password"
           placeholder="••••••••"
-          className="bg-white/10 text-white border-white placeholder-white"
+          className="bg-white/10 text-white border-white placeholder-white placeholder-text-white"
         />
         {errors.confirmPassword && (
           <p className="text-red-500 text-sm mt-1">
@@ -68,7 +68,7 @@ export const Step1 = () => {
         <Input
           {...register("companyName")}
           placeholder="Компаний нэр"
-          className="bg-white/10 text-white border-white placeholder-white"
+          className="bg-white/10 text-white border-white placeholder-white placeholder-text-white"
         />
         {errors.companyName && (
           <p className="text-red-500 text-sm mt-1">
