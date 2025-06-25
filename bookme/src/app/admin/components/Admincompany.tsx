@@ -28,7 +28,9 @@ export const AdminCompany = () => {
       .startsWith(search.toLowerCase());
 
     const matchesActiveFilter =
-      isActiveFilter === null ? true : company.isActive === isActiveFilter;
+      isActiveFilter === null
+        ? true
+        : company.isActive === (isActiveFilter ? "true" : "false");
 
     return matchesSearch && matchesActiveFilter;
   });
