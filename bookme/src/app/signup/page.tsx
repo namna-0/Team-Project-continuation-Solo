@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Stepper, { Step } from "@/blocks/Components/Stepper/Stepper";
 import { Step6 } from "./_components/Step6";
 import { Step3 } from "./_components/Step3";
@@ -28,7 +28,7 @@ export default function CompanySetupPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { signUp } = useCompanyAuth();
 
-  const [formData, setFormData] = useState<FormDataType>({
+  const formData: FormDataType = {
     email: "",
     password: "",
     confirmPassword: "",
@@ -56,7 +56,7 @@ export default function CompanySetupPage() {
     backgroundImage: "",
     experience: "",
     clientNumber: "",
-  });
+  };
 
   const methods = useForm<FullSchemaType>({
     resolver: zodResolver(fullSchema),
@@ -79,7 +79,7 @@ export default function CompanySetupPage() {
       setLogoFile(file);
       const preview = URL.createObjectURL(file);
       setLogoPreview(preview);
-      setFormData((prev) => ({ ...prev, logo: preview }));
+      methods.setValue("logo", preview);
     }
   };
 
@@ -99,7 +99,6 @@ export default function CompanySetupPage() {
     setIsSubmitting(true);
     try {
       const values = methods.getValues();
-      setFormData((prev) => ({ ...prev, ...values } as FormDataType));
 
       let logoUrl = "";
       if (logoFile) {
@@ -119,14 +118,11 @@ export default function CompanySetupPage() {
         lng: values.lng,
         companyLogo: logoUrl,
         phoneNumber: values.phone,
-        description: formData.description ?? "",
+        description: values.description ?? "",
         companyImages: imageUrls,
         employees: [],
         workingHours: values.openingHours,
-        lunchBreak: {
-          start: values.lunchBreak.start,
-          end: values.lunchBreak.end,
-        },
+        lunchBreak: values.lunchBreak,
         aboutUsImage: values.aboutUsImage,
         backgroundImage: values.backgroundImage,
         clientNumber: values.clientNumber,
@@ -160,7 +156,7 @@ export default function CompanySetupPage() {
   const removeLogo = () => {
     setLogoFile(null);
     setLogoPreview("");
-    setFormData((prev) => ({ ...prev, logo: "" }));
+    methods.setValue("logo", "");
   };
 
   const dayLabels: Record<string, string> = {
@@ -180,8 +176,6 @@ export default function CompanySetupPage() {
           initialStep={1}
           onStepChange={(step) => {
             setCurrentStep(step);
-            const values = methods.getValues();
-            setFormData((prev) => ({ ...prev, ...values } as FormDataType));
           }}
           onFinalStepCompleted={handleFinalSubmit}
           backButtonText="Буцах"
@@ -195,16 +189,17 @@ export default function CompanySetupPage() {
             <Step2 />
           </Step>
           <Step>
-            <Step3
-              formData={formData}
-              setFormData={setFormData}
-              dayLabels={dayLabels}
-            />
+            <Step3 dayLabels={dayLabels} />
           </Step>
           <Step>
             <Step4
-              formData={formData}
-              setFormData={setFormData}
+              formData={{
+                ...methods.getValues(),
+                description: methods.getValues().description ?? "",
+                backgroundImage: methods.getValues().backgroundImage ?? "",
+                aboutUsImage: methods.getValues().aboutUsImage ?? "",
+              }}
+              setFormData={() => {}}
               handleImageChange={handleImageChange}
               companyImagePreview={companyImagePreview}
               removeCompanyImage={removeCompanyImage}
@@ -214,12 +209,12 @@ export default function CompanySetupPage() {
             />
           </Step>
           <Step>
-            <Step5 formData={formData} setFormData={setFormData} />
+            <Step5 formData={methods.getValues()} setFormData={() => {}} />
           </Step>
           <Step>
             <Step6
-              formData={formData}
-              setFormData={setFormData}
+              formData={methods.getValues()}
+              setFormData={() => {}}
               dayLabels={dayLabels}
               companyImagePreview={companyImagePreview}
               logoPreview={logoPreview}
@@ -228,7 +223,6 @@ export default function CompanySetupPage() {
         </Stepper>
       </FormProvider>
 
-      {/* ✅ LOADING OVERLAY */}
       {isSubmitting && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-xl text-center flex flex-col items-center gap-2">

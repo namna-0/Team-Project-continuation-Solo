@@ -54,14 +54,14 @@ export interface FormDataType {
   password: string;
   confirmPassword: string;
   companyName: string;
-  description: string;
+  description?: string; // ← энд заавал биш болгосон
   address: string;
   lat?: number;
   lng?: number;
   city: string;
   phone: string;
-  website: string;
-  logo: string;
+  website?: string;
+  logo?: string;
   openingHours: WorkingHoursType;
   lunchBreak: {
     start: string;
@@ -72,8 +72,8 @@ export interface FormDataType {
   employeeData?: Employee[];
   setEmployeeData?: (data: Employee[]) => void;
   setOpen?: (open: boolean) => void;
-  aboutUsImage?: "";
-  backgroundImage?: "";
+  aboutUsImage?: string;
+  backgroundImage?: string;
 }
 
 export type Location = {
