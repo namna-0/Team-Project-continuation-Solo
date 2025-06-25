@@ -39,6 +39,7 @@ export interface Employee {
 }
 
 export type Company = {
+  isActive: string;
   _id?: string;
   email: string;
   password?: string;
