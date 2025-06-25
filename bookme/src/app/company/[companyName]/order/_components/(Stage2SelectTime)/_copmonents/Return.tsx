@@ -10,7 +10,6 @@ import { OrderType } from "../../(publicItems)/orderImformation";
 import TimePicker from "./TimePicker";
 import SelectDayOnCalendar from "./DateByCalender";
 import DatePicker from "./DayPicker";
-import { da } from "date-fns/locale";
 
 type returnProps = {
     isSelectEmployee: string | string[],
@@ -24,8 +23,11 @@ type returnProps = {
     orders: OrderType[] | undefined
     availabilityTimes: () => number[]
     setSelectedEmployee: (employeeId: string) => void
+    isDayClosed: (day: Date) => boolean
+    isDayFullyBooked:(day:Date)=>boolean
+    selectedTime:Date|null
 }
-export const Return = ({ isSelectEmployee, setSelectedEmployee, zurag, orders, company, availabilityTimes, dayArrays, date, setSelectedTime, setDate, setIsSelectEmployee, selectedEmployeeImf }: returnProps) => {
+export const Return = ({ isSelectEmployee, setSelectedEmployee, zurag,isDayFullyBooked, orders, company, availabilityTimes, dayArrays,selectedTime, isDayClosed, date, setSelectedTime, setDate, setIsSelectEmployee, selectedEmployeeImf }: returnProps) => {
     const [open, setOpen] = useState<boolean>(false)
     return (
         <div className="w-full pr-4  flex flex-col  gap-6">
@@ -43,8 +45,8 @@ export const Return = ({ isSelectEmployee, setSelectedEmployee, zurag, orders, c
                 </Dialog>
                 <SelectDayOnCalendar date={date} setDate={setDate} open={open} setOpen={setOpen} />
             </div>
-            <DatePicker date={date} setDate={setDate} dayArrays={dayArrays} company={company}/>
-            <TimePicker date={date} orders={orders} setDate={setDate} setSelectedTime={setSelectedTime} dayArrays={dayArrays} availabilityTimes={availabilityTimes} />
+            <DatePicker date={date} setDate={setDate} dayArrays={dayArrays} orders={orders} company={company} isDayClosed={isDayClosed} isDayFullyBooked={isDayFullyBooked} availabilityTimes={availabilityTimes} />
+            <TimePicker date={date} orders={orders} setDate={setDate} setSelectedTime={setSelectedTime} selectedTime={selectedTime} isDayClosed={isDayClosed} isDayFullyBooked={isDayFullyBooked} dayArrays={dayArrays} availabilityTimes={availabilityTimes} />
         </div >)
 
 }

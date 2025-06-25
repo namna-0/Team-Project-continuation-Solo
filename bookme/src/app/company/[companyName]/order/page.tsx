@@ -7,8 +7,7 @@ import { useParams } from "next/navigation";
 import OrderNavBar from "./_components/(publicItems)/header";
 import OrderImformation from "./_components/(publicItems)/orderImformation";
 import StageTwo from "./_components/(Stage2SelectTime)/SelectTime"; // Adjust the path based on your project structur;
-import StagaOne from "./_components/(Stage1EmployeeSelect)/SelectEmployee";
-import { WorkingHours } from "@/app/signup/_components/Types";
+import StageOne from "./_components/(Stage1EmployeeSelect)/SelectEmployee";
 import { WorkingHoursType } from "../_components/CompanyTypes";
 
 const pacifico = Pacifico({
@@ -30,7 +29,7 @@ export type employeeType = {
 
 export type CompanyType = {
     _id: string,
-    workingHours: WorkingHours
+    workingHours: Record<string, { closed: boolean }>
     companyName: string
     address: string
     companyLogo: string
@@ -62,8 +61,6 @@ export default function OrderPage() {
                 if (response.data && response.data.company) {
                     setCompany(response.data.company);
                     console.log(response.data);
-
-
                 } else {
                     return ("Компани олдсонгүй");
                 }
@@ -82,6 +79,7 @@ export default function OrderPage() {
         if (isStage == Stages[0] && !(isSelectEmployee == "")) { setIsStage(Stages[1]) }
         if (isStage == Stages[1]) { setIsStage(Stages[2]) }
     };
+    
     return (
         <div className="w-full flex flex-col h-fit jusify-center overflow-hidden items-center bg-white">
             <div className="w-[1440px] relative h-[120vh] flex  justify-center bg-gray-100" >
@@ -101,7 +99,7 @@ export default function OrderPage() {
                         {/* <div className="font-pacifico text-3xl">{title()}</div> */}
                     </div>
                     {isStage == Stages[0] &&
-                        <StagaOne isSelectEmployee={isSelectEmployee} setIsSelectEmployee={setIsSelectEmployee} selectedEmployeeImf={selectedEmployeeImf} setSelectedEmployeeImf={setSelectedEmployeeImf} company={companyData as CompanyType} />
+                        <StageOne isSelectEmployee={isSelectEmployee} setIsSelectEmployee={setIsSelectEmployee} selectedEmployeeImf={selectedEmployeeImf} setSelectedEmployeeImf={setSelectedEmployeeImf} company={companyData as CompanyType} />
                     }
                     {isStage == Stages[1] &&
                         (<div className="w-full">

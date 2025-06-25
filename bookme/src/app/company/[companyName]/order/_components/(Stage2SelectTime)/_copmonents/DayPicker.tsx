@@ -2,14 +2,19 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { CompanyType } from "../../../page";
+import { OrderType } from "../../(publicItems)/orderImformation";
+import { time } from "framer-motion";
 type DayPickerProps = {
     date: Date | null
     setDate: (date: Date | null) => void
     dayArrays: () => Date[]
     company: CompanyType
-
+    orders: OrderType[] | undefined
+    availabilityTimes: (time: number) => number[];
+    isDayClosed: (day: Date) => boolean
+    isDayFullyBooked: (day: Date) => boolean
 }
-export default function WeekScroller({ date, setDate, dayArrays, company }: DayPickerProps) {
+export default function WeekScroller({ date, setDate, dayArrays, company, orders, availabilityTimes, isDayFullyBooked, isDayClosed }: DayPickerProps) {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const dayRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -26,7 +31,6 @@ export default function WeekScroller({ date, setDate, dayArrays, company }: DayP
 
     useEffect(() => {
         const selectedIndex = dayArrays().findIndex(
-
             (d) =>
                 date !== null && d.getDate() === date.getDate() &&
                 d.getMonth() === date.getMonth() &&
@@ -41,13 +45,6 @@ export default function WeekScroller({ date, setDate, dayArrays, company }: DayP
             });
         }
     }, [date]);
-
-    const isDayFullyBookedOrClosed = (day: Date) => {
-        const dayName = day.toLocaleDateString("en-US", { weekday: "long" }).toLowerCase();
-        const workingDay = company.workingHours[dayName];
-        return workingDay?.closed === true || workingDay == null;
-    };
-
     return (
         <div className="flex flex-col gap-8">
             <div className="w-full border mt-2"></div>
@@ -82,8 +79,9 @@ export default function WeekScroller({ date, setDate, dayArrays, company }: DayP
                         date.getDate() === day.getDate() &&
                         date.getMonth() === day.getMonth() &&
                         date.getFullYear() === day.getFullYear();
+                    const isFullyBooked = isDayFullyBooked(day);
+                    const isClosed = isDayClosed(day);
 
-                    const isDisabled = isDayFullyBookedOrClosed(day);
 
                     return (
                         <div
@@ -92,32 +90,36 @@ export default function WeekScroller({ date, setDate, dayArrays, company }: DayP
                                 dayRefs.current[index] = el;
                             }}
                             onClick={() => {
-                                setDate(day)
-                                if (!isDisabled) {
-                                    const selectedIndex = dayArrays().findIndex(
-                                        (d) =>
-                                            d.getDate() === day.getDate() &&
-                                            d.getMonth() === day.getMonth() &&
-                                            d.getFullYear() === day.getFullYear()
-                                    );
-                                    if (selectedIndex !== -1 && dayRefs.current[selectedIndex]) {
-                                        dayRefs.current[selectedIndex].scrollIntoView({
-                                            behavior: "smooth",
-                                            inline: "start",
-                                            block: "nearest",
-                                        });
-                                    }
+                                const selectedIndex = dayArrays().findIndex(
+                                    (d) =>
+                                        d.getDate() === day.getDate() &&
+                                        d.getMonth() === day.getMonth() &&
+                                        d.getFullYear() === day.getFullYear()
+                                );
+                                if (selectedIndex !== -1 && dayRefs.current[selectedIndex]) {
+                                    dayRefs.current[selectedIndex].scrollIntoView({
+                                        behavior: "smooth",
+                                        inline: "start",
+                                        block: "nearest",
+                                    });
                                 }
+                                setDate(day)
+
+
                             }}
                             className="px-2 flex flex-col w-fit justify-center items-center gap-2 py-1"
                         >
                             <div
                                 className={
-                                    isSelected
-                                        ? "rounded-full w-24 h-24 flex justify-center items-center font-bold text-2xl bg-indigo-700 text-white"
-                                        : !isDisabled
-                                            ? "flex justify-center items-center rounded-full text-2xl w-24 h-24 font-bold border border-gray-700 text-gray-400 bg-gray-100"
-                                            : "flex justify-center items-center rounded-full text-2xl w-24 h-24 font-bold border border-gray-300"
+                                    isSelected && (isClosed || isFullyBooked)
+                                        ? "rounded-full w-24 h-24 flex justify-center items-center font-bold line-through text-2xl bg-indigo-300 text-white"
+                                        : isSelected
+                                            ? "rounded-full w-24 h-24 flex justify-center items-center font-bold text-2xl bg-indigo-700 text-white"
+                                            : isClosed
+                                                ? "flex justify-center items-center rounded-full text-2xl w-24 h-24 font-bold border line-through pointer-none text-gray-300 border-gray-300"
+                                                : isFullyBooked
+                                                    ? "flex justify-center items-center rounded-full text-2xl w-24 h-24 font-bold border line-through pointer-none text-gray-300 border-gray-300"
+                                                    : "flex justify-center items-center rounded-full text-2xl w-24 h-24 font-bold border border-gray-700 text-gray-700 bg-gray-100"
                                 }
                             >
                                 {day.toLocaleDateString("default", { day: "numeric" })}
@@ -126,9 +128,9 @@ export default function WeekScroller({ date, setDate, dayArrays, company }: DayP
                                 {day.toLocaleDateString("default", { weekday: "short" })}
                             </div>
                         </div>
-                    );
+            );
                 })}
-            </div>
         </div>
+        </div >
     );
 }
