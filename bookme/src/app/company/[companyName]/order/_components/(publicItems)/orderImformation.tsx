@@ -2,7 +2,6 @@
 
 import { api } from "@/axios";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import { CompanyType, employeeType } from "../../page";
 import { Dialog } from "@radix-ui/react-dialog";
 import { DialogTrigger } from "@/components/ui/dialog";
@@ -80,7 +79,7 @@ function OrderImformation({
                 <div className="flex gap-4">
                     <div className="w-24 h-24 rounded border hover:border-blue-700 transition flex justify-center items-center p-3 ">
                         <img
-                            src={company ? company.companyImages[0] : undefined}
+                            src={company?.companyImages?.[0]}
                             onClick={() => window.open(`http://localhost:3000/company/${company?.companyName}`, '_blank')}
                             className="w-full h-full object-cover rounded "
                         />

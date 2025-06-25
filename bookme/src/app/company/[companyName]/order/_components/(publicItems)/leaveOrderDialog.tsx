@@ -17,7 +17,7 @@ const LeaveOrder = () => {
                             <Button className="flex-1 h-14 text-wrap" variant="ghost">Захиалгаа үргэлжлүүлэх</Button>
                         </DialogPrimitive.Close>
                         <Button onClick={() => {
-                            window.location.href = "/"
+                            window.history.back()
                         }} className="flex-1 bg-black text-white h-14" >Тийм. Гарах</Button>
                     </div>
                 </DialogHeader>

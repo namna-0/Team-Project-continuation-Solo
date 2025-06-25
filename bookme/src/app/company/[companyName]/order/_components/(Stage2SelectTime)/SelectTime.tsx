@@ -16,6 +16,7 @@ type TimingProps = {
     setSelectedTime: (time: Date | null) => void
     selectedTime: Date | null
     setSelectedEmployee: (employeeId: string) => void
+
 }
 function StageTwoTimePicking({
     isSelectEmployee, setSelectedEmployee, zurag, company, date, selectedTime, setSelectedTime, setDate, setIsSelectEmployee, selectedEmployeeImf
@@ -31,17 +32,14 @@ function StageTwoTimePicking({
         end.setMonth(end.getMonth() + 3);
         const dayKeyMap = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
         while (current <= end) {
-          const dayIndex = current.getDay();
-          const key = dayKeyMap[dayIndex];
-          const dayInfo = company.workingHours[key];
+            const dayIndex = current.getDay();
+            const key = dayKeyMap[dayIndex];
+            const dayInfo = company.workingHours[key];
             days.push(new Date(current));
-      
-      
-          current.setDate(current.getDate() + 1);
+            current.setDate(current.getDate() + 1);
         }
-      
         return days;
-      };  
+    };
     const start = getEmployee ? parseInt(getEmployee.startTime) : 0;
     const duration = getEmployee ? parseInt(getEmployee.duration.toString()) : 0;
     const end = getEmployee ? parseInt(getEmployee.endTime) : 0;
@@ -56,6 +54,7 @@ function StageTwoTimePicking({
         }
         return times;
     };
+
     useEffect(() => {
         getEmployee
         selectedEmployeeImf
@@ -72,12 +71,35 @@ function StageTwoTimePicking({
     useEffect(() => { setDate(date) }, [date])
     useEffect(() => { getOrderByemployee() }, [selectedEmployeeImf])
     useEffect(() => { setDate(new Date()) }, [, isSelectEmployee])
+    const isDayClosed = (day: Date) => {
+        const dayName = day.toLocaleDateString("en-US", { weekday: "long" }).toLowerCase();
+        const workingDay = company.workingHours[dayName];
+        return workingDay?.closed == true;
+    };
+    const allSelectedTimes = orders
+        ? orders.map((order: OrderType) => new Date(order.selectedTime))
+        : [];
+
+    const isDayFullyBooked = (day: Date) => {
+        const dayAvailableTimes = availabilityTimes(); // [540, 600, 660, ...] in minutes
+        const bookedTimesForDay = allSelectedTimes
+            .filter((selectedTime) =>
+                selectedTime.getDate() === day.getDate() &&
+                selectedTime.getMonth() === day.getMonth() &&
+                selectedTime.getFullYear() === day.getFullYear()
+            )
+            .map((selectedTime) => selectedTime.getHours() * 60 + selectedTime.getMinutes());
+        return dayAvailableTimes.every((minute) =>
+            bookedTimesForDay.includes(minute)
+        )
+    };
     return (
         <Return
             orders={orders} dayArrays={dayArrays} availabilityTimes={availabilityTimes}
             isSelectEmployee={isSelectEmployee} setSelectedEmployee={setSelectedEmployee} zurag={zurag}
-            company={company} date={date} setSelectedTime={setSelectedTime} setDate={setDate}
-            setIsSelectEmployee={setIsSelectEmployee} selectedEmployeeImf={selectedEmployeeImf} />
+            isDayFullyBooked={isDayFullyBooked}
+            company={company} date={date} selectedTime={selectedTime} setSelectedTime={setSelectedTime} setDate={setDate}
+            setIsSelectEmployee={setIsSelectEmployee} selectedEmployeeImf={selectedEmployeeImf} isDayClosed={isDayClosed} />
     )
 }
 export default StageTwoTimePicking

@@ -49,7 +49,7 @@ const OrderNavBar = ({
   return (
     <>
 
-      <div className="flex w-[1440px]  justify-between h-fit py-2 bg-white z-10 fixed top-0 shadow ">
+      <div className="flex w-[1440px]  justify-between h-fit  p-2 bg-white z-10 fixed top-0 shadow ">
         <motion.div
           className="font-bold text-xl normal-case "
           initial={{ opacity: 0, scale: 0.5}}
@@ -58,7 +58,7 @@ const OrderNavBar = ({
             scale: isPastThreshold ? 1 : 0.5,
           }}
         >
-          <div className="w-full flex justify-between gap-10 items-center ">
+          <div className="w-full flex justify-between gap-6 items-center ">
             <div className="flex gap-6">
               {isStage == Stages[0] ? (
                 <Dialog>
