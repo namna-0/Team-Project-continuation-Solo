@@ -32,10 +32,15 @@ export const CompanyBackgroundTemplate2 = ({
   return (
     <section className="relative min-h-screen overflow-hidden">
       <div className="absolute inset-0">
-        <img
-          className="w-full bg-cover bg-center bg-no-repeat transition-all duration-1000 transform scale-105"
-          src={company.backGroundImage}
-        />
+        {company.backGroundImage ? (
+          <img
+            className="w-full bg-cover bg-center bg-no-repeat transition-all duration-1000 transform scale-105"
+            src={company.backGroundImage}
+            alt="Background"
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-900" />
+        )}
 
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/60"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20"></div>
