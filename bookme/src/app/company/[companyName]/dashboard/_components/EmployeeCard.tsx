@@ -3,7 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Users } from "lucide-react";
 import { Employee } from "@/app/signup/_components/Types";
-export const EmployeeCard = ({ employee }: Employee) => {
+type PropsType = {
+  employee: Employee;
+};
+
+export const EmployeeCard = ({ employee }: PropsType) => {
   console.log(employee);
 
   return (
@@ -24,7 +28,7 @@ export const EmployeeCard = ({ employee }: Employee) => {
             <Badge
               variant={employee.status === "Active" ? "default" : "secondary"}
             >
-              {employee.status}
+              sss
             </Badge>
           </div>
         </div>

@@ -6,6 +6,7 @@ import { EmployeeCard } from "./EmployeeCard";
 
 export function EmployeesPage() {
   const { company } = useCompanyAuth();
+  console.log(company?.employees[0]);
 
   return (
     <div className="space-y-6">
