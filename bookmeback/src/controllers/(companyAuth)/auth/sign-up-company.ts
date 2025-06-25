@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Company } from "../../../models/company.schema";
-
+import nodemailer from "nodemailer";
 export const signupCompanyController: RequestHandler = async (req, res) => {
   try {
     const {
@@ -67,6 +67,28 @@ export const signupCompanyController: RequestHandler = async (req, res) => {
       { expiresIn: "1d" }
     );
 
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: "mnbookme@gmail.com",
+      to: email,
+      subject: "Бүртгэл амжилттай боллоо",
+      html: `
+    <div style="padding: 20px;">
+      <h2>Сайн байна уу, ${companyName}!</h2>
+      <p>Таны бүртгэл амжилттай бүртгэгдлээ. Манай системийг ашигласанд баярлалаа.</p>
+      <p>Та дараах холбоосоор нэвтэрч орно уу:</p>
+      <a href="https://bookme.mn/login" style="color:blue;">Нэвтрэх</a>
+    </div>
+  `,
+    };
+    await transporter.sendMail(mailOptions);
     res.status(201).json({
       message: "Компани амжилттай бүртгэгдлээ",
       token,
