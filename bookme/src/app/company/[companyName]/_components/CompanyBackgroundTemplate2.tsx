@@ -4,6 +4,7 @@ import { Calendar, ChevronDown, Heart, Sparkles, Star } from "lucide-react";
 import { Company } from "./CompanyTypes";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export const CompanyBackgroundTemplate2 = ({
   companyName,
@@ -68,7 +69,7 @@ export const CompanyBackgroundTemplate2 = ({
 
       <div className="relative z-10 min-h-screen flex items-center">
         <div className="max-w-9xl mx-auto px-6 sm:px-8 lg:px-12 w-full ">
-          <div className="grid lg:grid-cols-2 gap-26 items-center mb-30">
+          <div className="grid lg:grid-cols-2 gap-20 items-center mb-30">
             <div className="space-y-8 text-center lg:text-left">
               <div
                 className={`inline-flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full border border-white/20 transition-all duration-700 ${
@@ -119,13 +120,15 @@ export const CompanyBackgroundTemplate2 = ({
                     : "opacity-0 translate-y-8"
                 }`}
               >
-                <button className="group relative px-4 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg sm:rounded-xl overflow-hidden transform transition-all duration-300 hover:scale-[1.02] sm:hover:scale-105 hover:shadow-md sm:hover:shadow-lg hover:shadow-blue-500/20 w-full sm:w-auto">
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-                  <div className="relative z-10 flex items-center justify-center gap-2 text-white font-medium sm:font-bold text-sm sm:text-base">
-                    <Heart className="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse" />
-                    Цаг захиалах
-                  </div>
-                </button>
+                <Link href={`${companyName}/order`}>
+                  <button className="group relative px-4 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg sm:rounded-xl overflow-hidden transform transition-all duration-300 hover:scale-[1.02] sm:hover:scale-105 hover:shadow-md sm:hover:shadow-lg hover:shadow-blue-500/20 w-full sm:w-auto">
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                    <div className="relative z-10 flex items-center justify-center gap-2 text-white font-medium sm:font-bold text-sm sm:text-base">
+                      <Heart className="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse" />
+                      Цаг захиалах
+                    </div>
+                  </button>
+                </Link>
               </div>
             </div>
 
