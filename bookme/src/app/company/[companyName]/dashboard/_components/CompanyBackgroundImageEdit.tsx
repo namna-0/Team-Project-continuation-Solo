@@ -19,7 +19,6 @@ import { Input } from "@/components/ui/input";
 export const CompanyBackgroundImageEdit = () => {
   const { company, getCompany } = useCompanyAuth();
   const { bgLoading, setBgLoading, handleInputBackgroundImage } = useSettings();
-  console.log(company?.employees);
 
   const handleDeleteBackground = async () => {
     setBgLoading(true);
@@ -47,13 +46,13 @@ export const CompanyBackgroundImageEdit = () => {
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
         <div className="w-full h-fit flex items-center py-3">
-          <div className="relative w-full h-fit">
+          <div className="relative w-[500px] h-[500px]">
             {bgLoading ? (
-              <div className="flex h-24 w-24  items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
+              <div className="flex w-[500px] h-[500px] items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
                 <LoadingSvg />
               </div>
             ) : !company?.backGroundImage ? (
-              <div className="flex h-24 w-24 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
+              <div className="flex w-[500px] h-[500px] items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
                 <ImageSVG />
               </div>
             ) : (
@@ -64,7 +63,7 @@ export const CompanyBackgroundImageEdit = () => {
                   className="w-full h-full rounded-2xl object-cover"
                 />
                 <Button
-                  className="absolute -right-2 -top-2 rounded-full w-6 h-6 text-xs opacity-60 hover:opacity-100"
+                  className="absolute right-2 top-2 rounded-full bg-white hover:bg-black hover:text-white text-black w-6 h-6 text-xs "
                   onClick={handleDeleteBackground}
                 >
                   x

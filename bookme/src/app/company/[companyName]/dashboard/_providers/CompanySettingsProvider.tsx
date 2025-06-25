@@ -34,8 +34,10 @@ type CompanyInformationAuth = {
   companyAddedImage: string | null;
   logoLoading: boolean;
   bgLoading: boolean;
+  otherImgLoading: boolean;
   setLogoLoading: Dispatch<SetStateAction<boolean>>;
   setBgLoading: Dispatch<SetStateAction<boolean>>;
+  setOtherImgLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 type CompanyDataType = {
@@ -70,10 +72,11 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
   const [employeeImage, setEmployeeImage] = useState<string | null>(null);
   const [companyData, setCompanyData] = useState<Company[]>([]);
-
   const { company, getCompany } = useCompanyAuth();
+
   const [logoLoading, setLogoLoading] = useState(false);
   const [bgLoading, setBgLoading] = useState(false);
+  const [otherImgLoading, setOtherImgLoading] = useState(false);
 
   const getCompanyData = async () => {
     try {
@@ -195,14 +198,14 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
   const handleInputCompanyImage = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setLogoLoading(true);
+    setOtherImgLoading(true);
     const file = e.target.files?.[0];
     if (file) {
       const result = await uploadedImageFunction(file);
+      setOtherImgLoading(false);
       await handleAddCompanyImage(result);
       await getCompany();
     }
-    setLogoLoading(false);
   };
 
   useEffect(() => {
@@ -218,6 +221,8 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
         handleInputBackgroundImage,
         setLogoLoading,
         setBgLoading,
+        setOtherImgLoading,
+        otherImgLoading,
         bgLoading,
         logoLoading,
         employeeImage,

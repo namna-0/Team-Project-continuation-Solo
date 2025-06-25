@@ -14,6 +14,7 @@ import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
 import { useSettings } from "../_providers/CompanySettingsProvider";
 import { api } from "@/axios";
 import { toast } from "sonner";
+import { useEffect } from "react";
 export const CompanyLogoEdit = () => {
   const { company, getCompany } = useCompanyAuth();
   const { logoLoading, setLogoLoading, handleInputCompanyLogo } = useSettings();
@@ -38,6 +39,7 @@ export const CompanyLogoEdit = () => {
       setLogoLoading(false);
     }
   };
+
   return (
     <Card>
       <CardHeader>
@@ -50,22 +52,22 @@ export const CompanyLogoEdit = () => {
         <div className="flex items-center gap-4">
           <div className="relative">
             {logoLoading ? (
-              <div className="flex h-24 w-24 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
+              <div className="flex w-[250px] h-[250px] items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
                 <LoadingSvg />
               </div>
             ) : !company?.companyLogo ? (
-              <div className="flex h-24 w-24 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
+              <div className="flex w-[250px] h-[250px] items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
                 <ImageSVG />
               </div>
             ) : (
-              <div className="relative">
+              <div className="relative w-[250px] h-[250px]">
                 <img
                   src={`${company?.companyLogo}`}
                   alt="Company Logo"
-                  className="w-24 h-24 rounded-2xl object-cover"
+                  className="w-full h-full rounded-2xl object-cover"
                 />
                 <Button
-                  className="absolute -right-2 -top-2 rounded-full w-6 h-6 text-xs opacity-60 hover:opacity-100"
+                  className="absolute right-2 top-2 rounded-full w-6 h-6 text-xs "
                   onClick={handleDeleteLogo}
                 >
                   x

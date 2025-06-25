@@ -25,13 +25,8 @@ export type EmployeeData = {
   description: string;
   profileImage: string;
   availability: boolean;
-  duration: DurationType;
+  duration: string;
   workingHours: string;
-};
-
-export type DurationType = {
-  halfTime: "";
-  fullTime: "";
 };
 
 export const EmployeeAddSection = () => {
@@ -46,7 +41,7 @@ export const EmployeeAddSection = () => {
     description: "",
     profileImage: "",
     availability: true,
-    duration: { halfTime: "", fullTime: "" },
+    duration: "",
     workingHours: "",
   });
 

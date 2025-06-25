@@ -1,34 +1,11 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Users, Plus, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { EmployeeAddSection } from "./EmployeeAddSection";
+import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
+import { EmployeeCard } from "./EmployeeCard";
 
 export function EmployeesPage() {
-  const employees = [
-    {
-      id: 1,
-      name: "John Doe",
-      role: "Manager",
-      status: "Active",
-      email: "john@company.com",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      role: "Staff",
-      status: "Active",
-      email: "jane@company.com",
-    },
-    {
-      id: 3,
-      name: "Mike Johnson",
-      role: "Staff",
-      status: "Inactive",
-      email: "mike@company.com",
-    },
-  ];
+  const { company } = useCompanyAuth();
 
   return (
     <div className="space-y-6">
@@ -43,37 +20,15 @@ export function EmployeesPage() {
       <div className="flex items-center space-x-2">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Search employees..." className="pl-8" />
+          <Input placeholder="Search employeesss..." className="pl-8" />
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {employees.map((employee) => (
-          <Card key={employee.id}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                {employee.name}
-              </CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">
-                  {employee.email}
-                </p>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">{employee.role}</span>
-                  <Badge
-                    variant={
-                      employee.status === "Active" ? "default" : "secondary"
-                    }
-                  >
-                    {employee.status}
-                  </Badge>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        {company?.employees.map((employee) => (
+          <div key={employee._id}>
+            <EmployeeCard employee={employee} />
+          </div>
         ))}
       </div>
     </div>
