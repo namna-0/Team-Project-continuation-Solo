@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Users, Calendar, Clock } from "lucide-react";
 import { Company, Employee, Booking } from "../../_components/CompanyTypes";
 import { useEffect, useState } from "react";
-import BookingCalendar from "@/app/calendar-test/page";
+import { BookingCalendar } from "./Calendar";
 
 const getStatusColor = (status: string) => {
   switch (status?.toLowerCase()) {
@@ -85,10 +85,14 @@ export function StaffOrdersPage({ company }: { company: Company }) {
     (booking) => booking.status === "pending"
   ).length;
   const completedToday = displayBookings.filter((booking) => {
+    if (!booking.selectedTime) return false;
+
+    const selectedDate = new Date(booking.selectedTime);
+    if (isNaN(selectedDate.getTime())) return false;
+
     const today = new Date().toISOString().split("T")[0];
-    const bookingDate = new Date(booking.selectedTime)
-      .toISOString()
-      .split("T")[0];
+    const bookingDate = selectedDate.toISOString().split("T")[0];
+
     return bookingDate === today && booking.status === "completed";
   }).length;
 

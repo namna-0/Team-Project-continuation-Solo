@@ -42,7 +42,7 @@ export const Step4 = ({
   const [isUploading, setIsUploading] = useState(false);
 
   const uploadImageToCloudinary = async (file: File): Promise<string> => {
-    setIsUploading(true); // 👈 start loading
+    setIsUploading(true);
     try {
       const form = new FormData();
       form.append("file", file);
@@ -55,7 +55,7 @@ export const Step4 = ({
 
       return res.data.secure_url;
     } finally {
-      setIsUploading(false); // 👈 stop loading
+      setIsUploading(false);
     }
   };
 
@@ -83,7 +83,6 @@ export const Step4 = ({
 
   return (
     <>
-      {/* Logo Upload */}
       <div>
         <Label className="block mb-2 text-white">Компаний лого *</Label>
         <div className="border-2 border-dashed border-white/30 rounded-lg p-6 bg-white/5 hover:bg-white/10 transition-colors">
@@ -115,7 +114,6 @@ export const Step4 = ({
             </div>
           )}
         </div>
-        {/* 🌀 Loading UI */}
         {isUploading && (
           <div className="flex items-center gap-2 mt-2">
             <div className="h-4 w-4 rounded-full border-2 border-t-white border-white/30 animate-spin"></div>
@@ -127,7 +125,6 @@ export const Step4 = ({
         )}
       </div>
 
-      {/* Background Image Upload */}
       <div>
         <Label className="block mb-2 text-white mt-4">
           Компаний background зураг *
@@ -157,7 +154,6 @@ export const Step4 = ({
           )}
         </div>
 
-        {/* 🌀 Loading UI */}
         {isUploading && (
           <div className="flex items-center gap-2 mt-2">
             <div className="h-4 w-4 rounded-full border-2 border-t-white border-white/30 animate-spin"></div>
@@ -166,7 +162,6 @@ export const Step4 = ({
         )}
       </div>
 
-      {/* About Us Image Upload */}
       <div>
         <Label className="block mb-2 text-white mt-4">
           Компаний танилцуулга зураг *
@@ -195,7 +190,6 @@ export const Step4 = ({
             </div>
           )}
         </div>
-        {/* 🌀 Loading UI */}
         {isUploading && (
           <div className="flex items-center gap-2 mt-2">
             <div className="h-4 w-4 rounded-full border-2 border-t-white border-white/30 animate-spin"></div>
@@ -204,7 +198,6 @@ export const Step4 = ({
         )}
       </div>
 
-      {/* Multiple Images Upload */}
       <div className="mt-8">
         <Label className="block mb-2 text-white mt-2">
           Компаний зургууд (олон зураг)
@@ -241,7 +234,6 @@ export const Step4 = ({
                   className="absolute inset-0 opacity-0 cursor-pointer"
                 />
               </div>
-              {/* 🌀 Loading UI */}
               {isUploading && (
                 <div className="flex items-center gap-2 mt-2">
                   <div className="h-4 w-4 rounded-full border-2 border-t-white border-white/30 animate-spin"></div>

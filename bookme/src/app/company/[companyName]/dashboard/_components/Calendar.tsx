@@ -9,30 +9,26 @@ import { EventInput } from "@fullcalendar/core";
 import { toast } from "sonner";
 import { api } from "@/axios";
 import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
-import {
-  Booking,
-  Company,
-} from "../company/[companyName]/_components/CompanyTypes";
-import { employeeType } from "../company/[companyName]/order/page";
+import { Booking, Company, Employee } from "../../_components/CompanyTypes";
 
 interface BookingCalendarProps {
   company?: Company;
-  selectedEmployee?: employeeType | null;
+  selectedEmployee?: Employee | null;
   bookings?: Booking[];
 }
 
 const getEventColor = (status: string) => {
   switch (status?.toLowerCase()) {
     case "confirmed":
-      return "#1a73e8"; // Google Blue
+      return "#1a73e8";
     case "cancelled":
-      return "#ea4335"; // Google Redsss
+      return "#ea4335";
     case "completed":
-      return "#34a853"; // Google Green
+      return "#34a853";
     case "pending":
-      return "#fbbc04"; // Google Yellow
+      return "#fbbc04";
     default:
-      return "#9aa0a6"; // Google Gray
+      return "#9aa0a6";
   }
 };
 
@@ -59,21 +55,153 @@ const formatSelectedTime = (date: Date): string => {
   return `${weekday}, ${month} ${day}, ${year} at ${time}`;
 };
 
-export default function BookingCalendar({
+const parseDuration = (durationStr?: string): number => {
+  if (!durationStr) return 60;
+
+  const match = durationStr.match(/(\d+)/);
+  return match ? parseInt(match[1]) : 60;
+};
+
+const timeToMinutes = (timeString?: string): number => {
+  if (!timeString) return 0;
+  const [hours, minutes] = timeString.split(":").map(Number);
+  return hours * 60 + minutes;
+};
+
+const isValidTimeSlot = (
+  selectedDate: Date,
+  employee: Employee,
+  duration: number
+): { isValid: boolean; reason?: string } => {
+  const selectedTime = selectedDate.getHours() * 60 + selectedDate.getMinutes();
+  const endTime = selectedTime + duration;
+
+  const workStart = timeToMinutes(employee.startTime);
+  const workEnd = timeToMinutes(employee.endTime);
+  const lunchStart = timeToMinutes(employee.lunchTimeStart);
+  const lunchEnd = timeToMinutes(employee.lunchTimeEnd);
+
+  if (selectedTime < workStart) {
+    return {
+      isValid: false,
+      reason: `Ажил эхлэх цагаас өмнө байна. Ажил эхлэх цаг: ${employee.startTime}`,
+    };
+  }
+
+  if (endTime > workEnd) {
+    return {
+      isValid: false,
+      reason: `Ажил дуусах цагаас хойш байна. Ажил дуусах цаг: ${employee.endTime}`,
+    };
+  }
+
+  if (
+    employee.lunchTimeStart &&
+    employee.lunchTimeEnd &&
+    ((selectedTime >= lunchStart && selectedTime < lunchEnd) ||
+      (endTime > lunchStart && endTime <= lunchEnd) ||
+      (selectedTime <= lunchStart && endTime >= lunchEnd))
+  ) {
+    return {
+      isValid: false,
+      reason: `Цайны цагтай давхцаж байна. Цайны цаг: ${employee.lunchTimeStart} - ${employee.lunchTimeEnd}`,
+    };
+  }
+
+  return { isValid: true };
+};
+
+const getAvailableSlotDurations = (employee: Employee): number[] => {
+  const duration = parseDuration(employee.duration);
+
+  if (duration === 60) {
+    return [60];
+  }
+
+  if (duration === 30) {
+    return [30, 60];
+  }
+  return [duration];
+};
+
+export const BookingCalendar = ({
   company,
   selectedEmployee,
   bookings = [],
-}: BookingCalendarProps) {
+}: BookingCalendarProps) => {
   const [events, setEvents] = useState<EventInput[]>([]);
   const { company: loggedInCompany } = useCompanyAuth();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState<Date | null>(null);
-  const [currentView, setCurrentView] = useState("timeGridWeek");
+  const [selectedDuration, setSelectedDuration] = useState<number>(60);
+  const [calendarApi, setCalendarApi] = useState<any>(null);
 
   useEffect(() => {
+    const blockedTimeSlots: EventInput[] = [];
+
+    if (selectedEmployee) {
+      const today = new Date();
+      const startOfWeek = new Date(today);
+      startOfWeek.setDate(today.getDate() - today.getDay() + 1);
+
+      for (let i = 0; i < 7; i++) {
+        const currentDate = new Date(startOfWeek);
+        currentDate.setDate(startOfWeek.getDate() + i);
+
+        const dateStr = currentDate.toISOString().split("T")[0];
+
+        if (selectedEmployee.startTime) {
+          const workStart = timeToMinutes(selectedEmployee.startTime);
+          if (workStart > 0) {
+            blockedTimeSlots.push({
+              id: `blocked-before-${dateStr}`,
+              title: "Ажил эхлээгүй",
+              start: `${dateStr}T00:00:00`,
+              end: `${dateStr}T${selectedEmployee.startTime}:00`,
+              backgroundColor: "#f5f5f5",
+              borderColor: "#d1d5db",
+              textColor: "#6b7280",
+              display: "background",
+              overlap: false,
+            });
+          }
+        }
+        if (selectedEmployee.endTime) {
+          const workEnd = timeToMinutes(selectedEmployee.endTime);
+          if (workEnd < 24 * 60) {
+            blockedTimeSlots.push({
+              id: `blocked-after-${dateStr}`,
+              title: "Ажил дууссан",
+              start: `${dateStr}T${selectedEmployee.endTime}:00`,
+              end: `${dateStr}T23:59:59`,
+              backgroundColor: "#f5f5f5",
+              borderColor: "#d1d5db",
+              textColor: "#6b7280",
+              display: "background",
+              overlap: false,
+            });
+          }
+        }
+
+        if (selectedEmployee.lunchTimeStart && selectedEmployee.lunchTimeEnd) {
+          blockedTimeSlots.push({
+            id: `lunch-${dateStr}`,
+            title: "Цайны цаг",
+            start: `${dateStr}T${selectedEmployee.lunchTimeStart}:00`,
+            end: `${dateStr}T${selectedEmployee.lunchTimeEnd}:00`,
+            backgroundColor: "#fef3c7",
+            borderColor: "#f59e0b",
+            textColor: "#92400e",
+            display: "background",
+            overlap: false,
+          });
+        }
+      }
+    }
+
     const calendarEvents: EventInput[] = bookings.map((booking) => {
       const duration = booking.employee?.duration
-        ? parseInt(booking.employee.duration)
+        ? parseDuration(booking.employee.duration)
         : 60;
 
       const style = getEventStyle(booking.status);
@@ -96,21 +224,51 @@ export default function BookingCalendar({
       };
     });
 
-    setEvents(calendarEvents);
-  }, [bookings]);
+    setEvents([...calendarEvents, ...blockedTimeSlots]);
+  }, [bookings, selectedEmployee]);
+
+  useEffect(() => {
+    if (selectedEmployee) {
+      const availableDurations = getAvailableSlotDurations(selectedEmployee);
+      setSelectedDuration(availableDurations[0]);
+    }
+  }, [selectedEmployee]);
 
   const handleDateClick = (arg: DateClickArg) => {
     if (!selectedEmployee) {
       toast.error("Ажилтан сонгогдоогүй байна.");
       return;
     }
+
+    const validation = isValidTimeSlot(
+      arg.date,
+      selectedEmployee,
+      selectedDuration
+    );
+
+    if (!validation.isValid) {
+      toast.error(validation.reason || "Буруу цаг сонгосон байна.");
+      return;
+    }
     setSelectedSlot(arg.date);
     setDialogOpen(true);
+    console.log("dialog should opeeeen");
   };
 
   const handleConfirmBooking = async () => {
     if (!selectedEmployee || !selectedSlot || !loggedInCompany?._id) {
       toast.error("Мэдээлэл дутуу байна.");
+      return;
+    }
+
+    const validation = isValidTimeSlot(
+      selectedSlot,
+      selectedEmployee,
+      selectedDuration
+    );
+
+    if (!validation.isValid) {
+      toast.error(validation.reason || "Буруу цаг сонгосон байна.");
       return;
     }
 
@@ -120,23 +278,21 @@ export default function BookingCalendar({
       const response = await api.post("/order", {
         company: loggedInCompany._id,
         employee: selectedEmployee._id,
-        selectedTime: formattedSelectedTime,
+        selectedTime: selectedSlot.toString(),
+        user: loggedInCompany._id,
         status: "confirmed",
+        duration: selectedDuration,
       });
 
       if (response.status === 201) {
         toast.success("Захиалга амжилттай илгээгдлээ!");
-
-        const durationInMinutes = selectedEmployee.duration
-          ? Number(selectedEmployee.duration)
-          : 60;
 
         const style = getEventStyle("confirmed");
         const newEvent: EventInput = {
           id: response.data.order._id,
           title: "Guest",
           start: selectedSlot,
-          end: new Date(selectedSlot.getTime() + durationInMinutes * 60 * 1000),
+          end: new Date(selectedSlot.getTime() + selectedDuration * 60 * 1000),
           backgroundColor: style.backgroundColor,
           borderColor: style.borderColor,
           textColor: style.color,
@@ -167,11 +323,40 @@ export default function BookingCalendar({
     { status: "confirmed", label: "Баталгаажсан", color: "#1a73e8" },
     { status: "completed", label: "Дууссан", color: "#34a853" },
     { status: "cancelled", label: "Цуцлагдсан", color: "#ea4335" },
+    { status: "blocked", label: "Боломжгүй цаг", color: "#f5f5f5" },
+    { status: "lunch", label: "Цайны цаг", color: "#fef3c7" },
   ];
 
   const handleViewChange = (view: string) => {
-    setCurrentView(view);
+    if (calendarApi) {
+      calendarApi.changeView(view);
+    }
   };
+
+  const getSlotDuration = () => {
+    if (!selectedEmployee?.duration) return "00:30:00";
+
+    const duration = parseDuration(selectedEmployee.duration);
+    if (duration === 60) {
+      return "01:00:00";
+    }
+    return "00:30:00";
+  };
+  const getSlotMinTime = () => {
+    return selectedEmployee?.startTime
+      ? selectedEmployee.startTime + ":00"
+      : "08:00:00";
+  };
+
+  const getSlotMaxTime = () => {
+    return selectedEmployee?.endTime
+      ? selectedEmployee.endTime + ":00"
+      : "20:00:00";
+  };
+
+  const availableDurations = selectedEmployee
+    ? getAvailableSlotDurations(selectedEmployee)
+    : [60];
 
   return (
     <div className="min-h-screen bg-white">
@@ -197,6 +382,22 @@ export default function BookingCalendar({
                   </h1>
                   <p className="text-sm text-gray-500">
                     Цаг захиалгын календар
+                    {selectedEmployee &&
+                      selectedEmployee.startTime &&
+                      selectedEmployee.endTime && (
+                        <span className="ml-2">
+                          ({selectedEmployee.startTime} -{" "}
+                          {selectedEmployee.endTime}
+                          {selectedEmployee.lunchTimeStart &&
+                            selectedEmployee.lunchTimeEnd && (
+                              <>
+                                , Цай: {selectedEmployee.lunchTimeStart} -{" "}
+                                {selectedEmployee.lunchTimeEnd}
+                              </>
+                            )}
+                          )
+                        </span>
+                      )}
                   </p>
                 </div>
               </div>
@@ -205,38 +406,25 @@ export default function BookingCalendar({
             <div className="flex items-center bg-gray-100 rounded-lg p-1">
               <button
                 onClick={() => handleViewChange("dayGridMonth")}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
-                  currentView === "dayGridMonth"
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
+                className="px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 text-gray-600 hover:text-gray-900 hover:bg-gray-50"
               >
                 Сар
               </button>
               <button
                 onClick={() => handleViewChange("timeGridWeek")}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
-                  currentView === "timeGridWeek"
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
+                className="px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 bg-white text-gray-900 shadow-sm"
               >
                 7 хоног
               </button>
               <button
                 onClick={() => handleViewChange("timeGridDay")}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ${
-                  currentView === "timeGridDay"
-                    ? "bg-white text-gray-900 shadow-sm"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                }`}
+                className="px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 text-gray-600 hover:text-gray-900 hover:bg-gray-50"
               >
                 Өдөр
               </button>
             </div>
           </div>
 
-          {/* Status Legend */}
           <div className="mt-4 flex flex-wrap gap-6">
             {statusLegend.map((item) => (
               <div key={item.status} className="flex items-center gap-2">
@@ -253,7 +441,6 @@ export default function BookingCalendar({
         </div>
       </div>
 
-      {/* Calendar Container */}
       <div className="max-w-7xl mx-auto px-6 py-6">
         <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
           <FullCalendar
@@ -262,7 +449,7 @@ export default function BookingCalendar({
             headerToolbar={{
               left: "prev,next today",
               center: "title",
-              right: "", // Hide default view buttons since we have our own
+              right: "",
             }}
             buttonText={{
               today: "Өнөөдөр",
@@ -270,29 +457,41 @@ export default function BookingCalendar({
               week: "7 хоног",
               day: "Өдөр",
             }}
-            view={currentView}
             editable={false}
             selectable={!!selectedEmployee}
             nowIndicator={true}
             selectMirror={true}
             dayMaxEvents={false}
             allDaySlot={false}
-            slotMinTime="08:00:00"
-            slotMaxTime="20:00:00"
-            slotDuration="00:30:00"
+            slotMinTime={
+              selectedEmployee?.startTime
+                ? `${selectedEmployee.startTime}:00`
+                : "08:00:00"
+            }
+            slotMaxTime={
+              selectedEmployee?.endTime
+                ? `${selectedEmployee.endTime}:00`
+                : "20:00:00"
+            }
+            slotDuration={getSlotDuration()}
             events={events}
             dateClick={selectedEmployee ? handleDateClick : undefined}
-            height="auto"
-            contentHeight="600px"
+            height={selectedEmployee ? 1000 : "auto"}
+            contentHeight={800}
             locale="en"
             firstDay={1}
+            ref={(calendarRef) => {
+              if (calendarRef) {
+                setCalendarApi(calendarRef.getApi());
+              }
+            }}
             eventContent={(arg) => (
               <div className="px-2 py-1 h-full overflow-hidden">
                 <div className="text-xs font-semibold truncate mb-1">
-                  {arg.event.extendedProps.customerName}
+                  {arg.event.extendedProps?.customerName || arg.event.title}
                 </div>
                 <div className="text-xs opacity-90 truncate">
-                  {arg.event.extendedProps.employee}
+                  {arg.event.extendedProps?.employee}
                 </div>
                 <div className="text-xs opacity-75 mt-1">
                   {arg.event.start?.toLocaleTimeString("en-US", {
@@ -307,9 +506,7 @@ export default function BookingCalendar({
             dayHeaderClassNames="bg-gray-50 border-b border-gray-200 py-3 text-center text-sm font-medium text-gray-700"
             slotLabelClassNames="text-xs text-gray-500 pr-2"
             viewClassNames="p-4"
-            // Custom CSS for Google Calendar styling
             eventDidMount={(info) => {
-              // Add custom styling to match Google Calendar
               info.el.style.border = "none";
               info.el.style.borderRadius = "4px";
               info.el.style.fontSize = "12px";
@@ -319,20 +516,15 @@ export default function BookingCalendar({
         </div>
       </div>
 
-      {/* Google Calendar Style Modal */}
       {dialogOpen && selectedSlot && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50 p-4">
           <div className="bg-white rounded-lg shadow-2xl w-full max-w-md mx-auto">
-            {/* Modal Header */}
             <div className="px-6 py-4 border-b border-gray-200">
               <h2 className="text-lg font-medium text-gray-900">
                 Цаг захиалга үүсгэх
               </h2>
             </div>
-
-            {/* Modal Content */}
             <div className="px-6 py-4 space-y-4">
-              {/* Employee Info */}
               <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
                 <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
                   <svg
@@ -347,11 +539,13 @@ export default function BookingCalendar({
                   <div className="text-sm font-medium text-gray-900">
                     {selectedEmployee?.employeeName}
                   </div>
-                  <div className="text-xs text-gray-500">Ажилтан</div>
+                  <div className="text-xs text-gray-500">
+                    Ажлын цаг: {selectedEmployee?.startTime} -{" "}
+                    {selectedEmployee?.endTime}
+                  </div>
                 </div>
               </div>
 
-              {/* Time Info */}
               <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                 <div className="w-10 h-10 bg-gray-400 rounded-full flex items-center justify-center">
                   <svg
@@ -370,13 +564,43 @@ export default function BookingCalendar({
                 </div>
               </div>
 
-              {/* Duration Info */}
+              {availableDurations.length > 1 && (
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-700">
+                    Үргэлжлэх хугацаа:
+                  </label>
+                  <div className="flex gap-2">
+                    {availableDurations.map((duration) => (
+                      <button
+                        key={duration}
+                        onClick={() => setSelectedDuration(duration)}
+                        className={`px-3 py-2 text-sm rounded-md border transition-colors ${
+                          selectedDuration === duration
+                            ? "bg-blue-600 text-white border-blue-600"
+                            : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                        }`}
+                      >
+                        {duration} минут
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className="text-xs text-gray-500 px-3">
-                Үргэлжлэх хугацаа: {selectedEmployee?.duration || 60} минут
+                Үргэлжлэх хугацаа: {selectedDuration} минут
+                <br />
+                Дуусах цаг:{" "}
+                {new Date(
+                  selectedSlot.getTime() + selectedDuration * 60 * 1000
+                ).toLocaleTimeString("en-US", {
+                  hour: "numeric",
+                  minute: "2-digit",
+                  hour12: true,
+                })}
               </div>
             </div>
 
-            {/* Modal Actions */}
             <div className="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
               <button
                 onClick={handleCancelBooking}
@@ -396,4 +620,4 @@ export default function BookingCalendar({
       )}
     </div>
   );
-}
+};

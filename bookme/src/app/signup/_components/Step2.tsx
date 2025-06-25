@@ -24,7 +24,7 @@ export const Step2 = () => {
         <Textarea
           {...register("description")}
           id="description"
-          className="bg-white/10 text-white border-white placeholder-white/70 focus:border-white/50 focus:ring-white/20"
+          className="bg-white/10 text-white border-white placeholder-white/70 focus:border-white/50 focus:ring-white/20 placeholder-text-white"
           placeholder="Компанийхаа талаар бичнэ үү..."
           rows={3}
         />
@@ -43,7 +43,7 @@ export const Step2 = () => {
           {...register("phone")}
           id="phone"
           type="tel"
-          className="bg-white/10 text-white border-white/30 placeholder-white/70 focus:border-white/50 focus:ring-white/20"
+          className="bg-white/10 text-white border-white/30 placeholder-white/70 focus:border-white/50 focus:ring-white/20 placeholder-text-white"
           placeholder="9911 2233"
         />
         {errors.phone && (
@@ -58,7 +58,7 @@ export const Step2 = () => {
         <Input
           {...register("experience")}
           id="experience"
-          className="bg-white/10 text-white border-white/30 placeholder-white/70 focus:border-white/50 focus:ring-white/20"
+          className="bg-white/10 text-white border-white/30 placeholder-white/70 focus:border-white/50 focus:ring-white/20 placeholder-text-white"
           placeholder="10"
         />
         {errors.experience && (
@@ -76,7 +76,7 @@ export const Step2 = () => {
           {...register("clientNumber")}
           id="clientNumber"
           type="number"
-          className="bg-white/10 text-white border-white/30 placeholder-white/70 focus:border-white/50 focus:ring-white/20"
+          className="bg-white/10 text-white border-white/30 placeholder-white/70 focus:border-white/50 focus:ring-white/20 placeholder-text-white"
           placeholder="100"
         />
         {errors.clientNumber && (

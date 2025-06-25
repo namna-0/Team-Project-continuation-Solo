@@ -32,7 +32,6 @@ export const Step3 = ({ dayLabels }: Step3Props) => {
           >
             <div className="w-24 capitalize font-medium">{dayLabels[day]}</div>
 
-            {/* Open time */}
             <Input
               type="time"
               {...register(`openingHours.${day}.open`)}
@@ -42,15 +41,12 @@ export const Step3 = ({ dayLabels }: Step3Props) => {
 
             <span className="text-white">→</span>
 
-            {/* Close time */}
             <Input
               type="time"
               {...register(`openingHours.${day}.close`)}
               disabled={openingHours[day]?.closed}
               className="w-28 bg-white/10 text-white border-white"
             />
-
-            {/* Closed toggle */}
             <label className="flex items-center gap-2 ml-2">
               <input
                 type="checkbox"

@@ -96,7 +96,9 @@ export default function Dashboard() {
       <AppSidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
       <SidebarInset>
         <DashboardHeader currentPage={currentPage} />
-        <div className="flex flex-1 flex-col gap-4 p-4">{renderPage()}</div>
+        <div className="flex flex-1 flex-col gap-4 p-4 w-[1440px] pl-[400px]">
+          {renderPage()}
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );
