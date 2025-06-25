@@ -1,11 +1,10 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { step4Schema, Step4SchemaType } from "./Schemas";
+import { useFormContext } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Upload, X } from "lucide-react";
 import { FormDataType } from "./Types";
+import { FullSchemaType } from "./Schemas";
 import axios from "axios";
 import { useState } from "react";
 
@@ -21,7 +20,6 @@ type Step4Props = {
   handleLogoChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   logoPreview: string;
   removeLogo: () => void;
-  errors?: Record<string, string[]>;
 };
 
 export const Step4 = ({
@@ -33,18 +31,10 @@ export const Step4 = ({
   handleLogoChange,
   logoPreview,
   removeLogo,
-  errors = {},
 }: Step4Props) => {
   const {
-    formState: { errors: formErrors },
-    trigger,
-  } = useForm<Step4SchemaType>({
-    resolver: zodResolver(step4Schema),
-    defaultValues: {
-      logo: formData.logo,
-    },
-    mode: "onChange",
-  });
+    formState: { errors },
+  } = useFormContext<FullSchemaType>();
 
   const [bgPreview, setBgPreview] = useState(formData.backgroundImage || "");
   const [aboutPreview, setAboutPreview] = useState(formData.aboutUsImage || "");
@@ -75,6 +65,7 @@ export const Step4 = ({
 
   return (
     <>
+      {/* Logo Upload */}
       <div>
         <Label className="block mb-2 text-white">Компаний лого *</Label>
         <div className="border-2 border-dashed border-white/30 rounded-lg p-6 bg-white/5 hover:bg-white/10 transition-colors">
@@ -106,14 +97,14 @@ export const Step4 = ({
             </div>
           )}
         </div>
-        {(formErrors.logo || errors.logo) && (
-          <p className="text-red-400 text-sm mt-1">
-            {formErrors.logo?.message || errors.logo?.[0]}
-          </p>
+        {errors.logo && (
+          <p className="text-red-400 text-sm mt-1">{errors.logo.message}</p>
         )}
       </div>
+
+      {/* Background Image Upload */}
       <div>
-        <Label className="block mb-2 text-white mt-2">
+        <Label className="block mb-2 text-white mt-4">
           Компаний background зураг *
         </Label>
         <div className="border-2 border-dashed border-white/30 rounded-lg p-6 bg-white/5 hover:bg-white/10">
@@ -142,8 +133,9 @@ export const Step4 = ({
         </div>
       </div>
 
+      {/* About Us Image Upload */}
       <div>
-        <Label className="block mb-2 text-white mt-2">
+        <Label className="block mb-2 text-white mt-4">
           Компаний танилцуулга зураг *
         </Label>
         <div className="border-2 border-dashed border-white/30 rounded-lg p-6 bg-white/5 hover:bg-white/10">
@@ -171,6 +163,8 @@ export const Step4 = ({
           )}
         </div>
       </div>
+
+      {/* Multiple Images Upload */}
       <div className="mt-8">
         <Label className="block mb-2 text-white mt-2">
           Компаний зургууд (олон зураг)

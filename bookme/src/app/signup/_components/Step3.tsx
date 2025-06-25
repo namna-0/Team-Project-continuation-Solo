@@ -1,6 +1,9 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useFormContext } from "react-hook-form";
+import { FullSchemaType } from "./Schemas";
 import { FormDataType } from "./Types";
 
 type Step3Props = {
@@ -10,6 +13,11 @@ type Step3Props = {
 };
 
 export const Step3 = ({ formData, setFormData, dayLabels }: Step3Props) => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<FullSchemaType>();
+
   const days = Object.keys(formData.openingHours) as Array<
     keyof typeof formData.openingHours
   >;
