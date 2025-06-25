@@ -87,7 +87,7 @@ export default function Dashboard() {
       case "working-hours-settings":
         return company ? <CompanyWorkingHours company={company} /> : null;
       default:
-        return <ImagesSettingsPage />;
+        return <EmployeesPage />;
     }
   };
 

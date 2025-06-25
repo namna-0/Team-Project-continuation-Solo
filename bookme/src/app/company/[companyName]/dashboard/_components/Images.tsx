@@ -1,47 +1,28 @@
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+import { CompanyBackgroundImageEdit } from "./CompanyBackgroundImageEdit";
 import { CompanyLogoEdit } from "./CompanyLogoEdit";
+import { Button } from "@/components/ui/button";
+import { Upload } from "lucide-react";
 
 export function ImagesSettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Company Images</h1>
-        <p className="text-muted-foreground">
-          Manage your company logo, background, and gallery images
-        </p>
+        <h1 className="text-3xl font-bold tracking-tight">Компанийн зураг</h1>
+        <p className="text-muted-foreground">Компанийн зураг засварлах хэсэг</p>
       </div>
 
       <div className="grid gap-6">
         <CompanyLogoEdit />
-
-        {/* <Card>
-          <CardHeader>
-            <CardTitle>Background Image</CardTitle>
-            <CardDescription>
-              Upload a background image for your company profile
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex h-32 items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
-                <div className="text-center">
-                  <ImageIcon className="mx-auto h-8 w-8 text-muted-foreground" />
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    No background image uploaded
-                  </p>
-                </div>
-              </div>
-              <Button
-                variant="outline"
-                className="border-[#007FFF] text-[#007FFF] hover:bg-[#007FFF]/10"
-              >
-                <Upload className="mr-2 h-4 w-4" />
-                Upload Background
-              </Button>
-            </div>
-          </CardContent>
-        </Card> */}
-
-        {/* <Card>
+        <CompanyBackgroundImageEdit />
+        <Card>
           <CardHeader>
             <CardTitle>Gallery Images</CardTitle>
             <CardDescription>
@@ -51,7 +32,7 @@ export function ImagesSettingsPage() {
           <CardContent>
             <div className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {galleryImages.map((image, index) => (
+                {/* {galleryImages.map((image, index) => (
                   <div key={index} className="group relative">
                     <img
                       src={image || "/placeholder.svg"}
@@ -66,7 +47,7 @@ export function ImagesSettingsPage() {
                       <X className="h-3 w-3" />
                     </Button>
                   </div>
-                ))}
+                ))} */}
                 <div className="flex aspect-video items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
                   <Button
                     variant="outline"
@@ -79,7 +60,7 @@ export function ImagesSettingsPage() {
               </div>
             </div>
           </CardContent>
-        </Card> */}
+        </Card>
       </div>
     </div>
   );
