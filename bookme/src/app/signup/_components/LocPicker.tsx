@@ -20,7 +20,6 @@ export const LocPickerCompany = ({
         zoom: 13,
       });
 
-      // 📌 Marker-ийг анхнаасаа тавих
       if (defaultLocation) {
         markerRef.current = new google.maps.Marker({
           position: defaultLocation,
@@ -28,7 +27,6 @@ export const LocPickerCompany = ({
         });
       }
 
-      // 📍 Click event: marker байрлуулах
       map.addListener("click", (e: google.maps.MapMouseEvent) => {
         const lat = e.latLng?.lat();
         const lng = e.latLng?.lng();
@@ -41,7 +39,6 @@ export const LocPickerCompany = ({
           if (status === "OK" && results?.[0]) {
             const address = results[0].formatted_address;
 
-            // 🟢 Marker-ийг шинэчилж тавих
             if (markerRef.current) {
               markerRef.current.setMap(null);
             }

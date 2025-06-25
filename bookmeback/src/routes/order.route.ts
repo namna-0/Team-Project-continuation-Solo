@@ -5,6 +5,7 @@ import {
   getOrdersByUCompany,
   getOrdersByEmployee,
   getOrdersByUser,
+  deleteOrderController,
 } from "../controllers/order";
 import { getOrdersAndOrder } from "../controllers/order/getAllOrOneOrder";
 import { getUsers } from "../controllers/user/get-users";
@@ -18,6 +19,6 @@ BookingRouter.post("/order", CreateOrderController)
   .get("/order/user/:id", getOrdersByUser)
   .get("/order/employee/:id", getOrdersByEmployee)
   .put("/order/:id")
-  .delete("/order/:id");
+  .delete("/order/:id", deleteOrderController);
 
 export default BookingRouter;
