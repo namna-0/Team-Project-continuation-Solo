@@ -17,6 +17,7 @@ export const UploadCompanyLogo = () => {
   const { company } = useCompanyAuth();
   const { companyLogo, companyLogoTest, handleInputCompanyLogo } =
     useSettings();
+
   const handleUploadNewLogo = async () => {
     try {
       const data = await api.put(`/company/${company?._id}`, {
@@ -82,7 +83,7 @@ export const UploadCompanyLogo = () => {
             variant={"outline"}
             onClick={handleUploadNewLogo}
           >
-            Upload new logo
+            Лого шинэчлэх
           </Button>
         </div>
       </div>

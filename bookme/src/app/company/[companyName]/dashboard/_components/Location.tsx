@@ -98,41 +98,6 @@ export function LocationSettingsPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Clock className="h-5 w-5" />
-              Working Hours
-            </CardTitle>
-            <CardDescription>Set your business operating hours</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {workingHours.map((schedule) => (
-                <div
-                  key={schedule.day}
-                  className="flex items-center justify-between rounded-lg border p-3"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="w-20 font-medium">{schedule.day}</span>
-                    <Badge variant={schedule.isOpen ? "default" : "secondary"}>
-                      {schedule.isOpen ? "Open" : "Closed"}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-muted-foreground">
-                      {schedule.hours}
-                    </span>
-                    <Button variant="ghost" size="sm">
-                      Edit
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
             <CardTitle>Contact Information</CardTitle>
             <CardDescription>Location-specific contact details</CardDescription>
           </CardHeader>

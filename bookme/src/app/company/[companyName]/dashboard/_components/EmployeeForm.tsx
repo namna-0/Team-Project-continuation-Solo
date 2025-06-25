@@ -321,7 +321,11 @@ export const EmployeeForm = ({
           />
         </div>
 
-        <Button disabled={loading === true} type="submit" className="w-full">
+        <Button
+          disabled={loading === true}
+          type="submit"
+          className="w-full bg-[#007FFF] hover:bg-[#007FFF]/90"
+        >
           Нэмэх
         </Button>
       </form>

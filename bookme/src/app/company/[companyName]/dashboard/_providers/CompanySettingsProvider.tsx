@@ -6,7 +6,9 @@ import { toast } from "sonner";
 
 import {
   createContext,
+  Dispatch,
   PropsWithChildren,
+  SetStateAction,
   useContext,
   useEffect,
   useState,
@@ -23,13 +25,12 @@ type CompanyInformationAuth = {
   handleInputCompanyImage: (
     e: React.ChangeEvent<HTMLInputElement>
   ) => Promise<void>;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   companyLogo: string | null;
   employeeImage: string | null;
   companyData: Company[];
-  companyLogoTest: string | null;
   companyAddedImage: string | null;
-  loading: boolean;
+  logoLoading: boolean;
+  setLogoLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 type CompanyDataType = {
@@ -63,9 +64,9 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
   const [companyLogo, setCompanyLogo] = useState<string | null>(null);
   const [employeeImage, setEmployeeImage] = useState<string | null>(null);
   const [companyData, setCompanyData] = useState<Company[]>([]);
-  const [companyLogoTest, setCompanyLogoTest] = useState<string | null>(null);
+
   const { company, getCompany } = useCompanyAuth();
-  const [loading, setLoading] = useState(false);
+  const [logoLoading, setLogoLoading] = useState(false);
 
   const getCompanyData = async () => {
     try {
@@ -105,17 +106,34 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const handleAddCompanyLogo = async (result: string | null) => {
+    try {
+      const req = await api.put(`/company/${company?._id}`, {
+        companyLogo: result,
+      });
+      console.log("Hi1");
+    } catch (error) {
+      console.error("Компанийн лого шинэчлэхэд алдаа гарлаа.");
+      toast.error("Компанийн лого шинэчлэхэд алдаа гарлаа.");
+    }
+  };
+
   const handleInputCompanyLogo = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
+    console.log("Hi0");
+    setLogoLoading(true);
     const file = e.target.files?.[0];
     if (file) {
       const result = await uploadedImageFunction(file);
-      setCompanyLogoTest(result);
-
-      if (result) setCompanyLogo(result);
+      await handleAddCompanyLogo(result);
+      await setCompanyLogo(result);
+      await getCompany();
+      console.log("Hi2");
     }
+    setLogoLoading(false);
   };
+  console.log(companyLogo);
 
   const handleInputEmployeeImage = async (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -149,14 +167,14 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
   const handleInputCompanyImage = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setLoading(true);
+    setLogoLoading(true);
     const file = e.target.files?.[0];
     if (file) {
       const result = await uploadedImageFunction(file);
       await handleAddCompanyImage(result);
       await getCompany();
     }
-    setLoading(false);
+    setLogoLoading(false);
   };
 
   useEffect(() => {
@@ -169,12 +187,11 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
         handleInputCompanyLogo,
         handleInputEmployeeImage,
         handleInputCompanyImage,
-        setLoading,
-        loading,
+        setLogoLoading,
+        logoLoading,
         companyLogo,
         employeeImage,
         companyData,
-        companyLogoTest,
         companyAddedImage,
       }}
     >
