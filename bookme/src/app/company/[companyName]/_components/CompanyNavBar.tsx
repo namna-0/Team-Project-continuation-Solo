@@ -40,25 +40,23 @@ export const CompanyNavBar = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
-            <Link href="/">
-              <div className="relative size-13 rounded-full overflow-hidden">
-                {company?.companyLogo && company.companyLogo.trim() !== "" ? (
-                  <Image
-                    src={company.companyLogo}
-                    alt="Company Logo"
-                    fill
-                    className="object-cover"
-                  />
-                ) : (
-                  <Image
-                    src="/Images/default-logo.jpg"
-                    alt="Default Logo"
-                    fill
-                    className="object-contain"
-                  />
-                )}
-              </div>
-            </Link>
+            <div className="relative size-13 rounded-full overflow-hidden">
+              {company?.companyLogo && company.companyLogo.trim() !== "" ? (
+                <Image
+                  src={company.companyLogo}
+                  alt="Company Logo"
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <Image
+                  src="/Images/default-logo.jpg"
+                  alt="Default Logo"
+                  fill
+                  className="object-contain"
+                />
+              )}
+            </div>
           </div>
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">

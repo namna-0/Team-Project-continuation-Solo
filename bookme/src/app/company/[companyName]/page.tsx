@@ -11,7 +11,6 @@ import { SelectTemplate } from "./_components/_templates/SelectTemplate";
 
 export default function CompanyTemplateSelector() {
   const { companyName } = useParams<{ companyName: string }>();
-  const router = useRouter();
   const [company, setCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

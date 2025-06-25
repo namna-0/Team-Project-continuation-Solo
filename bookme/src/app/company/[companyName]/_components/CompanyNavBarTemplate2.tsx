@@ -45,38 +45,34 @@ export const CompanyNavBarTemplate2 = ({
 
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
         <div className="flex justify-between items-center h-20">
-          {/* Logo Section */}
           <motion.div
             className="flex-shrink-0"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Link href="/">
-              <div className="relative group">
-                <div className="absolute -inset-2 bg-gradient-to-r from-black-400 via-blue-500 to-cyan-500 rounded-xl blur opacity-20 group-hover:opacity-40 transition-all duration-500"></div>
-                <div className="relative size-13 rounded-full overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm">
-                  {company?.companyLogo && company.companyLogo.trim() !== "" ? (
-                    <Image
-                      src={company.companyLogo}
-                      alt="Company Logo"
-                      fill
-                      className="object-cover"
-                    />
-                  ) : (
-                    <Image
-                      src="/Images/default-logo.jpg"
-                      alt="Default Logo"
-                      fill
-                      className="object-contain p-2"
-                    />
-                  )}
-                </div>
+            <div className="relative group">
+              <div className="absolute -inset-2 bg-gradient-to-r from-black-400 via-blue-500 to-cyan-500 rounded-xl blur opacity-20 group-hover:opacity-40 transition-all duration-500"></div>
+              <div className="relative size-13 rounded-full overflow-hidden border border-white/10 bg-white/5 backdrop-blur-sm">
+                {company?.companyLogo && company.companyLogo.trim() !== "" ? (
+                  <Image
+                    src={company.companyLogo}
+                    alt="Company Logo"
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <Image
+                    src="/Images/default-logo.jpg"
+                    alt="Default Logo"
+                    fill
+                    className="object-contain p-2"
+                  />
+                )}
               </div>
-            </Link>
+            </div>
           </motion.div>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="flex items-center space-x-8">
               {navItems.map((item, index) => (
@@ -99,7 +95,6 @@ export const CompanyNavBarTemplate2 = ({
             </div>
           </div>
 
-          {/* Desktop Auth Buttons */}
           <div className="hidden md:block">
             {loggedInCompany && (
               <motion.div
@@ -173,7 +168,6 @@ export const CompanyNavBarTemplate2 = ({
             )}
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
@@ -201,7 +195,6 @@ export const CompanyNavBarTemplate2 = ({
         </div>
       </div>
 
-      {/* Mobile Menu */}
       <div
         className={`md:hidden fixed inset-0 z-40 transition-all duration-500 ease-in-out ${
           isMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
@@ -219,7 +212,27 @@ export const CompanyNavBarTemplate2 = ({
             isMenuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          <div className="p-6 pt-24">
+          <button
+            onClick={toggleMenu}
+            className="absolute top-6 right-6 text-gray-700 hover:text-pink-500 transition-colors duration-300 p-2"
+            aria-label="Close menu"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+          <div className="p-6 pt-24 bg-black rounded-b-lg">
             <div className="space-y-4">
               {navItems.map((item, index) => (
                 <Link
