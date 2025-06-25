@@ -15,6 +15,8 @@ import { Input } from "@/components/ui/input";
 import { api } from "@/axios";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 
 const emailSchema = z.object({
   email: z.string().email("Email хаяг буруу байна"),
@@ -36,7 +38,9 @@ export default function Home() {
   const [step, setStep] = useState<Step>("email");
   const [email, setEmail] = useState("");
   const [cooldown, setCooldown] = useState(0);
-
+  const params = useParams();
+  const companyName = params?.companyName as string;
+  const router = useRouter();
   const emailForm = useForm<z.infer<typeof emailSchema>>({
     resolver: zodResolver(emailSchema),
     defaultValues: { email: "" },
@@ -102,7 +106,7 @@ export default function Home() {
         newPassword: values.newPassword,
       });
       toast.success("Нууц үг амжилттай шинэчлэгдлээ.");
-      setStep("email");
+      router.push(`/company/${companyName}/login`);
       emailForm.reset();
       codeForm.reset();
       passwordForm.reset();
@@ -143,7 +147,11 @@ export default function Home() {
                       <FormItem>
                         <FormLabel>Email хаяг</FormLabel>
                         <FormControl>
-                          <Input {...field} placeholder="email@example.com" />
+                          <Input
+                            {...field}
+                            placeholder="email@example.com"
+                            className="placeholder:text-white"
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -223,13 +231,14 @@ export default function Home() {
                 </form>
               </Form>
             )}
-
-            <p
-              className="mt-4 text-sm underline cursor-pointer"
-              onClick={() => setStep("email")}
-            >
-              Буцах
-            </p>
+            <Link href={`/company/${companyName}/login`}>
+              <p
+                className="mt-4 text-sm underline cursor-pointer"
+                onClick={() => setStep("email")}
+              >
+                Буцах
+              </p>
+            </Link>
           </div>
         </div>
 

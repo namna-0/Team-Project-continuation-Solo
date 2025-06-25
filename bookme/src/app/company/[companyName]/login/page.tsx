@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/app/_providers/UserAuthProvider";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -26,6 +27,8 @@ const formSchema = z.object({
 
 export default function Home() {
   const { signIn, user } = useAuth();
+  const params = useParams();
+  const companyName = params?.companyName as string;
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -101,14 +104,14 @@ export default function Home() {
               </form>
             </Form>
             <div className="flex justify-between w-[400px]">
-              <Link href="/company/cloudy/signup">
+              <Link href={`/company/${companyName}/signup`}>
                 <p className="font-medium text-[14px] ">
                   <span className="text-[14px] text-[#0f3dde] underline cursor-pointer">
                     Бүртгүүлэх
                   </span>
                 </p>
               </Link>
-              <Link href="/company/cloudy/forgotpass">
+              <Link href={`/company/${companyName}/forgotpassword`}>
                 <p className="font-medium text-[14px] ">
                   <span className="text-[14px] text-[#0f3dde] underline cursor-pointer">
                     Нууц үг сэргээх

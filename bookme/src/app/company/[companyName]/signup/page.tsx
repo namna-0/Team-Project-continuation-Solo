@@ -15,7 +15,8 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/app/_providers/UserAuthProvider";
 import { toast } from "sonner";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
 
 const formSchema = z
   .object({
@@ -38,6 +39,8 @@ export default function Home() {
   const { signUp, user } = useAuth();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const params = useParams();
+  const companyName = params?.companyName as string;
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -154,9 +157,11 @@ export default function Home() {
 
             <p className="font-medium text-[14px] ">
               Бүртгэлтэй юу?{" "}
-              <span className="text-[14px] text-[#0f3dde] underline cursor-pointer">
-                Нэвтрэх
-              </span>
+              <Link href={`/company/${companyName}/login`}>
+                <span className="text-[14px] text-[#0f3dde] underline cursor-pointer">
+                  Нэвтрэх
+                </span>
+              </Link>
             </p>
           </div>
         </div>
