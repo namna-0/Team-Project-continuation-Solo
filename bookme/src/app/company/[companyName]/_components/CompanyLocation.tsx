@@ -23,8 +23,12 @@ export const CompanyLocation = ({
         </div>
         <div className="w-full h-[400px] rounded-xl overflow-hidden shadow-lg">
           <LocPickerCompany
-            initialLocation={companyLocation || { lat: 47.9185, lng: 106.9176 }}
-            companyAddress={company?.address}
+            defaultLocation={{
+              lat: companyLocation?.lat || 47.9185,
+              lng: companyLocation?.lng || 106.9176,
+              address: company.address,
+            }}
+            onSelect={() => {}}
           />
         </div>
         {company?.address && (
