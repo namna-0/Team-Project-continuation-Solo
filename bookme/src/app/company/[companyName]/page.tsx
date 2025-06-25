@@ -16,23 +16,21 @@ export default function CompanyTemplateSelector() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const templateNumber = company?.templateNumber ?? 0;
-
-  useEffect(() => {
-    const fetchCompany = async () => {
-      try {
-        setLoading(true);
-        const response = await api.get(`/company/name/${companyName}`);
-        if (response.data?.company) {
-          setCompany(response.data.company);
-        }
-      } catch (err) {
-        console.error("Компаний мэдээлэл авахад алдаа гарлаа:", err);
-        setError("Компаний мэдээлэл авахад алдаа гарлаа");
-      } finally {
-        setLoading(false);
+  const fetchCompany = async () => {
+    try {
+      setLoading(true);
+      const response = await api.get(`/company/name/${companyName}`);
+      if (response.data?.company) {
+        setCompany(response.data.company);
       }
-    };
-
+    } catch (err) {
+      console.error("Компаний мэдээлэл авахад алдаа гарлаа:", err);
+      setError("Компаний мэдээлэл авахад алдаа гарлаа");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
     if (companyName) {
       fetchCompany();
     }
@@ -70,7 +68,7 @@ export default function CompanyTemplateSelector() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {templateNumber === 0 && <SelectTemplate />}
+      {templateNumber === 0 && <SelectTemplate fetchCompany={fetchCompany} />}
       {templateNumber === 1 && (
         <Template1 data={company} companyName={companyName} />
       )}

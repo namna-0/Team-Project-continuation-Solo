@@ -11,7 +11,7 @@ import { Template2 } from "./Template2";
 import { Template3 } from "./Template3";
 import { Company } from "../CompanyTypes";
 
-export const SelectTemplate = () => {
+export const SelectTemplate = ({ fetchCompany }: any) => {
   const { companyName } = useParams<{ companyName: string }>();
   const router = useRouter();
   const [company, setCompany] = useState<Company | null>(null);
@@ -81,7 +81,7 @@ export const SelectTemplate = () => {
         templateNumber: selectedNumber,
       });
       toast.success("Дизайн амжилттай хадгалагдлаа.");
-      router.push(`/company/${companyName}`);
+      await fetchCompany();
     } catch (err) {
       console.error("Template хадгалахад алдаа гарлаа:", err);
       toast.error("Template хадгалахад алдаа гарлаа.");
