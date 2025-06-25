@@ -32,6 +32,7 @@ export const updateCompanyController: RequestHandler = async (req, res) => {
       lunchBreak,
       users,
       password,
+      templateNumber,
     } = req.body;
 
     const updatedData: any = {
@@ -55,6 +56,7 @@ export const updateCompanyController: RequestHandler = async (req, res) => {
       lunchBreak,
       users,
       password,
+      templateNumber,
       updatedAt: new Date(),
     };
 

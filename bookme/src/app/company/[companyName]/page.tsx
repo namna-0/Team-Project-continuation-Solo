@@ -15,7 +15,7 @@ export default function CompanyTemplateSelector() {
   const [company, setCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [templateNumber, setTemplateNumber] = useState(0);
+  const templateNumber = company?.templateNumber ?? 0;
 
   useEffect(() => {
     const fetchCompany = async () => {

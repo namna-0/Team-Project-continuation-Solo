@@ -4,6 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { api } from "@/axios";
 import { Check, Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { toast } from "sonner";
 
 import { Template1 } from "./Template1";
 import { Template2 } from "./Template2";
@@ -21,21 +22,21 @@ export const SelectTemplate = () => {
 
   const templates = [
     {
-      id: "modern",
+      templateNumber: 1,
       name: "Template1",
       description:
         "Clean, contemporary design with bold gradients and animations",
       component: Template1,
     },
     {
-      id: "classic",
+      templateNumber: 2,
       name: "Template2",
       description:
         "Traditional, elegant design with warm tones and serif fonts",
       component: Template2,
     },
     {
-      id: "minimal",
+      templateNumber: 3,
       name: "Template3",
       description:
         "Simple, clean design focusing on content with minimal distractions",
@@ -43,23 +44,19 @@ export const SelectTemplate = () => {
     },
   ];
 
-  const selectedTemplate = templates[currentTemplateIndex].id;
-
   useEffect(() => {
     const fetchCompany = async () => {
       try {
         setLoading(true);
         const response = await api.get(`/company/name/${companyName}`);
-        if (response.data?.company) {
-          setCompany(response.data.company);
-          // Set current template if company already has one
-          if (response.data.company.template) {
-            const templateIndex = templates.findIndex(
-              (t) => t.id === response.data.company.template
+        const companyData = response.data?.company;
+        if (companyData) {
+          setCompany(companyData);
+          if (companyData.templateNumber) {
+            const index = templates.findIndex(
+              (t) => t.templateNumber === companyData.templateNumber
             );
-            if (templateIndex !== -1) {
-              setCurrentTemplateIndex(templateIndex);
-            }
+            if (index !== -1) setCurrentTemplateIndex(index);
           }
         } else {
           setError("Компани олдсонгүй");
@@ -72,10 +69,26 @@ export const SelectTemplate = () => {
       }
     };
 
-    if (companyName) {
-      fetchCompany();
-    }
+    if (companyName) fetchCompany();
   }, [companyName]);
+
+  const handleSaveTemplate = async () => {
+    if (!company) return;
+    setSaving(true);
+    try {
+      const selectedNumber = templates[currentTemplateIndex].templateNumber;
+      await api.put(`/company/${company._id}`, {
+        templateNumber: selectedNumber,
+      });
+      toast.success("Дизайн амжилттай хадгалагдлаа.");
+      router.push(`/company/${companyName}`);
+    } catch (err) {
+      console.error("Template хадгалахад алдаа гарлаа:", err);
+      toast.error("Template хадгалахад алдаа гарлаа.");
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const goToNextTemplate = () => {
     setCurrentTemplateIndex((prev) => (prev + 1) % templates.length);
@@ -87,34 +100,18 @@ export const SelectTemplate = () => {
     );
   };
 
-  const handleSaveTemplate = async () => {
-    if (!company) return;
-
-    try {
-      setSaving(true);
-      await api.put(`/company/${company._id}`, {
-        template: selectedTemplate,
-      });
-
-      router.push(`/company/${companyName}`);
-    } catch (err) {
-      console.error("Template хадгалахад алдаа гарлаа:", err);
-      setError("Template хадгалахад алдаа гарлаа");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const renderTemplatePreview = (templateId: string, isFullSize = false) => {
-    const template = templates.find((t) => t.id === templateId);
-    if (!template || !company) return null;
-
+  const renderTemplatePreview = (isFullSize = false) => {
+    const template = templates[currentTemplateIndex];
     const TemplateComponent = template.component;
-    return (
+    return company ? (
       <div className={`${isFullSize ? "" : "scale-100"} origin-top-left`}>
-        <TemplateComponent data={company} isPreview={true} companyName={""} />
+        <TemplateComponent
+          data={company}
+          isPreview={true}
+          companyName={companyName}
+        />
       </div>
-    );
+    ) : null;
   };
 
   if (loading) {
@@ -139,14 +136,6 @@ export const SelectTemplate = () => {
     );
   }
 
-  if (!company) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <p>Компаний мэдээлэл олдсонгүй</p>
-      </div>
-    );
-  }
-
   const currentTemplate = templates[currentTemplateIndex];
 
   return (
@@ -154,7 +143,7 @@ export const SelectTemplate = () => {
       <div className="bg-white border-b border-gray-200 px-6 py-4 m-auto">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-2xl font-bold text-gray-900">
-            {company.companyName} - Дизайн сонгох хэсэг
+            {company?.companyName} - Дизайн сонгох хэсэг
           </h1>
           <p className="text-gray-600 mt-1">
             Та бизнестээ тохирох дизайныг сонгоно уу!
@@ -205,15 +194,12 @@ export const SelectTemplate = () => {
         <div className="grid grid-cols-1 lg:grid-cols-1 gap-8 mb-8">
           <div className="w-full order-2 lg:order-1">
             <div className="bg-white rounded-lg p-4 border border-gray-200 relative">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="font-semibold text-gray-900">Урьдчилан харах</h3>
-              </div>
-
+              <h3 className="font-semibold text-gray-900 mb-4">
+                Урьдчилан харах
+              </h3>
               <div className="border rounded-lg overflow-hidden bg-gray-50 h-[600px]">
-                <div className="h-full w-full overflow-auto">
-                  <div className="flex justify-center">
-                    {renderTemplatePreview(currentTemplate.id, false)}
-                  </div>
+                <div className="h-full w-full overflow-auto flex justify-center">
+                  {renderTemplatePreview(false)}
                 </div>
               </div>
             </div>
@@ -235,26 +221,24 @@ export const SelectTemplate = () => {
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <Button
-                  onClick={handleSaveTemplate}
-                  disabled={saving}
-                  className="w-full flex items-center justify-center gap-2"
-                  size="lg"
-                >
-                  {saving ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></div>
-                      Хадгалж байна...
-                    </>
-                  ) : (
-                    <>
-                      <Check size={16} />
-                      Энэ дизайныг сонгох
-                    </>
-                  )}
-                </Button>
-              </div>
+              <Button
+                onClick={handleSaveTemplate}
+                disabled={saving}
+                className="w-full flex items-center justify-center gap-2"
+                size="lg"
+              >
+                {saving ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></div>
+                    Хадгалж байна...
+                  </>
+                ) : (
+                  <>
+                    <Check size={16} />
+                    Энэ дизайныг сонгох
+                  </>
+                )}
+              </Button>
             </div>
           </div>
         </div>

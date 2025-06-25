@@ -63,6 +63,7 @@ export type Company = {
   aboutUsImage: string;
   clientNumber: string;
   experience: string;
+  templateNumber: number;
 };
 
 export interface FormDataType {
