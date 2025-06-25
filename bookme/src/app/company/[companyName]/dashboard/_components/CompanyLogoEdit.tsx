@@ -8,7 +8,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
 import { ImageSVG } from "./assets/ImageSVG";
-import { useEffect, useState } from "react";
 import { LoadingSvg } from "@/app/_components/assets/LoadingSvg";
 import { Input } from "@/components/ui/input";
 import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
@@ -44,7 +43,7 @@ export const CompanyLogoEdit = () => {
       <CardHeader>
         <CardTitle>Компанийн Лого</CardTitle>
         <CardDescription>
-          Upload your company logo (recommended: 200x200px)
+          Компанийн зураг шинэчлэх (хэмжээ: 96x96px)
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -66,7 +65,7 @@ export const CompanyLogoEdit = () => {
                   className="w-24 h-24 rounded-2xl object-cover"
                 />
                 <Button
-                  className="absolute -right-2 -top-2 rounded-full w-6 h-6 text-xs"
+                  className="absolute -right-2 -top-2 rounded-full w-6 h-6 text-xs opacity-60 hover:opacity-100"
                   onClick={handleDeleteLogo}
                 >
                   x

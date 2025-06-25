@@ -83,7 +83,7 @@ export const EmployeeForm = ({
     try {
       await api.post(`/${company?.companyName}/employee`, {
         ...values,
-        companyName: companyNameParam,
+        duration: values.duration,
       });
       toast.success("Ажилтан амжилттай нэмэгдлээ");
     } catch (error) {

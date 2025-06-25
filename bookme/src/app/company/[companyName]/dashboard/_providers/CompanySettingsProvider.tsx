@@ -25,12 +25,17 @@ type CompanyInformationAuth = {
   handleInputCompanyImage: (
     e: React.ChangeEvent<HTMLInputElement>
   ) => Promise<void>;
-  companyLogo: string | null;
+  handleInputBackgroundImage: (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => Promise<void>;
+
   employeeImage: string | null;
   companyData: Company[];
   companyAddedImage: string | null;
   logoLoading: boolean;
+  bgLoading: boolean;
   setLogoLoading: Dispatch<SetStateAction<boolean>>;
+  setBgLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 type CompanyDataType = {
@@ -62,11 +67,13 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
     null
   );
   const [companyLogo, setCompanyLogo] = useState<string | null>(null);
+  const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
   const [employeeImage, setEmployeeImage] = useState<string | null>(null);
   const [companyData, setCompanyData] = useState<Company[]>([]);
 
   const { company, getCompany } = useCompanyAuth();
   const [logoLoading, setLogoLoading] = useState(false);
+  const [bgLoading, setBgLoading] = useState(false);
 
   const getCompanyData = async () => {
     try {
@@ -106,12 +113,36 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
+  const handleInputBackgroundImage = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setBgLoading(true);
+    const file = e.target.files?.[0];
+    if (file) {
+      const result = await uploadedImageFunction(file);
+      await handleAddBackgroundImage(result);
+      await setBackgroundImage(result);
+      await getCompany();
+    }
+    setBgLoading(false);
+  };
+
+  const handleAddBackgroundImage = async (result: string | null) => {
+    try {
+      const req = await api.put(`/company/${company?._id}`, {
+        backGroundImage: result,
+      });
+    } catch (error) {
+      console.error("Компанийн background шинэчлэхэд алдаа гарлаа.");
+      toast.error("Компанийн background шинэчлэхэд алдаа гарлаа.");
+    }
+  };
+
   const handleAddCompanyLogo = async (result: string | null) => {
     try {
       const req = await api.put(`/company/${company?._id}`, {
         companyLogo: result,
       });
-      console.log("Hi1");
     } catch (error) {
       console.error("Компанийн лого шинэчлэхэд алдаа гарлаа.");
       toast.error("Компанийн лого шинэчлэхэд алдаа гарлаа.");
@@ -121,7 +152,6 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
   const handleInputCompanyLogo = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    console.log("Hi0");
     setLogoLoading(true);
     const file = e.target.files?.[0];
     if (file) {
@@ -129,11 +159,9 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
       await handleAddCompanyLogo(result);
       await setCompanyLogo(result);
       await getCompany();
-      console.log("Hi2");
     }
     setLogoLoading(false);
   };
-  console.log(companyLogo);
 
   const handleInputEmployeeImage = async (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -187,9 +215,11 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
         handleInputCompanyLogo,
         handleInputEmployeeImage,
         handleInputCompanyImage,
+        handleInputBackgroundImage,
         setLogoLoading,
+        setBgLoading,
+        bgLoading,
         logoLoading,
-        companyLogo,
         employeeImage,
         companyData,
         companyAddedImage,

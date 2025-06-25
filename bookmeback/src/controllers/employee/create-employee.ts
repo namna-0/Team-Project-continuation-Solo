@@ -4,8 +4,6 @@ import { Company } from "../../models/company.schema";
 
 export const createEmployee: RequestHandler = async (req, res) => {
   const { companyName } = req.params;
-  console.log("companyName from params:", companyName);
-  console.log("req.body:", req.body);
 
   const {
     employeeName,
@@ -18,21 +16,6 @@ export const createEmployee: RequestHandler = async (req, res) => {
     lunchTimeStart,
     lunchTimeEnd,
   } = req.body;
-
-  // if (
-  //   !employeeName ||
-  //   !description ||
-  //   !profileImage ||
-  //   availability === undefined ||
-  //   !duration ||
-  //   !startTime ||
-  //   !endTime ||
-  //   !lunchTimeStart ||
-  //   !lunchTimeEnd
-  // ) {
-  //   res.status(400).json({ message: "Бүх мэдээллийг бөглөнө үү." });
-  //   return;
-  // }
 
   try {
     const company = await Company.findOne({ companyName });
