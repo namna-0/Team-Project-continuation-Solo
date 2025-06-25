@@ -39,7 +39,7 @@ interface AppSidebarProps {
 export function AppSidebar({ currentPage, setCurrentPage }: AppSidebarProps) {
   const [ordersOpen, setOrdersOpen] = React.useState(false);
   const [settingsOpen, setSettingsOpen] = React.useState(false);
-  const { company } = useCompanyAuth();
+  const { company, signOutCompany } = useCompanyAuth();
   const menuItems = [
     {
       title: "Ажилчид",
