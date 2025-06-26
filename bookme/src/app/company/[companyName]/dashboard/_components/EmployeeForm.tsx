@@ -17,7 +17,6 @@ import { FormDataType } from "./EmployeeAddSection";
 import { useState } from "react";
 import { api } from "@/axios";
 import { toast } from "sonner";
-import { useParams } from "next/navigation";
 import { useSettings } from "../_providers/CompanySettingsProvider";
 import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
 import {
@@ -29,21 +28,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useParams } from "next/navigation";
 
 const employeeSchema = z.object({
   companyName: z.string(),
   profileImage: z.string().nonempty("Ажилтны зураг оруулна уу."),
   employeeName: z.string().nonempty("Ажилтны нэрийг оруулна уу."),
   description: z.string().nonempty("Ажилтны таницуулгаа оруулна уу."),
-  duration: z.enum(["30", "60"], {
-    required_error: "Үйлчилгээний хугацаа сонгоно уу.",
-  }),
-
+  duration: z.string().nonempty("Үйлчилгээний хугацаа сонгоно уу."),
   startTime: z.string().nonempty("Ажлын цаг сонгоно уу."),
   endTime: z.string().nonempty("Ажлын цаг сонгоно уу."),
   lunchTimeStart: z.string().nonempty("Цайны цагаа сонгоно уу."),
   lunchTimeEnd: z.string().nonempty("Цайны цагаа сонгоно уу."),
-  availability: z.boolean(),
 });
 
 export const EmployeeForm = ({
@@ -52,23 +48,19 @@ export const EmployeeForm = ({
   setOpen,
 }: FormDataType) => {
   const { company } = useCompanyAuth();
+  const param = useParams<{ companyName: string }>()
+  const companyNameParam = param.companyName
   const { employeeImage, handleInputEmployeeImage } = useSettings();
   const [loading, setLoading] = useState(false);
-  const params = useParams();
-  const companyNameParam = params?.companyName as string;
 
   const form = useForm<z.infer<typeof employeeSchema>>({
     resolver: zodResolver(employeeSchema),
     defaultValues: {
       companyName: companyNameParam,
-      profileImage: employeeImage ?? "",
       employeeName: employeeData.employeeName,
+      profileImage: employeeImage ?? "",
       description: employeeData.description,
-      availability: employeeData.availability,
-      duration:
-        employeeData.duration?.halfTime ||
-        employeeData.duration?.fullTime ||
-        "30",
+      duration: employeeData.duration,
       startTime: employeeData.startTime,
       endTime: employeeData.endTime,
       lunchTimeStart: employeeData.lunchTimeStart,
@@ -81,11 +73,9 @@ export const EmployeeForm = ({
   ) => {
     setLoading(true);
     try {
-      await api.post(`/${company?.companyName}/employee`, {
-        ...values,
-        duration: values.duration,
-      });
+      await api.post(`/${company?.companyName}/employee`, values);
       toast.success("Ажилтан амжилттай нэмэгдлээ");
+      console.log(values);
     } catch (error) {
       console.error("Ажилтан үүсгэхэд алдаа гарлаа", error);
       toast.error("Ажилтан үүсгэхэд алдаа гарлаа");
@@ -193,7 +183,7 @@ export const EmployeeForm = ({
               <FormItem className="w-full">
                 <FormLabel>Компани</FormLabel>
                 <FormControl>
-                  <Input disabled {...field} />
+                  <Input disabled {...field} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -279,7 +269,7 @@ export const EmployeeForm = ({
             name="duration"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Үйлчилгээний хугацаа</FormLabel>
+                <FormLabel>Нэг удаагийн үйчилгээни хугацаа сонгох</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -294,27 +284,6 @@ export const EmployeeForm = ({
                     <SelectItem value="60">60 минут</SelectItem>
                   </SelectContent>
                 </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="availability"
-            render={({ field }) => (
-              <FormItem className="w-full flex items-center gap-2 ">
-                <FormControl>
-                  <input
-                    type="checkbox"
-                    checked={field.value}
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    name={field.name}
-                    ref={field.ref}
-                    className="checkbox"
-                  />
-                </FormControl>
-                <FormLabel>Боломжтой эсэх</FormLabel>
                 <FormMessage />
               </FormItem>
             )}

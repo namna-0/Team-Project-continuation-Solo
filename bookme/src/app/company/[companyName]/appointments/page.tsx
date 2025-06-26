@@ -129,8 +129,20 @@ export default function Home() {
                 <h2 className="text-2xl font-bold">
                   {isClicked.company.companyName}
                 </h2>
-                <p className="text-lg text-gray-700">📅 2025-06-17</p>
-                <p className="text-lg text-gray-700">⏰ 14:00</p>
+                {(() => {
+                  const [day, date, time] = isClicked.selectedTime
+                    .split(",")
+                    .map((s) => s.trim());
+                  return (
+                    <>
+                      <p className="text-lg text-gray-700">
+                        📅 {`${day}, ${date}`}
+                      </p>
+                      <p className="text-lg text-gray-700">⏰ {time}</p>
+                    </>
+                  );
+                })()}
+
                 <div className="flex items-center gap-[12px]">
                   <p className="text-ls text-gray-700">
                     🧑‍💼{isClicked?.employee.employeeName}
@@ -148,7 +160,7 @@ export default function Home() {
                 </button>
               </div>
             ) : (
-              <p className="text-gray-500 ">Цагаа сонгоно уу...</p>
+              <p className="text-gray-500 ">Захиалгын дэлгэрэнгүй...</p>
             )}
           </div>
         </div>

@@ -1,8 +1,16 @@
+import { employeeType } from "@/app/company/[companyName]/order/page";
+
 export interface Employee {
   _id: string;
   employeeName: string;
   description: string;
   profileImage: string;
+  availability: boolean;
+  duration: string;
+  startTime: string;
+  endTime: string;
+  lunchTimeEnd: string;
+  lunchTimeStart: string;
 }
 
 export interface DaySchedule {
@@ -47,6 +55,14 @@ export type Company = {
   aboutUsImage?: string;
   experience?: string;
   clientNumber?: string;
+  bookings: BookingType[];
+};
+
+export type BookingType = {
+  company: string;
+  employee: employeeType[];
+  selectedTime: string;
+  status: string;
 };
 
 export interface FormDataType {

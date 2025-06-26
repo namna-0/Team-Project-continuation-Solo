@@ -21,6 +21,7 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
   const [company, setCompany] = useState<Company | undefined>();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const router = useRouter();
 
   const signIn = async (email: string, password: string) => {

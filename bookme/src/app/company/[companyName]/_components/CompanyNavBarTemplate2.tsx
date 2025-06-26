@@ -265,6 +265,7 @@ export const CompanyNavBarTemplate2 = ({
                   >
                     Хяналтын самбар
                   </Link>
+
                   <button
                     onClick={() => {
                       signOutCompany();
