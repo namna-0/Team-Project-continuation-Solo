@@ -27,7 +27,7 @@ export default function HomePage() {
   const handleLoadComplete = () => {
     setIsLoading(false);
     document.body.style.overflow = "auto";
-    console.log("Preloader finished");
+    // console.log("Preloader finished");
   };
 
   return (

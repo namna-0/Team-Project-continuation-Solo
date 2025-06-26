@@ -12,9 +12,9 @@ type DayPickerProps = {
     orders: OrderType[] | undefined
     availabilityTimes: (time: number) => number[];
     isDayClosed: (day: Date) => boolean
-    isDayFullyBooked: (day: Date) => boolean
+
 }
-export default function WeekScroller({ date, setDate, dayArrays, company, orders, availabilityTimes, isDayFullyBooked, isDayClosed }: DayPickerProps) {
+export default function WeekScroller({ date, setDate, dayArrays, company, orders, availabilityTimes, isDayClosed }: DayPickerProps) {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const dayRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -71,7 +71,7 @@ export default function WeekScroller({ date, setDate, dayArrays, company, orders
             </div>
             <div
                 ref={scrollContainerRef}
-                className="flex w-[790px] h-fit relative overflow-x-scroll scroll-smooth "
+                className="flex w-[790px] h-fit relative overflow-x-scroll scroll-smooth scrollbar-hide"
             >
                 {dayArrays().map((day, index) => {
                     const isSelected =
@@ -79,9 +79,8 @@ export default function WeekScroller({ date, setDate, dayArrays, company, orders
                         date.getDate() === day.getDate() &&
                         date.getMonth() === day.getMonth() &&
                         date.getFullYear() === day.getFullYear();
-                    const isFullyBooked = isDayFullyBooked(day);
-                    const isClosed = isDayClosed(day);
 
+                    const isClosed = isDayClosed(day);
 
                     return (
                         <div
@@ -104,22 +103,18 @@ export default function WeekScroller({ date, setDate, dayArrays, company, orders
                                     });
                                 }
                                 setDate(day)
-
-
                             }}
                             className="px-2 flex flex-col w-fit justify-center items-center gap-2 py-1"
                         >
                             <div
                                 className={
-                                    isSelected && (isClosed || isFullyBooked)
+                                    isSelected && (isClosed )
                                         ? "rounded-full w-24 h-24 flex justify-center items-center font-bold line-through text-2xl bg-indigo-300 text-white"
                                         : isSelected
                                             ? "rounded-full w-24 h-24 flex justify-center items-center font-bold text-2xl bg-indigo-700 text-white"
                                             : isClosed
                                                 ? "flex justify-center items-center rounded-full text-2xl w-24 h-24 font-bold border line-through pointer-none text-gray-300 border-gray-300"
-                                                : isFullyBooked
-                                                    ? "flex justify-center items-center rounded-full text-2xl w-24 h-24 font-bold border line-through pointer-none text-gray-300 border-gray-300"
-                                                    : "flex justify-center items-center rounded-full text-2xl w-24 h-24 font-bold border border-gray-700 text-gray-700 bg-gray-100"
+                                                : "flex justify-center items-center rounded-full text-2xl w-24 h-24 font-bold border border-gray-700 text-gray-700 bg-gray-100"
                                 }
                             >
                                 {day.toLocaleDateString("default", { day: "numeric" })}
@@ -128,9 +123,9 @@ export default function WeekScroller({ date, setDate, dayArrays, company, orders
                                 {day.toLocaleDateString("default", { weekday: "short" })}
                             </div>
                         </div>
-            );
+                    );
                 })}
-        </div>
+            </div>
         </div >
     );
 }

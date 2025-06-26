@@ -9,6 +9,7 @@ import OrderImformation from "./_components/(publicItems)/orderImformation";
 import StageTwo from "./_components/(Stage2SelectTime)/SelectTime"; // Adjust the path based on your project structur;
 import StageOne from "./_components/(Stage1EmployeeSelect)/SelectEmployee";
 import { WorkingHoursType } from "../_components/CompanyTypes";
+import BookedSucsess from "./_components/(Stage3-confirmed)/SucsessBooked";
 
 const pacifico = Pacifico({
     subsets: ['latin'],
@@ -41,7 +42,7 @@ export type CompanyType = {
 }
 export default function OrderPage() {
 
-    const Stages = ["Ажилтан", "Огноо", "амжилттай захиалагдлаа"]
+    const Stages = ["Ажилтан", "Огноо","Баталгаажуулалт", "амжилттай захиалагдлаа"]
     const [loading, setLoading] = useState<boolean>(false)
     const [isStage, setIsStage] = useState<string>(Stages[0])
     const [isSelectEmployee, setIsSelectEmployee] = useState<string | string[]>("")
@@ -79,14 +80,14 @@ export default function OrderPage() {
         if (isStage == Stages[0] && !(isSelectEmployee == "")) { setIsStage(Stages[1]) }
         if (isStage == Stages[1]) { setIsStage(Stages[2]) }
     };
-    
+
     return (
         <div className="w-full flex flex-col h-fit jusify-center overflow-hidden items-center bg-white">
             <div className="w-[1440px] relative h-[120vh] flex  justify-center bg-gray-100" >
                 <OrderNavBar isStage={typeof isStage === "string" ? isStage : ""} setIsStage={setIsStage} title={title()} Stages={Stages} />
                 <div className="flex-3 relative flex flex-col p-16 gap-8">
                     <div className="flex flex-col gap-5">
-                        <div className="gap-2 w-full flex  items-center ">{Stages.map((item, index) => {
+                        <div className="gap-2 w-full flex  items-center ">{Stages.slice(0,3).map((item, index) => {
                             return (<div onClick={() => {
                                 if (isStage !== "" && Stages.indexOf(isStage) > index) {
                                     setIsStage(item)
@@ -106,6 +107,10 @@ export default function OrderPage() {
                             <StageTwo setSelectedEmployee={setSelectedEmployeeImf} setIsSelectEmployee={setIsSelectEmployee} zurag={companyData?.employees?.find((employee: employeeType) => employee._id === selectedEmployeeImf)?.profileImage || ""}
                                 date={date} setDate={setDate} setSelectedTime={setSelectedTime} selectedTime={selectedTime} selectedEmployeeImf={selectedEmployeeImf} company={companyData as CompanyType} isSelectEmployee={isSelectEmployee} />
                         </div>)}
+                    {isStage == Stages[2] &&
+                        (
+                           <BookedSucsess/>
+                        )}
                 </div>
                 <div className="flex flex-2 w-full relative justify-start items-center  ">
                     <OrderImformation setIsStage={setIsStage} HandleNextStage={HandleNextStage} setIsSelectEmployee={setIsSelectEmployee} setSelectEmployee={(employee: string) => setSelectedEmployeeImf(employee)} setDate={setDate} selectedTime={selectedTime} setSelectedTime={setSelectedTime} isSelectEmployee={isSelectEmployee} date={date} selectedEmployeeImf={selectedEmployeeImf} company={companyData} isStage={isStage} Stages={Stages} />

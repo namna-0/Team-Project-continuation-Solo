@@ -5,6 +5,7 @@ import { CompanyType, employeeType } from "../../page"
 import { api } from "@/axios"
 import { Return } from "./_copmonents/Return"
 import { OrderType } from "../(publicItems)/orderImformation"
+import { log } from "node:console"
 
 type TimingProps = {
     isSelectEmployee: string | string[],
@@ -43,23 +44,28 @@ function StageTwoTimePicking({
     const start = getEmployee ? parseInt(getEmployee.startTime) : 0;
     const duration = getEmployee ? parseInt(getEmployee.duration.toString()) : 0;
     const end = getEmployee ? parseInt(getEmployee.endTime) : 0;
-    const lunchTime = getEmployee ? parseInt(getEmployee.lunchTimeStart) : 0;
-    const LunchTimeEnd = getEmployee ? parseInt(getEmployee.lunchTimeEnd) : 0;
+    const lunchTime = getEmployee ? parseInt(getEmployee.lunchTimeStart) : 0; console.log(lunchTime);
+    const Name = getEmployee?.employeeName ;console.log(Name);
+    
+    const LunchTimeEnd = getEmployee ? parseInt(getEmployee.lunchTimeEnd) : 0; ;
+    
     const availabilityTimes = () => {
         const times = [];
         for (let i = getTime(start); i < getTime(end); i += duration) {
-            if (!(i >= getTime(lunchTime) && i < getTime(LunchTimeEnd))) {
+            if (!(i >= getTime(lunchTime) && i <= getTime(LunchTimeEnd))) {
                 times.push(i);
             }
         }
         return times;
     };
 
+
     useEffect(() => {
         getEmployee
         selectedEmployeeImf
     }, [isSelectEmployee, company?.employees])
     const getOrderByemployee = async () => {
+        if (!selectedEmployeeImf) return;
         try {
             const response = await api.get(`/order/employee/${selectedEmployeeImf}`);
             setOrders(response.data.bookings)
@@ -70,7 +76,7 @@ function StageTwoTimePicking({
     }
     useEffect(() => { setDate(date) }, [date])
     useEffect(() => { getOrderByemployee() }, [selectedEmployeeImf])
-    useEffect(() => { setDate(new Date()) }, [, isSelectEmployee])
+    useEffect(() => { setDate(new Date()) }, [isSelectEmployee])
     const isDayClosed = (day: Date) => {
         const dayName = day.toLocaleDateString("en-US", { weekday: "long" }).toLowerCase();
         const workingDay = company.workingHours[dayName];
@@ -79,25 +85,36 @@ function StageTwoTimePicking({
     const allSelectedTimes = orders
         ? orders.map((order: OrderType) => new Date(order.selectedTime))
         : [];
+    // const isDayFullyBooked = (day: Date): boolean => {
+    //     const availableMinutes = availabilityTimes(day.getDay());
 
-    const isDayFullyBooked = (day: Date) => {
-        const dayAvailableTimes = availabilityTimes(); // [540, 600, 660, ...] in minutes
-        const bookedTimesForDay = allSelectedTimes
-            .filter((selectedTime) =>
-                selectedTime.getDate() === day.getDate() &&
-                selectedTime.getMonth() === day.getMonth() &&
-                selectedTime.getFullYear() === day.getFullYear()
-            )
-            .map((selectedTime) => selectedTime.getHours() * 60 + selectedTime.getMinutes());
-        return dayAvailableTimes.every((minute) =>
-            bookedTimesForDay.includes(minute)
-        )
-    };
+    //     const bookedSlots = allSelectedTimes
+    //         .filter((selectedTime) =>
+    //             selectedTime.getDate() === day.getDate() &&
+    //             selectedTime.getMonth() === day.getMonth() &&
+    //             selectedTime.getFullYear() === day.getFullYear()
+    //         )
+    //         .map((selectedTime) => selectedTime.getTime()); // getTime() ашиглаж байна
+
+    //     const availableSlots = availableMinutes.map((minute) => {
+    //         const hour = Math.floor(minute / 60);
+    //         const min = minute % 60;
+    //         return new Date(
+    //             day.getFullYear(),
+    //             day.getMonth(),
+    //             day.getDate(),
+    //             hour,
+    //             min
+    //         ).getTime();
+    //     });
+
+    //     const isFull = availableSlots.every((slot) => bookedSlots.includes(slot));
+    //     return isFull;
+    // };
     return (
         <Return
             orders={orders} dayArrays={dayArrays} availabilityTimes={availabilityTimes}
             isSelectEmployee={isSelectEmployee} setSelectedEmployee={setSelectedEmployee} zurag={zurag}
-            isDayFullyBooked={isDayFullyBooked}
             company={company} date={date} selectedTime={selectedTime} setSelectedTime={setSelectedTime} setDate={setDate}
             setIsSelectEmployee={setIsSelectEmployee} selectedEmployeeImf={selectedEmployeeImf} isDayClosed={isDayClosed} />
     )
