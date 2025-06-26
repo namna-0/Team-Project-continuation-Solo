@@ -28,6 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useParams } from "next/navigation";
 
 const employeeSchema = z.object({
   companyName: z.string(),
@@ -47,12 +48,15 @@ export const EmployeeForm = ({
   setOpen,
 }: FormDataType) => {
   const { company } = useCompanyAuth();
+  const param = useParams<{ companyName: string }>()
+  const companyNameParam = param.companyName
   const { employeeImage, handleInputEmployeeImage } = useSettings();
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof employeeSchema>>({
     resolver: zodResolver(employeeSchema),
     defaultValues: {
+      companyName: companyNameParam,
       employeeName: employeeData.employeeName,
       profileImage: employeeImage ?? "",
       description: employeeData.description,
@@ -179,7 +183,7 @@ export const EmployeeForm = ({
               <FormItem className="w-full">
                 <FormLabel>Компани</FormLabel>
                 <FormControl>
-                  <Input disabled {...field} />
+                  <Input disabled {...field} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

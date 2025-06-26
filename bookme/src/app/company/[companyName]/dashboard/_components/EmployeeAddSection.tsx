@@ -30,6 +30,8 @@ export type EmployeeData = {
 
 export const EmployeeAddSection = () => {
   const [open, setOpen] = useState(false);
+
+
   const [employeeData, setEmployeeData] = useState<EmployeeData>({
     companyName: "",
     startTime: "09:00",
