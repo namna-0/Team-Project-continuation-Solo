@@ -12,12 +12,13 @@ import { api } from "@/axios";
 import { toast } from "sonner";
 import { CheckSvg } from "./assets/CheckSvg";
 import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
+import { EmployeeDeleteButton } from "./EmployeeDeleteButton";
 type PropsType = {
   employee: Employee;
-  getCompany: () => Promise<void>;
+  getCompanyAction: () => Promise<void>;
 };
 
-export const EmployeeCard = ({ employee, getCompany }: PropsType) => {
+export const EmployeeCard = ({ employee, getCompanyAction }: PropsType) => {
   const [isAvailable, setIsAvailable] = useState(true);
 
   const handleEmployeAvailable = async () => {
@@ -26,7 +27,7 @@ export const EmployeeCard = ({ employee, getCompany }: PropsType) => {
       const req = await api.put(`/employee/${employee._id}`, {
         availability: isAvailable,
       });
-      await getCompany();
+      await getCompanyAction();
       setIsAvailable(!isAvailable);
 
       toast.success(
@@ -128,9 +129,11 @@ export const EmployeeCard = ({ employee, getCompany }: PropsType) => {
             >
               Ажилтны мэдээлэл шинэчлэх
             </Button>
-            <Button className="text-gray-700" variant={"outline"}>
-              Ажилтан устгах
-            </Button>
+            <EmployeeDeleteButton
+              employeeId={employee._id}
+              employeeName={employee.employeeName}
+              employeeProfilePicture={employee.profileImage}
+            />
           </div>
         </div>
       </CardContent>
