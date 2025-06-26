@@ -5,10 +5,12 @@ import { useAuth } from "@/app/_providers/UserAuthProvider";
 import { Button } from "@/components/ui/button";
 import { Editprofile } from "./_components/Editprofile";
 import { Navbar } from "./_components/Navbar";
+import { useParams } from "next/navigation";
 
 export default function Home() {
   const { user } = useAuth();
-
+  const params = useParams();
+  const companyName = params?.companyName as string;
   return (
     <div className="w-screen h-screen bg-[#f9f9f9] flex flex-col items-center">
       <Navbar />
@@ -48,7 +50,7 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <Link href="/company/test-company/appointments">
+              <Link href={`/company/${companyName}/appointments`}>
                 <Button className="relative bg-[#77b8fa] group w-full px-6 py-2 overflow-hidden text-white cursor-pointer">
                   <span className="absolute inset-0 bg-gradient-to-r from-[#77b8fa] to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left " />
                   <span className="relative z-10"> Захиалгын түүх харах</span>
