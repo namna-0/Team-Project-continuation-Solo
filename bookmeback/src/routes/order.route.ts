@@ -8,7 +8,7 @@ import {
   deleteOrderController,
 } from "../controllers/order";
 import { getOrdersAndOrder } from "../controllers/order/getAllOrOneOrder";
-import { getUsers } from "../controllers/user/get-users";
+import { CreateOrderByCompany } from "../controllers/order/create-order-by-company";
 
 const BookingRouter = Router();
 
@@ -19,6 +19,7 @@ BookingRouter.post("/order", CreateOrderController)
   .get("/order/user/:id", getOrdersByUser)
   .get("/order/employee/:id", getOrdersByEmployee)
   .put("/order/:id")
-  .delete("/order/:id", deleteOrderController);
+  .delete("/order/:id", deleteOrderController)
+  .post("/order/company", CreateOrderByCompany);
 
 export default BookingRouter;

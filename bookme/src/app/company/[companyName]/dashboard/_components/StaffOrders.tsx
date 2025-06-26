@@ -79,22 +79,6 @@ export function StaffOrdersPage({ company }: { company: Company }) {
     return bookingDate === today && booking.status === "completed";
   }).length;
 
-  const handleCancel = async (orderId: string) => {
-    try {
-      await api.delete(`/order/${orderId}`);
-
-      toast.success("Захиалгыг цуцаллаа");
-      setSelectedBookings((prev) =>
-        prev.map((order) =>
-          order._id === orderId ? { ...order, status: "cancelled" } : order
-        )
-      );
-    } catch (error) {
-      toast.error("Цуцлахад алдаа гарлаа");
-      console.error(error);
-    }
-  };
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -158,21 +142,16 @@ export function StaffOrdersPage({ company }: { company: Company }) {
       <StaffOrdersList
         company={company}
         selectedEmployee={selectedEmployee}
-        displayBookings={displayBookings}
         getEmployeeBookings={getEmployeeBookings}
         handleEmployeeSelect={handleEmployeeSelect}
-        showAllBookings={showAllBookings}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        getStatusColor={getStatusColor}
-        itemsPerPage={itemsPerPage}
-        onCancel={handleCancel}
       />
-      <BookingCalendar
-        company={company}
-        selectedEmployee={selectedEmployee}
-        bookings={displayBookings}
-      />
+      {selectedEmployee && (
+        <BookingCalendar
+          company={company}
+          selectedEmployee={selectedEmployee}
+          bookings={displayBookings}
+        />
+      )}
     </div>
   );
 }
