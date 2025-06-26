@@ -25,14 +25,10 @@ export const CompanyBackgroundImageText = ({
     visible: { opacity: 1, y: 0 },
   };
 
-  const backgroundImage = company.backGroundImage?.length
-    ? company.backGroundImage
-    : "https://res.cloudinary.com/dxhmgs7wt/image/upload/v1749803046/heroback_wzxjtk.jpg";
-
   return (
     <section className="relative h-[800px] flex flex-col items-center justify-center overflow-hidden">
       <Image
-        src={backgroundImage}
+        src={company.backGroundImage}
         alt={`${companyName} background`}
         fill
         sizes="100vw"

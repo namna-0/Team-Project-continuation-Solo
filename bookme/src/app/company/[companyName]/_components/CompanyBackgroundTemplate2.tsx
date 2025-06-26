@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, ChevronDown, Heart, Sparkles, Star } from "lucide-react";
+import { Calendar, ChevronDown, Heart, Sparkles } from "lucide-react";
 import { Company } from "./CompanyTypes";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -34,15 +34,17 @@ export const CompanyBackgroundTemplate2 = ({
       <div className="absolute inset-0">
         {company.backGroundImage ? (
           <div className="relative w-full h-full">
-            <Image
-              src={company.backGroundImage}
-              alt={`${companyName} background`}
-              fill
-              sizes="100vw"
-              className="object-cover transition-all duration-1000 transform scale-105"
-              priority
-              quality={85}
-            />
+            {company.backGroundImage && (
+              <Image
+                src={company.backGroundImage}
+                alt={`${companyName} background`}
+                fill
+                sizes="100vw"
+                className="object-cover object-center"
+                priority
+                quality={85}
+              />
+            )}
           </div>
         ) : (
           <div className="w-full h-full bg-gray-900" />

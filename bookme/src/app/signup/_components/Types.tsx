@@ -89,7 +89,7 @@ export interface FormDataType {
   setEmployeeData?: (data: Employee[]) => void;
   setOpen?: (open: boolean) => void;
   aboutUsImage?: string;
-  backgroundImage?: string;
+  backGroundImage?: string;
 }
 
 export type Location = {
