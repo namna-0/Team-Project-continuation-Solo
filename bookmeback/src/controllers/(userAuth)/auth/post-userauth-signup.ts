@@ -59,6 +59,7 @@ export const postUserAuthSignUp: RequestHandler = async (req, res) => {
     await transporter.sendMail(mailOptions);
     res.status(200).json({
       message: "Бүртгэл амжилттай, нэвтэрсэн!",
+      token,
       user: {
         id: newUser._id,
         email: newUser.email,
