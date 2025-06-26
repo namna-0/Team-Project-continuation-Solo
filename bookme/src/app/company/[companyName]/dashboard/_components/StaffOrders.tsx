@@ -13,8 +13,6 @@ import { Company, Employee, Booking } from "../../_components/CompanyTypes";
 import { useEffect, useState } from "react";
 import { StaffOrdersList } from "./StaffOrderList";
 import { BookingCalendar } from "./Calendar";
-import { api } from "@/axios";
-import { toast } from "sonner";
 
 const getStatusColor = (status: string) => {
   switch (status?.toLowerCase()) {
