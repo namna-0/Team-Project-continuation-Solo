@@ -170,7 +170,7 @@ export default function CompanySetupPage() {
   };
 
   return (
-    <div className="bg-gradient-to-b from-indigo-900 via-blue-400 to-sky-200 min-h-screen h-fit relative">
+    <div className="bg-gradient-to-b from-indigo-900 via-blue-400 to-sky-200 min-h-screen h-fit relative flex items-center">
       <FormProvider {...methods}>
         <Stepper
           initialStep={1}
