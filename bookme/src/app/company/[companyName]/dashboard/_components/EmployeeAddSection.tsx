@@ -7,13 +7,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { EmployeeForm } from "./EmployeeForm";
 
 export type FormDataType = {
   employeeData: EmployeeData;
   setEmployeeData: React.Dispatch<React.SetStateAction<EmployeeData>>;
-  setOpen: Dispatch<SetStateAction<boolean>>;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
 };
 export type EmployeeData = {
   companyName: string;
@@ -26,11 +26,11 @@ export type EmployeeData = {
   profileImage: string;
   duration: string;
   workingHours: string;
+  availability: boolean;
 };
 
 export const EmployeeAddSection = () => {
-  const [open, setOpen] = useState(false);
-
+  const [isOpen, setIsOpen] = useState(false);
 
   const [employeeData, setEmployeeData] = useState<EmployeeData>({
     companyName: "",
@@ -43,39 +43,28 @@ export const EmployeeAddSection = () => {
     profileImage: "",
     duration: "",
     workingHours: "",
+    availability: true,
   });
 
-  const closeDialog = () => {
-    setOpen(false);
-  };
-
   return (
-    <div className="w-[1440px] bg-white rounded-2xl">
-      <div className="flex justify-between items-center p-4">
-        <div>
-          <div className="text-[20px] font-medium">Organization Management</div>
-          <div className="text-[14px] font-normal text-gray-400">
-            Manage your business profile and team
-          </div>
-        </div>
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-[#007FFF] hover:bg-[#007FFF]/90">
-              + Add employee
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="bg-white w-[600px]">
-            <DialogHeader>
-              <DialogTitle>Ажилтан шинээр бүртгэх</DialogTitle>
-            </DialogHeader>
-            <EmployeeForm
-              employeeData={employeeData}
-              setEmployeeData={setEmployeeData}
-              setOpen={closeDialog}
-            />
-          </DialogContent>
-        </Dialog>
-      </div>
+    <div className="flex justify-between items-center p-4">
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogTrigger asChild>
+          <Button className="bg-[#007FFF] hover:bg-[#007FFF]/90 ">
+            + Ажилтан нэмэх
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="bg-white w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Ажилтан шинээр бүртгэх</DialogTitle>
+          </DialogHeader>
+          <EmployeeForm
+            employeeData={employeeData}
+            setEmployeeData={setEmployeeData}
+            setIsOpen={setIsOpen}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
