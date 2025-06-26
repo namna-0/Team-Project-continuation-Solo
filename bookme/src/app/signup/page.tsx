@@ -192,7 +192,6 @@ export default function CompanySetupPage() {
             <Step3 dayLabels={dayLabels} />
           </Step>
           <Step>
-
             <div className="max-h-[80vh] overflow-auto px-2">
               <Step4
                 formData={{
@@ -210,7 +209,6 @@ export default function CompanySetupPage() {
                 removeLogo={removeLogo}
               />
             </div>
-
           </Step>
           <Step>
             <Step5 formData={methods.getValues()} setFormData={() => {}} />
