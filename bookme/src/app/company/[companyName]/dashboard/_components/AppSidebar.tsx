@@ -95,6 +95,11 @@ export function AppSidebar({ currentPage, setCurrentPage }: AppSidebarProps) {
           key: "working-hours-settings",
           onClick: () => setCurrentPage("working-hours-settings"),
         },
+        {
+          title: "Template солих",
+          key: "templates-settings",
+          onClick: () => setCurrentPage("templates-settings"),
+        },
       ],
     },
   ];

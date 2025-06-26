@@ -15,7 +15,6 @@ import { Hero } from "./_components/Hero";
 import Preloader from "./_components/Preloader";
 import { motion } from "framer-motion";
 
-// Initialize GSAP
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
@@ -23,11 +22,9 @@ if (typeof window !== "undefined") {
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
 
-  // Handle preloader completion
   const handleLoadComplete = () => {
     setIsLoading(false);
     document.body.style.overflow = "auto";
-    // console.log("Preloader finished");
   };
 
   return (
