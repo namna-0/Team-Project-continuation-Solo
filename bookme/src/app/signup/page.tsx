@@ -83,6 +83,15 @@ export default function CompanySetupPage() {
     }
   };
 
+  function capitalizeWords(input: string): string {
+    return input
+      .trim()
+      .replace(/\s+/g, " ")
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join("");
+  }
+
   const uploadToCloudinary = async (file: File): Promise<string> => {
     const formData = new FormData();
     formData.append("file", file);
@@ -111,7 +120,7 @@ export default function CompanySetupPage() {
       const apiData = {
         email: values.email,
         password: values.password,
-        companyName: values.companyName,
+        companyName: capitalizeWords(values.companyName),
         address: values.address,
         city: values.city,
         lat: values.lat,
