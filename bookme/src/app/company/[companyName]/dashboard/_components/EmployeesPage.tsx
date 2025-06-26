@@ -1,16 +1,19 @@
+"use client";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { EmployeeAddSection } from "./EmployeeAddSection";
 import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
 import { EmployeeCard } from "./EmployeeCard";
+import { useEffect, useState } from "react";
+import { Employee } from "@/app/signup/_components/Types";
+import { api } from "@/axios";
 
 export function EmployeesPage() {
-  const { company } = useCompanyAuth();
-  console.log(company?.employees[0]);
+  const { company, getCompany } = useCompanyAuth();
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="w-full flex items-center justify-between p-2">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Employees</h1>
           <p className="text-muted-foreground">Manage your company employees</p>
@@ -21,14 +24,14 @@ export function EmployeesPage() {
       <div className="flex items-center space-x-2">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Search employeesss..." className="pl-8" />
+          <Input placeholder="Ажилтан хайх" className="pl-8" />
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {company?.employees.map((employee) => (
           <div key={employee._id}>
-            <EmployeeCard employee={employee} />
+            <EmployeeCard employee={employee} getCompany={getCompany} />
           </div>
         ))}
       </div>

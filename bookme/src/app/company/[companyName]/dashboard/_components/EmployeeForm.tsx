@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ManSVG } from "./assets/ManSVG";
 import { FormDataType } from "./EmployeeAddSection";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "@/axios";
 import { toast } from "sonner";
 import { useSettings } from "../_providers/CompanySettingsProvider";
@@ -29,6 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useParams } from "next/navigation";
+import { LoadingSvg } from "@/app/_components/assets/LoadingSvg";
 
 const employeeSchema = z.object({
   companyName: z.string(),
@@ -40,19 +41,20 @@ const employeeSchema = z.object({
   endTime: z.string().nonempty("Ажлын цаг сонгоно уу."),
   lunchTimeStart: z.string().nonempty("Цайны цагаа сонгоно уу."),
   lunchTimeEnd: z.string().nonempty("Цайны цагаа сонгоно уу."),
+  availability: z.boolean(),
 });
 
 export const EmployeeForm = ({
   employeeData,
   setEmployeeData,
-  setOpen,
+  setIsOpen,
 }: FormDataType) => {
   const { company } = useCompanyAuth();
-  const param = useParams<{ companyName: string }>()
-  const companyNameParam = param.companyName
+  const param = useParams<{ companyName: string }>();
+  const companyNameParam = param.companyName;
   const { employeeImage, handleInputEmployeeImage } = useSettings();
   const [loading, setLoading] = useState(false);
-
+  const [loadingProfile, setLoadingProfile] = useState(false);
   const form = useForm<z.infer<typeof employeeSchema>>({
     resolver: zodResolver(employeeSchema),
     defaultValues: {
@@ -65,6 +67,7 @@ export const EmployeeForm = ({
       endTime: employeeData.endTime,
       lunchTimeStart: employeeData.lunchTimeStart,
       lunchTimeEnd: employeeData.lunchTimeEnd,
+      availability: employeeData.availability,
     },
   });
 
@@ -74,20 +77,21 @@ export const EmployeeForm = ({
     setLoading(true);
     try {
       await api.post(`/${company?.companyName}/employee`, values);
-      toast.success("Ажилтан амжилттай нэмэгдлээ");
       console.log(values);
+
+      toast.success("Ажилтан амжилттай нэмэгдлээ");
     } catch (error) {
-      console.error("Ажилтан үүсгэхэд алдаа гарлаа", error);
       toast.error("Ажилтан үүсгэхэд алдаа гарлаа");
+      console.error("Ажилтан үүсгэхэд алдаа гарлаа", error);
     } finally {
       setLoading(false);
     }
   };
 
   const onSubmit = async (values: z.infer<typeof employeeSchema>) => {
-    setOpen(true);
     await handleCreateEmployee(values);
-    setOpen(false);
+    form.reset();
+    setIsOpen(false);
   };
 
   return (
@@ -116,7 +120,7 @@ export const EmployeeForm = ({
                       <div className="absolute -top-1 -right-1">
                         <Button
                           type="button"
-                          className="text-white rounded-full w-[5px]"
+                          className="text-white rounded-full w-[5px] cursor-pointer"
                           onClick={() =>
                             setEmployeeData((prev) => ({
                               ...prev,
@@ -143,6 +147,7 @@ export const EmployeeForm = ({
                         className="opacity-0 w-full h-full cursor-pointer"
                         onChange={async (e) => {
                           await handleInputEmployeeImage(e, form);
+                          setLoadingProfile(true);
                           if (employeeImage) {
                             setEmployeeData((prevData) => ({
                               ...prevData,
@@ -150,6 +155,7 @@ export const EmployeeForm = ({
                             }));
                             form.setValue("profileImage", employeeImage);
                           }
+                          setLoadingProfile(false);
                         }}
                       />
                     </FormControl>
@@ -269,7 +275,7 @@ export const EmployeeForm = ({
             name="duration"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormLabel>Нэг удаагийн үйчилгээни хугацаа сонгох</FormLabel>
+                <FormLabel>Нэг удаагийн үйлчилгээний хугацаа сонгох</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -293,9 +299,9 @@ export const EmployeeForm = ({
         <Button
           disabled={loading === true}
           type="submit"
-          className="w-full bg-[#007FFF] hover:bg-[#007FFF]/90"
+          className="w-full bg-[#007FFF] hover:bg-[#007FFF]/90 cursor-pointer"
         >
-          Нэмэх
+          {!loading ? " Нэмэх" : <LoadingSvg />}
         </Button>
       </form>
     </Form>
