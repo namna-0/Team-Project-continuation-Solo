@@ -86,7 +86,7 @@ export const CompanyNavBarTemplate3 = ({
                   </button>
                 </Link>
                 <button
-                  className="border-[2px] text-black cursor-pointer px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group"
+                  className="border-[2px]  text-black cursor-pointer px-6 py-2 rounded-full hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-pink-500/25 relative overflow-hidden group"
                   onClick={signOutCompany}
                 >
                   <span className="relative z-10">Гарах</span>

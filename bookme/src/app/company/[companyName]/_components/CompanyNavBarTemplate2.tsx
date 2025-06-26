@@ -104,7 +104,7 @@ export const CompanyNavBarTemplate2 = ({
                 transition={{ duration: 0.5 }}
               >
                 <Link href={`/company/${company?.companyName}/dashboard`}>
-                  <button className="relative group px-6 py-3 rounded-xl bg-gradient-to-r from-grey-500 to-blue-600 text-white font-medium transition-all duration-300 hover:shadow-lg hover:shadow-rose-500/25 hover:scale-105">
+                  <button className="relative group px-6 py-3 cursor-pointer rounded-xl bg-gradient-to-r from-grey-500 to-blue-600 text-white font-medium transition-all duration-300 hover:shadow-lg hover:shadow-rose-500/25 hover:scale-105">
                     <span className="relative z-10 flex items-center gap-2">
                       <Sparkles className="w-4 h-4" />
                       Хяналтын самбар
@@ -113,7 +113,7 @@ export const CompanyNavBarTemplate2 = ({
                   </button>
                 </Link>
                 <button
-                  className="relative group px-6 py-3 rounded-xl border border-white/20 text-white font-medium transition-all duration-300 hover:bg-white/5 hover:scale-105"
+                  className="relative group px-6 py-3 rounded-xl cursor-pointer border border-white/20 text-white font-medium transition-all duration-300 hover:bg-white/5 hover:scale-105"
                   onClick={signOutCompany}
                 >
                   <span className="relative z-10">Гарах</span>
@@ -129,12 +129,12 @@ export const CompanyNavBarTemplate2 = ({
                 transition={{ duration: 0.5 }}
               >
                 <Link href={`/company/${company?.companyName}/login`}>
-                  <button className="relative group px-6 py-3 rounded-xl border border-white/20 text-white font-medium transition-all duration-300 hover:bg-white/5 hover:scale-105">
+                  <button className="relative group px-6 py-3 cursor-pointer rounded-xl border border-white/20 text-white font-medium transition-all duration-300 hover:bg-white/5 hover:scale-105">
                     <span className="relative z-10">Нэвтрэх</span>
                   </button>
                 </Link>
                 <Link href={`/company/${company?.companyName}/signup`}>
-                  <button className="relative group px-6 py-3 rounded-xl bg-gradient-to-r from-grey-500 to-blue-600 text-white font-medium transition-all duration-300 hover:shadow-lg hover:shadow-rose-500/25 hover:scale-105">
+                  <button className="relative group px-6 py-3 cursor-pointer rounded-xl bg-gradient-to-r from-grey-500 to-blue-600 text-white font-medium transition-all duration-300 hover:shadow-lg hover:shadow-rose-500/25 hover:scale-105">
                     <span className="relative z-10 flex items-center gap-2">
                       <Sparkles className="w-4 h-4" />
                       Бүртгүүлэх
@@ -153,12 +153,12 @@ export const CompanyNavBarTemplate2 = ({
                 transition={{ duration: 0.5 }}
               >
                 <Link href={`/company/${company.companyName}/userprofile`}>
-                  <button className="relative group px-6 py-3 rounded-xl border border-white/20 text-white font-medium transition-all duration-300 hover:bg-white/5 hover:scale-105">
+                  <button className="relative group px-6 py-3 cursor-pointer rounded-xl border border-white/20 text-white font-medium transition-all duration-300 hover:bg-white/5 hover:scale-105">
                     <span className="relative z-10">Хэрэглэгчийн мэдээлэл</span>
                   </button>
                 </Link>
                 <button
-                  className="relative group px-6 py-3 rounded-xl bg-gradient-to-r from-grey-500 to-blue-600 text-white font-medium transition-all duration-300 hover:shadow-lg hover:shadow-rose-500/25 hover:scale-105"
+                  className="relative group px-6 py-3 cursor-pointer rounded-xl bg-gradient-to-r from-grey-500 to-blue-600 text-white font-medium transition-all duration-300 hover:shadow-lg hover:shadow-rose-500/25 hover:scale-105"
                   onClick={signOut}
                 >
                   <span className="relative z-10">Гарах</span>
@@ -171,7 +171,7 @@ export const CompanyNavBarTemplate2 = ({
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="relative z-50 p-2 text-gray-300 hover:text-white transition-all duration-300 rounded-lg hover:bg-white/5"
+              className="relative z-50 p-2 cursor-pointer text-gray-300 hover:text-white transition-all duration-300 rounded-lg hover:bg-white/5"
             >
               <div className="w-6 h-6 flex flex-col justify-center items-center">
                 <span
@@ -214,7 +214,7 @@ export const CompanyNavBarTemplate2 = ({
         >
           <button
             onClick={toggleMenu}
-            className="absolute top-6 right-6 text-gray-700 hover:text-pink-500 transition-colors duration-300 p-2"
+            className="absolute top-6 cursor-pointer right-6 text-gray-700 hover:text-pink-500 transition-colors duration-300 p-2"
             aria-label="Close menu"
           >
             <svg
@@ -271,7 +271,7 @@ export const CompanyNavBarTemplate2 = ({
                       signOutCompany();
                       toggleMenu();
                     }}
-                    className={`block w-full text-center px-6 py-4 border border-white/20 text-white font-medium rounded-xl transition-all duration-300 ${
+                    className={`block w-full cursor-pointer text-center px-6 py-4 border border-white/20 text-white font-medium rounded-xl transition-all duration-300 ${
                       isMenuOpen ? "animate-slideInRight" : ""
                     }`}
                     style={{ animationDelay: "500ms" }}
@@ -319,7 +319,7 @@ export const CompanyNavBarTemplate2 = ({
                       signOut();
                       toggleMenu();
                     }}
-                    className={`block w-full text-center px-6 py-4 bg-gradient-to-r from-grey-500 to-blue-600 text-white font-medium rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-rose-500/25 ${
+                    className={`block w-full cursor-pointer text-center px-6 py-4 bg-gradient-to-r from-grey-500 to-blue-600 text-white font-medium rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-rose-500/25 ${
                       isMenuOpen ? "animate-slideInRight" : ""
                     }`}
                     style={{ animationDelay: "500ms" }}

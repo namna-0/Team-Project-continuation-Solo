@@ -25,7 +25,7 @@ export const Navbar = () => {
     if (!companyName) return;
     const fetchCompany = async () => {
       try {
-        const res = await api.get(`/company/${companyName}`);
+        const res = await api.get(`/company/name/${companyName}`);
         const logo = res.data.company?.companyLogo;
         if (logo) setCompanyLogo(logo);
       } catch (err) {
