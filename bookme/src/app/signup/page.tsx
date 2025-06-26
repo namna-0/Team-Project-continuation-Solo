@@ -197,7 +197,7 @@ export default function CompanySetupPage() {
                 formData={{
                   ...methods.getValues(),
                   description: methods.getValues().description ?? "",
-                  backgroundImage: methods.getValues().backgroundImage ?? "",
+                  backGroundImage: methods.getValues().backGroundImage ?? "",
                   aboutUsImage: methods.getValues().aboutUsImage ?? "",
                 }}
                 setFormData={() => {}}
