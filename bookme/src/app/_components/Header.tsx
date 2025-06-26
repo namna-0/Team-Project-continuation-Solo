@@ -193,7 +193,7 @@ const Header = () => {
       >
         <Link href={"/signin"}>
           <button
-            className="group px-3 py-2 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 whitespace-nowrap text-xs"
+            className="group px-3 py-2 cursor-pointer rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 whitespace-nowrap text-xs"
             style={{
               background:
                 "linear-gradient(to right, #FFFFFF 0%, #E6F3FF 52%, #B3D9FF 100%)",
