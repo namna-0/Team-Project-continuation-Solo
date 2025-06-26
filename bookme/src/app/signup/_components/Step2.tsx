@@ -6,6 +6,7 @@ import { Label } from "@radix-ui/react-label";
 import React from "react";
 import { useFormContext } from "react-hook-form";
 import { FullSchemaType } from "./Schemas";
+import TextareaAutosize from "react-textarea-autosize";
 
 export const Step2 = () => {
   const {
@@ -14,19 +15,19 @@ export const Step2 = () => {
   } = useFormContext<FullSchemaType>();
 
   return (
-    <div className="space-y-6 text-white p-6 rounded-lg max-w-2xl mx-auto">
+    <div className="space-y-6 text-white p-6 rounded-lg max-w-2xl mx-auto max-h-[500px] overflow-auto">
       <h2 className="text-xl font-bold mb-2">Компаний мэдээлэл</h2>
 
       <div>
         <Label htmlFor="description" className="block mb-2 text-white">
           Тайлбар
         </Label>
-        <Textarea
+
+        <TextareaAutosize
           {...register("description")}
           id="description"
-          className="bg-white/10 text-white border-white placeholder-white/70 focus:border-white/50 focus:ring-white/20 placeholder-text-white"
-          placeholder="Компанийхаа талаар бичнэ үү..."
-          rows={3}
+          minRows={3}
+          className="w-full bg-white/10 text-white border-white placeholder-white/70 focus:border-white/50 focus:ring-white/20 placeholder-text-white rounded-md p-2"
         />
         {errors.description && (
           <p className="text-red-400 text-sm mt-1">

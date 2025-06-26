@@ -192,21 +192,23 @@ export default function CompanySetupPage() {
             <Step3 dayLabels={dayLabels} />
           </Step>
           <Step>
-            <Step4
-              formData={{
-                ...methods.getValues(),
-                description: methods.getValues().description ?? "",
-                backgroundImage: methods.getValues().backgroundImage ?? "",
-                aboutUsImage: methods.getValues().aboutUsImage ?? "",
-              }}
-              setFormData={() => {}}
-              handleImageChange={handleImageChange}
-              companyImagePreview={companyImagePreview}
-              removeCompanyImage={removeCompanyImage}
-              handleLogoChange={handleLogoChange}
-              logoPreview={logoPreview}
-              removeLogo={removeLogo}
-            />
+            <div className="max-h-[80vh] overflow-auto px-2">
+              <Step4
+                formData={{
+                  ...methods.getValues(),
+                  description: methods.getValues().description ?? "",
+                  backgroundImage: methods.getValues().backgroundImage ?? "",
+                  aboutUsImage: methods.getValues().aboutUsImage ?? "",
+                }}
+                setFormData={() => {}}
+                handleImageChange={handleImageChange}
+                companyImagePreview={companyImagePreview}
+                removeCompanyImage={removeCompanyImage}
+                handleLogoChange={handleLogoChange}
+                logoPreview={logoPreview}
+                removeLogo={removeLogo}
+              />
+            </div>
           </Step>
           <Step>
             <Step5 formData={methods.getValues()} setFormData={() => {}} />
