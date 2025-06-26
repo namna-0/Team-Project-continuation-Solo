@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Stepper, { Step } from "@/blocks/Components/Stepper/Stepper";
 import { Step6 } from "./_components/Step6";
 import { Step3 } from "./_components/Step3";
@@ -53,7 +53,7 @@ export default function CompanySetupPage() {
       end: "13:00",
     },
     aboutUsImage: "",
-    backgroundImage: "",
+    backGroundImage: "",
     experience: "",
     clientNumber: "",
   };
@@ -124,7 +124,7 @@ export default function CompanySetupPage() {
         workingHours: values.openingHours,
         lunchBreak: values.lunchBreak,
         aboutUsImage: values.aboutUsImage,
-        backgroundImage: values.backgroundImage,
+        backGroundImage: values.backGroundImage,
         clientNumber: values.clientNumber,
         experience: values.experience,
       };
@@ -192,6 +192,7 @@ export default function CompanySetupPage() {
             <Step3 dayLabels={dayLabels} />
           </Step>
           <Step>
+
             <div className="max-h-[80vh] overflow-auto px-2">
               <Step4
                 formData={{
@@ -209,6 +210,7 @@ export default function CompanySetupPage() {
                 removeLogo={removeLogo}
               />
             </div>
+
           </Step>
           <Step>
             <Step5 formData={methods.getValues()} setFormData={() => {}} />

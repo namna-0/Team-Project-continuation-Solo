@@ -53,7 +53,7 @@ export const step4Schema = z.object({
   logo: z.string().optional(),
   website: z.string().optional(),
   aboutUsImage: z.string().optional(),
-  backgroundImage: z.string().optional(),
+  backGroundImage: z.string().optional(),
 });
 
 export const step5Schema = z.object({

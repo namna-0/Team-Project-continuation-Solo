@@ -37,7 +37,7 @@ export const Step4 = ({
     formState: { errors },
   } = useFormContext<FullSchemaType>();
 
-  const [bgPreview, setBgPreview] = useState(formData.backgroundImage || "");
+  const [bgPreview, setBgPreview] = useState(formData.backGroundImage || "");
   const [aboutPreview, setAboutPreview] = useState(formData.aboutUsImage || "");
   const [isUploading, setIsUploading] = useState(false);
 
@@ -54,6 +54,8 @@ export const Step4 = ({
       );
 
       return res.data.secure_url;
+    } catch (error) {
+      throw error;
     } finally {
       setIsUploading(false);
     }
@@ -61,7 +63,7 @@ export const Step4 = ({
 
   const handleSingleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    key: "backgroundImage" | "aboutUsImage",
+    key: "backGroundImage" | "aboutUsImage",
     setPreview: React.Dispatch<React.SetStateAction<string>>
   ) => {
     if (isUploading) {
@@ -143,8 +145,8 @@ export const Step4 = ({
                 type="button"
                 onClick={() => {
                   setBgPreview("");
-                  setFormData((prev) => ({ ...prev, backgroundImage: "" }));
-                  setValue("backgroundImage", "");
+                  setFormData((prev) => ({ ...prev, backGroundImage: "" }));
+                  setValue("backGroundImage", "");
                 }}
                 className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5"
               >
@@ -159,7 +161,7 @@ export const Step4 = ({
                 type="file"
                 accept="image/*"
                 onChange={(e) =>
-                  handleSingleImageUpload(e, "backgroundImage", setBgPreview)
+                  handleSingleImageUpload(e, "backGroundImage", setBgPreview)
                 }
                 className="absolute inset-0 opacity-0 cursor-pointer"
               />
