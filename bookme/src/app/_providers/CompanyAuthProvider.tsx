@@ -55,15 +55,14 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
       return undefined;
     }
   };
-  const signOutCompany = async () => {
-    setIsLoggingOut(true);
-    try {
-      localStorage.removeItem("company_token");
-      setCompany(undefined);
-      await router.push("/");
-      toast.success("Системээс гарлаа");
-    } finally {
-      setIsLoggingOut(false);
+  const signOutCompany = () => {
+    localStorage.removeItem("company_token");
+    setCompany(undefined);
+    toast("Системээс гарлаа");
+    if (company?.companyName) {
+      router.push(`/company/${company?.companyName}`);
+    } else {
+      router.push("/");
     }
   };
 

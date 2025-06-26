@@ -272,14 +272,25 @@ export const BookingCalendar = ({
       return;
     }
 
-    const formattedSelectedTime = formatSelectedTime(selectedSlot);
+    const formattedSelectedTime =
+      selectedSlot.toLocaleDateString("mn-MN", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        weekday: "short",
+      }) +
+      ", " +
+      selectedSlot.toLocaleTimeString("mn-MN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
 
     try {
       const response = await api.post("/order", {
         company: loggedInCompany._id,
         employee: selectedEmployee._id,
-        selectedTime: selectedSlot.toString(),
-        user: loggedInCompany._id,
+        selectedTime: formattedSelectedTime,
         status: "confirmed",
         duration: selectedDuration,
       });

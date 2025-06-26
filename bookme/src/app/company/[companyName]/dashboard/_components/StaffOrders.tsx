@@ -156,20 +156,6 @@ export function StaffOrdersPage({ company }: { company: Company }) {
         </Card>
       </div>
 
-      <StaffOrdersList
-        company={company}
-        selectedEmployee={selectedEmployee}
-        displayBookings={displayBookings}
-        getEmployeeBookings={getEmployeeBookings}
-        handleEmployeeSelect={handleEmployeeSelect}
-        showAllBookings={showAllBookings}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        getStatusColor={getStatusColor}
-        itemsPerPage={itemsPerPage}
-        onCancel={handleCancel}
-      />
-
       <BookingCalendar
         company={company}
         selectedEmployee={selectedEmployee}
