@@ -287,7 +287,7 @@ export const BookingCalendar = ({
       });
 
     try {
-      const response = await api.post("/order", {
+      const response = await api.post("/order/company", {
         company: loggedInCompany._id,
         employee: selectedEmployee._id,
         selectedTime: formattedSelectedTime,
