@@ -35,7 +35,7 @@ function SelectDayOnCalendar({ open, setOpen, setDate, date }: CalendarProps) {
             },
           }}
           mode="single"
-          selected={date ?? null}
+          selected={date ?? undefined}
           buttonVariant="ghost"
           captionLayout="dropdown"
           fromYear={new Date().getFullYear()} // өнөөдрийн оноос эхэлнэ
