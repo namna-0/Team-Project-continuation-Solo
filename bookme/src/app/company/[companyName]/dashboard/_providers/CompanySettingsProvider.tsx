@@ -28,7 +28,6 @@ type CompanyInformationAuth = {
   handleInputBackgroundImage: (
     e: React.ChangeEvent<HTMLInputElement>
   ) => Promise<void>;
-
   employeeImage: string | null;
   companyData: Company[];
   companyAddedImage: string | null;
@@ -222,6 +221,7 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
         setLogoLoading,
         setBgLoading,
         setOtherImgLoading,
+
         otherImgLoading,
         bgLoading,
         logoLoading,
