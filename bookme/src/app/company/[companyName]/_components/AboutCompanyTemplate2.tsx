@@ -26,7 +26,6 @@ export const AboutCompanyTemplate2 = ({ company }: { company: Company }) => {
             </div>
           </div>
 
-          {/* Content Section */}
           <div className="space-y-8">
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-rose-500/10 to-purple-500/10 rounded-full border border-rose-200/30">

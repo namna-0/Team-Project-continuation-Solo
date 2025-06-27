@@ -24,6 +24,9 @@ export const CompanyBackgroundImageText = ({
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
   };
+  function splitCamelCase(str: string): string {
+    return str.replace(/([a-z])([A-Z])/g, "$1 $2");
+  }
 
   return (
     <section className="relative h-[800px] flex flex-col items-center justify-center overflow-hidden">
@@ -65,7 +68,9 @@ export const CompanyBackgroundImageText = ({
                 className="space-y-4"
               >
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-                  <span className="block text-white ">{companyName}</span>
+                  <span className="block text-white ">
+                    {splitCamelCase(companyName)}
+                  </span>
                   <span className="block text-2xl md:text-3xl lg:text-4xl bg-gradient-to-r from-rose-400 via-pink-500 to-purple-500 bg-clip-text text-transparent mt-2">
                     компанийн хуудас
                   </span>
