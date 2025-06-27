@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { EmployeeAddSection } from "./EmployeeAddSection";
 import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
 import { EmployeeCard } from "./EmployeeCard";
+import { useSettings } from "../_providers/CompanySettingsProvider";
 
 export function EmployeesPage() {
   const { company, getCompany } = useCompanyAuth();
@@ -26,11 +27,14 @@ export function EmployeesPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {company?.employees.slice().reverse().map((employee) => (
-          <div key={employee._id}>
-            <EmployeeCard employee={employee} getCompanyAction={getCompany} />
-          </div>
-        ))}
+        {company?.employees
+          .slice()
+          .reverse()
+          .map((employee) => (
+            <div key={employee._id}>
+              <EmployeeCard employee={employee} getCompanyAction={getCompany} />
+            </div>
+          ))}
       </div>
     </div>
   );
