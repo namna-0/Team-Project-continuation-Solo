@@ -29,7 +29,7 @@ export interface Employee {
   _id: string;
   employeeName: string;
   description: string;
-  profileImage: string;
+  profileImage?: string;
   availability?: boolean;
   duration?: string;
   startTime?: string;

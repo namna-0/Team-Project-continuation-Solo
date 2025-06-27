@@ -1,7 +1,6 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users } from "lucide-react";
-import { Employee } from "@/app/signup/_components/Types";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,11 +12,12 @@ import { EmployeeDeleteButton } from "./EmployeeDeleteButton";
 import { EmployeeEditButton } from "./EmployeeEditButton";
 import axios from "axios";
 import { LoadingSvg } from "@/app/_components/assets/LoadingSvg";
+import { Employee } from "../../_components/CompanyTypes";
 
-type PropsType = {
+interface PropsType {
   employee: Employee;
   getCompanyAction: () => Promise<void>;
-};
+}
 
 export type UpdatedData = {
   profileImage: string;
