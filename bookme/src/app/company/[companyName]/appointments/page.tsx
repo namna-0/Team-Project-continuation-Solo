@@ -24,143 +24,144 @@ type OrderType = {
 
 export default function Home() {
   const [orders, setOrders] = useState<OrderType[]>([]);
-  const [isClicked, setisClicked] = useState<OrderType | null>(null);
+  const [isClicked, setIsClicked] = useState<OrderType | null>(null);
   const { user } = useAuth();
 
-  const cancelledOrders = orders.filter(
-    (order) => order.status === "cancelled"
-  );
-  const confirmedOrders = orders.filter(
-    (order) => order.status === "confirmed"
-  );
+  const cancelledOrders = orders.filter((o) => o.status === "cancelled");
+  const confirmedOrders = orders.filter((o) => o.status === "confirmed");
 
   useEffect(() => {
     if (!user) return;
     const fetchOrders = async () => {
       try {
-        const response = await api.get(`/order/user/${user._id}`);
-        setOrders(response.data.bookings);
-      } catch (error) {
-        console.error(error);
+        const res = await api.get(`/order/user/${user._id}`);
+        setOrders(res.data.bookings);
+      } catch (err) {
+        console.error(err);
       }
     };
     fetchOrders();
   }, [user]);
 
   return (
-    <div className="w-screen h-screen bg-[#f9f9f9] flex  items-center flex-col gap-[60px] ">
+    <div className="min-h-screen bg-[#f9f9f9] flex flex-col items-center pb-10">
       <Navbar />
-      <div className="w-[1440px] h-fit flex flex-col items-center justify-center gap-[60px] p-5">
-        <div className="w-full h-[36px]">
-          <p className="font-bold text-[36px]">Захиалгын түүх</p>
-        </div>
-        <div className="flex w-full h-fit gap-10 justify-between ">
-          <div className="w-fit h-fit flex flex-col gap-5">
-            <div className="w-fit ">
-              <p className="text-[24px] font-semibold flex items-center gap-2">
-                Батлгаажсан цагууд{" "}
-                <span className="w-6 h-6 flex items-center justify-center text-[14px] text-white bg-blue-600 rounded-full">
-                  {confirmedOrders.length}
-                </span>
-              </p>
-              <div className="flex flex-col gap-4 mt-[10px] h-[400px] overflow-scroll">
-                {confirmedOrders.map((order, index) => (
-                  <div
-                    onClick={() => setisClicked(order)}
-                    key={index}
-                    className="w-[400px] h-[120px] bg-white border border-gray-400 rounded-[12px] flex cursor-pointer gap-4"
-                  >
-                    <img
-                      src={order.company.companyImages?.[0]}
-                      className="w-[130px] h-full rounded-l-[12px] "
-                    />
-                    <div className="w-[250px] h-full flex flex-col justify-center">
-                      <p className="font-semibold">
-                        {order.company.companyName}
-                      </p>
-                      <p className="text-[12px]">{order.selectedTime}</p>
-                      <p className="text-[12px]">
-                        {order.employee.employeeName}
-                      </p>
-                    </div>
+      <div className="w-full max-w-[1440px] px-6 mt-20 flex flex-col gap-10">
+        <h1 className="text-[32px] font-bold text-gray-800">Захиалгын түүх</h1>
+        <div className="flex flex-wrap gap-8">
+          <div className="flex flex-col gap-4 w-[420px] max-h-[450px] overflow-y-auto scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-transparent pr-2">
+            <p className="text-[20px] font-semibold flex items-center gap-2">
+              ✅ Баталгаажсан захиалгууд
+              <span className="bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-[14px]">
+                {confirmedOrders.length}
+              </span>
+            </p>
+            {confirmedOrders.length > 0 ? (
+              confirmedOrders.map((order) => (
+                <div
+                  key={order._id}
+                  onClick={() => setIsClicked(order)}
+                  className="flex gap-4 p-3 bg-white rounded-xl border border-gray-300 shadow hover:shadow-md cursor-pointer transition"
+                >
+                  <img
+                    src={order.company.companyImages?.[0]}
+                    className="w-[110px] h-[110px] object-cover rounded-lg"
+                    alt="company"
+                  />
+                  <div className="flex flex-col justify-between py-1">
+                    <p className="font-bold text-[16px] text-gray-800">
+                      {order.company.companyName}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      🕒 {order.selectedTime}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      👤 {order.employee.employeeName}
+                    </p>
                   </div>
-                ))}
-              </div>
-            </div>
-            <div className="w-fit ">
-              <p className="text-[24px] font-semibold flex items-center gap-2">
-                Цуцлагдсан цагууд{" "}
-                <span className="w-6 h-6 flex items-center justify-center text-[14px] text-white bg-red-600 rounded-full">
-                  {cancelledOrders.length}
-                </span>
-              </p>
-              <div className="flex flex-col gap-4 mt-[10px] h-[400px] overflow-scroll">
-                {cancelledOrders.map((mock, index) => (
-                  <div
-                    onClick={() => setisClicked(mock)}
-                    key={index}
-                    className="w-[400px] h-[120px] bg-white border border-gray-400 rounded-[12px] flex cursor-pointer gap-4"
-                  >
-                    <img
-                      src={mock.company.companyImages?.[0]}
-                      className="w-[130px] h-full rounded-l-[12px] "
-                    />
-                    <div className="w-[250px] h-full flex flex-col justify-center">
-                      <p className="font-semibold">
-                        {mock.company.companyName}
-                      </p>
-                      <p className="text-[14px]">{mock.selectedTime}</p>
-                      <p className="text-[12px]">
-                        {mock.employee.employeeName}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-400 text-sm">Идэвхтэй захиалга алга.</p>
+            )}
           </div>
-          <div className="w-[900px] h-fit bg-white border border-gray-300 rounded-[12px] p-6 mt-12">
+          <div className="flex flex-col gap-4 w-[420px] max-h-[450px] overflow-y-auto scrollbar-thin scrollbar-thumb-red-400 scrollbar-track-transparent pr-2">
+            <p className="text-[20px] font-semibold flex items-center gap-2">
+              ❌ Цуцлагдсан захиалгууд
+              <span className="bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-[14px]">
+                {cancelledOrders.length}
+              </span>
+            </p>
+            {cancelledOrders.length > 0 ? (
+              cancelledOrders.map((order) => (
+                <div
+                  key={order._id}
+                  onClick={() => setIsClicked(order)}
+                  className="flex gap-4 p-3 bg-white rounded-xl border border-gray-300 shadow hover:shadow-md cursor-pointer transition"
+                >
+                  <img
+                    src={order.company.companyImages?.[0]}
+                    className="w-[110px] h-[110px] object-cover rounded-lg"
+                    alt="company"
+                  />
+                  <div className="flex flex-col justify-between py-1">
+                    <p className="font-bold text-[16px] text-gray-800">
+                      {order.company.companyName}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      🕒 {order.selectedTime}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      👤 {order.employee.employeeName}
+                    </p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-400 text-sm">
+                Цуцлагдсан захиалга байхгүй.
+              </p>
+            )}
+          </div>
+          <div className="flex-1 bg-white p-6 rounded-xl border border-gray-300 shadow-sm h-fit mt-6">
             {isClicked ? (
-              <div className="flex flex-col gap-4">
+              <>
                 <img
-                  src={isClicked?.company.companyImages?.[0]}
-                  className="w-full h-[400px] object-cover rounded-[8px]"
+                  src={isClicked.company.companyImages?.[0]}
+                  className="w-full h-[280px] object-cover rounded-lg mb-4"
+                  alt="booking"
                 />
-                <h2 className="text-2xl font-bold">
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">
                   {isClicked.company.companyName}
                 </h2>
-                {(() => {
-                  const [day, date, time] = isClicked.selectedTime
-                    .split(",")
-                    .map((s) => s.trim());
-                  return (
-                    <>
-                      <p className="text-lg text-gray-700">
-                        📅 {`${day}, ${date}`}
-                      </p>
-                      <p className="text-lg text-gray-700">⏰ {time}</p>
-                    </>
-                  );
-                })()}
-
-                <div className="flex items-center gap-[12px]">
-                  <p className="text-ls text-gray-700">
-                    🧑‍💼{isClicked?.employee.employeeName}
-                  </p>
+                <p className="text-md text-gray-600 mb-1">
+                  📅 {isClicked.selectedTime.split(",")[0]} –{" "}
+                  {isClicked.selectedTime.split(",")[1]}
+                </p>
+                <p className="text-md text-gray-600 mb-2">
+                  🕒 {isClicked.selectedTime.split(",")[2]}
+                </p>
+                <div className="flex items-center gap-3 mt-4">
                   <img
-                    className="w-10 h-10 rounded-full"
                     src={isClicked.employee.profileImage}
+                    className="w-10 h-10 rounded-full"
+                    alt="employee"
                   />
+                  <p className="text-md text-gray-700">
+                    👤 {isClicked.employee.employeeName}
+                  </p>
                 </div>
                 <button
-                  className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 w-fit"
-                  onClick={() => setisClicked(null)}
+                  onClick={() => setIsClicked(null)}
+                  className="mt-6 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition cursor-pointer"
                 >
                   Хаах
                 </button>
-              </div>
+              </>
             ) : (
-              <p className="text-gray-500 ">Захиалгын дэлгэрэнгүй...</p>
+              <p className="text-gray-400">
+                Захиалгын дэлгэрэнгүйг сонгоно уу.
+              </p>
             )}
           </div>
         </div>
