@@ -5,17 +5,13 @@ import { useEffect, useState } from "react";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import LeaveOrder from "./leaveOrderDialog";
 import { motion, useScroll, useTransform } from "framer-motion";
-type OrderNavpropsType = {
-  isStage: string;
-  setIsStage: (stage: string) => void;
-  title: string;
-  Stages: string[];
-};
+import { OrderNavpropsType } from "./_OrderPageTypes/types";
 const OrderNavBar = ({
   isStage,
   setIsStage,
   Stages,
   title,
+  setSelectedTime
 }: OrderNavpropsType) => {
   const initialValue = 70;
   const finalValue = 80;
@@ -40,6 +36,7 @@ const OrderNavBar = ({
   );
   const HandlePrevStage = () => {
     if (isStage == Stages[1]) {
+      setSelectedTime(null)
       setIsStage(Stages[0]);
     }
     if (isStage == Stages[2]) {
@@ -52,7 +49,7 @@ const OrderNavBar = ({
       <div className="flex w-[1440px]  justify-between h-fit  p-2 bg-white z-10 fixed top-0 shadow ">
         <motion.div
           className="font-bold text-xl normal-case "
-          initial={{ opacity: 0, scale: 0.5}}
+          initial={{ opacity: 0, scale: 0.5 }}
           animate={{
             opacity: isPastThreshold ? 1 : 0,
             scale: isPastThreshold ? 1 : 0.5,

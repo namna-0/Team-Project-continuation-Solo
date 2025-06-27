@@ -2,43 +2,13 @@
 
 import { api } from "@/axios";
 import { Button } from "@/components/ui/button";
-import { CompanyType, employeeType } from "../../page";
 import { Dialog } from "@radix-ui/react-dialog";
 import { DialogTrigger } from "@/components/ui/dialog";
 import { useAuth } from "@/app/_providers/UserAuthProvider";
-import UpdateEmployee from "../(Stage1EmployeeSelect)/updateEmployeeDialog";
 import { Calendar, Clock } from "lucide-react";
-type OrderImformationType = {
-    HandleNextStage: () => void, isSelectEmployee: string | string[]
-    company?: CompanyType
-    isStage: string
-    Stages: string[]
-    setIsSelectEmployee: (employee: string) => void
-    date: Date | null
-    selectedTime: Date | null
-    setSelectedTime: (time: Date | null) => void
-    setSelectEmployee: (employee: string) => void
-    selectedEmployeeImf: string | undefined
-    setIsStage: (stage: string) => void
-    setDate: (date: Date | null) => void
-}
-export type OrderType = {
-    _id?: string;
-    company: string,
-    user: string;
-    employee: string;
-    selectedTime: string
-};
-type user = {
-    _id?: string,
-    username: string,
-    phoneNumber: number,
-    booking: string[],
-    email: string,
-    address: string,
-    role: string,
-    companyId: string[],
-}
+import { OrderImformationType } from "./_OrderPageTypes/types";
+import UpdateEmployee from "../(BookingProcess)/_comp/(StageOneEmployeeSelect)/updateEmployeeDialog";
+
 function OrderImformation({
     HandleNextStage,
     setIsSelectEmployee,
@@ -97,7 +67,11 @@ function OrderImformation({
                                 <DialogTrigger className="w-fit flex gap-3  rounded-full items-centerp-1">
                                     <div className="text-sky-600">{isSelectEmployee}</div>
                                 </DialogTrigger>
-                                <UpdateEmployee selectedEmployeeImf={selectedEmployeeImf} setSelectedTime={setSelectedTime} setSelectedEmployee={setSelectEmployee} setIsSelectEmployee={setIsSelectEmployee} zurag={i?.profileImage || ""} company={company as CompanyType} isSelectEmployee={isSelectEmployee} />
+                                <UpdateEmployee
+                                    selectedEmployeeImf={selectedEmployeeImf} setSelectedTime={setSelectedTime}
+                                    setSelectedEmployee={setSelectEmployee} setIsSelectEmployee={setIsSelectEmployee}
+                                    zurag={i?.profileImage || ""} company={company}
+                                    isSelectEmployee={isSelectEmployee} />
                             </Dialog>
                             : <div className=" flex flex-col ">{isSelectEmployee}</div>}
                     </div>
