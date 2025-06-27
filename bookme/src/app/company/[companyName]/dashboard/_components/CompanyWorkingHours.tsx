@@ -1,5 +1,4 @@
 "use client";
-import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
 import { api } from "@/axios";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";

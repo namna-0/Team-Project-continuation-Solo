@@ -27,38 +27,50 @@ export const CompanyLocationEdit = ({
 
   useEffect(() => {
     if (typeof window !== "undefined" && mapRef.current) {
+      const existingScript = document.querySelector(
+        'script[src^="https://maps.googleapis.com/maps/api/js"]'
+      );
+
+      if (existingScript) {
+        if (window.google && window.google.maps) {
+          initMap();
+        } else {
+          (window as any).initMap = initMap;
+        }
+        return;
+      }
+
       const script = document.createElement("script");
       script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyDlBLYHFfHDRdJ9b7B02Kg-x5VXSV6iIVA&callback=initMap`;
       script.async = true;
-
-      script.onload = () => {
-        const map = new google.maps.Map(mapRef.current!, {
-          center: selectedPosition,
-          zoom: 14,
-        });
-
-        const marker = new google.maps.Marker({
-          position: selectedPosition,
-          map,
-          draggable: false,
-          title: "Сонгосон байршил",
-        });
-
-        map.addListener("click", (event: google.maps.MapMouseEvent) => {
-          if (event.latLng) {
-            const newPos = {
-              lat: event.latLng.lat(),
-              lng: event.latLng.lng(),
-            };
-
-            setSelectedPosition(newPos);
-            marker.setPosition(newPos);
-            map.panTo(newPos);
-          }
-        });
-      };
-
       document.head.appendChild(script);
+      (window as any).initMap = initMap;
+    }
+
+    function initMap() {
+      const map = new google.maps.Map(mapRef.current!, {
+        center: selectedPosition,
+        zoom: 14,
+      });
+
+      const marker = new google.maps.Marker({
+        position: selectedPosition,
+        map,
+        draggable: false,
+        title: "Сонгосон байршил",
+      });
+
+      map.addListener("click", (event: google.maps.MapMouseEvent) => {
+        if (event.latLng) {
+          const newPos = {
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng(),
+          };
+          setSelectedPosition(newPos);
+          marker.setPosition(newPos);
+          map.panTo(newPos);
+        }
+      });
     }
   }, []);
 

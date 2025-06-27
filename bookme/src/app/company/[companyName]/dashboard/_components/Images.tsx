@@ -1,15 +1,6 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
 import { CompanyBackgroundImageEdit } from "./CompanyBackgroundImageEdit";
 import { CompanyLogoEdit } from "./CompanyLogoEdit";
-import { Button } from "@/components/ui/button";
-import { Upload } from "lucide-react";
+
 import { CompanyOtherPictures } from "./CompanyOtherPictures";
 
 export function ImagesSettingsPage() {

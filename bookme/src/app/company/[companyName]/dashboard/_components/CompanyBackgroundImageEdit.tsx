@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ImageIcon, Upload } from "lucide-react";
+import { Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSettings } from "../_providers/CompanySettingsProvider";
 import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";

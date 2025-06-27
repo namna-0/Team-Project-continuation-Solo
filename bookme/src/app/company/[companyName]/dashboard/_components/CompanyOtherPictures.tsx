@@ -32,7 +32,7 @@ export const CompanyOtherPictures = () => {
       await api.put(`/company/${company?._id}`, {
         companyImages: updatedImages,
       });
-
+      await getCompany();
       toast.success("Зураг амжилттай устгалаа.");
     } catch (error) {
       console.error("Зураг устгахад алдаа гарлаа.", error);
@@ -46,7 +46,6 @@ export const CompanyOtherPictures = () => {
     if (company?.companyImages) {
       setImages(company.companyImages);
     }
-    getCompany();
   }, [company?.companyImages]);
 
   return (
