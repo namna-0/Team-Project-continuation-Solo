@@ -30,7 +30,6 @@ export type UpdatedData = {
 
 export const EmployeeCard = ({ employee, getCompanyAction }: PropsType) => {
   const [profileLoading, setProfileLoading] = useState(false);
-  const [isAvailable, setIsAvailable] = useState(true);
   const [updatedEmployee, setUpdatedEmployee] = useState<UpdatedData>({
     profileImage: employee.profileImage,
     startTime: employee.startTime,
@@ -60,10 +59,10 @@ export const EmployeeCard = ({ employee, getCompanyAction }: PropsType) => {
     if (!employee) return;
     try {
       const req = await api.put(`/employee/${employee._id}`, {
-        availability: isAvailable,
+        availability: !employee.availability,
       });
+
       await getCompanyAction();
-      setIsAvailable(!isAvailable);
 
       toast.success(
         `${employee.employeeName} ажилтны төлөв амжилттай өөрчлөгдлөө.`
@@ -118,10 +117,6 @@ export const EmployeeCard = ({ employee, getCompanyAction }: PropsType) => {
     }
     setProfileLoading(false);
   };
-  // useEffect(() => {
-  //   if (employee) {
-  //   }
-  // }, [updatedEmployee]);
 
   return (
     <Card>
@@ -145,6 +140,7 @@ export const EmployeeCard = ({ employee, getCompanyAction }: PropsType) => {
         <Switch
           checked={employee.availability}
           onCheckedChange={handleEmployeAvailable}
+          className="cursor-pointer"
         />
       </CardHeader>
       <CardContent>
