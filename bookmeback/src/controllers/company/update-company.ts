@@ -33,6 +33,7 @@ export const updateCompanyController: RequestHandler = async (req, res) => {
       users,
       password,
       templateNumber,
+      addressDetailed,
     } = req.body;
 
     const updatedData: any = {
@@ -57,30 +58,9 @@ export const updateCompanyController: RequestHandler = async (req, res) => {
       users,
       password,
       templateNumber,
+      addressDetailed,
       updatedAt: new Date(),
     };
-
-    //   email,
-    //   password: hashedPassword,
-    //   companyName,
-    //   address,
-    //   city,
-    //   lat,
-    //   lng,
-    //   companyLogo: companyLogo || "",
-    //   phoneNumber,
-    //   description: description || "",
-    //   companyImages: companyImages || [],
-    //   workingHours: workingHours || {},
-    //   lunchBreak: lunchBreak || {},
-    //   website: website || "",
-    //   createdAt: new Date(),
-    //   updatedAt: new Date(),
-
-    // if (password) {
-    //   const hashedPassword = await bcrypt.hash(password, 10);
-    //   updatedData.password = hashedPassword;
-    // }
 
     const updatedCompany = await Company.findByIdAndUpdate(
       companyId,

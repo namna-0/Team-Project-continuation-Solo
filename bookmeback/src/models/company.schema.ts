@@ -48,6 +48,7 @@ const companySchema = new Schema({
   },
 
   address: { type: String, required: true },
+  addressDetailed: { type: String, required: false },
   city: { type: String, required: false },
   lat: { type: Number },
   lng: { type: Number },
