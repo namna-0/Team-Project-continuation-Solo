@@ -14,7 +14,6 @@ import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
 import { useSettings } from "../_providers/CompanySettingsProvider";
 import { api } from "@/axios";
 import { toast } from "sonner";
-import { useEffect } from "react";
 export const CompanyLogoEdit = () => {
   const { company, getCompany } = useCompanyAuth();
   const { logoLoading, setLogoLoading, handleInputCompanyLogo } = useSettings();

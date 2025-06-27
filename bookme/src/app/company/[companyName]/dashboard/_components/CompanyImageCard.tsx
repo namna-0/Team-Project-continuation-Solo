@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { LoadingSvg } from "@/app/_components/assets/LoadingSvg";
 
 type Props = {
@@ -26,8 +26,6 @@ export const CompanyImageCard = ({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {}, [image]);
-
   return (
     <div className="w-full h-full relative ">
       {newImage ? (
@@ -41,9 +39,9 @@ export const CompanyImageCard = ({
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger>
-          <Button className="rounded-full absolute right-2 top-2 opacity-70">
+          <div className="rounded-full flex items-center justify-center bg-black text-white p-4 w-[20px] h-[20px] absolute right-2 top-2 opacity-70 hover:bg-gray-900 cursor-pointer">
             x
-          </Button>
+          </div>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
