@@ -15,7 +15,7 @@ export const CompanyLibraryTemplate2 = ({ company }: { company: Company }) => {
         </p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-6 max-w-7xl mx-auto">
-        {company.companyImages.slice(0, 6).map((imageUrl, idx) => (
+        {(company.companyImages || []).slice(0, 6).map((imageUrl, idx) => (
           <BlurFade key={imageUrl} delay={0.25 + idx * 0.05} inView>
             <div className="overflow-hidden rounded-xl shadow-lg hover:scale-105 transition-transform">
               <img
