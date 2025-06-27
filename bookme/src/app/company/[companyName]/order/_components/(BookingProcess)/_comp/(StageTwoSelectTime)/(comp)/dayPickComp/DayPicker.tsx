@@ -1,20 +1,10 @@
 "use client"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { CompanyType } from "../../../page";
-import { OrderType } from "../../(publicItems)/orderImformation";
-import { time } from "framer-motion";
-type DayPickerProps = {
-    date: Date | null
-    setDate: (date: Date | null) => void
-    dayArrays: () => Date[]
-    company: CompanyType
-    orders: OrderType[] | undefined
-    availabilityTimes: (time: number) => number[];
-    isDayClosed: (day: Date) => boolean
+import { DayPickerProps } from "../../../../../(publicItems)/_OrderPageTypes/types";
 
-}
-export default function WeekScroller({ date, setDate, dayArrays, company, orders, availabilityTimes, isDayClosed }: DayPickerProps) {
+
+export default function WeekScroller({ date, setDate, dayArrays, isFully, company, orders, availabilityTimes, isDayClosed }: DayPickerProps) {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const dayRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -79,9 +69,7 @@ export default function WeekScroller({ date, setDate, dayArrays, company, orders
                         date.getDate() === day.getDate() &&
                         date.getMonth() === day.getMonth() &&
                         date.getFullYear() === day.getFullYear();
-
                     const isClosed = isDayClosed(day);
-
                     return (
                         <div
                             key={day.toString()}
@@ -108,13 +96,13 @@ export default function WeekScroller({ date, setDate, dayArrays, company, orders
                         >
                             <div
                                 className={
-                                    isSelected && (isClosed )
+                                    isSelected && (isClosed || isFully)
                                         ? "rounded-full w-24 h-24 flex justify-center items-center font-bold line-through text-2xl bg-indigo-300 text-white"
-                                        : isSelected
+                                        : isSelected && (!isFully)
                                             ? "rounded-full w-24 h-24 flex justify-center items-center font-bold text-2xl bg-indigo-700 text-white"
                                             : isClosed
                                                 ? "flex justify-center items-center rounded-full text-2xl w-24 h-24 font-bold border line-through pointer-none text-gray-300 border-gray-300"
-                                                : "flex justify-center items-center rounded-full text-2xl w-24 h-24 font-bold border border-gray-700 text-gray-700 bg-gray-100"
+                                                : "flex justify-center items-center rounded-full text-2xl w-24 h-24 font-bold border text-gray-700 border-gray-700 bg-gray-100"
                                 }
                             >
                                 {day.toLocaleDateString("default", { day: "numeric" })}

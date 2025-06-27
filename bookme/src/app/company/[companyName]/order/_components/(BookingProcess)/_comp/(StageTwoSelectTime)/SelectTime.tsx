@@ -1,24 +1,11 @@
 "use client"
 
 import { use, useEffect, useState } from "react"
-import { CompanyType, employeeType } from "../../page"
+import { employeeType, OrderType, TimingProps } from "../../../(publicItems)/_OrderPageTypes/types"
 import { api } from "@/axios"
-import { Return } from "./_copmonents/Return"
-import { OrderType } from "../(publicItems)/orderImformation"
-import { log } from "node:console"
+import { ReturnX } from "./(comp)/return/ReturnX"
 
-type TimingProps = {
-    isSelectEmployee: string | string[],
-    zurag: string,
-    company: CompanyType
-    setIsSelectEmployee: (employee: string) => void
-    selectedEmployeeImf: string | undefined
-    date: Date | null, setDate: (date: Date | null) => void
-    setSelectedTime: (time: Date | null) => void
-    selectedTime: Date | null
-    setSelectedEmployee: (employeeId: string) => void
 
-}
 function StageTwoTimePicking({
     isSelectEmployee, setSelectedEmployee, zurag, company, date, selectedTime, setSelectedTime, setDate, setIsSelectEmployee, selectedEmployeeImf
 }: TimingProps) {
@@ -45,10 +32,10 @@ function StageTwoTimePicking({
     const duration = getEmployee ? parseInt(getEmployee.duration.toString()) : 0;
     const end = getEmployee ? parseInt(getEmployee.endTime) : 0;
     const lunchTime = getEmployee ? parseInt(getEmployee.lunchTimeStart) : 0; console.log(lunchTime);
-    const Name = getEmployee?.employeeName ;console.log(Name);
-    
-    const LunchTimeEnd = getEmployee ? parseInt(getEmployee.lunchTimeEnd) : 0; ;
-    
+    const Name = getEmployee?.employeeName; console.log(Name);
+
+    const LunchTimeEnd = getEmployee ? parseInt(getEmployee.lunchTimeEnd) : 0;;
+
     const availabilityTimes = () => {
         const times = [];
         for (let i = getTime(start); i < getTime(end); i += duration) {
@@ -58,8 +45,6 @@ function StageTwoTimePicking({
         }
         return times;
     };
-
-
     useEffect(() => {
         getEmployee
         selectedEmployeeImf
@@ -85,34 +70,12 @@ function StageTwoTimePicking({
     const allSelectedTimes = orders
         ? orders.map((order: OrderType) => new Date(order.selectedTime))
         : [];
-    // const isDayFullyBooked = (day: Date): boolean => {
-    //     const availableMinutes = availabilityTimes(day.getDay());
-
-    //     const bookedSlots = allSelectedTimes
-    //         .filter((selectedTime) =>
-    //             selectedTime.getDate() === day.getDate() &&
-    //             selectedTime.getMonth() === day.getMonth() &&
-    //             selectedTime.getFullYear() === day.getFullYear()
-    //         )
-    //         .map((selectedTime) => selectedTime.getTime()); // getTime() ашиглаж байна
-
-    //     const availableSlots = availableMinutes.map((minute) => {
-    //         const hour = Math.floor(minute / 60);
-    //         const min = minute % 60;
-    //         return new Date(
-    //             day.getFullYear(),
-    //             day.getMonth(),
-    //             day.getDate(),
-    //             hour,
-    //             min
-    //         ).getTime();
-    //     });
-
-    //     const isFull = availableSlots.every((slot) => bookedSlots.includes(slot));
-    //     return isFull;
-    // };
+    const isFully = (availabilityTimes().every((time) => allSelectedTimes.some((selectedTime) =>
+        selectedTime.getTime() === new Date(date?.getFullYear() ?? 0, date?.getMonth()
+            ?? 0, date?.getDate() ?? 0, Math.floor(time / 60), time % 60).getTime())))
     return (
-        <Return
+        <ReturnX
+            isFully={isFully}
             orders={orders} dayArrays={dayArrays} availabilityTimes={availabilityTimes}
             isSelectEmployee={isSelectEmployee} setSelectedEmployee={setSelectedEmployee} zurag={zurag}
             company={company} date={date} selectedTime={selectedTime} setSelectedTime={setSelectedTime} setDate={setDate}

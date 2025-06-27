@@ -8,13 +8,7 @@ import {
 } from "@/components/ui/popover";
 import { FormatLongFnOptions, isToday } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-
-type CalendarProps = {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  date: Date | null;
-  setDate: (date: Date | null) => void;
-};
+import { CalendarProps } from "../../../../../(publicItems)/_OrderPageTypes/types";
 function SelectDayOnCalendar({ open, setOpen, setDate, date }: CalendarProps) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -41,7 +35,7 @@ function SelectDayOnCalendar({ open, setOpen, setDate, date }: CalendarProps) {
             },
           }}
           mode="single"
-          selected={date ?? undefined}
+          selected={date ?? null}
           buttonVariant="ghost"
           captionLayout="dropdown"
           fromYear={new Date().getFullYear()} // өнөөдрийн оноос эхэлнэ
