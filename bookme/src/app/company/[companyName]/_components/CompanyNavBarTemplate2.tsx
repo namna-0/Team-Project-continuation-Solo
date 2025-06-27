@@ -128,12 +128,12 @@ export const CompanyNavBarTemplate2 = ({
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <Link href={`/company/${company?.companyName}/login`}>
+                <Link href={`/company/${company?.companyName}/user-flow`}>
                   <button className="relative group px-6 py-3 cursor-pointer rounded-xl border border-white/20 text-white font-medium transition-all duration-300 hover:bg-white/5 hover:scale-105">
                     <span className="relative z-10">Нэвтрэх</span>
                   </button>
                 </Link>
-                <Link href={`/company/${company?.companyName}/signup`}>
+                <Link href={`/company/${company?.companyName}/user-flow`}>
                   <button className="relative group px-6 py-3 cursor-pointer rounded-xl bg-gradient-to-r from-grey-500 to-blue-600 text-white font-medium transition-all duration-300 hover:shadow-lg hover:shadow-rose-500/25 hover:scale-105">
                     <span className="relative z-10 flex items-center gap-2">
                       <Sparkles className="w-4 h-4" />
@@ -282,7 +282,7 @@ export const CompanyNavBarTemplate2 = ({
               ) : !user ? (
                 <>
                   <Link
-                    href={`/${company?.companyName}/login`}
+                    href={`/${company?.companyName}/user-flow`}
                     onClick={toggleMenu}
                     className={`block w-full text-center px-6 py-4 border border-white/20 text-white font-medium rounded-xl transition-all duration-300 ${
                       isMenuOpen ? "animate-slideInRight" : ""
@@ -292,7 +292,7 @@ export const CompanyNavBarTemplate2 = ({
                     Нэвтрэх
                   </Link>
                   <Link
-                    href={`/${company?.companyName}/signup`}
+                    href={`/${company?.companyName}/user-flow`}
                     onClick={toggleMenu}
                     className={`block w-full text-center px-6 py-4 bg-gradient-to-r from-grey-500 to-blue-600 text-white font-medium rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-rose-500/25 ${
                       isMenuOpen ? "animate-slideInRight" : ""

@@ -166,7 +166,6 @@ export const Hero = ({ id, company }: CompanyNavBarProps) => {
               </button>
             </Link>
           )}{" "}
-          : ({" "}
           <Link href={"/company"}>
             <button
               className="group px-6 py-3 sm:px-8 cursor-pointer sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25"
@@ -200,7 +199,6 @@ export const Hero = ({ id, company }: CompanyNavBarProps) => {
               </span>
             </button>
           </Link>
-          )
         </motion.div>
       </div>
     </section>
