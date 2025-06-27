@@ -3,15 +3,21 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import Link from "next/link";
+import { useCompanyAuth } from "../_providers/CompanyAuthProvider";
+import { Company } from "../company/[companyName]/_components/CompanyTypes";
 
+type CompanyNavBarProps = {
+  company: Company;
+};
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 }
 
-const Header = () => {
+const Header = ({ company }: CompanyNavBarProps) => {
   const navRef = useRef<HTMLElement>(null);
   const animationRef = useRef<gsap.core.Tween | null>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const { company: loggedInCompany, signOutCompany } = useCompanyAuth();
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -191,9 +197,73 @@ const Header = () => {
           isMobile ? "ml-auto" : "col-span-2 flex justify-end min-w-0"
         }`}
       >
-        <Link href={"/signin"}>
+        {!loggedInCompany && (
+          <Link href={"/signin"}>
+            <button
+              className="group px-3 py-2 cursor-pointer rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 whitespace-nowrap text-xs"
+              style={{
+                background:
+                  "linear-gradient(to right, #FFFFFF 0%, #E6F3FF 52%, #B3D9FF 100%)",
+                color: "#000A17",
+                fontSize: "0.75rem", // Smaller font size
+                fontWeight: "600",
+              }}
+            >
+              <span className="flex items-center gap-1">
+                Нэвтрэх
+                <svg
+                  className="w-3 h-3 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7l5 5m0 0l-5 5m5-5H6"
+                  />
+                </svg>
+              </span>
+            </button>
+          </Link>
+        )}{" "}
+        : ({" "}
+        <>
+          <Link href={`/company/${company?.companyName}/dashboard`}>
+            <button
+              className="group px-3 py-2 cursor-pointer rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 whitespace-nowrap text-xs"
+              style={{
+                background:
+                  "linear-gradient(to right, #FFFFFF 0%, #E6F3FF 52%, #B3D9FF 100%)",
+                color: "#000A17",
+                fontSize: "0.75rem", // Smaller font size
+                fontWeight: "600",
+              }}
+            >
+              <span className="flex items-center gap-1">
+                Хяналтын самбар
+                <svg
+                  className="w-3 h-3 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 7l5 5m0 0l-5 5m5-5H6"
+                  />
+                </svg>
+              </span>
+            </button>
+          </Link>
           <button
-            className="group px-3 py-2 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 whitespace-nowrap text-xs"
+            onClick={() => {
+              signOutCompany();
+            }}
+            className="ml-5 group px-3 py-2 cursor-pointer rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 whitespace-nowrap text-xs"
             style={{
               background:
                 "linear-gradient(to right, #FFFFFF 0%, #E6F3FF 52%, #B3D9FF 100%)",
@@ -203,7 +273,7 @@ const Header = () => {
             }}
           >
             <span className="flex items-center gap-1">
-              Нэвтрэх
+              Гарах
               <svg
                 className="w-3 h-3 transition-transform group-hover:translate-x-1"
                 fill="none"
@@ -219,7 +289,8 @@ const Header = () => {
               </svg>
             </span>
           </button>
-        </Link>
+        </>
+        ){"}"}
       </div>
     </nav>
   );

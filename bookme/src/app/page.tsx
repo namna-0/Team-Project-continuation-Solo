@@ -3,7 +3,6 @@
 import { useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
 import Particles from "./_components/Particles";
 import Header from "./_components/Header";
 import ServicesParent from "./_components/ServicesParent";

@@ -5,8 +5,15 @@ import Particles from "./Particles";
 import ShinyText from "./ShinyText";
 import Link from "next/link";
 import VariableProximity from "./VariableProximity";
+import { Company } from "../company/[companyName]/_components/CompanyTypes";
+import { useCompanyAuth } from "../_providers/CompanyAuthProvider";
 
-export const Hero = ({ id }: { id: string }) => {
+type CompanyNavBarProps = {
+  id: string;
+  company: Company;
+};
+export const Hero = ({ id, company }: CompanyNavBarProps) => {
+  const { company: loggedInCompany } = useCompanyAuth();
   useEffect(() => {
     document.documentElement.classList.add("js-loaded");
 
@@ -119,14 +126,50 @@ export const Hero = ({ id }: { id: string }) => {
         </motion.div>
 
         <motion.div
-          className="flex justify-center items-center pt-6 md:pt-12"
+          className="flex justify-center items-center pt-6 md:pt-12 gap-8"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
         >
-          <Link href={"/signup"}>
+          {!loggedInCompany && (
+            <Link href={"/signup"}>
+              <button
+                className="group px-6 py-3 cursor-pointer sm:px-8 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25"
+                style={{
+                  background:
+                    "linear-gradient(to right, #FFFFFF 0%, #E6F3FF 52%, #B3D9FF 100%)",
+                  color: "#000A17",
+                  fontSize: "0.875rem",
+                  fontWeight: "600",
+                  padding: "0.75rem 1.5rem",
+                  borderRadius: "1.5rem",
+                  textDecoration: "none",
+                  transition: "all 0.3s ease",
+                }}
+              >
+                <span className="flex items-center gap-2">
+                  Бүртгүүлэх
+                  <svg
+                    className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </Link>
+          )}{" "}
+          : ({" "}
+          <Link href={"/company"}>
             <button
-              className="group px-6 py-3 sm:px-8 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25"
+              className="group px-6 py-3 sm:px-8 cursor-pointer sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25"
               style={{
                 background:
                   "linear-gradient(to right, #FFFFFF 0%, #E6F3FF 52%, #B3D9FF 100%)",
@@ -140,7 +183,7 @@ export const Hero = ({ id }: { id: string }) => {
               }}
             >
               <span className="flex items-center gap-2">
-                Бүртгүүлэх
+                Бүртгэлтэй компаниуд
                 <svg
                   className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1"
                   fill="none"
@@ -157,6 +200,7 @@ export const Hero = ({ id }: { id: string }) => {
               </span>
             </button>
           </Link>
+          )
         </motion.div>
       </div>
     </section>

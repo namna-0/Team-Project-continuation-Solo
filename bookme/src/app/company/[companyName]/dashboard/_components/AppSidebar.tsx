@@ -8,11 +8,13 @@ import {
   Settings,
   ChevronDown,
   ChevronRight,
+  ArrowLeft,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
@@ -30,6 +32,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
+import Link from "next/link";
 
 interface AppSidebarProps {
   currentPage: string;
@@ -190,6 +193,14 @@ export function AppSidebar({ currentPage, setCurrentPage }: AppSidebarProps) {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <SidebarFooter className=" border-border/40 p-4 mt-[870px]">
+          <Link href={`/company/${company?.companyName}`}>
+            <button className="flex items-center gap-2 text-sm text-[#007FFF] hover:text-white hover:bg-[#007FFF] px-3 py-2 rounded-md w-full transition-colors">
+              <ArrowLeft className="h-4 w-4" />
+              Буцах
+            </button>
+          </Link>
+        </SidebarFooter>
       </SidebarContent>
       <SidebarRail />
     </Sidebar>

@@ -62,9 +62,10 @@ export const Step1 = () => {
       </div>
 
       <div>
-        <Label htmlFor="companyName" className="mb-2">
-          Салоны нэр *
+        <Label htmlFor="companyName" className="mb-1">
+          Компаний нэр *
         </Label>
+        <p className="text-white text-[13px] mb-2">Латинаар бичнэ үү</p>
         <Input
           {...register("companyName")}
           placeholder="Компаний нэр"
