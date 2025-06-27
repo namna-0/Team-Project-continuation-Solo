@@ -122,7 +122,10 @@ export default function Home() {
           </div>
         </div>
         <div className="w-[50%] h-full ">
-          <img src="/rectanglelogin.png" className="w-full h-full"></img>
+          <img
+            src="https://res.cloudinary.com/dqd01lbfy/image/upload/v1751008273/pain_oxdu59.jpg"
+            className="w-[720px] h-[1000px] rounded-2xl"
+          ></img>
         </div>
       </div>
     </div>
