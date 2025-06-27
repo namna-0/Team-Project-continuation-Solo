@@ -20,27 +20,25 @@ import Link from "next/link";
 
 const formSchema = z
   .object({
-    username: z.string().min(2, {
-      message: "Username must be at least 2 characters.",
-    }),
-    email: z.string().email({
-      message: "Please enter a valid email address",
-    }),
-    password: z.string().min(3, {
-      message: "Please Enter your password",
-    }),
+    username: z
+      .string()
+      .min(2, { message: "Хамгийн багадаа 2 үсэг байх ёстой" }),
+    email: z.string().email({ message: "Зөв имэйл хаяг оруулна уу" }),
+    password: z.string().min(3, { message: "Нууц үг заавал оруулна" }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
+    message: "Нууц үг таарахгүй байна",
     path: ["confirmPassword"],
   });
-export default function Home() {
-  const { signUp, user } = useAuth();
+
+export default function Register() {
+  const { signUp } = useAuth();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const params = useParams();
   const companyName = params?.companyName as string;
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,126 +48,127 @@ export default function Home() {
       confirmPassword: "",
     },
   });
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const { username, email, password } = values;
     setLoading(true);
     try {
       await signUp(email, password, username);
-      form.reset();
+      toast.success("Амжилттай бүртгэгдлээ!");
+      router.push(`/company/${companyName}/login`);
     } catch (error) {
       toast.error("Бүртгүүлэхэд алдаа гарлаа.");
     } finally {
       setLoading(false);
     }
   }
-  return (
-    <div className="w-screen h-screen flex justify-center items-center bg-radial-[at_50%_75%] from-indigo-900 via-blue-400 to-sky-200 to-90% text-white">
-      <div className="w-[1440px] h-fit flex  rounded-[23px] justify-center items-center shadow-xl ">
-        <div className="w-[50%] h-full flex justify-center items-center ">
-          <div className="w-[404px] h-[638px] flex flex-col gap-[10px] ">
-            <div className="w-fit h-[53px]">
-              <p className="font-medium text-[32px] ">Бүртгүүлэх</p>
-            </div>
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col gap-[32px] h-fit"
-              >
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Хэрэглэгчийн нэр</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Хэрэглэгчийн нэр оруулна уу."
-                          className="border border-gray-200"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email хаяг</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Email хаяг оруулна уу."
-                          className="border border-gray-200"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Нууц үг </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Нууц үг оруулна уу."
-                          className="border border-gray-200"
-                          type="password"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="confirmPassword"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Нууц үг давтах</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Нууц үг давтан оруулна уу."
-                          className="border border-gray-200"
-                          type="password"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button
-                  type="submit"
-                  className="h-8 bg-[#007fff] text-[13px] font-bold text-white rounded-[10px] cursor-pointer"
-                  disabled={loading}
-                >
-                  {loading ? "Бүртгэж байна..." : "Бүртгүүлэх"}
-                </Button>
-              </form>
-            </Form>
 
-            <p className="font-medium text-[14px] ">
-              Бүртгэлтэй юу?{" "}
-              <Link href={`/company/${companyName}/login`}>
-                <span className="text-[14px] text-[#0f3dde] underline cursor-pointer">
-                  Нэвтрэх
-                </span>
-              </Link>
-            </p>
-          </div>
+  return (
+    <div className="w-screen h-screen flex justify-center items-center bg-gradient-to-br from-indigo-900 via-blue-400 to-sky-300 text-white px-4">
+      <div className="max-w-[1200px] w-full flex flex-col md:flex-row rounded-3xl bg-white/5 backdrop-blur-md shadow-2xl overflow-hidden border border-white/10">
+        {/* Left - Form Section */}
+        <div className="md:w-1/2 w-full p-10 flex flex-col gap-6 justify-center items-start text-white">
+          <h1 className="text-3xl font-bold">Бүртгүүлэх</h1>
+
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="w-full flex flex-col gap-6"
+            >
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Хэрэглэгчийн нэр</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Жишээ: batbayar23"
+                        className="border border-gray-300 text-black placeholder:text-gray-400"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email хаяг</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="you@example.com"
+                        className="border border-gray-300 text-black placeholder:text-gray-400"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Нууц үг</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="••••••••"
+                        className="border border-gray-300 text-black placeholder:text-gray-400"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Нууц үг давтах</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="••••••••"
+                        className="border border-gray-300 text-black placeholder:text-gray-400"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button
+                type="submit"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-md transition cursor-pointer"
+                disabled={loading}
+              >
+                {loading ? "Бүртгэж байна..." : "Бүртгүүлэх"}
+              </Button>
+            </form>
+          </Form>
+          <p className="text-sm mt-2">
+            Аль хэдийн бүртгэлтэй юу?{" "}
+            <Link href={`/company/${companyName}/login`}>
+              <span className="underline text-blue-700 hover:text-white cursor-pointer">
+                Нэвтрэх
+              </span>
+            </Link>
+          </p>
         </div>
-        <div className="w-[50%] h-full ">
+        <div className="md:w-1/2 w-full">
           <img
             src="https://res.cloudinary.com/dqd01lbfy/image/upload/v1751008273/pain_oxdu59.jpg"
-            className="w-[720px] h-[1000px] rounded-2xl"
-          ></img>
+            alt="Signup Illustration"
+            className="w-full h-full object-cover"
+          />
         </div>
       </div>
     </div>

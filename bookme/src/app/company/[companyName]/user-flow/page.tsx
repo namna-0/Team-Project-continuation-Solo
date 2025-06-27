@@ -18,7 +18,6 @@ export default function Home() {
             </Button>
           </Link>
           <h1 className="text-3xl font-bold mt-2">Бүртгүүлэх</h1>
-
           <Link href="/signin" className="w-full">
             <button className="w-full h-[150px] bg-white/10 border border-white/30 rounded-xl p-6 text-left transition hover:bg-white/20 hover:shadow-xl cursor-pointer">
               <p className="text-xl font-semibold">Компаниар нэвтрэх</p>
@@ -27,7 +26,6 @@ export default function Home() {
               </p>
             </button>
           </Link>
-
           <Link href={`/company/${companyName}/login`} className="w-full">
             <button className="w-full h-[150px] bg-white/10 border border-white/30 rounded-xl p-6 text-left transition hover:bg-white/20 hover:shadow-xl cursor-pointer">
               <p className="text-xl font-semibold">Хэрэглэгчээр нэвтрэх</p>

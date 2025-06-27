@@ -11,62 +11,63 @@ export default function Home() {
   const { user } = useAuth();
   const params = useParams();
   const companyName = params?.companyName as string;
+
   return (
-    <div className="w-screen h-screen bg-[#f9f9f9] flex flex-col items-center">
+    <div className="w-screen min-h-screen bg-gradient-to-br from-blue-50 to-white flex flex-col items-center">
       <Navbar />
-      <div className="w-[1440px] h-fit flex items-center justify-center mt-20">
-        <div className="w-[960px] h-[770px] flex flex-col gap-10">
-          <div className="w-full h-[36px]">
-            <p className="font-bold text-[36px]">Хэрэглэгчийн нүүр хуудас</p>
+
+      <main className="max-w-[1440px] w-full flex flex-col items-center px-6 mt-20">
+        <h1 className="text-[32px] font-bold mb-10 text-gray-800">
+          Хэрэглэгчийн мэдээлэл
+        </h1>
+
+        <div className="flex flex-col lg:flex-row gap-8 w-full max-w-5xl">
+          <div className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-200 p-8 flex flex-col gap-6">
+            <div className="flex justify-between items-start">
+              <h2 className="text-[22px] font-semibold text-gray-700">
+                Хувийн мэдээлэл
+              </h2>
+              <Editprofile />
+            </div>
+
+            <div className="text-center">
+              <p className="text-[24px] font-bold text-gray-900">
+                {user?.username}
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-4 text-[14px] text-gray-600">
+              <div>
+                <p className="font-medium text-gray-700">Email</p>
+                <p>{user?.email}</p>
+              </div>
+              <div>
+                <p className="font-medium text-gray-700">Утасны дугаар</p>
+                <p>{user?.phoneNumber ?? "Оруулсангүй"}</p>
+              </div>
+              <div>
+                <p className="font-medium text-gray-700">Гэрийн хаяг</p>
+                <p>{user?.address ?? "Оруулсангүй"}</p>
+              </div>
+            </div>
+
+            <Link
+              href={`/company/${companyName}/appointments`}
+              className="mt-auto"
+            >
+              <Button className="relative w-full bg-[#77b8fa] hover:bg-blue-500 text-white font-medium py-2 rounded-md transition-all duration-300 cursor-pointer">
+                Захиалгын түүх харах
+              </Button>
+            </Link>
           </div>
-          <div className="w-full h-[695px] flex gap-5">
-            <div className="w-[360px] h-full bg-white rounded-2xl border border-gray-300 p-10 flex flex-col gap-10">
-              <div className="w-full h-[150px] flex flex-col gap-10 border-b-1">
-                <div className="w-full h-[16px] flex justify-end">
-                  <Editprofile />
-                </div>
-                <div className="w-full h-[30px] flex justify-center items-center">
-                  <p className="font-bold text-[25px]">{user?.username}</p>
-                </div>
-              </div>
-
-              <div className="w-full h-fit ">
-                <div className="w-full h-[360px] flex flex-col gap-5 pt-2">
-                  <div>
-                    <p className="font-semibold text-[16px]">Емайл</p>
-
-                    <p className="text-[14px] text-gray-400">{user?.email}</p>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-[16px]">Утасны дугаар</p>
-
-                    <p className="text-[14px] text-gray-400">
-                      {user?.phoneNumber}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-[16px]">Гэрийн хаяг</p>
-                    <p className="text-[14px] text-gray-400">{user?.address}</p>
-                  </div>
-                </div>
-              </div>
-              <Link href={`/company/${companyName}/appointments`}>
-                <Button className="relative bg-[#77b8fa] group w-full px-6 py-2 overflow-hidden text-white cursor-pointer">
-                  <span className="absolute inset-0 bg-gradient-to-r from-[#77b8fa] to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left " />
-                  <span className="relative z-10"> Захиалгын түүх харах</span>
-                </Button>
-              </Link>
-            </div>
-            <div className="w-[580px] h-full bg-white rounded-2xl border border-gray-300 p-10 flex flex-col gap-10">
-              <div className="w-full h-[24px] ">
-                <p className="text-[24px] font-bold">Миний хаяг</p>
-              </div>
-              <HomeAddress />
-              {/* <WorkAddress /> */}
-            </div>
+          <div className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-200 p-8 flex flex-col gap-6">
+            <h2 className="text-[22px] font-semibold text-gray-700">
+              Миний хаяг
+            </h2>
+            <HomeAddress />
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
