@@ -10,9 +10,9 @@ import { useCompanyAuth } from "../_providers/CompanyAuthProvider";
 
 type CompanyNavBarProps = {
   id: string;
-  company: Company;
+  company?: Company | undefined;
 };
-export const Hero = ({ id, company }: CompanyNavBarProps) => {
+export const Hero = ({ id }: CompanyNavBarProps) => {
   const { company: loggedInCompany } = useCompanyAuth();
   useEffect(() => {
     document.documentElement.classList.add("js-loaded");

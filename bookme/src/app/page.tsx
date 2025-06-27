@@ -13,14 +13,15 @@ import Image from "next/image";
 import { Hero } from "./_components/Hero";
 import Preloader from "./_components/Preloader";
 import { motion } from "framer-motion";
-
+import { useCompanyAuth } from "./_providers/CompanyAuthProvider";
+import { Company } from "./signup/_components/Types";
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
 export default function HomePage() {
+  const { company } = useCompanyAuth();
   const [isLoading, setIsLoading] = useState(true);
-
   const handleLoadComplete = () => {
     setIsLoading(false);
     document.body.style.overflow = "auto";

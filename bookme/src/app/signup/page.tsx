@@ -130,6 +130,7 @@ export default function CompanySetupPage() {
         description: values.description ?? "",
         companyImages: imageUrls,
         employees: [],
+        bookings: [],
         workingHours: values.openingHours,
         lunchBreak: values.lunchBreak,
         aboutUsImage: values.aboutUsImage,

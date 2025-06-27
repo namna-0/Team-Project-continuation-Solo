@@ -51,11 +51,11 @@ export const Step6 = ({
           </div>
         )}
 
-        {formData.backgroundImage && (
+        {formData.backGroundImage && (
           <div className="mt-2">
             <p className="text-sm mb-1">Background зураг:</p>
             <img
-              src={formData.backgroundImage}
+              src={formData.backGroundImage}
               alt="Background"
               className="h-24 w-full object-cover border rounded"
             />
