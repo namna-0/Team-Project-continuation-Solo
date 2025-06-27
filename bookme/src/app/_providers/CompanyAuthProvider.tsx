@@ -15,11 +15,13 @@ type AuthContextType = {
   ) => Promise<{ data: any; status: number } | undefined>;
   signOutCompany: () => void;
   getCompany: () => Promise<void>;
+  loading: boolean;
 };
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
+  const [loading, setLoading] = useState(true);
   const [company, setCompany] = useState<Company | undefined>();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const router = useRouter();
@@ -73,10 +75,13 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
     setAuthToken(token);
 
     try {
+      setLoading(true);
       const { data } = await api.get("/me");
       setCompany(data);
     } catch (error) {
       console.error("Компаний мэдээлэл авахад алдаа:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -86,7 +91,7 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <AuthContext.Provider
-      value={{ company, signIn, signOutCompany, signUp, getCompany }}
+      value={{ company, signIn, signOutCompany, signUp, getCompany, loading }}
     >
       {children}
     </AuthContext.Provider>

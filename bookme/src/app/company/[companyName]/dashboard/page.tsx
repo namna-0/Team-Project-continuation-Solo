@@ -11,7 +11,7 @@ import { DashboardHeader } from "./_components/DashboardHeader";
 import { EmployeesPage } from "./_components/EmployeesPage";
 import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
 import { Company } from "../_components/CompanyTypes";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { api } from "@/axios";
 import { toast } from "sonner";
 import { CompanyWorkingHours } from "./_components/CompanyWorkingHours";
@@ -21,22 +21,18 @@ import { Button } from "@/components/ui/button";
 
 export default function Dashboard() {
   const [currentPage, setCurrentPage] = useState("employees");
-  const { company: loggedInCompany } = useCompanyAuth();
+  const { company: loggedInCompany, loading: companyLoading } =
+    useCompanyAuth();
   const [company, setCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
 
-  // Stable fetchCompany function with proper error handling
   const fetchCompany = useCallback(async () => {
-    if (!loggedInCompany?._id) {
-      setError("Company ID not found");
-      return null;
-    }
-
     try {
       setLoading(true);
-      const response = await api.get(`/company/id/${loggedInCompany._id}`);
+      const response = await api.get(`/company/id/${loggedInCompany?._id}`);
+      console.log("company", response);
+
       if (response.data?.company) {
         setCompany(response.data.company);
         return response.data.company;
@@ -54,17 +50,16 @@ export default function Dashboard() {
     }
   }, [loggedInCompany?._id]);
 
-  // Initial data fetch
+  if (!companyLoading && !loggedInCompany) {
+    redirect("/signin");
+  }
+
   useEffect(() => {
-    if (!loggedInCompany) {
-      router.push("/signin");
-      return;
+    if (!companyLoading && loggedInCompany?._id) {
+      fetchCompany();
     }
+  }, [companyLoading, loggedInCompany?._id, fetchCompany]);
 
-    fetchCompany();
-  }, [loggedInCompany, router, fetchCompany]);
-
-  // Improved page rendering with proper loading states
   const renderPage = () => {
     if (loading) {
       return (

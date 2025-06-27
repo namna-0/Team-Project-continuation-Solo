@@ -36,11 +36,10 @@ export function StaffOrdersPage({ company }: { company: Company }) {
   const [selectedBookings, setSelectedBookings] = useState<Booking[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-
   const getEmployeeBookings = (employeeId: string): Booking[] => {
     if (!company.bookings) return [];
     return company.bookings.filter(
-      (booking) => booking.employee._id === employeeId
+      (booking) => booking.employee && booking.employee._id === employeeId
     );
   };
 
