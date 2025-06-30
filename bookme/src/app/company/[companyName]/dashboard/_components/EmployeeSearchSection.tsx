@@ -28,18 +28,21 @@ export const EmployeeSearchSection = ({
   );
 
   return (
-    <div className="flex items-center space-x-2 ">
-      <div className="w-[20%] relative flex flex-col gap-3">
-        <div className="relative flex-1 w-full">
+    <div className="flex items-center space-x-2">
+      <div className="w-[30%] relative flex flex-col gap-3">
+        <div className="relative flex-1 w-full flex items-center gap-5">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Ажилтан хайх"
             className="pl-8 w-full"
             onChange={handleSearchEmploy}
           />
+          <div className="w-full flex text-[15px] text-gray-500">
+            Нийт {`${filteredEmployees?.length}`} ажилтан байна.
+          </div>
         </div>
 
-        {searchValue && (
+        {/* {searchValue && (
           <div className="absolute top-12 w-full p-2 rounded-2xl z-10 bg-[#f9f9f9] max-h-64 overflow-auto shadow-md">
             <div className="flex flex-col">
               {filteredEmployees?.length ? (
@@ -53,7 +56,7 @@ export const EmployeeSearchSection = ({
               )}
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

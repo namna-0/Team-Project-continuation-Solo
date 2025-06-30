@@ -31,12 +31,12 @@ export type UpdatedData = {
 export const EmployeeCard = ({ employee, getCompanyAction }: PropsType) => {
   const [profileLoading, setProfileLoading] = useState(false);
   const [updatedEmployee, setUpdatedEmployee] = useState<UpdatedData>({
-    profileImage: employee.profileImage,
-    startTime: employee.startTime,
-    endTime: employee.endTime,
-    lunchTimeStart: employee.lunchTimeStart,
-    lunchTimeEnd: employee.lunchTimeEnd,
-    description: employee.description,
+    profileImage: employee.profileImage ?? "",
+    startTime: employee.startTime || "",
+    endTime: employee.endTime || "",
+    lunchTimeStart: employee.lunchTimeStart || "",
+    lunchTimeEnd: employee.lunchTimeEnd || "",
+    description: employee.description || "",
   });
 
   const handleChangeEmployeeData = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,7 +120,7 @@ export const EmployeeCard = ({ employee, getCompanyAction }: PropsType) => {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 ">
         <div className="flex gap-3">
           <Users className="h-4 w-4 text-muted-foreground" />
           <CardTitle className="text-sm font-medium flex items-center gap-2">
@@ -144,37 +144,38 @@ export const EmployeeCard = ({ employee, getCompanyAction }: PropsType) => {
         />
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-3">
-          <div className="space-y-2 flex gap-3 ">
-            <div className="flex flex-col gap-3">
-              <div className="w-[200px] h-[200px] flex justify-center items-center">
+        <div className="flex flex-col gap-3 ">
+          <div className="flex flex-col md:flex-row gap-6">
+            <div className="flex flex-col gap-4 items-center md:items-start w-full md:max-w-[200px]">
+              <div className="w-full aspect-square relative overflow-hidden rounded-2xl shadow-2xl shadow-gray-300">
                 {profileLoading ? (
                   <LoadingSvg />
                 ) : (
                   <img
                     src={`${updatedEmployee.profileImage}`}
-                    className="w-[200px] h-[200px] rounded-2xl shadow-gray-300 shadow-2xl"
+                    className="w-full h-full object-cover"
                   />
                 )}
               </div>
               <div className="w-full flex justify-center relative">
-                <Button className="bg-[#007FFF] hover:bg-[#007FFF]/90 w-full border-2 ">
+                <Button className="bg-[#007FFF] hover:bg-[#007FFF]/90 w-full border-2">
                   Зураг солих
                 </Button>
                 <Input
                   type="file"
                   name="profileImage"
-                  className="absolute z-10 opacity-0 cursor-pointer"
+                  className="absolute inset-0 z-10 opacity-0 cursor-pointer"
                   onChange={handleEditEmployeImage}
                 />
               </div>
             </div>
 
             <div className="w-full  flex flex-col justify-center gap-7">
-              <div className="pl-4 flex gap-10">
-                <div className="flex flex-col gap-1">
-                  <div className="text-[13px]">Ажлын цаг эхлэх</div>
+              <div className="flex gap-4 flex-wrap">
+                <div className="flex flex-col">
+                  <div className="flex flex-col">Ажлын цаг эхлэх</div>
                   <Input
+                    className="h-10 w-[130px] text-sm px-3"
                     type="time"
                     name="startTime"
                     defaultValue={updatedEmployee.startTime}
@@ -183,8 +184,9 @@ export const EmployeeCard = ({ employee, getCompanyAction }: PropsType) => {
                   />
                 </div>
                 <div className="flex flex-col gap-1">
-                  <div className="text-[13px]">Ажлын цаг дуусах</div>
+                  <div className="flex flex-col">Ажлын цаг дуусах</div>
                   <Input
+                    className="h-10 w-[130px] text-sm px-3"
                     type="time"
                     name="endTime"
                     defaultValue={updatedEmployee.endTime}
@@ -193,10 +195,11 @@ export const EmployeeCard = ({ employee, getCompanyAction }: PropsType) => {
                   />
                 </div>
               </div>
-              <div className="pl-4 flex gap-10">
+              <div className="flex gap-4 flex-wrap">
                 <div className="flex flex-col gap-1">
-                  <div className="text-[13px]">Цайны цаг эхлэх</div>
+                  <div className="flex flex-col">Цайны цаг эхлэх</div>
                   <Input
+                    className="h-10 w-[130px] text-sm px-3"
                     type="time"
                     name="lunchTimeStart"
                     defaultValue={updatedEmployee.lunchTimeStart}
@@ -205,8 +208,9 @@ export const EmployeeCard = ({ employee, getCompanyAction }: PropsType) => {
                   />
                 </div>
                 <div className="flex flex-col gap-1">
-                  <div className="text-[13px]">Цайны цаг дуусах</div>
+                  <div className="flex flex-col">Цайны цаг дуусах</div>
                   <Input
+                    className="h-10 w-[130px] text-sm px-3"
                     type="time"
                     name="lunchTimeEnd"
                     defaultValue={updatedEmployee.lunchTimeEnd}

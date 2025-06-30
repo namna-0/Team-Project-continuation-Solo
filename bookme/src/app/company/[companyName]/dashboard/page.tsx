@@ -5,7 +5,6 @@ import { AllOrdersPage } from "./_components/AllOrders";
 import { StaffOrdersPage } from "./_components/StaffOrders";
 import { GeneralSettingsPage } from "./_components/General";
 import { ImagesSettingsPage } from "./_components/Images";
-import { LocationSettingsPage } from "./_components/Location";
 import { AppSidebar } from "./_components/AppSidebar";
 import { DashboardHeader } from "./_components/DashboardHeader";
 import { EmployeesPage } from "./_components/EmployeesPage";

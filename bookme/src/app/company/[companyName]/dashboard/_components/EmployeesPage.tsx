@@ -27,44 +27,38 @@ export function EmployeesPage() {
         </div>
         <EmployeeAddSection />
       </div>
+
       <EmployeeSearchSection
         searchValue={searchValue}
         setSearchValue={setSearchValue}
         setSearchedEmployees={setSearchedEmployees}
       />
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {searchedEmployees
-          ? searchedEmployees
-              .filter((employee) =>
-                employee.employeeName
-                  .toLowerCase()
-                  .includes(searchValue.toLowerCase())
-              )
-              .reverse()
-              .map((employee) => (
-                <div key={employee._id}>
-                  <EmployeeCard
-                    employee={employee}
-                    getCompanyAction={getCompany}
-                  />
-                </div>
-              ))
-          : company?.employees
-              .filter((employee) =>
-                employee.employeeName
-                  .toLowerCase()
-                  .includes(searchValue.toLowerCase())
-              )
-              .reverse()
-              .map((employee) => (
-                <div key={employee._id}>
-                  <EmployeeCard
-                    employee={employee}
-                    getCompanyAction={getCompany}
-                  />
-                </div>
-              ))}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr">
+        {(searchedEmployees ?? company?.employees)
+          ?.filter((employee) =>
+            employee.employeeName
+              .toLowerCase()
+              .includes(searchValue.toLowerCase())
+          )
+          .reverse()
+          .map((employee) => (
+            <EmployeeCard
+              key={employee._id}
+              employee={employee}
+              getCompanyAction={getCompany}
+            />
+          ))}
+
+        {(searchedEmployees ?? company?.employees)?.filter((employee) =>
+          employee.employeeName
+            .toLowerCase()
+            .includes(searchValue.toLowerCase())
+        ).length === 0 && (
+          <div className="col-span-full text-center text-muted-foreground">
+            Үр дүн олдсонгүй
+          </div>
+        )}
       </div>
     </div>
   );
