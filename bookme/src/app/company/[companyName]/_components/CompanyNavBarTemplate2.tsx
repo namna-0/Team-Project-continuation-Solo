@@ -133,7 +133,9 @@ export const CompanyNavBarTemplate2 = ({
                     <span className="relative z-10">Нэвтрэх</span>
                   </button>
                 </Link>
-                <Link href={`/company/${company?.companyName}/user-flow`}>
+                <Link
+                  href={`/company/${company?.companyName}/user-flow-signup`}
+                >
                   <button className="relative group px-6 py-3 cursor-pointer rounded-xl bg-gradient-to-r from-grey-500 to-blue-600 text-white font-medium transition-all duration-300 hover:shadow-lg hover:shadow-rose-500/25 hover:scale-105">
                     <span className="relative z-10 flex items-center gap-2">
                       <Sparkles className="w-4 h-4" />

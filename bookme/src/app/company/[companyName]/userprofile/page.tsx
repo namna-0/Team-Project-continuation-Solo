@@ -39,15 +39,15 @@ export default function Home() {
             <div className="flex flex-col gap-4 text-[14px] text-gray-600">
               <div>
                 <p className="font-medium text-gray-700">Email</p>
-                <p>{user?.email}</p>
+                <p>{user?.email ?? "Email хаяг олдсонгүй"}</p>
               </div>
               <div>
                 <p className="font-medium text-gray-700">Утасны дугаар</p>
-                <p>{user?.phoneNumber ?? "Оруулсангүй"}</p>
+                <p>{user?.phoneNumber ?? "Утасны дугаар олдсонгүй"}</p>
               </div>
               <div>
                 <p className="font-medium text-gray-700">Гэрийн хаяг</p>
-                <p>{user?.address ?? "Оруулсангүй"}</p>
+                <p>{user?.address ?? "Гэрийн хаяг олдсонгүй"}</p>
               </div>
             </div>
 
