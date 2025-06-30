@@ -40,7 +40,10 @@ interface AppSidebarProps {
 }
 
 export function AppSidebar({ currentPage, setCurrentPage }: AppSidebarProps) {
-  const [ordersOpen, setOrdersOpen] = React.useState(false);
+  // const [ordersOpen, setOrdersOpen] = React.useState(false);
+  const [openDropdownKey, setOpenDropdownKey] = React.useState<string | null>(
+    null
+  );
   const [settingsOpen, setSettingsOpen] = React.useState(false);
   const { company, signOutCompany } = useCompanyAuth();
   const menuItems = [
@@ -55,8 +58,8 @@ export function AppSidebar({ currentPage, setCurrentPage }: AppSidebarProps) {
       icon: ShoppingCart,
       key: "orders",
       hasDropdown: true,
-      isOpen: ordersOpen,
-      setOpen: setOrdersOpen,
+      // isOpen: ordersOpen,
+      // setOpen: setOrdersOpen,
       subItems: [
         {
           title: "Бүх захиалга",
@@ -135,14 +138,21 @@ export function AppSidebar({ currentPage, setCurrentPage }: AppSidebarProps) {
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.key}>
                   {item.hasDropdown ? (
-                    <Collapsible open={item.isOpen} onOpenChange={item.setOpen}>
+                    <Collapsible
+                      open={openDropdownKey === item.key}
+                      onOpenChange={() => {
+                        setOpenDropdownKey((prev) =>
+                          prev === item.key ? null : item.key
+                        );
+                      }}
+                    >
                       <CollapsibleTrigger asChild>
                         <SidebarMenuButton
                           className={cn(
-                            "w-full justify-between hover:bg-[#007FFF]/10 hover:text-[#007FFF]",
+                            "hover:text-blue-600 cursor-pointer p-5 hover:bg-blue-200  hover:border-blue-100 hover:border-[1px]",
                             (isParentActive(item.subItems || []) ||
                               item.isOpen) &&
-                              "bg-[#007FFF] text-white hover:bg-[#007FFF] hover:text-white"
+                              "bg-blue-50 text-blue-600 shadow-sm border border-blue-100 cursor-pointer hover:text-blue-600 "
                           )}
                         >
                           <div className="flex items-center gap-2">
@@ -152,20 +162,27 @@ export function AppSidebar({ currentPage, setCurrentPage }: AppSidebarProps) {
                           {item.isOpen ? (
                             <ChevronDown className="h-4 w-4" />
                           ) : (
-                            <ChevronRight className="h-4 w-4" />
+                            <ChevronDown
+                              className={cn(
+                                "h-4 w-4 transition-transform duration-200",
+                                openDropdownKey === item.key
+                                  ? "rotate-0"
+                                  : "-rotate-90"
+                              )}
+                            />
                           )}
                         </SidebarMenuButton>
                       </CollapsibleTrigger>
-                      <CollapsibleContent>
+                      <CollapsibleContent className="mt-3">
                         <SidebarMenuSub>
                           {item.subItems?.map((subItem) => (
                             <SidebarMenuSubItem key={subItem.key}>
                               <SidebarMenuSubButton
                                 onClick={subItem.onClick}
                                 className={cn(
-                                  "hover:bg-[#007FFF]/10 hover:text-[#007FFF]",
+                                  " p-5 cursor-pointer hover:bg-[#F0F6FE] border-[#d9e8fc] hover:border-[1px]",
                                   isActive(subItem.key) &&
-                                    "bg-[#007FFF] text-white hover:bg-[#007FFF] hover:text-white"
+                                    "p-5 bg-[#5687f9] shadow-2xl text-white hover:bg-[#5687f9]  hover:text-white  hover:border-[1px] border-[1px] hover:border-[#3869fa] border-[#3869fa]"
                                 )}
                               >
                                 {subItem.title}
@@ -179,9 +196,9 @@ export function AppSidebar({ currentPage, setCurrentPage }: AppSidebarProps) {
                     <SidebarMenuButton
                       onClick={item.onClick}
                       className={cn(
-                        "hover:bg-[#007FFF]/10 hover:text-[#007FFF]",
+                        "hover:text-blue-600 cursor-pointer p-5 hover:bg-blue-100  hover:border-blue-100 hover:border-[1px]",
                         isActive(item.key) &&
-                          "bg-[#007FFF] text-white hover:bg-[#007FFF] hover:text-white"
+                          "p-5 bg-[#4F80EE]  hover:bg-[#007FFF] hover:text-white text-white border-[1px] border-[#3869fa] shadow-2xl"
                       )}
                     >
                       <item.icon className="h-4 w-4" />
@@ -196,7 +213,7 @@ export function AppSidebar({ currentPage, setCurrentPage }: AppSidebarProps) {
       </SidebarContent>
       <SidebarFooter className="border-border/40 p-4">
         <Link href={`/company/${company?.companyName}`}>
-          <button className=" flex justify-center items-center gap-2 text-sm text-[#007FFF] hover:text-white hover:bg-[#007FFF] px-3 py-2 border-[1px] border-[#007FFF] rounded-md w-full transition-colors">
+          <button className="cursor-pointer flex justify-center items-center w-full rounded-4xl gap-2 p-2 bg-[#4F80EE]  hover:bg-[#007FFF] hover:text-white text-white border-[1px] border-[#3869fa] shadow-2xl">
             <ArrowLeft className="h-4 w-4" />
             Буцах
           </button>
