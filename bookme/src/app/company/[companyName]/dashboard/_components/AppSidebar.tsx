@@ -112,7 +112,7 @@ export function AppSidebar({ currentPage, setCurrentPage }: AppSidebarProps) {
     subItems.some((item) => currentPage === item.key);
 
   return (
-    <Sidebar className="border-r border-border/40">
+    <Sidebar className=" border-border/40 ">
       <SidebarHeader className="border-b border-border/40 p-4">
         <div className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#007FFF] text-white">

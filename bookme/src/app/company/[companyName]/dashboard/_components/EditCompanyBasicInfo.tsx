@@ -96,41 +96,33 @@ export const EditCompanyBasicInfo = () => {
             }
           />
         </div>
-        <div className="grid gap-2">
-          <Label htmlFor="experience">Ажлын туршлага (жилээр)</Label>
-          <Input
-            id="experience"
-            type="number"
-            placeholder="Enter years"
-            defaultValue={`${company.experience}`}
-            onChange={(e) =>
-              setUpdatedCompany((prev) => ({
-                ...prev,
-                experience: e.target.value,
-              }))
-            }
-          />
-        </div>
-        <div className="w-full h-fit flex justify-between gap-3">
+        <div className="flex gap-5">
           <div className="grid gap-2 w-full">
-            <Label htmlFor="client-number">Нийт ажилтан</Label>
+            <Label htmlFor="experience">Ажлын туршлага (жилээр)</Label>
             <Input
-              disabled
-              id="booking-number"
+              id="experience"
               type="number"
-              placeholder="Enter client count"
-              defaultValue={`${company.employees.length}`}
+              placeholder="Enter years"
+              defaultValue={`${company.experience}`}
+              onChange={(e) =>
+                setUpdatedCompany((prev) => ({
+                  ...prev,
+                  experience: e.target.value,
+                }))
+              }
             />
           </div>
-          <div className="grid gap-2 w-full">
-            <Label htmlFor="client-number">Одоогийн захиалга</Label>
-            <Input
-              disabled
-              id="client-number"
-              type="number"
-              placeholder="Enter client count"
-              defaultValue={`${company.bookings.length}`}
-            />
+          <div className="w-full h-fit flex justify-between gap-3">
+            <div className="grid gap-2 w-full">
+              <Label htmlFor="client-number">Нийт ажилтан</Label>
+              <Input
+                disabled
+                id="booking-number"
+                type="number"
+                placeholder="Enter client count"
+                defaultValue={`${company.employees.length}`}
+              />
+            </div>
           </div>
         </div>
       </CardContent>
