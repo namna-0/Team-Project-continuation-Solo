@@ -1,10 +1,11 @@
 "use client"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { DayPickerProps } from "../../../../../(publicItems)/_OrderPageTypes/types";
+import { DayPickerProps } from "../../../../(publicItems)/_OrderPageTypes/types";
 
 
-export default function WeekScroller({ date, setDate, dayArrays, isFully, company, orders, availabilityTimes, isDayClosed }: DayPickerProps) {
+export default function WeekScroller({ date, setDate, dayArrays, isFully, company, orders, availabilityTimes, isDayClosed }: DayPickerProps
+) {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const dayRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -41,8 +42,8 @@ export default function WeekScroller({ date, setDate, dayArrays, isFully, compan
             <div className="flex w-full justify-between h-fit">
                 <div className="font-bold">
                     {date !== null
-                        ? `${date.toLocaleString("mn-MN", { month: "short" })} ${date.getFullYear()}`
-                        : new Date().toLocaleString("mn-MN", { year: "numeric", month: "short" })}
+                        ? `${date.toLocaleString("mn-MN", { month: "numeric" })} сар ${date.getFullYear()}`
+                        : `${new Date().toLocaleString("mn-MN", { year: "numeric", month: "numeric" })} сар`}
                 </div>
                 <div className="flex gap-3 items-center">
                     <ChevronLeftIcon
@@ -105,10 +106,10 @@ export default function WeekScroller({ date, setDate, dayArrays, isFully, compan
                                                 : "flex justify-center items-center rounded-full text-2xl w-24 h-24 font-bold border text-gray-700 border-gray-700 bg-gray-100"
                                 }
                             >
-                                {day.toLocaleDateString("default", { day: "numeric" })}
+                                {day.toLocaleDateString("mn-MN", { day: "numeric" })}
                             </div>
                             <div className="text-sm">
-                                {day.toLocaleDateString("default", { weekday: "short" })}
+                                {day.toLocaleDateString("mn-MN", { weekday: "short" })}
                             </div>
                         </div>
                     );

@@ -5,7 +5,7 @@ export const getOrdersByEmployee: RequestHandler = async (req, res) => {
 
   try {
     const { id } = req.params;
-    const bookings = await Booking.find({ employee: id }) 
+    const bookings = await Booking.find({ employee: id }).populate("user") 
     if(!id|| id==""){
       res.status(400).json({ message: "ID is required." });
       return;

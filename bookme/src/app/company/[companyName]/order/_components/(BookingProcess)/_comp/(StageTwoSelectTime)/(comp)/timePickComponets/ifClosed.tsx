@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { IfClosedProps } from "../../../../../(publicItems)/_OrderPageTypes/types";
+import { IfClosedProps } from "../../../../(publicItems)/_OrderPageTypes/types";
 
 export const WeAreClosed = ({ date, setDate, dayArrays, isDayClosed, nextAvailabilityDay }: IfClosedProps) => {
     return (

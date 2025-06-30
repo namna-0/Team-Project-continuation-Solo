@@ -1,6 +1,6 @@
 "use client";
 
-import { LucideArrowLeft, X } from "lucide-react";
+import { LucideArrowBigLeft, LucideArrowLeft, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import LeaveOrder from "./leaveOrderDialog";
@@ -11,7 +11,8 @@ const OrderNavBar = ({
   setIsStage,
   Stages,
   title,
-  setSelectedTime
+  setSelectedTime,
+  companyData
 }: OrderNavpropsType) => {
   const initialValue = 70;
   const finalValue = 80;
@@ -28,7 +29,7 @@ const OrderNavBar = ({
     {
       clamp: false,
     }
-  );
+  )
   const [isPastThreshold, setIsPastThreshold] = useState(false);
   useEffect(
     () => scrollY.onChange((latest) => setIsPastThreshold(latest > thresholdY)),
@@ -59,10 +60,10 @@ const OrderNavBar = ({
             <div className="flex gap-6">
               {isStage == Stages[0] ? (
                 <Dialog>
-                  <DialogTrigger>
-                    <LucideArrowLeft className="text-gray-300" />
+                  <DialogTrigger className="w-fit px-2 rounded-2xl text-sm font-normal bg-gradient-to-r from-gray-200/50 from-20% via-zinc-300 via-50% to-gray-500 to-90% hover:bg-accent- ">
+                    <LucideArrowBigLeft/>
                   </DialogTrigger>
-                  <LeaveOrder />
+                  <LeaveOrder companyData={companyData} />
                 </Dialog>
               ) : (
                 <div
@@ -71,8 +72,9 @@ const OrderNavBar = ({
                       HandlePrevStage();
                     }
                   }}
+                  className="w-fit px-2 rounded-2xl font-normal bg-gradient-to-r from-gray-200/50 from-20% via-zinc-300 via-50% to-gray-500 to-90% hover:bg-accent- "
                 >
-                  <LucideArrowLeft />
+                  <LucideArrowBigLeft/>
                 </div>
               )}
             </div>
@@ -82,10 +84,10 @@ const OrderNavBar = ({
         <div>
           {" "}
           <Dialog>
-            <DialogTrigger>
-              <X />
+            <DialogTrigger className="w-fit px-2 rounded-2xl font-normal bg-gradient-to-r from-gray-200/50 from-20% via-zinc-300 via-50% to-gray-500 to-90% hover:bg-accent- ">
+              Гарах
             </DialogTrigger>
-            <LeaveOrder />
+            <LeaveOrder companyData={companyData} />
           </Dialog>
         </div>
       </div>

@@ -30,6 +30,7 @@ export type OrderNavpropsType = {
   title: string;
   Stages: string[];
   setSelectedTime: (time: Date | null) => void;
+  companyData:CompanyType|undefined
 };
 export type StagOneProps = {
   company: CompanyType;
@@ -39,6 +40,7 @@ export type StagOneProps = {
   setSelectedEmployeeImf: (employeeId: string) => void;
 };
 export type OrderImformationType = {
+  isChecked:boolean,
   HandleNextStage: () => void;
   isSelectEmployee: string | string[];
   company?: CompanyType;
@@ -59,6 +61,7 @@ export type OrderType = {
   user: string;
   employee: string;
   selectedTime: string;
+  description: string;
 };
 export type user = {
   _id?: string;
@@ -78,6 +81,7 @@ export type UpdateEmployeeProps = {
   selectedEmployeeImf: string | undefined;
   setSelectedEmployee: (employeeId: string) => void;
   setSelectedTime: (time: Date | null) => void;
+
 };
 export type CalendarProps = {
   open: boolean;
@@ -189,4 +193,12 @@ export type BookingPageProps = {
   HandleNextStage: () => void;
   date: Date | null;
   setDate: (date: Date | null) => void;
+};
+export type leaveOrderProps = {
+  companyData: CompanyType | undefined;
+}
+
+export type ConfirmBookingProps = {
+  isChecked: boolean;
+  setIsChecked: (isChecked: boolean) => void;
 };

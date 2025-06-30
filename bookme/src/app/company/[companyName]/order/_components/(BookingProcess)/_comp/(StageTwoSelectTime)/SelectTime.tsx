@@ -1,9 +1,9 @@
 "use client"
 
 import { use, useEffect, useState } from "react"
-import { employeeType, OrderType, TimingProps } from "../../../(publicItems)/_OrderPageTypes/types"
 import { api } from "@/axios"
 import { ReturnX } from "./(comp)/return/ReturnX"
+import { employeeType, OrderType, TimingProps } from "../../(publicItems)/_OrderPageTypes/types"
 
 
 function StageTwoTimePicking({

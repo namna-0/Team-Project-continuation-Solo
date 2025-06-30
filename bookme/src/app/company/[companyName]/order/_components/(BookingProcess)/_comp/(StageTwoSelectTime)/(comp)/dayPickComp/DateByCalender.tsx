@@ -6,9 +6,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { mn } from "date-fns/locale/mn";
+
 import { FormatLongFnOptions, isToday } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { CalendarProps } from "../../../../../(publicItems)/_OrderPageTypes/types";
+import { CalendarProps } from "../../../../(publicItems)/_OrderPageTypes/types";
+
 function SelectDayOnCalendar({ open, setOpen, setDate, date }: CalendarProps) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -22,25 +25,14 @@ function SelectDayOnCalendar({ open, setOpen, setDate, date }: CalendarProps) {
         <Calendar
           className="flex gap-3"
           required={true}
-          locale={{
-            code: "mn",
-            formatLong: {
-              date: () => new Date().toLocaleDateString("mn-MN"),
-              time: function (options: FormatLongFnOptions): string {
-                throw new Error("Function not implemented.");
-              },
-              dateTime: function (options: FormatLongFnOptions): string {
-                throw new Error("Function not implemented.");
-              },
-            },
-          }}
+          locale={mn}
           mode="single"
-          selected={date ?? undefined}
+          selected={date ?? null}
           buttonVariant="ghost"
           captionLayout="dropdown"
           fromYear={new Date().getFullYear()} // өнөөдрийн оноос эхэлнэ
           toYear={new Date().getFullYear() + 1} // дараа жилийн эхний сар хүртэл
-          onMonthChange={(month) => {
+          onMonthChange={(month: Date) => {
             const today = new Date();
             const isCurrentMonth =
               month.getFullYear() === today.getFullYear() &&
