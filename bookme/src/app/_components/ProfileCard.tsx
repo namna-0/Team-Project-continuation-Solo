@@ -171,11 +171,9 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 
     if (!card || !wrap || !animationHandlers) return;
 
-    // Immediately reset transform to avoid flicker
     wrap.style.setProperty("--rotate-x", "0deg");
     wrap.style.setProperty("--rotate-y", "0deg");
 
-    // Then animate smoothly to center
     const centerX = wrap.clientWidth / 2;
     const centerY = wrap.clientHeight / 2;
 

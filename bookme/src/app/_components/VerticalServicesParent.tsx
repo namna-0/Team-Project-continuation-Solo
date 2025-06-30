@@ -12,7 +12,7 @@ const serviceData = [
       "Галерей, үнэлгээ, хэрэглэгчийн туршлагыг сайжруулах цогц систем",
     ],
     image:
-      "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
+      "https://res.cloudinary.com/dpbmpprw5/image/upload/v1751279612/sumup-Cy_RRgdwHxA-unsplash_ljqj13.jpg",
     color: "from-cyan-400 to-blue-500",
   },
 
@@ -25,7 +25,7 @@ const serviceData = [
       "Супер админ — Системийн хяналт, эрх олголт",
     ],
     image:
-      "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
+      "https://res.cloudinary.com/dpbmpprw5/image/upload/v1751280160/justin-morgan--q_lg2uUTjk-unsplash_mrltw3.jpg",
     color: "from-cyan-400 to-blue-500",
   },
   // {
@@ -41,7 +41,6 @@ const serviceData = [
   // },
 ];
 
-// Main Component
 const VerticalServicesParent = ({ id }: { id: string }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -96,7 +95,6 @@ const VerticalServicesParent = ({ id }: { id: string }) => {
         backgroundPosition: "50% 0%",
       }}
     >
-      {/* Background decorative elements */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div
           className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500 rounded-full filter blur-3xl transition-transform duration-1200 ease-out"
@@ -112,7 +110,6 @@ const VerticalServicesParent = ({ id }: { id: string }) => {
         />
       </div>
 
-      {/* Services sections - Stacked vertically */}
       <div className="relative z-10">
         {serviceData.map((service, index) => (
           <div key={service.id} className="service-section">

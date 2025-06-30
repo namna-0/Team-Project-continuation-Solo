@@ -15,7 +15,7 @@ const serviceData: Service[] = [
     title: "Сул цагтай уялдуулсан захиалга",
     text: "Ажилтны бодит сул цагийг хараад, өөрийн чөлөөт цагтай уялдуулан илүү оновчтой захиалга өг.",
     image:
-      "https://res.cloudinary.com/dpbmpprw5/image/upload/q_auto:best,f_auto/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
+      "https://res.cloudinary.com/dpbmpprw5/image/upload/v1751280519/flipsnack-ZeqUBBqsH0k-unsplash_lnlymm.jpg",
     color: "from-blue-600 to-indigo-600",
     accentColor: "bg-blue-500",
   },
@@ -55,7 +55,6 @@ const ServicesParent: React.FC<ServicesParentProps> = ({ id }) => {
   const [entered, setEntered] = useState<boolean>(false);
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Mobile detection
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
     checkMobile();
@@ -63,7 +62,6 @@ const ServicesParent: React.FC<ServicesParentProps> = ({ id }) => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Reset animation state when active index changes
   useEffect(() => {
     setEntered(false);
 
@@ -80,7 +78,6 @@ const ServicesParent: React.FC<ServicesParentProps> = ({ id }) => {
     };
   }, [activeIndex]);
 
-  // Scroll handling with proper thresholds
   useEffect(() => {
     const handleScroll = () => {
       if (!containerRef.current) return;
@@ -91,12 +88,10 @@ const ServicesParent: React.FC<ServicesParentProps> = ({ id }) => {
       const scrollY = window.scrollY;
       const containerTop = containerRect.top + scrollY;
 
-      // Only activate after initial scroll
       if (scrollY > 10) {
         setHasScrolled(true);
       }
 
-      // Calculate progress with threshold
       const progress = Math.max(
         0,
         Math.min(
@@ -106,7 +101,6 @@ const ServicesParent: React.FC<ServicesParentProps> = ({ id }) => {
         )
       );
 
-      // Only update active index after passing threshold
       if (progress > 0.1 || isInitialLoad) {
         const sectionCount = serviceData.length;
         const newActiveIndex = Math.min(
@@ -120,7 +114,6 @@ const ServicesParent: React.FC<ServicesParentProps> = ({ id }) => {
         }
       }
 
-      // Handle text container positioning
       if (!isMobile && textContainerRef.current) {
         const containerTopInView = containerRect.top <= 0;
         const containerBottomInView = containerRect.bottom > windowHeight;
@@ -145,7 +138,6 @@ const ServicesParent: React.FC<ServicesParentProps> = ({ id }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isMobile, activeIndex, isInitialLoad]);
 
-  // Mobile version with scroll snap
   if (isMobile) {
     return (
       <section
@@ -257,7 +249,6 @@ const ServicesParent: React.FC<ServicesParentProps> = ({ id }) => {
     );
   }
 
-  // Desktop version with synchronized animations
   return (
     <section
       id={id}
@@ -265,7 +256,6 @@ const ServicesParent: React.FC<ServicesParentProps> = ({ id }) => {
       className="relative text-white min-h-screen w-full"
       style={{ height: `${serviceData.length * 100}vh` }}
     >
-      {/* Text container - only visible after scroll */}
       <div
         ref={textContainerRef}
         className="absolute left-0 top-0 w-full lg:w-1/2 h-screen flex items-center justify-center z-20"
@@ -300,7 +290,6 @@ const ServicesParent: React.FC<ServicesParentProps> = ({ id }) => {
         </div>
       </div>
 
-      {/* Images container */}
       <div
         ref={imagesContainerRef}
         className="lg:ml-[50%] w-full lg:w-1/2 relative"
@@ -344,7 +333,6 @@ const ServicesParent: React.FC<ServicesParentProps> = ({ id }) => {
         ))}
       </div>
 
-      {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl" />

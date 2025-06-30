@@ -19,14 +19,12 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Initialize boxes
     if (wrapperRef.current) {
       boxesRef.current = Array.from(
         wrapperRef.current.querySelectorAll(".box")
       ) as HTMLDivElement[];
     }
 
-    // Preload images
     let loadedCount = 0;
     const totalImages = criticalImages.length;
 
@@ -53,7 +51,6 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
     };
 
     const startAnimation = () => {
-      // Original single-color glowing animation
       let tl = gsap.timeline({
         onComplete: () => {
           if (wrapperRef.current) {
@@ -63,7 +60,6 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         },
       });
 
-      // Box animation with glowing effect
       tl.to(boxesRef.current, {
         scale: 0,
         y: 60,
@@ -80,7 +76,6 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         ease: "power2.inOut",
       });
 
-      // Container animation
       tl.to(containerRef.current, {
         rotate: "-405deg",
         scale: 0,
@@ -88,7 +83,6 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         ease: "back.in",
       });
 
-      // Final fade out
       tl.to(wrapperRef.current, {
         opacity: 0,
         duration: 0.3,
@@ -114,7 +108,6 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         ref={containerRef}
         className="container relative grid grid-cols-3 grid-rows-3  w-[210px] h-[220px] p-4 bg-black "
       >
-        {/* 3x3 grid of glowing boxes */}
         {[...Array(9)].map((_, i) => (
           <div
             key={i}

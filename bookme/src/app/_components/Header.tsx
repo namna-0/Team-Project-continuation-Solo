@@ -27,7 +27,6 @@ const Header = ({ company }: CompanyNavBarProps) => {
     const nav = navRef.current;
     if (!nav) return;
 
-    // Set initial state
     gsap.set(nav, {
       marginLeft: isMobile ? "5%" : "10%",
       marginRight: isMobile ? "5%" : "10%",
@@ -35,7 +34,6 @@ const Header = ({ company }: CompanyNavBarProps) => {
       background: "rgba(0,0,0,0)",
     });
 
-    // Only create scroll trigger if not mobile
     let scrollTrigger: ScrollTrigger | null = null;
     if (!isMobile) {
       scrollTrigger = ScrollTrigger.create({
@@ -52,7 +50,7 @@ const Header = ({ company }: CompanyNavBarProps) => {
           animationRef.current = gsap.to(nav, {
             duration: 0.5,
             ease: "power2.out",
-            // Reduced shrink margins to prevent content overlap
+
             marginLeft: shouldShrink ? "17%" : "10%",
             marginRight: shouldShrink ? "17%" : "10%",
             backdropFilter: shouldShrink ? "blur(8px)" : "blur(0px)",
@@ -149,7 +147,7 @@ const Header = ({ company }: CompanyNavBarProps) => {
             : "flex items-center justify-center gap-2 list-none col-span-8 min-w-0"
         }`}
       >
-        <li className="flex-shrink-0">
+        <li className="flex-shrink-0 opacity-0">
           <a
             href="#hero"
             className="text-white/90 text-sm font-medium px-3 py-2 rounded-full transition hover:bg-white/10 hover:text-white whitespace-nowrap"
@@ -191,7 +189,6 @@ const Header = ({ company }: CompanyNavBarProps) => {
         </li>
       </ul>
 
-      {/* Button - spans 2 columns (reduced from 3) and right-aligned */}
       <div
         className={`${
           isMobile ? "ml-auto" : "col-span-2 flex justify-end min-w-0"
