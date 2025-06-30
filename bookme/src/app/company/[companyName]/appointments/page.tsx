@@ -3,6 +3,9 @@ import { useAuth } from "@/app/_providers/UserAuthProvider";
 import { api } from "@/axios";
 import { useEffect, useState } from "react";
 import { Navbar } from "../userprofile/_components/Navbar";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useParams } from "next/navigation";
 
 type OrderType = {
   _id: string;
@@ -26,7 +29,8 @@ export default function Home() {
   const [orders, setOrders] = useState<OrderType[]>([]);
   const [isClicked, setIsClicked] = useState<OrderType | null>(null);
   const { user } = useAuth();
-
+  const params = useParams();
+  const companyName = params?.companyName as string;
   const cancelledOrders = orders.filter((o) => o.status === "cancelled");
   const confirmedOrders = orders.filter((o) => o.status === "confirmed");
 
@@ -85,6 +89,7 @@ export default function Home() {
               <p className="text-gray-400 text-sm">Идэвхтэй захиалга алга.</p>
             )}
           </div>
+
           <div className="flex flex-col gap-4 w-[420px] max-h-[450px] overflow-y-auto scrollbar-thin scrollbar-thumb-red-400 scrollbar-track-transparent pr-2">
             <p className="text-[20px] font-semibold flex items-center gap-2">
               ❌ Цуцлагдсан захиалгууд
@@ -123,6 +128,7 @@ export default function Home() {
               </p>
             )}
           </div>
+
           <div className="flex-1 bg-white p-6 rounded-xl border border-gray-300 shadow-sm h-fit mt-6">
             {isClicked ? (
               <>
@@ -165,6 +171,11 @@ export default function Home() {
             )}
           </div>
         </div>
+        <Link href={`/company/${companyName}/userprofile`} className="mt-auto">
+          <Button className="relative w-full bg-[#77b8fa] hover:bg-blue-500 text-white font-medium py-2 rounded-md transition-all duration-300 cursor-pointer">
+            Хэрэглэгчийн нүүр харах
+          </Button>
+        </Link>
       </div>
     </div>
   );
