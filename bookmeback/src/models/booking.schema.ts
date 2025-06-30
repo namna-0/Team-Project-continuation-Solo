@@ -36,6 +36,10 @@ const bookingSchema = new Schema({
     required: true,
     default: Date.now,
   },
+  reminderSent: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export const Booking = model("Booking", bookingSchema);
