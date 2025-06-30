@@ -10,7 +10,7 @@ const bookingSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: false,
+    required: true
   },
   employee: {
     type: Schema.Types.ObjectId,
@@ -40,6 +40,14 @@ const bookingSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  description:{
+    type:String,
+    required:false,
+    default:"нэмэлт мэдээлэл байхгүй."
+  }
 });
-
+bookingSchema.index(
+  { employee: 1, selectedTime: 1 },
+  { unique: true, partialFilterExpression: { status: { $ne: "cancelled" } } }
+);
 export const Booking = model("Booking", bookingSchema);

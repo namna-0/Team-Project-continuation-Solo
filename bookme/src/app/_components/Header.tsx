@@ -7,7 +7,7 @@ import { useCompanyAuth } from "../_providers/CompanyAuthProvider";
 import { Company } from "../company/[companyName]/_components/CompanyTypes";
 
 type CompanyNavBarProps = {
-  company: Company;
+  company?: Company | undefined;
 };
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);

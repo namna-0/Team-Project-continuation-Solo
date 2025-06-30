@@ -2,7 +2,11 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { Button } from "@/components/ui/button"
 import { DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-const LeaveOrder = () => {
+import { useRouter } from "next/navigation"
+import { leaveOrderProps } from "./_OrderPageTypes/types"
+
+const LeaveOrder = ({ companyData }: leaveOrderProps) => {
+    const router = useRouter()
     return (
         <div>
             <DialogContent showCloseButton={false} className="w-100 h-fit p-9 items-between border-none justify-between " >
@@ -16,7 +20,7 @@ const LeaveOrder = () => {
                             <Button className="flex-1 h-14 text-wrap" variant="ghost">Захиалгаа үргэлжлүүлэх</Button>
                         </DialogPrimitive.Close>
                         <Button onClick={() => {
-                            window.history.back()
+                            companyData && router.push(`http://localhost:3000/company/${companyData.companyName}`)
                         }} className="flex-1 bg-black text-white h-14" >Тийм. Гарах</Button>
                     </div>
                 </DialogHeader>

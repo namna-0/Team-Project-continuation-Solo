@@ -6,8 +6,8 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
-import { UpdateEmployeeProps } from "../../../(publicItems)/_OrderPageTypes/types";
-import EmployeeCard from "../../../(publicItems)/employeeCard";
+import { UpdateEmployeeProps } from "../../(publicItems)/_OrderPageTypes/types";
+import EmployeeCard from "../../(publicItems)/employeeCard";
 function UpdateEmployee({
   isSelectEmployee,
   company,
@@ -20,11 +20,11 @@ function UpdateEmployee({
   return (
     <DialogContent
       showCloseButton={true}
-      className="shadow  rounded-xl   flex border-none p-5"
+      className="shadow  rounded-xl min-w-fit  flex border-none p-5"
     >
       <DialogHeader className="flex flex-col gap-9">
         <DialogTitle className="text-wrap w-full ">
-          үйлчилгээ авах ажилтанг өөрчлөх гэж байна.
+          Үйлчилгээ авах ажилтанг өөрчлөх гэж байна.
         </DialogTitle>
         <DialogDescription className="grid grid-cols-3 w-fit gap-5 justify-between items-center p-5">
           {company?.employees.map((item, index) =>
@@ -41,9 +41,9 @@ function UpdateEmployee({
                     setSelectedEmployee(item._id);
                   }
                 }}
-                className={`p-2 ${item._id == selectedEmployeeImf
-                  ? "rounded-xl border bg-gray-300 border-zinc-600"
-                  : "rounded-xl bg-gray-300/50"
+                className={` ${item._id == selectedEmployeeImf
+                  ? "rounded-xl p-2 border bg-sky-300 border-zinc-600"
+                  : "rounded-xl p-2"
                   }`}
               >
                 <DialogClose>

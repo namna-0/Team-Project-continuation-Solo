@@ -49,10 +49,11 @@ export const EmployeeForm = ({
   setEmployeeData,
   setIsOpen,
 }: FormDataType) => {
-  const { company } = useCompanyAuth();
   const param = useParams<{ companyName: string }>();
   const companyNameParam = param.companyName;
-  const { employeeImage, handleInputEmployeeImage } = useSettings();
+  const { company, getCompany } = useCompanyAuth();
+  const { employeeImage, setEmployeeImage, handleInputEmployeeImage } =
+    useSettings();
   const [loading, setLoading] = useState(false);
   const [loadingProfile, setLoadingProfile] = useState(false);
   const form = useForm<z.infer<typeof employeeSchema>>({
@@ -77,9 +78,9 @@ export const EmployeeForm = ({
     setLoading(true);
     try {
       await api.post(`/${company?.companyName}/employee`, values);
-      console.log(values);
 
       toast.success("Ажилтан амжилттай нэмэгдлээ");
+      await getCompany();
     } catch (error) {
       toast.error("Ажилтан үүсгэхэд алдаа гарлаа");
       console.error("Ажилтан үүсгэхэд алдаа гарлаа", error);
@@ -107,7 +108,13 @@ export const EmployeeForm = ({
                   <div className="relative flex justify-center">
                     <div className="w-[100px] h-[100px] rounded-full bg-gray-100 flex justify-center items-center overflow-hidden">
                       {!employeeImage ? (
-                        <ManSVG />
+                        <div>
+                          {loadingProfile === false ? (
+                            <ManSVG />
+                          ) : (
+                            <LoadingSvg />
+                          )}
+                        </div>
                       ) : (
                         <img
                           src={employeeImage}
@@ -121,12 +128,7 @@ export const EmployeeForm = ({
                         <Button
                           type="button"
                           className="text-white rounded-full w-[5px] cursor-pointer"
-                          onClick={() =>
-                            setEmployeeData((prev) => ({
-                              ...prev,
-                              profileImage: "",
-                            }))
-                          }
+                          onClick={() => setEmployeeImage(null)}
                         >
                           X
                         </Button>
@@ -146,13 +148,15 @@ export const EmployeeForm = ({
                         type="file"
                         className="opacity-0 w-full h-full cursor-pointer"
                         onChange={async (e) => {
-                          await handleInputEmployeeImage(e, form);
                           setLoadingProfile(true);
+                          await handleInputEmployeeImage(e, form);
+
                           if (employeeImage) {
                             setEmployeeData((prevData) => ({
                               ...prevData,
                               profileImage: employeeImage,
                             }));
+
                             form.setValue("profileImage", employeeImage);
                           }
                           setLoadingProfile(false);

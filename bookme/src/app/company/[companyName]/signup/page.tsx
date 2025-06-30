@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import { ArrowBigLeft } from "lucide-react";
 
 const formSchema = z
   .object({
@@ -66,8 +67,12 @@ export default function Register() {
   return (
     <div className="w-screen h-screen flex justify-center items-center bg-gradient-to-br from-indigo-900 via-blue-400 to-sky-300 text-white px-4">
       <div className="max-w-[1200px] w-full flex flex-col md:flex-row rounded-3xl bg-white/5 backdrop-blur-md shadow-2xl overflow-hidden border border-white/10">
-        {/* Left - Form Section */}
         <div className="md:w-1/2 w-full p-10 flex flex-col gap-6 justify-center items-start text-white">
+          <Link href={`/company/${companyName}/user-flow-signup`}>
+            <Button className="w-10 h-10 p-2 bg-white text-black hover:bg-black hover:text-white transition cursor-pointer">
+              <ArrowBigLeft />
+            </Button>
+          </Link>
           <h1 className="text-3xl font-bold">Бүртгүүлэх</h1>
 
           <Form {...form}>

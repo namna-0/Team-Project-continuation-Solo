@@ -1,13 +1,13 @@
 import { RequestHandler } from "express";
 import { Booking } from "../../models/booking.schema";
-import { populate } from "dotenv";
-import { Employee } from "../../models";
-import { Company } from "../../models/company.schema";
-import { User } from "../../models";
+import "../../models/company.schema";
+import "../../models/user.schema";
+import "../../models/employee.schema";
 export const getOrdersAndOrder: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
-    const bookings = await Booking.find({}).populate("user");
+    const bookings = await Booking.find({})
+      .populate("user").populate("employee");
 
     if (!bookings || bookings.length === 0) {
       res.status(404).json({ message: "ийм захиалга байхгүй байна." });

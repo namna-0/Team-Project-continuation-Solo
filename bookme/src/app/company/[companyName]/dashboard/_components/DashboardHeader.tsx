@@ -14,15 +14,15 @@ interface DashboardHeaderProps {
 export function DashboardHeader({ currentPage }: DashboardHeaderProps) {
   const getPageTitle = (page: string) => {
     const titles: Record<string, string> = {
-      employees: "Employees",
-      "all-orders": "All Orders",
-      "staff-orders": "Staff Orders",
-      "general-settings": "General Settings",
-      "images-settings": "Company Images",
-      "location-settings": "Location Settings",
+      employees: "Ажилтнууд",
+      "all-orders": "Бүх захиалга",
+      "staff-orders": "Ажилтны захиалга",
+      "general-settings": "Ерөнхий мэдээлэл",
+      "images-settings": "Компанийн зураг",
+      "location-settings": "Байршил",
       "working-hours-settings": "Байгууллагын цаг",
     };
-    return titles[page] || "Dashboard";
+    return titles[page] || "Дизайн";
   };
 
   return (

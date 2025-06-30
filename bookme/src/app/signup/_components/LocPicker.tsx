@@ -25,6 +25,7 @@ export const LocPickerCompany = ({
           position: defaultLocation,
           map,
         });
+        return;
       }
 
       map.addListener("click", (e: google.maps.MapMouseEvent) => {

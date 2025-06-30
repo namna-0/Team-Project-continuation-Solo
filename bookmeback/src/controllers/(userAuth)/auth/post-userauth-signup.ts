@@ -52,14 +52,13 @@ export const postUserAuthSignUp: RequestHandler = async (req, res) => {
           <h2>Сайн байна уу, ${email}!</h2>
           <p>Та <strong>Bookme.mn</strong> платформд амжилттай бүртгүүллээ.</p>
           <p>Манай үйлчилгээг ашигласанд баярлалаа!</p>
-          <img src="https://res.cloudinary.com/dqd01lbfy/image/upload/v1745994136/samples/sheep.jpg" alt="sheep" width="300">
+          <img src="https://res.cloudinary.com/dqd01lbfy/image/upload/v1751271874/gb1v6olhagsfsogubl8r.jpg" alt="sheep" width="300">
         </div>
       `,
     };
     await transporter.sendMail(mailOptions);
     res.status(200).json({
       message: "Бүртгэл амжилттай, нэвтэрсэн!",
-      token,
       user: {
         id: newUser._id,
         email: newUser.email,

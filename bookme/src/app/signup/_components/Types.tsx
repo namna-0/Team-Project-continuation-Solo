@@ -1,4 +1,4 @@
-import { employeeType } from "@/app/company/[companyName]/order/page";
+import { employeeType } from "@/app/company/[companyName]/order/_components/(publicItems)/_OrderPageTypes/types";
 
 export interface Employee {
   _id: string;

@@ -17,20 +17,20 @@ export default function Home() {
               <ArrowBigLeft />
             </Button>
           </Link>
-          <h1 className="text-3xl font-bold mt-2">Нэвтрэх</h1>
-          <Link href="/signin" className="w-full">
+          <h1 className="text-3xl font-bold mt-2">Бүртгүүлэх</h1>
+          <Link href="/signup" className="w-full">
             <button className="w-full h-[150px] bg-white/10 border border-white/30 rounded-xl p-6 text-left transition hover:bg-white/20 hover:shadow-xl cursor-pointer">
-              <p className="text-xl font-semibold">Компаниар нэвтрэх</p>
+              <p className="text-xl font-semibold">Компаниар бүртгүүлэх</p>
               <p className="text-sm text-white/70 mt-2">
-                Байгууллагаас хандалт хийх бол энд дарна уу.
+                Байгууллагаас бүртгэл хийх бол энд дарна уу.
               </p>
             </button>
           </Link>
-          <Link href={`/company/${companyName}/login`} className="w-full">
+          <Link href={`/company/${companyName}/signup`} className="w-full">
             <button className="w-full h-[150px] bg-white/10 border border-white/30 rounded-xl p-6 text-left transition hover:bg-white/20 hover:shadow-xl cursor-pointer">
-              <p className="text-xl font-semibold">Хэрэглэгчээр нэвтрэх</p>
+              <p className="text-xl font-semibold">Хэрэглэгчээр бүртгүүлэх</p>
               <p className="text-sm text-white/70 mt-2">
-                Хувь хүн нэвтрэх бол энд дарна уу.
+                Хувь хүн бүртгүүлэх бол энд дарна уу.
               </p>
             </button>
           </Link>

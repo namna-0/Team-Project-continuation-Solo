@@ -7,7 +7,7 @@ import { DialogTrigger } from "@/components/ui/dialog";
 import { useAuth } from "@/app/_providers/UserAuthProvider";
 import { Calendar, Clock } from "lucide-react";
 import { OrderImformationType } from "./_OrderPageTypes/types";
-import UpdateEmployee from "../(BookingProcess)/_comp/(StageOneEmployeeSelect)/updateEmployeeDialog";
+import UpdateEmployee from "../_comp/(StageOneEmployeeSelect)/updateEmployeeDialog";
 
 function OrderImformation({
     HandleNextStage,
@@ -17,7 +17,7 @@ function OrderImformation({
     setSelectedTime,
     selectedEmployeeImf,
     setSelectEmployee, setDate,
-    company, isStage, setIsStage, Stages }: OrderImformationType) {
+    company, isStage, setIsStage, Stages, isChecked }: OrderImformationType) {
 
     const { user } = useAuth()
     const i = company?.employees.find((employee) => employee._id === selectedEmployeeImf);
@@ -38,9 +38,13 @@ function OrderImformation({
 
         }).then((response) => {
             console.log("Order added successfully", response.data);
-        }
-        ).catch((error) => {
-            console.error("Error adding order", error);
+        }).catch((error: any) => {
+            if (error.response?.status === 409) {
+                alert(error.response.data.message && "Уучлаарай, энэ цаг аль хэдийн захиалагдсан байна.");
+            } else {
+                alert("Захиалга хийхэд алдаа гарлаа. Дахин оролдоно уу.");
+            }
+            console.error(error);
         })
     }
     return (
@@ -49,7 +53,7 @@ function OrderImformation({
                 <div className="flex gap-4">
                     <div className="w-24 h-24 rounded border hover:border-blue-700 transition flex justify-center items-center p-3 ">
                         <img
-                            src={company?.companyImages?.[0]}
+                            src={company?.companyLogo}
                             onClick={() => window.open(`http://localhost:3000/company/${company?.companyName}`, '_blank')}
                             className="w-full h-full object-cover rounded "
                         />
@@ -61,7 +65,7 @@ function OrderImformation({
                 </div>
                 {isSelectEmployee &&
                     <div className="flex w-full justify-between ">
-                        <div className="text-sm  text-gray-400 font-bold">үйлчилгээний ажилтан: </div>
+                        <div className="text-sm  text-gray-400 font-bold">Үйлчилгээний ажилтан: </div>
                         {isStage == Stages[1]
                             ? <Dialog>
                                 <DialogTrigger className="w-fit flex gap-3  rounded-full items-centerp-1">
@@ -91,14 +95,16 @@ function OrderImformation({
                                 <>
                                     <Clock className="text-gray-400" />
                                     {selectedTime?.toTimeString().split(" ")[0].slice(0, 2)}:{selectedTime?.toTimeString().split(" ")[0].slice(3, 5)}
+                                    <p className="text-gray-500">({i?.duration} минут)</p>
                                 </>
                             ) : ""}
                         </div>
-                    </div>) : undefined}
+                    </div>) : undefined
+                }
             </div>
             <Button className={isSelectEmployee == "" ? " relative w-full bg-gray-300 text-white" : " relative w-full bg-black text-white "} onClick={() => {
                 HandleNextStage()
-                if (isStage == Stages[2]) {
+                if (isStage == Stages[2] && isChecked) {
                     addOrder()
                     setIsSelectEmployee("")
                     setSelectEmployee("")
@@ -106,7 +112,7 @@ function OrderImformation({
                     setSelectedTime(null)
                     setIsStage(Stages[3])
                 }
-            }}>continue</Button>
+            }}>үргэлжлүүлэх</Button>
         </div >
     )
 }

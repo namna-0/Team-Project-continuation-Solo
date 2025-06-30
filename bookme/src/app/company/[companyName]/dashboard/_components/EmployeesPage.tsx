@@ -1,40 +1,64 @@
 "use client";
-import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { EmployeeAddSection } from "./EmployeeAddSection";
 import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
 import { EmployeeCard } from "./EmployeeCard";
-import { useSettings } from "../_providers/CompanySettingsProvider";
+import { EmployeeSearchSection } from "./EmployeeSearchSection";
+import { useState } from "react";
+import { Employee } from "../../_components/CompanyTypes";
 
 export function EmployeesPage() {
   const { company, getCompany } = useCompanyAuth();
+  const [searchedEmployees, setSearchedEmployees] = useState<Employee[] | null>(
+    null
+  );
+  const [searchValue, setSearchValue] = useState("");
 
   return (
     <div className="space-y-6">
       <div className="w-full flex items-center justify-between p-2">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Employees</h1>
-          <p className="text-muted-foreground">Manage your company employees</p>
+          <h2 className="text-3xl font-bold tracking-tight">
+            Ажилтан засварлах
+          </h2>
+          <p className="text-muted-foreground">
+            Энэ хэсэгт та компанийн ажилтнуудын мэдээллийг шинэчилж, өөрчлөх
+            болон ажилтан устгах боломжтой.
+          </p>
         </div>
         <EmployeeAddSection />
       </div>
 
-      <div className="flex items-center space-x-2">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="Ажилтан хайх" className="pl-8" />
-        </div>
-      </div>
+      <EmployeeSearchSection
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+        setSearchedEmployees={setSearchedEmployees}
+      />
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {company?.employees
-          .slice()
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr">
+        {(searchedEmployees ?? company?.employees)
+          ?.filter((employee) =>
+            employee.employeeName
+              .toLowerCase()
+              .includes(searchValue.toLowerCase())
+          )
           .reverse()
           .map((employee) => (
-            <div key={employee._id}>
-              <EmployeeCard employee={employee} getCompanyAction={getCompany} />
-            </div>
+            <EmployeeCard
+              key={employee._id}
+              employee={employee}
+              getCompanyAction={getCompany}
+            />
           ))}
+
+        {(searchedEmployees ?? company?.employees)?.filter((employee) =>
+          employee.employeeName
+            .toLowerCase()
+            .includes(searchValue.toLowerCase())
+        ).length === 0 && (
+          <div className="col-span-full text-center text-muted-foreground">
+            Үр дүн олдсонгүй
+          </div>
+        )}
       </div>
     </div>
   );

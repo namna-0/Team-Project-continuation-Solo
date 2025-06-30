@@ -1,16 +1,19 @@
 "use client"
 
 import { ChevronRight } from "lucide-react";
-import OrderNavBar from "../(publicItems)/header";
 import StagaOneSelectEmployee from "./_comp/(StageOneEmployeeSelect)/SelectEmployee";
 import StageTwoTimePicking from "./_comp/(StageTwoSelectTime)/SelectTime";
-import OrderImformation from "../(publicItems)/orderImformation";
-import { BookingPageProps, CompanyType, employeeType } from "../(publicItems)/_OrderPageTypes/types";
 import ConfirmBooking from "./_comp/(StageThree)/Confirm";
+import OrderNavBar from "./(publicItems)/header";
+import { BookingPageProps, CompanyType, employeeType } from "./(publicItems)/_OrderPageTypes/types";
+import OrderImformation from "./(publicItems)/orderImformation";
+import { useState } from "react";
 
 export const BookingPage = ({ isStage, setSelectedTime, setIsStage, setIsSelectEmployee,
     isSelectEmployee, setSelectedEmployeeImf, selectedEmployeeImf, companyData, selectedTime,
+
     HandleNextStage, date, setDate }: BookingPageProps) => {
+    const [isChecked, setIsChecked] = useState(false);
     const Stages = ["Ажилтан", "Огноо", "Баталгаажуулалт", "амжилттай захиалагдлаа"]
     const title = () => {
         return (isStage === Stages[2]) ? `${isStage} хйих` : `${isStage} сонгох`;
@@ -19,6 +22,7 @@ export const BookingPage = ({ isStage, setSelectedTime, setIsStage, setIsSelectE
         <div className="w-full flex flex-col h-fit jusify-center overflow-hidden items-center bg-white">
             <div className="w-[1440px] relative h-[120vh] flex justify-center bg-gray-100">
                 <OrderNavBar
+                    companyData={companyData}
                     isStage={typeof isStage === "string" ? isStage : ""}
                     setSelectedTime={setSelectedTime}
                     setIsStage={setIsStage}
@@ -80,10 +84,11 @@ export const BookingPage = ({ isStage, setSelectedTime, setIsStage, setIsSelectE
                         </div>
                     )}
 
-                    {isStage == Stages[2] && <ConfirmBooking />}
+                    {isStage == Stages[2] && <ConfirmBooking isChecked={isChecked} setIsChecked={setIsChecked} />}
                 </div>
                 <div className="flex flex-2 w-full relative justify-start items-center">
                     <OrderImformation
+                        isChecked={isChecked}
                         setIsStage={setIsStage}
                         HandleNextStage={HandleNextStage}
                         setIsSelectEmployee={setIsSelectEmployee}
