@@ -17,6 +17,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { ArrowBigLeft } from "lucide-react";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -59,6 +60,11 @@ export default function Login() {
     <div className="w-screen h-screen flex justify-center items-center bg-gradient-to-br from-indigo-900 via-blue-400 to-sky-300 text-white px-4">
       <div className="max-w-[1200px] w-full flex flex-col md:flex-row rounded-3xl bg-white/5 backdrop-blur-md shadow-2xl overflow-hidden border border-white/10">
         <div className="md:w-1/2 w-full p-10 flex flex-col gap-6 justify-center items-start text-white">
+          <Link href={`/company/${companyName}/user-flow`}>
+            <Button className="w-10 h-10 p-2 bg-white text-black hover:bg-black hover:text-white transition cursor-pointer">
+              <ArrowBigLeft />
+            </Button>
+          </Link>
           <div>
             <h1 className="text-3xl font-bold mb-2">Тавтай морил</h1>
             <p className="text-sm text-white/80">

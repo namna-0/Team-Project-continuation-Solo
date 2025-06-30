@@ -227,7 +227,7 @@ export const CompanyNavBarTemplate3 = ({
                     Нэвтрэх
                   </Link>
                   <Link
-                    href={`/company/${company?.companyName}/user-flow`}
+                    href={`/company/${company?.companyName}/user-flow-signup`}
                     onClick={toggleMenu}
                     className={`block w-full text-center bg-gradient-to-r from-pink-500 to-purple-600 text-white cursor-pointer px-6 py-3 rounded-xl hover:from-pink-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 ${
                       isMenuOpen ? "animate-slideInRight" : ""
