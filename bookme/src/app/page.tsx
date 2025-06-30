@@ -5,7 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Particles from "./_components/Particles";
 import Header from "./_components/Header";
-import ServicesParent from "./_components/ServicesParent";
+import ServicesParent from "./_components/Organization";
 import VerticalServicesParent from "./_components/VerticalServicesParent";
 import OurTeam from "./_components/OurTeam";
 import Footer from "./_components/Footer";
@@ -14,7 +14,7 @@ import { Hero } from "./_components/Hero";
 import Preloader from "./_components/Preloader";
 import { motion } from "framer-motion";
 import { useCompanyAuth } from "./_providers/CompanyAuthProvider";
-import { Company } from "./signup/_components/Types";
+
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
@@ -39,7 +39,6 @@ export default function HomePage() {
           transition: "opacity 1s ease-in-out",
         }}
       >
-        {/* Background Elements */}
         <div className="absolute inset-0 -z-10">
           <Particles
             className="absolute inset-0 z-10"
@@ -47,7 +46,6 @@ export default function HomePage() {
             particleCount={300}
           />
 
-          {/* Earth Graphic ) */}
           {!isLoading && (
             <motion.div
               initial={{ opacity: 0 }}
@@ -74,7 +72,6 @@ export default function HomePage() {
           )}
         </div>
 
-        {/* Page Sections */}
         <Header />
         {!isLoading && <Hero id="hero" />}
         <VerticalServicesParent id="vertical-services" />

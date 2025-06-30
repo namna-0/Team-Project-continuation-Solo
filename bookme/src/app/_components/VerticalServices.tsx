@@ -11,7 +11,7 @@ const serviceData = [
       "Галерей, үнэлгээ, хэрэглэгчийн туршлагыг сайжруулах цогц систем",
     ],
     image:
-      "https://res.cloudinary.com/dpbmpprw5/image/upload/v1749889984/path-digital-tR0jvlsmCuQ-unsplash_1_jps41f.jpg",
+      "https://res.cloudinary.com/dpbmpprw5/image/upload/v1751279612/sumup-Cy_RRgdwHxA-unsplash_ljqj13.jpg",
     color: "from-cyan-400 to-blue-500",
   },
   {
@@ -69,7 +69,6 @@ export const VerticalServicesParent = ({ id }: { id: string }) => {
           "radial-gradient(circle at 50% 50%, rgba(120, 113, 255, 0.1) 0%, transparent 70%)",
       }}
     >
-      {/* Background elements with responsive sizing */}
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         <div
           className="absolute top-1/4 left-1/4 w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 bg-blue-500 rounded-full filter blur-xl sm:blur-2xl lg:blur-3xl transition-transform duration-1200 ease-out"
@@ -156,7 +155,6 @@ export const VerticalServices = ({
 
       <div className="max-w-7xl mx-auto w-full px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 md:gap-12 lg:gap-16 items-center">
-          {/* Text Content */}
           <div
             className="space-y-4 sm:space-y-6"
             style={{
@@ -194,7 +192,6 @@ export const VerticalServices = ({
             )}
           </div>
 
-          {/* Image Content */}
           <div
             className="relative group mt-8 lg:mt-0"
             style={{
