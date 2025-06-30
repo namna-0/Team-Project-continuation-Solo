@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import { Booking } from "../../models/booking.schema";
 import { format } from "date-fns";
+import { Company } from "../../models/company.schema";
 
 export const CreateOrderController: RequestHandler = async (req, res) => {
   try {
@@ -16,7 +17,9 @@ export const CreateOrderController: RequestHandler = async (req, res) => {
       status: { $ne: "cancelled" },
     });
     if (existingBooking) {
-      res.status(409).json({ message: "Тэр цаг аль хэдийн захиалга авсан байна." });
+      res
+        .status(409)
+        .json({ message: "Тэр цаг аль хэдийн захиалга авсан байна." });
     }
 
     const order = await Booking.create({
@@ -29,11 +32,17 @@ export const CreateOrderController: RequestHandler = async (req, res) => {
       createdAt: new Date(),
     });
 
+    await Company.findByIdAndUpdate(company, {
+      $push: { bookings: order._id },
+    });
+
     res.status(201).json({ message: "order created", order });
   } catch (error: any) {
     // Unique index-н алдааг барих
     if (error.code === 11000) {
-      res.status(409).json({ message: "Тэр цаг аль хэдийн захиалга авсан байна (unique index)." });
+      res.status(409).json({
+        message: "Тэр цаг аль хэдийн захиалга авсан байна (unique index).",
+      });
     }
     console.error(error);
     res.status(500).json({ message: "Error creating order" });
