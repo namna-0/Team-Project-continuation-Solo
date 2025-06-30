@@ -7,7 +7,7 @@ export const getOrdersByUCompany: RequestHandler = async (req, res) => {
     const bookings = await Booking.find({ company: id })
       .populate("user")
       .populate("employee")
-      .populate("company");
+    
 
     res.status(200).json({
       message: "Захиалгууд амжилттай дуудагдлаа",

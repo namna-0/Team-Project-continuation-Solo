@@ -8,8 +8,9 @@ import { useState } from "react";
 import TimePicker from "../timePickComponets/TimePicker";
 import SelectDayOnCalendar from "../dayPickComp/DateByCalender";
 import DatePicker from "../dayPickComp/DayPicker";
-import { returnProps } from "../../../../../(publicItems)/_OrderPageTypes/types";
-export const ReturnX = ({ isSelectEmployee, setSelectedEmployee, isFully, zurag, orders, company, availabilityTimes, dayArrays, selectedTime, isDayClosed, date, setSelectedTime, setDate, setIsSelectEmployee, selectedEmployeeImf }: returnProps) => {
+import { returnProps } from "../../../../(publicItems)/_OrderPageTypes/types";
+export const ReturnX = ({ isSelectEmployee, setSelectedEmployee, isFully, zurag, orders, company, availabilityTimes,
+     dayArrays, selectedTime, isDayClosed, date, setSelectedTime, setDate, setIsSelectEmployee, selectedEmployeeImf }: returnProps) => {
     const [open, setOpen] = useState<boolean>(false)
     return (
         <div className="w-full pr-4  flex flex-col  gap-6">

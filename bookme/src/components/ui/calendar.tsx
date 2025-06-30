@@ -7,15 +7,13 @@ import {
   ChevronRightIcon,
 } from "lucide-react"
 import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker"
-
 import { cn } from "@/lib/utils"
 import { Button, buttonVariants } from "@/components/ui/button"
-
 function Calendar({
   className,
   classNames,
   showOutsideDays = false,
-  captionLayout = "dropdown",
+  captionLayout = "label",
   buttonVariant = "ghost",
   formatters,
   components,
@@ -37,14 +35,15 @@ function Calendar({
       captionLayout={captionLayout}
       formatters={{
         formatMonthDropdown: (date) =>
-          date.toLocaleString("default", { month: "short" }),
+          date.toLocaleString("mn-MN", { month: "long" }),
         ...formatters,
       }}
       classNames={{
         root: cn("w-fit", defaultClassNames.root),
-        months: cn(
+        months: cn( 
           "flex gap-4 flex-col md:flex-row relative",
           defaultClassNames.months
+          , "long"
         ),
         month: cn("flex flex-col w-full gap-4", defaultClassNames.month),
         nav: cn(

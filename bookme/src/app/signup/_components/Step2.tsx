@@ -4,9 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@radix-ui/react-label";
 import React from "react";
+import TextareaAutosize from "react-textarea-autosize";
 import { useFormContext } from "react-hook-form";
 import { FullSchemaType } from "./Schemas";
-import TextareaAutosize from "react-textarea-autosize";
 
 export const Step2 = () => {
   const {

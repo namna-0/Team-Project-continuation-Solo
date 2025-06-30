@@ -1,6 +1,6 @@
 "use client"
 
-import { availabilityProps, OrderType } from "../../../../../(publicItems)/_OrderPageTypes/types";
+import { availabilityProps, OrderType } from "../../../../(publicItems)/_OrderPageTypes/types";
 
 export function AvailabilityTimes({ times, date, setDate, setSelectedTime, selectedTime, orders }: availabilityProps) {
     return (
@@ -44,9 +44,9 @@ export function AvailabilityTimes({ times, date, setDate, setSelectedTime, selec
                             : "bg-blue-200/50  flex w-full rounded-xl items-center justify-center p-4 hover:border hover:border-gray-500 cursor-pointer";
 
                     return (
-                        <div className="flex`">
+                        <div className="flex flex-col">
                             <span
-                                key={index}
+                                key={time.toString()}
                                 className={className}
                                 onClick={() => {
                                     if (!isBooked) {

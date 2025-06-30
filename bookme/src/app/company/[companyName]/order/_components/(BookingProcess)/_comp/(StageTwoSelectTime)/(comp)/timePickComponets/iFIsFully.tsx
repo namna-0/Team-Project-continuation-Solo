@@ -3,10 +3,10 @@
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import UpdateEmployee from "../../../(StageOneEmployeeSelect)/updateEmployeeDialog"
-import { isFullDayProps } from "../../../../../(publicItems)/_OrderPageTypes/types"
+import { isFullDayProps } from "../../../../(publicItems)/_OrderPageTypes/types"
 
-
-export const IsFullyDay = ({ isSelectEmployee, nextAvailabilityDay, zurag, setIsSelectEmployee, setSelectedEmployee, setSelectedTime, company, selectedEmployeeImf }: isFullDayProps) => {
+export const IsFullyDay = ({ isSelectEmployee, nextAvailabilityDay, zurag, setIsSelectEmployee,
+    setSelectedEmployee, setSelectedTime, company, selectedEmployeeImf }: isFullDayProps) => {
 
     return (
         <div className="flex flex-col w-full aspect-7/4 rounded-2xl border gap-4 justify-center items-center border-gray-500">

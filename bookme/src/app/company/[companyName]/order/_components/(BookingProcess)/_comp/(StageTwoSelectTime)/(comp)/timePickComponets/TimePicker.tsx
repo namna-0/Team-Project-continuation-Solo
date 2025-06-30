@@ -2,7 +2,7 @@
 import { WeAreClosed } from "./ifClosed";
 import { AvailabilityTimes } from "./availabilityTimes";
 import { IsFullyDay } from "./iFIsFully";
-import { TimePickerProps } from "../../../../../(publicItems)/_OrderPageTypes/types";
+import { TimePickerProps } from "../../../../(publicItems)/_OrderPageTypes/types";
 function TimePicker({
     date,
     setDate,
