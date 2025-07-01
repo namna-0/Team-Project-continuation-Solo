@@ -132,11 +132,7 @@ export default function Dashboard() {
       case "templates-settings":
         return (
           <PageContainer>
-            <EditTemplates
-              company={company}
-              fetchCompany={fetchCompany}
-              onSuccess={() => toast.success("Template updated")}
-            />
+            <EditTemplates company={company} fetchCompany={fetchCompany} />
           </PageContainer>
         );
       default:
@@ -179,7 +175,6 @@ export default function Dashboard() {
               Ажилчид
             </button>
 
-            {/* Orders */}
             <div>
               <button
                 onClick={() =>
@@ -235,7 +230,6 @@ export default function Dashboard() {
               )}
             </div>
 
-            {/* Settings */}
             <div>
               <button
                 onClick={() =>
