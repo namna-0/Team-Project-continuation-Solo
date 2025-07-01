@@ -18,6 +18,7 @@ export const getCompanyAuthMe: RequestHandler = async (req, res) => {
           { path: "employee" },
         ],
       })
+
       .populate("employees")
       .populate("users");
     if (!company) {
