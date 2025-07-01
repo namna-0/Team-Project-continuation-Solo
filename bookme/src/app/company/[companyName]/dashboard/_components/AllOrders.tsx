@@ -10,13 +10,15 @@ import {
   Check,
   Clock,
   AlertCircle,
-  Calendar,
   Search,
   ChevronDown,
   Eye,
   X,
   MoreHorizontal,
 } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -56,6 +58,17 @@ export function AllOrdersPage({ company }: AllOrdersPageProps) {
 
     if (filter === "past") return o.status === "confirmed" && isPast(date);
     if (!isFuture) return false;
+
+    if (selectedDate) {
+      const selected = new Date(selectedDate);
+      const orderDate = new Date(o.selectedTime);
+      const sameDay = 
+        orderDate.getFullYear() === selected.getFullYear() &&
+        orderDate.getMonth() === selected.getMonth() &&
+        orderDate.getDate() === selected.getDate();
+
+      if (!sameDay) return false;
+    }
 
     switch (filter) {
       case "all":
@@ -102,7 +115,6 @@ export function AllOrdersPage({ company }: AllOrdersPageProps) {
     currentPage * ITEMS_PER_PAGE
   );
 
-  // Status configuration
   const getStatusConfig = (status: string) => {
     const configs = {
       confirmed: {
@@ -124,7 +136,6 @@ export function AllOrdersPage({ company }: AllOrdersPageProps) {
     return configs[status as keyof typeof configs] || configs.pending;
   };
 
-  // Format date and time
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat("mn-MN", {
@@ -135,12 +146,10 @@ export function AllOrdersPage({ company }: AllOrdersPageProps) {
     }).format(date);
   };
 
-  // Format price
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("mn-MN").format(price) + "₮";
   };
 
-  // Filters for the filter buttons
   const filters = [
     { value: "all", label: "Бүгд", count: orders.length },
     {
@@ -172,7 +181,6 @@ export function AllOrdersPage({ company }: AllOrdersPageProps) {
     },
   ];
 
-  // Stats cards data
   const stats = [
     {
       title: "Нийт захиалга",
@@ -211,7 +219,6 @@ export function AllOrdersPage({ company }: AllOrdersPageProps) {
   return (
     <div className="flex-1 p-6">
       <div className="max-w-7xl mx-auto space-y-8">
-        {/* Header */}
         <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
@@ -221,15 +228,30 @@ export function AllOrdersPage({ company }: AllOrdersPageProps) {
               </p>
             </div>
             <div className="flex items-center gap-3">
-              <button className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors duration-200 flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                Цагийн хуваарь
-              </button>
+              <Popover>
+  <PopoverTrigger asChild>
+    <button className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors duration-200 flex items-center gap-2">
+      <CalendarIcon className="w-4 h-4" />
+      Хугацаагаар шүүх
+    </button>
+  </PopoverTrigger>
+  <PopoverContent className="w-auto p-0">
+    <Calendar
+      mode="single"
+      selected={selectedDate}
+      onSelect={(date) => {
+        setSelectedDate(date);
+        setFilter("all"); 
+      }}
+      initialFocus
+    />
+  </PopoverContent>
+</Popover>
             </div>
+            
           </div>
         </div>
 
-        {/* Filters */}
         <div className="space-y-4">
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -270,7 +292,6 @@ export function AllOrdersPage({ company }: AllOrdersPageProps) {
           </div>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map((stat, index) => {
             const getColorClasses = (color: string) => {
@@ -312,7 +333,6 @@ export function AllOrdersPage({ company }: AllOrdersPageProps) {
           })}
         </div>
 
-        {/* Orders Table */}
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="p-6 border-b border-gray-100">
             <h2 className="text-lg font-semibold">Захиалгын жагсаалт</h2>
@@ -407,7 +427,6 @@ export function AllOrdersPage({ company }: AllOrdersPageProps) {
             </table>
           </div>
 
-          {/* Pagination */}
           {totalPages > 1 && (
             <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
               <button
