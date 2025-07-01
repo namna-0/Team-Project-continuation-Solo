@@ -108,8 +108,7 @@ export type availabilityProps = {
   setSelectedTime: (time: Date) => void;
   selectedTime: Date | null;
   isPassed: boolean
-  isBooked: boolean
-  currentSlot: Date
+  orders: OrderType[]|undefined
 };
 export type IfClosedProps = {
   date: Date | null;

@@ -1,7 +1,6 @@
-"use client";
-
-import { StagOneProps } from "../../(publicItems)/_OrderPageTypes/types";
+"use client";;
 import EmployeeCard from "../../(publicItems)/employeeCard";
+import { StagOneProps } from "../../(publicItems)/_OrderPageTypes/types";
 
 export default function StagaOneSelectEmployee({
   company,
@@ -11,7 +10,7 @@ export default function StagaOneSelectEmployee({
   setSelectedEmployeeImf,
 }: StagOneProps) {
   return (
-    company?.employees.length > 0  ?
+    company?.employees.length > 0 ?
       <div className="grid grid-cols-3 w-fit gap-5 justify-between items-center p-5">
         {company?.employees.map((item, index) =>
           item.availability !== (undefined) && item.availability == (true) ? (

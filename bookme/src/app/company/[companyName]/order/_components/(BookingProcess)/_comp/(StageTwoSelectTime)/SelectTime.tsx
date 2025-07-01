@@ -5,7 +5,6 @@ import { api } from "@/axios"
 import { ReturnX } from "./(comp)/return/ReturnX"
 import { employeeType, OrderType, TimingProps } from "../../(publicItems)/_OrderPageTypes/types"
 
-
 function StageTwoTimePicking({
     isSelectEmployee, setSelectedEmployee, zurag, company, date, selectedTime, setSelectedTime, setDate, setIsSelectEmployee, selectedEmployeeImf
 }: TimingProps) {

@@ -20,23 +20,20 @@ function TimePicker({
 }: TimePickerProps) {
     const isClosed = date ? isDayClosed(date) : false;
     const times = date ? availabilityTimes(date.getDay()) : [];
-    const hour = date?.getHours() ;
+    const hour = date?.getHours();
     const minute = date?.getMinutes();
     const currentSlot = new Date(
-        date?.getFullYear() ?? 0 ,
-        date?.getMonth() ??0,
-        date?.getDate() ,
+        date?.getFullYear() ?? 0,
+        date?.getMonth() ?? 0,
+        date?.getDate(),
         hour,
         minute
     );
-    const allSelectedTimes = orders
-        ? orders.map((order: OrderType) => new Date(order.selectedTime))
-        : []
+    // const allSelectedTimes = orders
+    //     ? orders.map((order: OrderType) => new Date(order.selectedTime))
+    //     : []
 
-    const isBooked =
-        allSelectedTimes.some(
-            (selectedTime) => selectedTime.getTime() === currentSlot.getTime()
-        )
+
     const isPassed = currentSlot.getTime() < new Date().getTime()
     const nextAvailabilityDay = () => {
         if (date) {
@@ -69,7 +66,7 @@ function TimePicker({
 
     return (
         <AvailabilityTimes
-            date={date} setDate={setDate} selectedTime={selectedTime} times={times} setSelectedTime={setSelectedTime} isPassed={isPassed}isBooked={isBooked} currentSlot={currentSlot} />
+            date={date} setDate={setDate} selectedTime={selectedTime} times={times} setSelectedTime={setSelectedTime} isPassed={isPassed} orders={orders} />
     );
 }
 
