@@ -293,6 +293,7 @@ export const BookingCalendar = ({
         selectedTime: formattedSelectedTime,
         status: "confirmed",
         duration: selectedDuration,
+        user: loggedInCompany._id
       });
 
       if (response.status === 201) {
@@ -318,7 +319,11 @@ export const BookingCalendar = ({
         setDialogOpen(false);
         setSelectedSlot(null);
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 409) {
+        console.error("Захиалга давхардлаа", error)
+        toast.error("Захиалга давхардлаа");
+      }
       console.error("Захиалга илгээхэд алдаа:", error);
       toast.error("Захиалга илгээхэд алдаа гарлаа");
     }
