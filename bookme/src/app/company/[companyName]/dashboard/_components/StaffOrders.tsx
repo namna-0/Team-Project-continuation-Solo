@@ -1,33 +1,12 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Users, Calendar, Clock } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Users, Calendar, Clock, ArrowLeft } from "lucide-react";
 import { Company, Employee, Booking } from "../../_components/CompanyTypes";
-import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 import { StaffOrdersList } from "./StaffOrderList";
 import { BookingCalendar } from "./Calendar";
-
-const getStatusColor = (status: string) => {
-  switch (status?.toLowerCase()) {
-    case "pending":
-      return "secondary";
-    case "confirmed":
-      return "default";
-    case "completed":
-      return "secondary";
-    case "cancelled":
-      return "destructive";
-    default:
-      return "secondary";
-  }
-};
+import { StatsCard } from "./StatsCard";
 
 export function StaffOrdersPage({ company }: { company: Company }) {
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(
@@ -36,6 +15,7 @@ export function StaffOrdersPage({ company }: { company: Company }) {
   const [selectedBookings, setSelectedBookings] = useState<Booking[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+
   const getEmployeeBookings = (employeeId: string): Booking[] => {
     if (!company.bookings) return [];
     return company.bookings.filter(
@@ -62,6 +42,7 @@ export function StaffOrdersPage({ company }: { company: Company }) {
     setCurrentPage(1);
   }, [selectedEmployee]);
 
+  // Calculate stats
   const activeStaff =
     company.employees?.filter((emp) => emp.availability)?.length || 0;
   const pendingOrders = displayBookings.filter(
@@ -77,78 +58,74 @@ export function StaffOrdersPage({ company }: { company: Company }) {
   }).length;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">
-            Ажилчдын цаг захиалга
-          </h1>
-          <p className="text-muted-foreground">
-            {selectedEmployee
-              ? `${selectedEmployee.employeeName}-ийн захиалгууд`
-              : "Бүх ажилтнуудын цаг захиалга"}
-          </p>
+    <div className="flex-1 p-6 bg-gray-50">
+      <div className="max-w-7xl mx-auto space-y-6">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">
+                Ажилчдын цаг захиалга
+              </h1>
+              <p className="text-gray-600 mt-1">
+                {selectedEmployee
+                  ? `${selectedEmployee.employeeName}-ийн захиалгууд`
+                  : "Бүх ажилтнуудын цаг захиалга"}
+              </p>
+            </div>
+            {selectedEmployee && (
+              <Button
+                variant="outline"
+                onClick={showAllBookings}
+                className="flex items-center gap-2"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Бүх захиалга харах
+              </Button>
+            )}
+          </div>
         </div>
-        {selectedEmployee && (
-          <Button variant="outline" onClick={showAllBookings}>
-            Бүх захиалга харах
-          </Button>
-        )}
-      </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Идэвхтэй ажилтан
-            </CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{activeStaff}</div>
-            <p className="text-xs text-muted-foreground">Одоо ажиллаж байгаа</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Хүлээгдэж буй захиалга
-            </CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{pendingOrders}</div>
-            <p className="text-xs text-muted-foreground">Гүйцэтгэх ёстой</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Өнөөдөр дууссан
-            </CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{completedToday}</div>
-            <p className="text-xs text-muted-foreground">
-              Гүйцэтгэсэн захиалга
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-      <StaffOrdersList
-        company={company}
-        selectedEmployee={selectedEmployee}
-        getEmployeeBookings={getEmployeeBookings}
-        handleEmployeeSelect={handleEmployeeSelect}
-      />
-      {selectedEmployee && (
-        <BookingCalendar
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <StatsCard
+            title="Идэвхтэй ажилтан"
+            value={activeStaff}
+            description="Одоо ажиллаж байгаа"
+            icon={<Users className="w-5 h-5 text-blue-600" />}
+            color="blue"
+          />
+          <StatsCard
+            title="Хүлээгдэж буй захиалга"
+            value={pendingOrders}
+            description="Гүйцэтгэх ёстой"
+            icon={<Calendar className="w-5 h-5 text-yellow-600" />}
+            color="yellow"
+          />
+          <StatsCard
+            title="Өнөөдөр дууссан"
+            value={completedToday}
+            description="Гүйцэтгэсэн захиалга"
+            icon={<Clock className="w-5 h-5 text-green-600" />}
+            color="green"
+          />
+        </div>
+
+        {/* Staff List */}
+        <StaffOrdersList
           company={company}
           selectedEmployee={selectedEmployee}
-          bookings={displayBookings}
+          onEmployeeSelect={handleEmployeeSelect}
+          getEmployeeBookings={getEmployeeBookings}
         />
-      )}
+
+        {/* Calendar */}
+        {selectedEmployee && (
+          <BookingCalendar
+            company={company}
+            selectedEmployee={selectedEmployee}
+            bookings={displayBookings}
+          />
+        )}
+      </div>
     </div>
   );
 }

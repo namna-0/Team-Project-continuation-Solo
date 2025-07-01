@@ -11,6 +11,8 @@ export const Step1 = () => {
     formState: { errors },
   } = useFormContext<Step1SchemaType>();
 
+  const inputClass = "bg-white/10 text-white border-white placeholder-white";
+
   return (
     <div className="space-y-6 text-white p-6 rounded-lg max-w-2xl mx-auto">
       <h2 className="text-xl font-bold mb-2">Бүртгэлийн мэдээлэл</h2>
@@ -22,7 +24,7 @@ export const Step1 = () => {
         <Input
           {...register("email")}
           placeholder="ta@example.com"
-          className="bg-white/10 text-white border-white placeholder-white"
+          className={inputClass}
         />
         {errors.email && (
           <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
@@ -37,7 +39,7 @@ export const Step1 = () => {
           {...register("password")}
           type="password"
           placeholder="••••••••"
-          className="bg-white/10 text-white border-white placeholder-white placeholder-text-white"
+          className={inputClass}
         />
         {errors.password && (
           <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
@@ -52,7 +54,7 @@ export const Step1 = () => {
           {...register("confirmPassword")}
           type="password"
           placeholder="••••••••"
-          className="bg-white/10 text-white border-white placeholder-white placeholder-text-white"
+          className={inputClass}
         />
         {errors.confirmPassword && (
           <p className="text-red-500 text-sm mt-1">
@@ -69,7 +71,7 @@ export const Step1 = () => {
         <Input
           {...register("companyName")}
           placeholder="Компаний нэр"
-          className="bg-white/10 text-white border-white placeholder-white placeholder-text-white"
+          className={inputClass}
         />
         {errors.companyName && (
           <p className="text-red-500 text-sm mt-1">
