@@ -1,16 +1,19 @@
 "use client";
 import { api } from "@/axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Company } from "./[companyName]/_components/CompanyTypes";
 import Image from "next/image";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useParams } from "next/navigation";
+import { motion } from "framer-motion";
 import Link from "next/link";
 
 export default function Home() {
   const [companies, setCompanies] = useState<Company[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [search, setSearch] = useState("");
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const params = useParams();
 
   useEffect(() => {
@@ -25,9 +28,34 @@ export default function Home() {
     getCompanies();
   }, []);
 
+  useEffect(() => {
+    if (companies.length === 0) return;
+    if (intervalRef.current) clearInterval(intervalRef.current);
+
+    intervalRef.current = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % companies.length);
+    }, 5000);
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [companies]);
+
   const filteredCompanies = companies.filter((company) =>
     company.companyName.toLowerCase().startsWith(search.toLowerCase())
   );
+  const handleDragEnd = (_: any, info: any) => {
+    if (info.offset.x < -100) {
+      setCurrentIndex((prev) =>
+        prev === filteredCompanies.length - 1 ? 0 : prev + 1
+      );
+    } else if (info.offset.x > 100) {
+      setCurrentIndex((prev) =>
+        prev === 0 ? filteredCompanies.length - 1 : prev - 1
+      );
+    }
+  };
+
   return (
     <div className="w-screen h-screen bg-[#f9f9f9] flex flex-col items-center">
       <nav className=" top-0 w-full bg-white/80 backdrop-blur-md z-50 shadow-sm relative">
@@ -74,41 +102,118 @@ export default function Home() {
             </p>
           </div>
         </div>
-        {filteredCompanies.map((company) => (
-          <div
-            key={company._id}
-            className="border border-gray-300 p-4 rounded-md shadow bg-white w-full flex flex-col gap-5"
-          >
-            <div className="flex items-center gap-2">
-              <img
-                src={company.companyLogo}
-                className="h-[40px] w-[40px] "
-              ></img>
-              <h2 className="text-[24px] font-semibold">
-                {company.companyName}
-              </h2>
-            </div>
-            <div>
-              <p className="text-[14px] text-gray-700">{company.description}</p>
-              <p className="text-[12px] text-gray-500 mt-2">
-                <span className="font-semibold">Хаяг:</span>
-                {company.address}
-              </p>
-              <p className="text-[12px] text-gray-500 mt-2">
-                <span className="font-semibold"> Email хаяг:</span>
-                {company.email}
-              </p>
-            </div>
-            <div className="flex justify-end">
-              <Link href={`/company/${company.companyName}`}>
-                <Button className="relative bg-[#77b8fa] group w-[77px] h-10 px-6 py-2 rounded-full overflow-hidden text-white cursor-pointer">
-                  <span className="absolute inset-0 bg-gradient-to-r from-[#77b8fa] to-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-full" />
-                  <span className="relative z-10">Зочлох</span>
-                </Button>
-              </Link>
-            </div>
+        <div className="relative w-full h-[520px] flex items-center justify-center mt-10">
+          {filteredCompanies.map((company, i) => {
+            const total = filteredCompanies.length;
+            const offset = (i - currentIndex + total) % total;
+            let xOffset = 0;
+            let scale = 1;
+            let opacity = 1;
+            let zIndex = 10;
+
+            if (offset === 1) {
+              xOffset = 100;
+              scale = 0.93;
+              zIndex = 9;
+            } else if (offset === total - 1) {
+              xOffset = -100;
+              scale = 0.93;
+              zIndex = 9;
+            } else if (offset === 2) {
+              xOffset = 160;
+              scale = 0.88;
+              opacity = 0.6;
+              zIndex = 8;
+            } else if (offset === total - 2) {
+              xOffset = -160;
+              scale = 0.88;
+              opacity = 0.6;
+              zIndex = 8;
+            } else if (offset === 0) {
+              xOffset = 0;
+              scale = 1;
+              zIndex = 10;
+            } else {
+              opacity = 0;
+              zIndex = 1;
+            }
+            const isCenter = offset === 0;
+            return (
+              <motion.div
+                key={company._id}
+                className="absolute w-[380px] min-h-[380px] bg-white rounded-3xl shadow-xl border border-gray-100 p-6 flex flex-col justify-between transition-all duration-300"
+                style={{
+                  transform: `translateX(${xOffset}px) scale(${scale})`,
+                  zIndex,
+                  opacity,
+                }}
+                drag={isCenter ? "x" : false}
+                dragConstraints={{ left: 0, right: 0 }}
+                onDragEnd={isCenter ? handleDragEnd : undefined}
+                whileTap={isCenter ? { scale: 1.02 } : undefined}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="h-12 w-12 rounded-full overflow-hidden border border-gray-300 shadow">
+                    <img
+                      src={company.companyLogo}
+                      alt="Logo"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  <h2 className="text-[22px] font-semibold text-gray-800">
+                    {company.companyName}
+                  </h2>
+                </div>
+                <div className="text-sm text-gray-600 mt-4 flex-1">
+                  <p className="mb-4 ">{company.description}</p>
+                  <div className="text-xs space-y-1 text-gray-500 mt-3">
+                    <p>
+                      <span className="font-semibold text-gray-700">
+                        📍 Хаяг:
+                      </span>{" "}
+                      {company.address}
+                    </p>
+                    <p>
+                      <span className="font-semibold text-gray-700">
+                        📧 Email:
+                      </span>{" "}
+                      {company.email}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex justify-end pt-4">
+                  <Link href={`/company/${company.companyName}`}>
+                    <Button className="bg-gradient-to-r from-[#77b8fa] to-[#4e98e8] text-white rounded-full px-6 py-2 hover:shadow-lg transition-all cursor-pointer">
+                      Зочлох
+                    </Button>
+                  </Link>
+                </div>
+              </motion.div>
+            );
+          })}
+          <div className="absolute bottom-8 flex gap-6 z-50">
+            <Button
+              className="cursor-pointer"
+              variant="outline"
+              onClick={() =>
+                setCurrentIndex((prev) =>
+                  prev === 0 ? filteredCompanies.length - 1 : prev - 1
+                )
+              }
+            >
+              ← Өмнөх
+            </Button>
+            <Button
+              className="cursor-pointer"
+              variant="outline"
+              onClick={() =>
+                setCurrentIndex((prev) => (prev + 1) % filteredCompanies.length)
+              }
+            >
+              Дараах →
+            </Button>
           </div>
-        ))}
+        </div>
       </div>
     </div>
   );
