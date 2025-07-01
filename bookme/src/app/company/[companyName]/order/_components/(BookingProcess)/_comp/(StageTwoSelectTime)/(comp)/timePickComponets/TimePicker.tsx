@@ -2,7 +2,7 @@
 import { WeAreClosed } from "./ifClosed";
 import { AvailabilityTimes } from "./availabilityTimes";
 import { IsFullyDay } from "./iFIsFully";
-import { TimePickerProps } from "../../../../(publicItems)/_OrderPageTypes/types";
+import { OrderType, TimePickerProps } from "../../../../(publicItems)/_OrderPageTypes/types";
 function TimePicker({
     date,
     setDate,
@@ -20,6 +20,24 @@ function TimePicker({
 }: TimePickerProps) {
     const isClosed = date ? isDayClosed(date) : false;
     const times = date ? availabilityTimes(date.getDay()) : [];
+    const hour = date?.getHours() ;
+    const minute = date?.getMinutes();
+    const currentSlot = new Date(
+        date?.getFullYear() ?? 0 ,
+        date?.getMonth() ??0,
+        date?.getDate() ,
+        hour,
+        minute
+    );
+    const allSelectedTimes = orders
+        ? orders.map((order: OrderType) => new Date(order.selectedTime))
+        : []
+
+    const isBooked =
+        allSelectedTimes.some(
+            (selectedTime) => selectedTime.getTime() === currentSlot.getTime()
+        )
+    const isPassed = currentSlot.getTime() < new Date().getTime()
     const nextAvailabilityDay = () => {
         if (date) {
             const days = dayArrays(date); // бүх өдөр
@@ -43,14 +61,15 @@ function TimePicker({
         return (
             <WeAreClosed nextAvailabilityDay={nextAvailabilityDay} isDayClosed={isDayClosed} date={date} setDate={setDate} dayArrays={dayArrays} />)
     }
-    if (isFully) {
+    if (isFully || isPassed) {
         return (
             <IsFullyDay nextAvailabilityDay={nextAvailabilityDay} isSelectEmployee={isSelectEmployee} setIsSelectEmployee={setIsSelectEmployee} setSelectedEmployee={setSelectedEmployee} company={company} setSelectedTime={setSelectedTime} zurag={zurag} selectedEmployeeImf={selectedEmployeeImf} />
         )
     }
+
     return (
         <AvailabilityTimes
-            date={date} setDate={setDate} selectedTime={selectedTime} times={times} setSelectedTime={setSelectedTime} orders={orders} />
+            date={date} setDate={setDate} selectedTime={selectedTime} times={times} setSelectedTime={setSelectedTime} isPassed={isPassed}isBooked={isBooked} currentSlot={currentSlot} />
     );
 }
 

@@ -8,6 +8,8 @@ import { useAuth } from "@/app/_providers/UserAuthProvider";
 import { Calendar, Clock } from "lucide-react";
 import { OrderImformationType } from "./_OrderPageTypes/types";
 import UpdateEmployee from "../_comp/(StageOneEmployeeSelect)/updateEmployeeDialog";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 function OrderImformation({
     HandleNextStage,
@@ -18,7 +20,7 @@ function OrderImformation({
     selectedEmployeeImf,
     setSelectEmployee, setDate,
     company, isStage, setIsStage, Stages, isChecked }: OrderImformationType) {
-
+    const router = useRouter()
     const { user } = useAuth()
     const i = company?.employees.find((employee) => employee._id === selectedEmployeeImf);
     const addOrder = async () => {
@@ -37,6 +39,7 @@ function OrderImformation({
             }),
 
         }).then((response) => {
+            
             console.log("Order added successfully", response.data);
         }).catch((error: any) => {
             if (error.response?.status === 409) {
@@ -110,7 +113,9 @@ function OrderImformation({
                     setSelectEmployee("")
                     setDate(null)
                     setSelectedTime(null)
-                    setIsStage(Stages[3])
+                    setIsStage(Stages[0])
+                    toast("Амжилттай захиалагдлаа")
+                    router.push(`/company/${company?.companyName}/appointments`)
                 }
             }}>үргэлжлүүлэх</Button>
         </div >
