@@ -29,10 +29,7 @@ export const CompanyWorkingHours = ({ company }: PropsType) => {
   const [changedTimeSchedule, setChangedTimeSchedule] = useState(
     company.workingHours
   );
-  console.log(changedTimeSchedule);
-  console.log(company);
-
-
+  console.log(company.workingHours);
 
   return (
     <div className="w-full h-fit rounded-2xl p-3">
@@ -74,14 +71,15 @@ export const CompanyWorkingHours = ({ company }: PropsType) => {
                             ...changedTimeSchedule,
                             [day]: {
                               ...changedTimeSchedule?.[
-                              day as keyof WorkingHoursType
+                                day as keyof WorkingHoursType
                               ],
                               closed: updatedClosed,
                             },
                           },
                         });
                         toast.success(
-                          `${dayLabels[day as keyof WorkingHoursType]
+                          `${
+                            dayLabels[day as keyof WorkingHoursType]
                           } гараг өөрчлөгдлөө`
                         );
                       } catch (error) {
@@ -95,7 +93,6 @@ export const CompanyWorkingHours = ({ company }: PropsType) => {
                   <Label> {dayLabels[day as keyof WorkingHoursType]}</Label>
                 </div>
 
-
                 {data.closed ? (
                   <div className="flex items-center pl-2 gap-3 w-[640px] h-[44px] bg-gray-100 rounded-[7px]">
                     <div className="opacity-50">
@@ -103,19 +100,13 @@ export const CompanyWorkingHours = ({ company }: PropsType) => {
                     </div>
                     <div className="opacity-50">Хаалттай</div>
                   </div>
-                ) : <CompanyWorkingHoursChange
-                  day={day as keyof WorkingHoursType}
-                  data={data}
-                  onTimeChange={(field, value) => {
-                    setChangedTimeSchedule((prev) => ({
-                      ...prev!,
-                      [day]: {
-                        ...prev?.[day as keyof WorkingHoursType],
-                        [field]: value,
-                      },
-                    }));
-                  }}
-                />}
+                ) : (
+                  <CompanyWorkingHoursChange
+                    day={day as keyof WorkingHoursType}
+                    data={data}
+                    changedTimeSchedule={changedTimeSchedule}
+                  />
+                )}
               </div>
             ))}
       </div>
