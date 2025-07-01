@@ -16,7 +16,11 @@ export const BookingPage = ({ isStage, setSelectedTime, setIsStage, setIsSelectE
     const [isChecked, setIsChecked] = useState(false);
     const Stages = ["Ажилтан", "Огноо", "Баталгаажуулалт", "амжилттай захиалагдлаа"]
     const title = () => {
-        return (isStage === Stages[2]) ? `${isStage} хйих` : `${isStage} сонгох`;
+        if (isStage === Stages[2]) { return `${isStage} хийх`; }
+        if (isStage == Stages[1] || isStage === Stages[0]) { return `${isStage} сонгох`; }
+        if (isStage == Stages[3]) { return isStage; }
+        return ""; // Default fallback to ensure a string is always returned
+
     }
     return (
         <div className="w-full flex flex-col h-fit jusify-center overflow-hidden items-center bg-white">

@@ -61,7 +61,7 @@ const OrderNavBar = ({
               {isStage == Stages[0] ? (
                 <Dialog>
                   <DialogTrigger className="w-fit px-2 rounded-2xl text-sm font-normal bg-gradient-to-r from-gray-200/50 from-20% via-zinc-300 via-50% to-gray-500 to-90% hover:bg-accent- ">
-                    <LucideArrowBigLeft/>
+                    <LucideArrowBigLeft />
                   </DialogTrigger>
                   <LeaveOrder companyData={companyData} />
                 </Dialog>
@@ -74,7 +74,7 @@ const OrderNavBar = ({
                   }}
                   className="w-fit px-2 rounded-2xl font-normal bg-gradient-to-r from-gray-200/50 from-20% via-zinc-300 via-50% to-gray-500 to-90% hover:bg-accent- "
                 >
-                  <LucideArrowBigLeft/>
+                  <LucideArrowBigLeft />
                 </div>
               )}
             </div>
@@ -82,7 +82,6 @@ const OrderNavBar = ({
           </div>
         </motion.div>
         <div>
-          {" "}
           <Dialog>
             <DialogTrigger className="w-fit px-2 rounded-2xl font-normal bg-gradient-to-r from-gray-200/50 from-20% via-zinc-300 via-50% to-gray-500 to-90% hover:bg-accent- ">
               Гарах

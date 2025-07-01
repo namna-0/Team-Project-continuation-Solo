@@ -8,6 +8,7 @@ import { useAuth } from "@/app/_providers/UserAuthProvider";
 import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { IsSucsessBooked } from "./_components/(SucsessBooked)/IsSucsessBooked";
 
 export default function OrderPage() {
     const Stages = ["Ажилтан", "Огноо", "Баталгаажуулалт", "амжилттай захиалагдлаа"]
@@ -84,7 +85,7 @@ export default function OrderPage() {
         </div>
     )
     return (
-        Stages.indexOf(isStage) < Stages.length ? (
+        Stages.indexOf(isStage) <= Stages.length-1 ? (
             <BookingPage
                 date={date} setDate={setDate} isStage={isStage} setIsStage={setIsStage}
                 isSelectEmployee={isSelectEmployee} setIsSelectEmployee={setIsSelectEmployee}
@@ -92,8 +93,7 @@ export default function OrderPage() {
                 selectedEmployeeImf={selectedEmployeeImf} setSelectedEmployeeImf={setSelectedEmployeeImf}
                 HandleNextStage={HandleNextStage}
                 companyData={companyData}
-
             />
-        ) : (<div></div>)
+        ) : <IsSucsessBooked />
     )
 }

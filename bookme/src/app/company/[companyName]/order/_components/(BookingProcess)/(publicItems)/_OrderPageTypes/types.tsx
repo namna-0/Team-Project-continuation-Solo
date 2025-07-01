@@ -30,7 +30,7 @@ export type OrderNavpropsType = {
   title: string;
   Stages: string[];
   setSelectedTime: (time: Date | null) => void;
-  companyData:CompanyType|undefined
+  companyData: CompanyType | undefined
 };
 export type StagOneProps = {
   company: CompanyType;
@@ -40,7 +40,7 @@ export type StagOneProps = {
   setSelectedEmployeeImf: (employeeId: string) => void;
 };
 export type OrderImformationType = {
-  isChecked:boolean,
+  isChecked: boolean,
   HandleNextStage: () => void;
   isSelectEmployee: string | string[];
   company?: CompanyType;
@@ -106,8 +106,10 @@ export type availabilityProps = {
   date: Date | null;
   setDate: (date: Date | null) => void;
   setSelectedTime: (time: Date) => void;
-  orders: OrderType[] | undefined;
   selectedTime: Date | null;
+  isPassed: boolean
+  isBooked: boolean
+  currentSlot: Date
 };
 export type IfClosedProps = {
   date: Date | null;

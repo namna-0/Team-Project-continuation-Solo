@@ -49,7 +49,7 @@ export const CompanyLogoEdit = () => {
       </CardHeader>
       <CardContent>
         <div className="flex items-center gap-4">
-          <div className="relative">
+          <div className="relative flex flex-col gap-3">
             {logoLoading ? (
               <div className="flex w-[250px] h-[250px] items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
                 <LoadingSvg />
@@ -59,40 +59,42 @@ export const CompanyLogoEdit = () => {
                 <ImageSVG />
               </div>
             ) : (
-              <div className="relative w-[250px] h-[250px]">
+              <div className="relative w-[250px] h-[250px] border-2 border-gray-300 rounded-2xl">
                 <img
                   src={`${company?.companyLogo}`}
                   alt="Company Logo"
                   className="w-full h-full rounded-2xl object-cover"
                 />
                 <Button
-                  className="absolute right-2 top-2 rounded-full w-6 h-6 text-xs "
+                  className="absolute right-2 top-2 rounded-full w-6 h-6 text-xs cursor-pointer"
                   onClick={handleDeleteLogo}
                 >
                   x
                 </Button>
               </div>
             )}
+
+            <div className="space-y-2 relative w-full  flex justify-center items-center ">
+              <div>
+                <Button
+                  variant="outline"
+                  className="border-[#007FFF] text-[#007FFF] hover:bg-[#007FFF]/10 hover:text-[#007FFF]"
+                >
+                  <Upload className="mr-2 h-4 w-4" />
+                  Зураг оруулах
+                </Button>
+              </div>
+              <div className="w-[141px] absolute top-0 opacity-0">
+                <Input
+                  type="file"
+                  className="w-full cursor-pointer"
+                  onChange={handleInputCompanyLogo}
+                />
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-2 relative">
-            <div>
-              <Button
-                variant="outline"
-                className="border-[#007FFF] text-[#007FFF] hover:bg-[#007FFF]/10 hover:text-[#007FFF]"
-              >
-                <Upload className="mr-2 h-4 w-4" />
-                Зураг оруулах
-              </Button>
-            </div>
-            <div className="w-[141px] absolute top-0 opacity-0">
-              <Input
-                type="file"
-                className="w-full"
-                onChange={handleInputCompanyLogo}
-              />
-            </div>
-          </div>
+
         </div>
       </CardContent>
     </Card>
