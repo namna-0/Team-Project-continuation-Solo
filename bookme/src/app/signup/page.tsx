@@ -183,7 +183,6 @@ export default function CompanySetupPage() {
   };
 
   const removeCompanyImage = (index: number) => {
-    // Clean up the object URL
     const urlToRevoke = companyImagePreview[index];
     if (urlToRevoke?.startsWith("blob:")) {
       URL.revokeObjectURL(urlToRevoke);
@@ -194,7 +193,6 @@ export default function CompanySetupPage() {
   };
 
   const removeLogo = () => {
-    // Clean up the object URL
     if (logoPreview.startsWith("blob:")) {
       URL.revokeObjectURL(logoPreview);
     }
@@ -290,7 +288,7 @@ export default function CompanySetupPage() {
             particleCount={2000}
   particleSpread={20}
   cameraDistance={100}
-  particleBaseSize={10}    // том болгох эсвэл жижигрүүлэх боломжтой
+  particleBaseSize={10}   
   sizeRandomness={0.5}
   speed={0.05}
           />
@@ -355,7 +353,6 @@ export default function CompanySetupPage() {
           </div>
         </motion.div>
 
-        {/* Right Side - Form */}
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -423,8 +420,6 @@ export default function CompanySetupPage() {
           </div>
         </motion.div>
       </div>
-
-      {/* Loading Overlay */}
       {isSubmitting && (
         <motion.div
           initial={{ opacity: 0 }}
