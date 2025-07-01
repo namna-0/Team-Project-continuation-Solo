@@ -27,8 +27,8 @@ export const CompanyEmployees = ({ company }: { company: Company }) => {
               handle={member.employeeName.toLowerCase().replace(/\s/g, "")}
               status="Online"
               contactText="Цаг захиалах"
-              avatarUrl={member.profileImage}
-              miniAvatarUrl={member.profileImage}
+              avatarUrl={member.profileImage || "https://res-console.cloudinary.com/dxhmgs7wt/thumbnails/v1/image/upload/v1748851861/dW11Z29xOHRkN2ppcnc3Mm1nZW0=/drilldown"}
+              miniAvatarUrl={member.profileImage || "https://res-console.cloudinary.com/dxhmgs7wt/thumbnails/v1/image/upload/v1748851861/dW11Z29xOHRkN2ppcnc3Mm1nZW0=/drilldown"}
               showUserInfo={true}
               enableTilt={true}
               onContactClick={() =>
