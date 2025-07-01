@@ -39,6 +39,8 @@ export default function Home() {
     const fetchOrders = async () => {
       try {
         const res = await api.get(`/order/user/${user._id}`);
+        console.log(res);
+
         setOrders(res.data.bookings);
       } catch (err) {
         console.error(err);
@@ -73,7 +75,7 @@ export default function Home() {
                     className="flex gap-4 p-3 bg-white rounded-xl border border-gray-300 shadow hover:shadow-md cursor-pointer transition"
                   >
                     <img
-                      src={order.company.companyImages?.[0]}
+                      src={order.company.companyLogo}
                       className="w-[110px] h-[110px] object-cover rounded-lg"
                       alt="company"
                     />
@@ -117,7 +119,7 @@ export default function Home() {
                     />
                     <div className="flex flex-col justify-between py-1">
                       <p className="font-bold text-[16px] text-gray-800">
-                        {order.company.companyName}
+                        {order.company.companyLogo}
                       </p>
                       <p className="text-sm text-gray-500">
                         🕒 {order.selectedTime}

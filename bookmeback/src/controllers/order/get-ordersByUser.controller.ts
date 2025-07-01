@@ -6,7 +6,7 @@ export const getOrdersByUser: RequestHandler = async (req, res) => {
     const { id } = req.params;
     const bookings = await Booking.find({ user: id })
       .populate("employee")
-      
+      .populate("company");
 
     if (!bookings || bookings.length === 0) {
       res.status(404).json({ message: "танид захиалга байхгүй байна." });

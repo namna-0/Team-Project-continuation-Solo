@@ -65,6 +65,8 @@ export type Company = {
   clientNumber: string;
   experience: string;
   templateNumber: number;
+  status: "confirmed" | "cancelled" | string;
+  selectedTime: string;
 };
 
 export interface FormDataType {
