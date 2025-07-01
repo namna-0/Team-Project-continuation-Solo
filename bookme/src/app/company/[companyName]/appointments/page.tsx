@@ -34,21 +34,29 @@ export default function Home() {
   const cancelledOrders = orders.filter((o) => o.status === "cancelled");
   const confirmedOrders = orders.filter((o) => o.status === "confirmed");
 
-  useEffect(() => {
+  const fetchOrders = async () => {
     if (!user) return;
-    const fetchOrders = async () => {
-      try {
-        const res = await api.get(`/order/user/${user._id}`);
-        console.log(res);
+    try {
+      const res = await api.get(`/order/user/${user._id}`);
+      setOrders(res.data.bookings);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-        setOrders(res.data.bookings);
-      } catch (err) {
-        console.error(err);
-      }
-    };
+  useEffect(() => {
     fetchOrders();
   }, [user]);
 
+  const cancelOrder = async (orderId: string) => {
+    try {
+      await api.patch(`/order/${orderId}/status`, { status: "cancelled" });
+      await fetchOrders();
+      setIsClicked(null);
+    } catch (error) {
+      console.error("Захиалгыг цуцлах үед алдаа:", error);
+    }
+  };
   return (
     <div className="min-h-screen bg-[#f9f9f9] flex flex-col items-center pb-10">
       <Navbar />
@@ -68,7 +76,7 @@ export default function Home() {
                 </span>
               </p>
               {confirmedOrders.length > 0 ? (
-                confirmedOrders.map((order) => (
+                confirmedOrders.reverse().map((order) => (
                   <div
                     key={order._id}
                     onClick={() => setIsClicked(order)}
@@ -106,20 +114,20 @@ export default function Home() {
                 </span>
               </p>
               {cancelledOrders.length > 0 ? (
-                cancelledOrders.map((order) => (
+                cancelledOrders.reverse().map((order) => (
                   <div
                     key={order._id}
                     onClick={() => setIsClicked(order)}
                     className="flex gap-4 p-3 bg-white rounded-xl border border-gray-300 shadow hover:shadow-md cursor-pointer transition"
                   >
                     <img
-                      src={order.company.companyImages?.[0]}
+                      src={order.company.companyLogo}
                       className="w-[110px] h-[110px] object-cover rounded-lg"
                       alt="company"
                     />
                     <div className="flex flex-col justify-between py-1">
                       <p className="font-bold text-[16px] text-gray-800">
-                        {order.company.companyLogo}
+                        {order.company.companyName}
                       </p>
                       <p className="text-sm text-gray-500">
                         🕒 {order.selectedTime}
@@ -138,7 +146,7 @@ export default function Home() {
               )}
             </div>
 
-            <div className="flex-1 bg-white p-6 rounded-xl border border-gray-300 shadow-sm h-fit mt-6">
+            <div className=" flex-1 bg-white p-6 rounded-xl border border-gray-300 shadow-sm h-fit mt-6">
               {isClicked ? (
                 <>
                   <img
@@ -173,11 +181,15 @@ export default function Home() {
                   >
                     Хаах
                   </button>
+                  <button
+                    onClick={() => cancelOrder(isClicked._id)}
+                    className="mt-6 ml-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition cursor-pointer"
+                  >
+                    Цуцлах
+                  </button>
                 </>
               ) : (
-                <p className="text-gray-400">
-                  Захиалгын дэлгэрэнгүйг сонгоно уу.
-                </p>
+                <p className="text-gray-400">Захиалгын дэлгэрэнгүй.</p>
               )}
             </div>
           </div>
