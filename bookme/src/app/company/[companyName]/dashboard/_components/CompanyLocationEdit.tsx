@@ -108,7 +108,7 @@ export const CompanyLocationEdit = ({
         <div className="w-full flex justify-end">
           <Button
             onClick={handleSaveNewLocation}
-            className="bg-[#007FFF]  text-white hover:bg-[#007FFF]/90"
+            className="bg-[#007FFF]  text-white hover:bg-[#007FFF]/90 cursor-pointer"
           >
             {loading ? <LoadingSvg /> : "Байршил хадгалах"}
           </Button>

@@ -184,7 +184,7 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
   const handleAddCompanyImage = async (result: string | null) => {
     try {
       const currentImages = company?.companyImages || [];
-      const updatedImages = [...currentImages, result];
+      const updatedImages = [result, ...currentImages];
       await api.put(`/company/${company?._id}`, {
         companyImages: updatedImages,
       });
@@ -199,8 +199,9 @@ export const CompanySettingsProvider = ({ children }: PropsWithChildren) => {
   const handleInputCompanyImage = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setOtherImgLoading(true);
     const file = e.target.files?.[0];
+    if (!file || !company?._id) return
+    setOtherImgLoading(true);
     if (file) {
       const result = await uploadedImageFunction(file);
       setOtherImgLoading(false);

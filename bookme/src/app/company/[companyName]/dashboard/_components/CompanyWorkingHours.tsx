@@ -7,6 +7,7 @@ import { Company, WorkingHoursType } from "../../_components/CompanyTypes";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { MoonSvg } from "./assets/MoonSvg";
+import { CompanyWorkingHoursChange } from "./CompanyWorkingHoursChange";
 
 const dayLabels: Record<keyof WorkingHoursType, string> = {
   monday: "Даваа",
@@ -28,6 +29,10 @@ export const CompanyWorkingHours = ({ company }: PropsType) => {
   const [changedTimeSchedule, setChangedTimeSchedule] = useState(
     company.workingHours
   );
+  console.log(changedTimeSchedule);
+  console.log(company);
+
+
 
   return (
     <div className="w-full h-fit rounded-2xl p-3">
@@ -48,6 +53,7 @@ export const CompanyWorkingHours = ({ company }: PropsType) => {
               >
                 <div className="flex items-center space-x-2">
                   <Switch
+                    className="cursor-pointer"
                     id={`switch-${day}`}
                     checked={!data.closed}
                     onCheckedChange={async (isChecked) => {
@@ -68,16 +74,15 @@ export const CompanyWorkingHours = ({ company }: PropsType) => {
                             ...changedTimeSchedule,
                             [day]: {
                               ...changedTimeSchedule?.[
-                                day as keyof WorkingHoursType
+                              day as keyof WorkingHoursType
                               ],
                               closed: updatedClosed,
                             },
                           },
                         });
                         toast.success(
-                          `${
-                            dayLabels[day as keyof WorkingHoursType]
-                          } шинэчлэгдлээ`
+                          `${dayLabels[day as keyof WorkingHoursType]
+                          } гараг өөрчлөгдлөө`
                         );
                       } catch (error) {
                         console.error("Хүсэлт илгээхэд алдаа:", error);
@@ -90,54 +95,27 @@ export const CompanyWorkingHours = ({ company }: PropsType) => {
                   <Label> {dayLabels[day as keyof WorkingHoursType]}</Label>
                 </div>
 
-                <div>
-                  {!data.closed && (
-                    <div className="flex gap-10 w-[640px]">
-                      <div className="w-[300px] flex items-center gap-3 relative ">
-                        <div className="absolute w-fit ml-4"> From</div>
-                        <Input
-                          className=" flex justify-end border-2 p-5 rounded-[7px]"
-                          type="time"
-                          value={data.open}
-                          onChange={(e) =>
-                            setChangedTimeSchedule((prev) => ({
-                              ...prev!,
-                              [day]: {
-                                ...prev?.[day as keyof WorkingHoursType],
-                                open: e.target.value,
-                              },
-                            }))
-                          }
-                        />
-                      </div>
-                      <div className="w-[300px] flex items-center gap-3 relative ">
-                        <div className="absolute w-fit ml-4"> To</div>
-                        <Input
-                          className=" flex justify-end border-2 p-5 rounded-[7px]"
-                          type="time"
-                          value={data.open}
-                          onChange={(e) =>
-                            setChangedTimeSchedule((prev) => ({
-                              ...prev!,
-                              [day]: {
-                                ...prev?.[day as keyof WorkingHoursType],
-                                open: e.target.value,
-                              },
-                            }))
-                          }
-                        />
-                      </div>
+
+                {data.closed ? (
+                  <div className="flex items-center pl-2 gap-3 w-[640px] h-[44px] bg-gray-100 rounded-[7px]">
+                    <div className="opacity-50">
+                      <MoonSvg />
                     </div>
-                  )}
-                  {data.closed && (
-                    <div className="flex items-center pl-2 gap-3 w-[640px] h-[44px] bg-gray-100 rounded-[7px]">
-                      <div className="opacity-50">
-                        <MoonSvg />
-                      </div>
-                      <div className="opacity-50">Хаалттай</div>
-                    </div>
-                  )}
-                </div>
+                    <div className="opacity-50">Хаалттай</div>
+                  </div>
+                ) : <CompanyWorkingHoursChange
+                  day={day as keyof WorkingHoursType}
+                  data={data}
+                  onTimeChange={(field, value) => {
+                    setChangedTimeSchedule((prev) => ({
+                      ...prev!,
+                      [day]: {
+                        ...prev?.[day as keyof WorkingHoursType],
+                        [field]: value,
+                      },
+                    }));
+                  }}
+                />}
               </div>
             ))}
       </div>
