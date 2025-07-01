@@ -284,7 +284,7 @@ export const CompanyNavBarTemplate2 = ({
               ) : !user ? (
                 <>
                   <Link
-                    href={`/${company?.companyName}/user-flow`}
+                    href={`/company/${company?.companyName}/user-flow`}
                     onClick={toggleMenu}
                     className={`block w-full text-center px-6 py-4 border border-white/20 text-white font-medium rounded-xl transition-all duration-300 ${
                       isMenuOpen ? "animate-slideInRight" : ""
@@ -294,7 +294,7 @@ export const CompanyNavBarTemplate2 = ({
                     Нэвтрэх
                   </Link>
                   <Link
-                    href={`/${company?.companyName}/user-flow`}
+                    href={`/company/${company?.companyName}/user-flow`}
                     onClick={toggleMenu}
                     className={`block w-full text-center px-6 py-4 bg-gradient-to-r from-grey-500 to-blue-600 text-white font-medium rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-rose-500/25 ${
                       isMenuOpen ? "animate-slideInRight" : ""
