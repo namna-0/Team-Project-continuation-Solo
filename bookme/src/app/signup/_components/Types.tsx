@@ -70,7 +70,7 @@ export interface FormDataType {
   password: string;
   confirmPassword: string;
   companyName: string;
-  description?: string; // ← энд заавал биш болгосон
+  description?: string;
   address: string;
   lat?: number;
   lng?: number;

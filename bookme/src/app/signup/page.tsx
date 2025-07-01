@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import Stepper, { Step } from "@/blocks/Components/Stepper/Stepper";
 import { Step6 } from "./_components/Step6";
 import { Step3 } from "./_components/Step3";
@@ -15,6 +16,7 @@ import { Step4 } from "./_components/Step4";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { fullSchema, FullSchemaType } from "./_components/Schemas";
+import Image from "next/image";
 
 const UPLOAD_PRESET = "bookMe";
 const CLOUD_NAME = "dazhij9zy";
@@ -64,6 +66,20 @@ export default function CompanySetupPage() {
     defaultValues: formData,
   });
 
+  // Cleanup object URLs on unmount
+  useEffect(() => {
+    return () => {
+      companyImagePreview.forEach((url) => {
+        if (url.startsWith("blob:")) {
+          URL.revokeObjectURL(url);
+        }
+      });
+      if (logoPreview.startsWith("blob:")) {
+        URL.revokeObjectURL(logoPreview);
+      }
+    };
+  }, [companyImagePreview, logoPreview]);
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (files.length > 0) {
@@ -76,6 +92,11 @@ export default function CompanySetupPage() {
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Clean up previous preview
+      if (logoPreview.startsWith("blob:")) {
+        URL.revokeObjectURL(logoPreview);
+      }
+
       setLogoFile(file);
       const preview = URL.createObjectURL(file);
       setLogoPreview(preview);
@@ -97,11 +118,19 @@ export default function CompanySetupPage() {
     formData.append("file", file);
     formData.append("upload_preset", UPLOAD_PRESET);
 
-    const response = await axios.post(
-      `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
-      formData
-    );
-    return response.data.secure_url;
+    try {
+      const response = await axios.post(
+        `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+        formData,
+        {
+          timeout: 30000,
+        }
+      );
+      return response.data.secure_url;
+    } catch (error) {
+      console.error("Cloudinary upload failed:", error);
+      throw new Error("Image upload failed");
+    }
   };
 
   const handleFinalSubmit = async () => {
@@ -154,16 +183,22 @@ export default function CompanySetupPage() {
   };
 
   const removeCompanyImage = (index: number) => {
-    const newPreviews = [...companyImagePreview];
-    newPreviews.splice(index, 1);
-    setCompanyImagePreview(newPreviews);
+    // Clean up the object URL
+    const urlToRevoke = companyImagePreview[index];
+    if (urlToRevoke?.startsWith("blob:")) {
+      URL.revokeObjectURL(urlToRevoke);
+    }
 
-    const newFiles = [...companyImages];
-    newFiles.splice(index, 1);
-    setCompanyImages(newFiles);
+    setCompanyImagePreview((prev) => prev.filter((_, i) => i !== index));
+    setCompanyImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   const removeLogo = () => {
+    // Clean up the object URL
+    if (logoPreview.startsWith("blob:")) {
+      URL.revokeObjectURL(logoPreview);
+    }
+
     setLogoFile(null);
     setLogoPreview("");
     methods.setValue("logo", "");
@@ -180,89 +215,235 @@ export default function CompanySetupPage() {
   };
 
   return (
-    <div className="bg-gradient-to-b from-indigo-900 via-blue-400 to-sky-200 min-h-screen h-fit relative flex items-center">
-      <FormProvider {...methods}>
-        <Stepper
-          initialStep={1}
-          onStepChange={(step) => {
-            setCurrentStep(step);
-          }}
-          onFinalStepCompleted={handleFinalSubmit}
-          backButtonText="Буцах"
-          nextButtonText={isSubmitting ? "Илгээж байна..." : "Дараах"}
-          disabled={isSubmitting}
-        >
-          <Step>
-            <Step1 />
-          </Step>
-          <Step>
-            <Step2 />
-          </Step>
-          <Step>
-            <Step3 dayLabels={dayLabels} />
-          </Step>
-          <Step>
-            <div className="max-h-[80vh] overflow-auto px-2">
-              <Step4
-                formData={{
-                  ...methods.getValues(),
-                  description: methods.getValues().description ?? "",
-                  backGroundImage: methods.getValues().backGroundImage ?? "",
-                  aboutUsImage: methods.getValues().aboutUsImage ?? "",
-                }}
-                setFormData={() => {}}
-                handleImageChange={handleImageChange}
-                companyImagePreview={companyImagePreview}
-                removeCompanyImage={removeCompanyImage}
-                handleLogoChange={handleLogoChange}
-                logoPreview={logoPreview}
-                removeLogo={removeLogo}
-              />
-            </div>
-          </Step>
-          <Step>
-            <Step5 formData={methods.getValues()} setFormData={() => {}} />
-          </Step>
-          <Step>
-            <Step6
-              formData={methods.getValues()}
-              setFormData={() => {}}
-              dayLabels={dayLabels}
-              companyImagePreview={companyImagePreview}
-              logoPreview={logoPreview}
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 relative overflow-hidden">
+      {/* Animated Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Floating particles */}
+        <div className="absolute inset-0">
+          {[...Array(50)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-white rounded-full opacity-20"
+              initial={{
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+              }}
+              animate={{
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+              }}
+              transition={{
+                duration: Math.random() * 10 + 20,
+                repeat: Infinity,
+                repeatType: "reverse",
+              }}
             />
-          </Step>
-        </Stepper>
-      </FormProvider>
-
-      {isSubmitting && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-xl text-center flex flex-col items-center gap-2">
-            <svg
-              className="animate-spin h-6 w-6 text-blue-600"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              />
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-              />
-            </svg>
-            <p className="text-lg font-medium text-gray-700 animate-pulse">
-              Компаний мэдээлэл илгээж байна...
-            </p>
-          </div>
+          ))}
         </div>
+
+        {/* Gradient orbs */}
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-20"
+          animate={{
+            x: [0, 100, 0],
+            y: [0, -50, 0],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+        />
+        <motion.div
+          className="absolute top-3/4 right-1/4 w-96 h-96 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-20"
+          animate={{
+            x: [0, -100, 0],
+            y: [0, 50, 0],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+        />
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-10 flex min-h-screen">
+        {/* Left Side - Artistic Panel */}
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="hidden lg:flex lg:w-1/2 xl:w-2/5 relative"
+        >
+          <div className="w-full bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border-r border-white/10 flex flex-col justify-center items-center p-12">
+            {/* Artistic Content */}
+            <div className="text-center space-y-8 max-w-md">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
+              >
+                <h1 className="text-4xl font-bold text-white mb-4">
+                  Компани бүртгэх
+                </h1>
+                <Image
+                  width={500}
+                  height={500}
+                  src="https://res.cloudinary.com/dpbmpprw5/image/upload/q_auto,f_auto/v1750157865/earth_Large_rwbjag.png"
+                  alt="Earth"
+                  priority
+                  className="object-contain opacity-100 pointer-events-none rotating-earth"
+                  style={{
+                    filter: "drop-shadow(0 0 50px rgba(59, 130, 246, 0.8))",
+                  }}
+                  quality={80}
+                  unoptimized={false}
+                />
+                <p className="text-slate-300 text-lg leading-relaxed">
+                  Таны бизнесийг цахим орчинд нэвтрүүлж, илүү олон
+                  үйлчлүүлэгчдэд хүрэх боломжийг олгоно
+                </p>
+              </motion.div>
+
+              {/* Floating Elements */}
+              <div className="relative">
+                <motion.div
+                  className="w-32 h-32 mx-auto bg-gradient-to-r from-blue-400 to-white-400 rounded-2xl rotate-12 opacity-20"
+                  animate={{
+                    rotate: [12, 18, 12],
+                    scale: [1, 1.05, 1],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                  }}
+                />
+                <motion.div
+                  className="absolute top-8 left-8 w-8 h-10 bg-gradient-to-r from-blue-400 to-white-400 rounded-xl -rotate-12 opacity-30"
+                  animate={{
+                    rotate: [-12, -18, -12],
+                    scale: [1, 1.1, 1],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                  }}
+                />
+              </div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6, duration: 0.6 }}
+                className="flex items-center justify-center space-x-4 text-slate-400"
+              >
+                <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" />
+                <span className="text-sm">Алхам {currentStep} / 6</span>
+                <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" />
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Right Side - Form */}
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="w-full lg:w-1/2 xl:w-3/5 flex items-center justify-center p-8"
+        >
+          <div className="w-full max-w-2xl bg-white/10 backdrop-blur-md rounded-3xl border border-white/20 shadow-2xl p-8">
+            <FormProvider {...methods}>
+              <Stepper
+                initialStep={1}
+                onStepChange={(step) => {
+                  setCurrentStep(step);
+                }}
+                onFinalStepCompleted={handleFinalSubmit}
+                backButtonText="Буцах"
+                nextButtonText={isSubmitting ? "Илгээж байна..." : "Дараах"}
+                disabled={isSubmitting}
+              >
+                <Step>
+                  <Step1 />
+                </Step>
+                <Step>
+                  <Step2 />
+                </Step>
+                <Step>
+                  <Step3 dayLabels={dayLabels} />
+                </Step>
+                <Step>
+                  <div className="max-h-[70vh] overflow-auto px-2">
+                    <Step4
+                      formData={{
+                        ...methods.getValues(),
+                        description: methods.getValues().description ?? "",
+                        backGroundImage:
+                          methods.getValues().backGroundImage ?? "",
+                        aboutUsImage: methods.getValues().aboutUsImage ?? "",
+                      }}
+                      setFormData={() => {}}
+                      handleImageChange={handleImageChange}
+                      companyImagePreview={companyImagePreview}
+                      removeCompanyImage={removeCompanyImage}
+                      handleLogoChange={handleLogoChange}
+                      logoPreview={logoPreview}
+                      removeLogo={removeLogo}
+                    />
+                  </div>
+                </Step>
+                <Step>
+                  <Step5
+                    formData={methods.getValues()}
+                    setFormData={() => {}}
+                  />
+                </Step>
+                <Step>
+                  <Step6
+                    formData={methods.getValues()}
+                    setFormData={() => {}}
+                    dayLabels={dayLabels}
+                    companyImagePreview={companyImagePreview}
+                    logoPreview={logoPreview}
+                  />
+                </Step>
+              </Stepper>
+            </FormProvider>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Loading Overlay */}
+      {isSubmitting && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center"
+        >
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-white/20 backdrop-blur-md p-8 rounded-2xl shadow-2xl text-center flex flex-col items-center gap-6 border border-white/30"
+          >
+            <div className="relative">
+              <div className="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin" />
+              <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-r-pink-600 rounded-full animate-spin animation-delay-75" />
+            </div>
+            <div className="text-white">
+              <h3 className="text-xl font-semibold mb-2">Илгээж байна...</h3>
+              <p className="text-slate-300">
+                Компаний мэдээлэл боловсруулж байна
+              </p>
+            </div>
+          </motion.div>
+        </motion.div>
       )}
     </div>
   );
