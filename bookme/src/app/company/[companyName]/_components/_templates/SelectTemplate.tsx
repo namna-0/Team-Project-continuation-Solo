@@ -22,22 +22,22 @@ export const SelectTemplate = ({ fetchCompany }: any) => {
   const templates = [
     {
       templateNumber: 1,
-      name: "Template1",
-      description: "A clean, modern design with a soft pink theme",
+      name: "Загвар 1",
+      description: "Цэвэрхэн, орчин үеийн бөгөөд зөөлөн ягаан өнгийн дизайн",
       component: Template1,
     },
     {
       templateNumber: 2,
-      name: "Template2",
+      name: "Загвар 2",
       description:
-        "A sleek, modern design with futuristic elements and bold visual impact.",
+        "Ирээдүйг илтгэх элементүүдтэй, хүчтэй визуал нөлөө бүхий модерн дизайн",
       component: Template2,
     },
     {
       templateNumber: 3,
-      name: "Template3",
+      name: "Загвар 3",
       description:
-        "Simple, clean design focusing on content with minimal distractions",
+        "Анхаарал сарниулах зүйлгүй, цэвэрхэн, агуулгад төвлөрсөн энгийн дизайн",
       component: Template3,
     },
   ];

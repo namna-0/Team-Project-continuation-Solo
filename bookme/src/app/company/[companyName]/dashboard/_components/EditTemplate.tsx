@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +18,8 @@ import {
   ChevronRight,
   Settings,
   Eye,
+  Grid3X3,
+  Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Template1 } from "../../_components/_templates/Template1";
@@ -46,37 +48,61 @@ export const EditTemplates: React.FC<EditTemplatesProps> = ({
 }) => {
   const { companyName } = useParams<{ companyName: string }>();
   const [currentTemplateIndex, setCurrentTemplateIndex] = useState(0);
-  const [saving, setSaving] = useState(false);
+  // Changed: Use Set to track which templates are currently saving
+  const [savingTemplates, setSavingTemplates] = useState<Set<number>>(
+    new Set()
+  );
   const [previewMode, setPreviewMode] = useState(false);
 
   const templates = useMemo(
     () => [
       {
         templateNumber: 1,
-        name: "Template 1",
-        description: "A clean, modern design with a soft pink theme",
+        name: "Загвар 1",
+        description:
+          "Цэвэр, орчин үеийн бөгөөд зөөлөн ягаан өнгийн шийдэлтэй дизайн",
         component: Template1,
-        features: ["Clean Layout", "Pink Theme", "Modern Typography"],
       },
       {
         templateNumber: 2,
-        name: "Template 2",
+        name: "Загвар 2",
         description:
-          "A sleek, modern design with futuristic elements and bold visual impact",
+          "Ирээдүйг илтгэх элементүүдтэй, хүчтэй визуал нөлөө бүхий модерн дизайн",
         component: Template2,
-        features: ["Futuristic Design", "Bold Visuals", "Interactive Elements"],
       },
       {
         templateNumber: 3,
-        name: "Template 3",
+        name: "Загвар 3",
         description:
-          "Simple, clean design focusing on content with minimal distractions",
+          "Анхаарал сарниулах зүйлгүй, цэвэрхэн, агуулгад төвлөрсөн энгийн дизайн",
         component: Template3,
-        features: ["Minimal Design", "Content Focus", "Clean Typography"],
       },
     ],
     []
   );
+
+  const currentTemplate = useMemo(
+    () => templates[currentTemplateIndex],
+    [templates, currentTemplateIndex]
+  );
+
+  const isCurrentTemplate = useMemo(
+    () => company?.templateNumber === currentTemplate?.templateNumber,
+    [company?.templateNumber, currentTemplate?.templateNumber]
+  );
+
+  // Helper function to check if a specific template is saving
+  const isTemplateSaving = useCallback(
+    (templateNumber: number) => {
+      return savingTemplates.has(templateNumber);
+    },
+    [savingTemplates]
+  );
+
+  // Helper function to check if any template is saving
+  const isAnySaving = useMemo(() => {
+    return savingTemplates.size > 0;
+  }, [savingTemplates]);
 
   useEffect(() => {
     if (company?.templateNumber) {
@@ -89,52 +115,83 @@ export const EditTemplates: React.FC<EditTemplatesProps> = ({
     }
   }, [company?.templateNumber, templates]);
 
-  const handleSaveTemplate = async (templateIndex: number) => {
-    if (!company) return;
+  const handleSaveTemplate = useCallback(
+    async (templateIndex: number) => {
+      if (!company) {
+        toast.error("Company data not available");
+        return;
+      }
 
-    const selectedTemplate = templates[templateIndex];
-    if (!selectedTemplate) {
-      toast.error("Invalid template selection");
-      return;
-    }
+      const selectedTemplate = templates[templateIndex];
+      if (!selectedTemplate) {
+        toast.error("Invalid template selection");
+        return;
+      }
 
-    if (company.templateNumber === selectedTemplate.templateNumber) {
-      toast.info("This template is already selected");
-      return;
-    }
+      if (company.templateNumber === selectedTemplate.templateNumber) {
+        toast.info("This template is already selected");
+        return;
+      }
 
-    setSaving(true);
-    try {
-      await api.put(`/company/${company._id}`, {
-        templateNumber: selectedTemplate.templateNumber,
-      });
+      // Prevent double execution - check if already saving
+      if (savingTemplates.has(selectedTemplate.templateNumber)) {
+        return;
+      }
 
-      toast.success("Design updated successfully");
-      await fetchCompany();
-      onSuccess?.();
-    } catch (error) {
-      console.error("Error saving template:", error);
-      toast.error("Failed to save template");
-    } finally {
-      setSaving(false);
-    }
-  };
+      // Add this template to the saving set
+      setSavingTemplates((prev) =>
+        new Set(prev).add(selectedTemplate.templateNumber)
+      );
 
-  const goToNextTemplate = () => {
+      try {
+        await api.put(`/company/${company._id}`, {
+          templateNumber: selectedTemplate.templateNumber,
+        });
+
+        toast.success(`${selectedTemplate.name} амжилттай сонгогдлоо`);
+        await fetchCompany();
+        onSuccess?.();
+      } catch (error) {
+        console.error("Error saving template:", error);
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknown error";
+        toast.error(`Дизайн хадгалахад алдаа гарлаа: ${errorMessage}`);
+      } finally {
+        // Remove this template from the saving set
+        setSavingTemplates((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(selectedTemplate.templateNumber);
+          return newSet;
+        });
+      }
+    },
+    [company, templates, fetchCompany, onSuccess]
+  );
+
+  const goToNextTemplate = useCallback(() => {
     setCurrentTemplateIndex((prev) => (prev + 1) % templates.length);
-  };
+  }, [templates.length]);
 
-  const goToPrevTemplate = () => {
+  const goToPrevTemplate = useCallback(() => {
     setCurrentTemplateIndex(
       (prev) => (prev - 1 + templates.length) % templates.length
     );
-  };
+  }, [templates.length]);
 
-  const renderTemplatePreview = () => {
-    const template = templates[currentTemplateIndex];
-    const TemplateComponent = template.component;
+  const handleTemplateSelect = useCallback((index: number) => {
+    setCurrentTemplateIndex(index);
+  }, []);
+
+  const togglePreviewMode = useCallback(() => {
+    setPreviewMode((prev) => !prev);
+  }, []);
+
+  const renderTemplatePreview = useCallback(() => {
+    if (!currentTemplate || !company) return null;
+
+    const TemplateComponent = currentTemplate.component;
     return (
-      <div className="w-full h-full">
+      <div className="w-full h-full min-h-[500px] bg-white rounded-lg overflow-hidden shadow-sm">
         <TemplateComponent
           data={company}
           isPreview={true}
@@ -142,23 +199,21 @@ export const EditTemplates: React.FC<EditTemplatesProps> = ({
         />
       </div>
     );
-  };
+  }, [currentTemplate, company, companyName]);
 
-  const currentTemplate = templates[currentTemplateIndex];
-  const isCurrentTemplate =
-    company?.templateNumber === currentTemplate.templateNumber;
+  if (!company) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-gray-400" />
+          <p className="text-gray-600">Компанийн мэдээлэл ачааллаж байна...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
-      {/* Debug Info - Remove in production */}
-      <div className="bg-gray-100 p-4 rounded-md text-sm">
-        <strong>Debug Info:</strong>
-        <div>Company ID: {company._id}</div>
-        <div>Current Template Number: {company.templateNumber}</div>
-        <div>Selected Template: {currentTemplate.templateNumber}</div>
-        <div>Is Current Template: {isCurrentTemplate.toString()}</div>
-      </div>
-
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -170,14 +225,6 @@ export const EditTemplates: React.FC<EditTemplatesProps> = ({
             Та өөрийн бизнест тохирох дизайныг сонгоно уу
           </p>
         </div>
-        <Button
-          variant="outline"
-          onClick={() => setPreviewMode(!previewMode)}
-          className="flex items-center gap-2"
-        >
-          <Eye className="h-4 w-4" />
-          {previewMode ? "Жагсаалт харах" : "Урьдчилан харах"}
-        </Button>
       </div>
 
       {previewMode ? (
@@ -190,7 +237,10 @@ export const EditTemplates: React.FC<EditTemplatesProps> = ({
                 <CardTitle className="flex items-center justify-between">
                   <span>{currentTemplate.name}</span>
                   {isCurrentTemplate && (
-                    <Badge variant="default" className="bg-green-500">
+                    <Badge
+                      variant="default"
+                      className="bg-green-500 hover:bg-green-600"
+                    >
                       Одоогийн
                     </Badge>
                   )}
@@ -204,7 +254,7 @@ export const EditTemplates: React.FC<EditTemplatesProps> = ({
                     variant="outline"
                     size="sm"
                     onClick={goToPrevTemplate}
-                    disabled={currentTemplateIndex === 0}
+                    disabled={templates.length <= 1}
                   >
                     <ChevronLeft className="h-4 w-4" />
                   </Button>
@@ -215,40 +265,25 @@ export const EditTemplates: React.FC<EditTemplatesProps> = ({
                     variant="outline"
                     size="sm"
                     onClick={goToNextTemplate}
-                    disabled={currentTemplateIndex === templates.length - 1}
+                    disabled={templates.length <= 1}
                   >
                     <ChevronRight className="h-4 w-4" />
                   </Button>
                 </div>
 
-                {/* Features */}
-                <div>
-                  <h4 className="font-medium text-sm text-gray-700 mb-2">
-                    Онцлогууд:
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {currentTemplate.features.map((feature, index) => (
-                      <Badge
-                        key={index}
-                        variant="secondary"
-                        className="text-xs"
-                      >
-                        {feature}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-
                 {/* Save Button */}
                 <Button
-                  onClick={() => fetchCompany()}
-                  disabled={saving || isCurrentTemplate}
+                  onClick={() => handleSaveTemplate(currentTemplateIndex)}
+                  disabled={
+                    isTemplateSaving(currentTemplate.templateNumber) ||
+                    isCurrentTemplate
+                  }
                   className="w-full"
                   size="lg"
                 >
-                  {saving ? (
+                  {isTemplateSaving(currentTemplate.templateNumber) ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                       Хадгалж байна...
                     </>
                   ) : isCurrentTemplate ? (
@@ -267,18 +302,17 @@ export const EditTemplates: React.FC<EditTemplatesProps> = ({
             </Card>
           </div>
 
-          {/* Preview */}
+          {/* Template Preview */}
           <div className="lg:col-span-2">
-            <Card className="h-[600px]">
+            <Card className="h-full">
               <CardHeader>
-                <CardTitle className="text-lg">Урьдчилан харах</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <Eye className="h-5 w-5" />
+                  Урьдчилан харах
+                </CardTitle>
               </CardHeader>
-              <CardContent className="h-full pb-6">
-                <div className="border rounded-lg overflow-hidden h-full">
-                  <div className="h-full w-full overflow-auto">
-                    {renderTemplatePreview()}
-                  </div>
-                </div>
+              <CardContent className="p-0">
+                {renderTemplatePreview()}
               </CardContent>
             </Card>
           </div>
@@ -290,20 +324,26 @@ export const EditTemplates: React.FC<EditTemplatesProps> = ({
             const TemplateComponent = template.component;
             const isSelected =
               company?.templateNumber === template.templateNumber;
+            const isSaving = isTemplateSaving(template.templateNumber);
 
             return (
               <Card
                 key={template.templateNumber}
-                className={`cursor-pointer transition-all duration-200 hover:shadow-lg ${
-                  isSelected ? "ring-2 ring-blue-500 bg-blue-50" : ""
+                className={`cursor-pointer transition-all duration-200 hover:shadow-lg border-2 ${
+                  isSelected
+                    ? "border-blue-500 bg-blue-50 shadow-lg"
+                    : "border-gray-200 hover:border-blue-300"
                 }`}
-                onClick={() => setCurrentTemplateIndex(index)}
+                onClick={() => handleTemplateSelect(index)}
               >
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg">{template.name}</CardTitle>
                     {isSelected && (
-                      <Badge variant="default" className="bg-green-500">
+                      <Badge
+                        variant="default"
+                        className="bg-green-500 hover:bg-green-600"
+                      >
                         Одоогийн
                       </Badge>
                     )}
@@ -312,7 +352,7 @@ export const EditTemplates: React.FC<EditTemplatesProps> = ({
                 </CardHeader>
                 <CardContent>
                   {/* Mini Preview */}
-                  <div className="border rounded-lg overflow-hidden h-48 mb-4 bg-gray-50">
+                  <div className="border-2 border-gray-200 rounded-lg overflow-hidden h-48 mb-4 bg-white">
                     <div className="scale-[0.3] origin-top-left w-[333%] h-[333%] overflow-hidden">
                       <TemplateComponent
                         data={company}
@@ -322,31 +362,21 @@ export const EditTemplates: React.FC<EditTemplatesProps> = ({
                     </div>
                   </div>
 
-                  {/* Features */}
-                  <div className="mb-4">
-                    <div className="flex flex-wrap gap-1">
-                      {template.features.map((feature, featureIndex) => (
-                        <Badge
-                          key={featureIndex}
-                          variant="secondary"
-                          className="text-xs"
-                        >
-                          {feature}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-
                   {/* Action Button */}
                   <Button
-                    onClick={() => handleSaveTemplate(currentTemplateIndex)}
-                    disabled={saving || isCurrentTemplate}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      handleSaveTemplate(index);
+                    }}
+                    disabled={isSaving || isSelected}
                     className="w-full"
                     size="lg"
+                    variant={isSelected ? "secondary" : "default"}
                   >
-                    {saving ? (
+                    {isSaving ? (
                       <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                         Хадгалж байна...
                       </>
                     ) : isSelected ? (
