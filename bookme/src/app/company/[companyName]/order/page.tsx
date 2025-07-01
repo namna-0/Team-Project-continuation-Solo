@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { api } from "@/axios";
 import { useParams } from "next/navigation";
 import { BookingPage } from "./_components/(BookingProcess)/bookingProcess";
-import { CompanyType } from "./_components/(BookingProcess)/(publicItems)/_OrderPageTypes/types";
 import { useAuth } from "@/app/_providers/UserAuthProvider";
 import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { IsSucsessBooked } from "./_components/(SucsessBooked)/IsSucsessBooked";
+import { CompanyType } from "./_components/(BookingProcess)/(publicItems)/_OrderPageTypes/types";
 
 export default function OrderPage() {
     const Stages = ["Ажилтан", "Огноо", "Баталгаажуулалт", "амжилттай захиалагдлаа"]
@@ -85,7 +85,7 @@ export default function OrderPage() {
         </div>
     )
     return (
-        Stages.indexOf(isStage) <= Stages.length-1 ? (
+        Stages.indexOf(isStage) <= Stages.length - 1 ? (
             <BookingPage
                 date={date} setDate={setDate} isStage={isStage} setIsStage={setIsStage}
                 isSelectEmployee={isSelectEmployee} setIsSelectEmployee={setIsSelectEmployee}

@@ -1,8 +1,8 @@
 "use client"
 
-import { availabilityProps } from "../../../../(publicItems)/_OrderPageTypes/types";
+import { availabilityProps, OrderType } from "../../../../(publicItems)/_OrderPageTypes/types";
 
-export function AvailabilityTimes({ times, date, setDate, setSelectedTime, selectedTime, isPassed, isBooked, currentSlot }: availabilityProps) {
+export function AvailabilityTimes({ times, date, setDate, setSelectedTime, selectedTime, isPassed,orders }: availabilityProps) {
     return (
         <div className="flex w-full flex-col gap-10 ">
             <div className="flex w-full gap-10 justify-end">
@@ -18,17 +18,25 @@ export function AvailabilityTimes({ times, date, setDate, setSelectedTime, selec
                         .toString()
                         .padStart(2, "0")}`;
                     const currentSlot = new Date(
-                        date?.getFullYear() ?? 0,
+                        date?.getFullYear() ?? 1970,
                         date?.getMonth() ?? 0,
                         date?.getDate(),
                         hour,
                         minute
                     );
+                    const allSelectedTimes = orders
+                        ? orders.map((order: OrderType) => new Date(order.selectedTime))
+                        : []
+
+                    const isBooked =
+                        allSelectedTimes.some(
+                            (selectedTime) => selectedTime.getTime() === currentSlot.getTime()
+                        )
                     const isSelected =
                         selectedTime &&
                         selectedTime.getTime() === currentSlot.getTime();
 
-                    const className = isBooked ||isPassed
+                    const className = isBooked || isPassed
                         ? "bg-gray-300 flex w-full rounded-xl items-center p-4  text-gray-500 cursor-not-allowed hover:border-gray-700 pointer-events-none"
                         : isSelected
                             ? "bg-blue-500 flex w-full  rounded-xl items-center justify-center p-4 cursor-pointer text-white"
@@ -39,7 +47,7 @@ export function AvailabilityTimes({ times, date, setDate, setSelectedTime, selec
                             key={time.toString()}
                             className={className}
                             onClick={() => {
-                                if (!isBooked ) {
+                                if (!isBooked) {
                                     setDate(currentSlot);
                                     setSelectedTime(currentSlot);
                                 }

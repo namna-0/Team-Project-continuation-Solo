@@ -5,9 +5,9 @@ import StagaOneSelectEmployee from "./_comp/(StageOneEmployeeSelect)/SelectEmplo
 import StageTwoTimePicking from "./_comp/(StageTwoSelectTime)/SelectTime";
 import ConfirmBooking from "./_comp/(StageThree)/Confirm";
 import OrderNavBar from "./(publicItems)/header";
-import { BookingPageProps, CompanyType, employeeType } from "./(publicItems)/_OrderPageTypes/types";
 import OrderImformation from "./(publicItems)/orderImformation";
 import { useState } from "react";
+import { BookingPageProps, CompanyType, employeeType } from "./(publicItems)/_OrderPageTypes/types";
 
 export const BookingPage = ({ isStage, setSelectedTime, setIsStage, setIsSelectEmployee,
     isSelectEmployee, setSelectedEmployeeImf, selectedEmployeeImf, companyData, selectedTime,
@@ -24,7 +24,7 @@ export const BookingPage = ({ isStage, setSelectedTime, setIsStage, setIsSelectE
     }
     return (
         <div className="w-full flex flex-col h-fit jusify-center overflow-hidden items-center bg-white">
-            <div className="w-[1440px] relative h-[120vh] flex justify-center bg-gray-100">
+            <div className="w-[1440px] relative h-[120vh] flex justify-center">
                 <OrderNavBar
                     companyData={companyData}
                     isStage={typeof isStage === "string" ? isStage : ""}

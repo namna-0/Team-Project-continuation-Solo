@@ -40,6 +40,7 @@ export const CreateOrderController: RequestHandler = async (req, res) => {
   } catch (error: any) {
     // Unique index-н алдааг барих
     if (error.code === 11000) {
+      console.log();
       res.status(409).json({
         message: "Тэр цаг аль хэдийн захиалга авсан байна (unique index).",
       });

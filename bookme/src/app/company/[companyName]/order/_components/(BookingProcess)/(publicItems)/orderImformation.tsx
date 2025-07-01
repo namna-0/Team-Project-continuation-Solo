@@ -5,11 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Dialog } from "@radix-ui/react-dialog";
 import { DialogTrigger } from "@/components/ui/dialog";
 import { useAuth } from "@/app/_providers/UserAuthProvider";
-import { Calendar, Clock } from "lucide-react";
+import { Calendar, ChevronRight, Clock } from "lucide-react";
 import { OrderImformationType } from "./_OrderPageTypes/types";
-import UpdateEmployee from "../_comp/(StageOneEmployeeSelect)/updateEmployeeDialog";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import UpdateEmployee from "../_comp/(StageOneEmployeeSelect)/updateEmployeeDialog";
 
 function OrderImformation({
     HandleNextStage,
@@ -39,13 +39,16 @@ function OrderImformation({
             }),
 
         }).then((response) => {
-            
             console.log("Order added successfully", response.data);
+            toast.success("Амжилттай захиалагдлаа")
+            router.push(`/company/${company?.companyName}/appointments`)
         }).catch((error: any) => {
-            if (error.response?.status === 409) {
-                alert(error.response.data.message && "Уучлаарай, энэ цаг аль хэдийн захиалагдсан байна.");
+            if (error.response.status === 409) {
+                toast.error("таны сонгосон цаг дээр захиалга үүсчихсэн байна.")
+                console.log("Уучлаарай, энэ цаг аль хэдийн захиалагдсан байна.", error.code);;
             } else {
-                alert("Захиалга хийхэд алдаа гарлаа. Дахин оролдоно уу.");
+                console.log
+                    ("Захиалга хийхэд алдаа гарлаа. Дахин оролдоно уу.", error);
             }
             console.error(error);
         })
@@ -105,7 +108,7 @@ function OrderImformation({
                     </div>) : undefined
                 }
             </div>
-            <Button className={isSelectEmployee == "" ? " relative w-full bg-gray-300 text-white" : " relative w-full bg-black text-white "} onClick={() => {
+            <Button variant={"default"} className={(isSelectEmployee == "" || selectedTime == null || !isChecked) ? "w-full h-fit bg-gray-300 text-black hover:bg-gray-500 flex items-center justify-center" : "w-full bg-black text-white "} onClick={() => {
                 HandleNextStage()
                 if (isStage == Stages[2] && isChecked) {
                     addOrder()
@@ -114,10 +117,10 @@ function OrderImformation({
                     setDate(null)
                     setSelectedTime(null)
                     setIsStage(Stages[0])
-                    toast("Амжилттай захиалагдлаа")
-                    router.push(`/company/${company?.companyName}/appointments`)
                 }
-            }}>үргэлжлүүлэх</Button>
+            }}>{isStage == Stages[0] && (<>Огноо сонгох <ChevronRight /></>)}
+                {isStage == Stages[1] && (<>Үргэлжлүүлэх <ChevronRight /></>)}
+                {isStage == Stages[2] && (<>Захиалгах <ChevronRight /></>)}</Button>
         </div >
     )
 }
