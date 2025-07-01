@@ -89,9 +89,7 @@ export default function Dashboard() {
     switch (currentPage) {
       case "employees":
         return (
-          <PageContainer>
             <EmployeesPage />
-          </PageContainer>
         );
       case "all-orders":
         return (
@@ -178,8 +176,6 @@ export default function Dashboard() {
               <Users className="w-5 h-5" />
               Ажилчид
             </button>
-
-            {/* Orders */}
             <div>
               <button
                 onClick={() =>
@@ -234,8 +230,6 @@ export default function Dashboard() {
                 </div>
               )}
             </div>
-
-            {/* Settings */}
             <div>
               <button
                 onClick={() =>
@@ -345,7 +339,6 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Footer */}
           <div className="p-4 border-t border-gray-200">
             <a
               href={`/company/${company?.companyName}`}
@@ -356,8 +349,6 @@ export default function Dashboard() {
             </a>
           </div>
         </div>
-
-        {/* Content */}
         <div className="flex-1 flex flex-col min-h-screen overflow-hidden">
           <DashboardHeader currentPage={currentPage} />
           <div className="flex-1 overflow-auto p-6 bg-gray-50">

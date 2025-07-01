@@ -17,6 +17,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { fullSchema, FullSchemaType } from "./_components/Schemas";
 import Image from "next/image";
+import Particles from "../_components/Particles";
 
 const UPLOAD_PRESET = "bookMe";
 const CLOUD_NAME = "dazhij9zy";
@@ -66,7 +67,6 @@ export default function CompanySetupPage() {
     defaultValues: formData,
   });
 
-  // Cleanup object URLs on unmount
   useEffect(() => {
     return () => {
       companyImagePreview.forEach((url) => {
@@ -216,9 +216,7 @@ export default function CompanySetupPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 relative overflow-hidden">
-      {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Floating particles */}
         <div className="absolute inset-0">
           {[...Array(50)].map((_, i) => (
             <motion.div
@@ -241,7 +239,6 @@ export default function CompanySetupPage() {
           ))}
         </div>
 
-        {/* Gradient orbs */}
         <motion.div
           className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-20"
           animate={{
@@ -270,9 +267,7 @@ export default function CompanySetupPage() {
         />
       </div>
 
-      {/* Main Content */}
       <div className="relative z-10 flex min-h-screen">
-        {/* Left Side - Artistic Panel */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
@@ -280,7 +275,6 @@ export default function CompanySetupPage() {
           className="hidden lg:flex lg:w-1/2 xl:w-2/5 relative"
         >
           <div className="w-full bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border-r border-white/10 flex flex-col justify-center items-center p-12">
-            {/* Artistic Content */}
             <div className="text-center space-y-8 max-w-md">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -290,6 +284,16 @@ export default function CompanySetupPage() {
                 <h1 className="text-4xl font-bold text-white mb-4">
                   Компани бүртгэх
                 </h1>
+                          <Particles
+            className="absolute inset-0 z-10"
+            particleColors={["#ffffff", "#ffffff"]}
+            particleCount={2000}
+  particleSpread={20}
+  cameraDistance={100}
+  particleBaseSize={10}    // том болгох эсвэл жижигрүүлэх боломжтой
+  sizeRandomness={0.5}
+  speed={0.05}
+          />
                 <Image
                   width={500}
                   height={500}
@@ -309,7 +313,7 @@ export default function CompanySetupPage() {
                 </p>
               </motion.div>
 
-              {/* Floating Elements */}
+
               <div className="relative">
                 <motion.div
                   className="w-32 h-32 mx-auto bg-gradient-to-r from-blue-400 to-white-400 rounded-2xl rotate-12 opacity-20"
