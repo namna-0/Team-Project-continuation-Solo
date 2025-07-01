@@ -1,9 +1,6 @@
 "use client"
 
 import { ShoppingBag } from "lucide-react"
-
-type BookedSucsessProps = {}
-import { useState } from "react";
 import { ConfirmBookingProps } from "../../(publicItems)/_OrderPageTypes/types";
 
 export default function ConfirmBooking({ isChecked, setIsChecked }: ConfirmBookingProps) {
@@ -27,9 +24,7 @@ export default function ConfirmBooking({ isChecked, setIsChecked }: ConfirmBooki
                         />
                         Санамж:
                     </p>
-                    <div><p className="w-full flex text-wrap ">
-                        Та захиалгаа баталгаажуулсан цагаас багадаа 3 цагийн өмнө цуцлах, хойшлуулах бүрэн боломжтой.
-                    </p>
+                    <div>
                         <p className="w-full ">Ирж чадахгүй болон өөрөө цуцлах боломжгүй тохиолдолд байгууллагын ажилтантай холбогдож мэдэгдэнэ үү!. Баярлалаа</p>
                     </div>
 

@@ -18,8 +18,8 @@ export const IsFullyDay = ({ isSelectEmployee, nextAvailabilityDay, zurag, setIs
             </div><p>  Та сонгосон өдөр эсвэл ажилтанг сольж цагаа захиална уу?</p>
             <div className="flex  gap-10">
                 <Dialog>
-                    <DialogTrigger className="w-fit flex gap-3 border rounded-full items-center border-gray-300 p-1">
-                        ажилтанг солих
+                    <DialogTrigger className="w-fit flex gap-3 border rounded-xl items-center  border-gray-300 p-2">
+                        Ажилтанг солих
                     </DialogTrigger>
                     <UpdateEmployee
                         setSelectedEmployee={setSelectedEmployee} setSelectedTime={setSelectedTime}
