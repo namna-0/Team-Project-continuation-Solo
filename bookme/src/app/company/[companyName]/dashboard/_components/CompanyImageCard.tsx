@@ -31,10 +31,10 @@ export const CompanyImageCard = ({
       {newImage ? (
         <img
           src={URL.createObjectURL(newImage)}
-          className="w-full h-full rounded-3xl bg-amber-500"
+          className="w-full h-full rounded-3xl"
         />
       ) : (
-        <img src={image} className="w-full h-full rounded-3xl" />
+        <img src={image} className="w-full h-full rounded-2xl border-2 border-gray-400" />
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>

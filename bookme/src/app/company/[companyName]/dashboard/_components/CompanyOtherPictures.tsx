@@ -32,7 +32,7 @@ export const CompanyOtherPictures = () => {
       await api.put(`/company/${company?._id}`, {
         companyImages: updatedImages,
       });
-      await getCompany();
+       getCompany();
       toast.success("Зураг амжилттай устгалаа.");
     } catch (error) {
       console.error("Зураг устгахад алдаа гарлаа.", error);
@@ -60,7 +60,7 @@ export const CompanyOtherPictures = () => {
             <div className="w-[200px] h-[200px] flex relative aspect-video items-center justify-center rounded-lg border-2 border-dashed border-muted-foreground/25 bg-muted/50">
               <Button
                 variant="outline"
-                className="border-[#007FFF] text-[#007FFF] hover:bg-[#007FFF]/10"
+                className="border-[#007FFF] text-[#007FFF] hover:bg-[#007FFF]/10 "
               >
                 <Upload className="mr-2 h-4 w-4" />
                 Зураг нэмэх
@@ -68,11 +68,15 @@ export const CompanyOtherPictures = () => {
 
               <Input
                 type="file"
-                className="absolute w-full h-full top-0 opacity-0"
+                className="absolute w-full h-full top-0 opacity-0 cursor-pointer"
                 onChange={handleInputCompanyImage}
               />
             </div>
-
+            {otherImgLoading && (
+              <div className="w-[200px] h-[200px] flex items-center justify-center rounded-3xl border-2">
+                <LoadingSvg />
+              </div>
+            )}
             {company?.companyImages.map((image, index) => (
               <div
                 key={index}
@@ -87,11 +91,7 @@ export const CompanyOtherPictures = () => {
                 />
               </div>
             ))}
-            {otherImgLoading && (
-              <div className="w-[200px] h-[200px] flex items-center justify-center rounded-3xl border-2">
-                <LoadingSvg />
-              </div>
-            )}
+
           </div>
         </div>
       </CardContent>

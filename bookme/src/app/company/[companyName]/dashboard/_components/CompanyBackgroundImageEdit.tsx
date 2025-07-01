@@ -39,9 +39,9 @@ export const CompanyBackgroundImageEdit = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Дэвсгэр зураг</CardTitle>
+        <CardTitle>Арын зураг</CardTitle>
         <CardDescription>
-          Компанийн зураг шинэчлэх (хэмжээ: 300x300px)
+          Компанийн арын зураг шинэчлэх (хэмжээ: 300x300px)
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
@@ -63,7 +63,7 @@ export const CompanyBackgroundImageEdit = () => {
                   className="w-full h-full rounded-2xl object-cover"
                 />
                 <Button
-                  className="absolute right-2 top-2 rounded-full bg-white hover:bg-black hover:text-white text-black w-6 h-6 text-xs "
+                  className="absolute right-2 top-2 rounded-full bg-white hover:bg-black hover:text-white text-black w-6 h-6 text-xs cursor-pointer"
                   onClick={handleDeleteBackground}
                 >
                   x
@@ -85,7 +85,7 @@ export const CompanyBackgroundImageEdit = () => {
           <div className="w-[141px] absolute top-0 opacity-0">
             <Input
               type="file"
-              className="w-full"
+              className="w-full cursor-pointer"
               onChange={handleInputBackgroundImage}
             />
           </div>

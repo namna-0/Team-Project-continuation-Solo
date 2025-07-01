@@ -30,7 +30,6 @@ export default function Dashboard() {
     try {
       setLoading(true);
       const response = await api.get(`/company/id/${loggedInCompany?._id}`);
-      console.log("company", response);
 
       if (response.data?.company) {
         setCompany(response.data.company);
