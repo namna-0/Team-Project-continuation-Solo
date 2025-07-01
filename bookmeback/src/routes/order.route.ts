@@ -9,6 +9,7 @@ import {
 } from "../controllers/order";
 import { getOrdersAndOrder } from "../controllers/order/getAllOrOneOrder";
 import { CreateOrderByCompany } from "../controllers/order/create-order-by-company";
+import { updateOrderStatus } from "../controllers/order/patch-order-status";
 
 const BookingRouter = Router();
 
@@ -20,6 +21,7 @@ BookingRouter.post("/order", CreateOrderController)
   .get("/order/employee/:id", getOrdersByEmployee)
   .put("/order/:id")
   .delete("/order/:id", deleteOrderController)
-  .post("/order/company", CreateOrderByCompany);
+  .post("/order/company", CreateOrderByCompany)
+  .patch("/order/:id/status", updateOrderStatus);
 
 export default BookingRouter;
