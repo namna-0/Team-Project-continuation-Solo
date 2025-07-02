@@ -11,6 +11,11 @@ import { useCompanyAuth } from "../_providers/CompanyAuthProvider";
 import Image from "next/image";
 import Particles from "../_components/Particles";
 import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
+
+const ClientOnlyStars = dynamic(() => import("../signup/_components/Stars"), {
+  ssr: false,
+});
 
 const step1Schema = z.object({
   email: z.string().email("Зөв имэйл хаяг оруулна уу"),
@@ -122,34 +127,7 @@ export default function SignIn() {
           speed={0.015}
         />
 
-        <div className="absolute inset-0 z-2">
-          {typeof window !== "undefined" &&
-            [...Array(300)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute rounded-full opacity-40"
-                style={{
-                  width: Math.random() * 3 + 1 + "px",
-                  height: Math.random() * 3 + 1 + "px",
-                  backgroundColor: Math.random() > 0.1 ? "#ffffff" : "#e0e7ff",
-                }}
-                initial={{
-                  x: Math.random() * window.innerWidth,
-                  y: Math.random() * window.innerHeight,
-                }}
-                animate={{
-                  x: Math.random() * window.innerWidth,
-                  y: Math.random() * window.innerHeight,
-                  opacity: [0.4, 0.9, 0.4],
-                }}
-                transition={{
-                  duration: Math.random() * 20 + 30,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                }}
-              />
-            ))}
-        </div>
+        <ClientOnlyStars />
       </div>
 
       <div className="relative z-20 flex items-center justify-center min-h-screen p-4">
