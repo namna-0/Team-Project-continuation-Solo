@@ -79,7 +79,6 @@ export default function SignIn() {
             repeatType: "reverse",
           }}
         />
-
         <div className="absolute bottom-0 left-0 w-[1400px] h-[900px] overflow-hidden z-0">
           <motion.div
             className="absolute -bottom-64 -left-64 w-[1400px] h-[1000px]"
