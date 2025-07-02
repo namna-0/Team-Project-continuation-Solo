@@ -18,6 +18,7 @@ const employeeSchema = new Schema({
   availability: {
     type: Boolean,
     required: false,
+    default: true
   },
   duration: {
     type: String,
