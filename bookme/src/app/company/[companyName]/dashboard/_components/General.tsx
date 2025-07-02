@@ -3,7 +3,9 @@ import { EditCompanyContactInfo } from "./EditCompanyContactInfo";
 
 export function GeneralSettingsPage() {
   return (
-    <div className="space-y-6 w-full h-full min-h-[calc(100vh-80px)]">
+        <div className="min-h-screen w-full bg-gray-50"> 
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Ерөнхий мэдээлэл</h1>
         <p className="text-muted-foreground">Компаний мэдээллээ шинэчлэх</p>
@@ -14,6 +16,8 @@ export function GeneralSettingsPage() {
 
         <EditCompanyContactInfo />
       </div>
+    </div>
+    </div>
     </div>
   );
 }

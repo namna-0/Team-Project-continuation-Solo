@@ -23,11 +23,13 @@ import {
   Settings,
   ChevronDown,
   ArrowLeft,
+  Menu,
+  X,
 } from "lucide-react";
-import { PageContainer } from "./_components/PageContainer";
 
 export default function Dashboard() {
   const [currentPage, setCurrentPage] = useState("employees");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const { company: loggedInCompany, loading: companyLoading } =
     useCompanyAuth();
   const [company, setCompany] = useState<Company | null>(null);
@@ -65,12 +67,12 @@ export default function Dashboard() {
   const renderPage = () => {
     if (loading) {
       return (
-        <div className="flex items-center justify-center h-64">Loading...</div>
+        <div className="flex items-center justify-center min-h-[500px] w-full">Loading...</div>
       );
     }
     if (error) {
       return (
-        <div className="flex flex-col items-center justify-center h-64 gap-4">
+        <div className="flex flex-col items-center justify-center min-h-[500px] gap-4">
           <div className="text-red-500">{error}</div>
           <Button variant="outline" onClick={fetchCompany}>
             Retry
@@ -80,7 +82,7 @@ export default function Dashboard() {
     }
     if (!company) {
       return (
-        <div className="flex items-center justify-center h-64 text-gray-500">
+        <div className="flex items-center justify-center min-h-[500px] text-gray-500">
           No company data
         </div>
       );
@@ -94,51 +96,62 @@ export default function Dashboard() {
       case "staff-orders":
         return <StaffOrdersPage company={company} />;
       case "general-settings":
-        return (
-          <PageContainer>
-            <GeneralSettingsPage />
-          </PageContainer>
-        );
+        return <GeneralSettingsPage />;
       case "images-settings":
-        return (
-          <PageContainer>
-            <ImagesSettingsPage />
-          </PageContainer>
-        );
+        return <ImagesSettingsPage />;
       case "location-settings":
-        return (
-          <PageContainer>
-            <CompanyLocationGetData />
-          </PageContainer>
-        );
+        return <CompanyLocationGetData />;
       case "working-hours-settings":
-        return (
-          <PageContainer>
-            <CompanyWorkingHours company={company} />
-          </PageContainer>
-        );
+        return <CompanyWorkingHours company={company} />;
       case "templates-settings":
         return (
-          <PageContainer>
-            <EditTemplates company={company} fetchCompany={fetchCompany} />
-          </PageContainer>
+          <EditTemplates company={company} fetchCompany={fetchCompany} />
         );
       default:
-        return (
-          <PageContainer>
-            <EmployeesPage />
-          </PageContainer>
-        );
+        return <EmployeesPage />;
     }
   };
+
   return (
     <SidebarProvider>
-      <div className="flex h-screen bg-gray-50">
-        <div className="flex flex-col w-64 border-r border-gray-200 bg-white">
-          <div className="p-4 border-b border-gray-200">
+      <div className="flex h-screen bg-gray-50 w-full">
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+
+        <div
+          className={`
+            fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out
+            lg:translate-x-0 lg:static lg:inset-0
+            ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+            flex flex-col border-r border-gray-200 bg-white
+          `}
+        >
+          {/* Mobile close button */}
+          <div className="flex items-center justify-between p-4 lg:hidden">
+            <div className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500 text-white">
+                <Building2 className="h-4 w-4" />
+              </div>
+              <div className="text-sm font-semibold">
+                {company?.companyName}
+              </div>
+            </div>
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="p-2 rounded-lg hover:bg-gray-100"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          <div className="hidden lg:block p-4 border-b border-gray-200">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500 text-white">
-                <Building2 className="h-5 w-5" />
+                <img className="overflow-hidden" src={company?.companyLogo}/>
               </div>
               <div>
                 <div className="text-sm font-semibold">
@@ -150,9 +163,13 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
+
           <div className="flex-1 p-4 space-y-2 overflow-y-auto">
             <button
-              onClick={() => setCurrentPage("employees")}
+              onClick={() => {
+                setCurrentPage("employees");
+                setSidebarOpen(false);
+              }}
               className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition ${
                 currentPage === "employees"
                   ? "bg-blue-500 text-white"
@@ -162,7 +179,6 @@ export default function Dashboard() {
               <Users className="w-5 h-5" />
               Ажилчид
             </button>
-
             <div>
               <button
                 onClick={() =>
@@ -195,7 +211,10 @@ export default function Dashboard() {
               {["all-orders", "staff-orders"].includes(currentPage) && (
                 <div className="ml-4 mt-2 space-y-1">
                   <button
-                    onClick={() => setCurrentPage("all-orders")}
+                    onClick={() => {
+                      setCurrentPage("all-orders");
+                      setSidebarOpen(false);
+                    }}
                     className={`block w-full text-left px-4 py-2 text-sm rounded-lg ${
                       currentPage === "all-orders"
                         ? "bg-blue-500 text-white"
@@ -205,7 +224,10 @@ export default function Dashboard() {
                     Бүх захиалга
                   </button>
                   <button
-                    onClick={() => setCurrentPage("staff-orders")}
+                    onClick={() => {
+                      setCurrentPage("staff-orders");
+                      setSidebarOpen(false);
+                    }}
                     className={`block w-full text-left px-4 py-2 text-sm rounded-lg ${
                       currentPage === "staff-orders"
                         ? "bg-blue-500 text-white"
@@ -273,7 +295,10 @@ export default function Dashboard() {
               ].includes(currentPage) && (
                 <div className="ml-4 mt-2 space-y-1">
                   <button
-                    onClick={() => setCurrentPage("general-settings")}
+                    onClick={() => {
+                      setCurrentPage("general-settings");
+                      setSidebarOpen(false);
+                    }}
                     className={`block w-full text-left px-4 py-2 text-sm rounded-lg ${
                       currentPage === "general-settings"
                         ? "bg-blue-500 text-white"
@@ -283,7 +308,10 @@ export default function Dashboard() {
                     Ерөнхий
                   </button>
                   <button
-                    onClick={() => setCurrentPage("images-settings")}
+                    onClick={() => {
+                      setCurrentPage("images-settings");
+                      setSidebarOpen(false);
+                    }}
                     className={`block w-full text-left px-4 py-2 text-sm rounded-lg ${
                       currentPage === "images-settings"
                         ? "bg-blue-500 text-white"
@@ -293,7 +321,10 @@ export default function Dashboard() {
                     Компаний зураг
                   </button>
                   <button
-                    onClick={() => setCurrentPage("location-settings")}
+                    onClick={() => {
+                      setCurrentPage("location-settings");
+                      setSidebarOpen(false);
+                    }}
                     className={`block w-full text-left px-4 py-2 text-sm rounded-lg ${
                       currentPage === "location-settings"
                         ? "bg-blue-500 text-white"
@@ -303,7 +334,10 @@ export default function Dashboard() {
                     Байршил
                   </button>
                   <button
-                    onClick={() => setCurrentPage("working-hours-settings")}
+                    onClick={() => {
+                      setCurrentPage("working-hours-settings");
+                      setSidebarOpen(false);
+                    }}
                     className={`block w-full text-left px-4 py-2 text-sm rounded-lg ${
                       currentPage === "working-hours-settings"
                         ? "bg-blue-500 text-white"
@@ -313,7 +347,10 @@ export default function Dashboard() {
                     Ажлын цаг
                   </button>
                   <button
-                    onClick={() => setCurrentPage("templates-settings")}
+                    onClick={() => {
+                      setCurrentPage("templates-settings");
+                      setSidebarOpen(false);
+                    }}
                     className={`block w-full text-left px-4 py-2 text-sm rounded-lg ${
                       currentPage === "templates-settings"
                         ? "bg-blue-500 text-white"
@@ -337,10 +374,31 @@ export default function Dashboard() {
             </a>
           </div>
         </div>
+
         <div className="flex-1 flex flex-col min-h-screen overflow-hidden w-full">
+          <div className="flex items-center gap-4 p-4 bg-white border-b border-gray-200 lg:hidden">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="p-2 rounded-lg hover:bg-gray-100"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500 text-white">
+                <Building2 className="h-4 w-4" />
+              </div>
+              <div className="text-sm font-semibold">
+                {company?.companyName}
+              </div>
+            </div>
+          </div>
+
           <DashboardHeader currentPage={currentPage} />
-          <div className="flex-1 overflow-auto p-6 bg-gray-50">
-            <div className="max-w-7xl mx-auto w-full">{renderPage()}</div>
+          
+          <div className="flex-1 overflow-auto bg-gray-50 p-4 sm:p-6 w-full">
+            <div className="w-full max-w-none mx-auto">
+              {renderPage()}
+            </div>
           </div>
         </div>
       </div>
