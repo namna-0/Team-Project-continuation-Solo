@@ -27,7 +27,7 @@ function SelectDayOnCalendar({ open, setOpen, setDate, date }: CalendarProps) {
           required={true}
           locale={mn}
           mode="single"
-          selected={date ?? undefined}
+          selected={date }
           buttonVariant="ghost"
           captionLayout="dropdown"
           fromYear={new Date().getFullYear()} // өнөөдрийн оноос эхэлнэ

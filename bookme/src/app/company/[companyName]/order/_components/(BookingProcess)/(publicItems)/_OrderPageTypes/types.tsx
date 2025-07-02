@@ -62,6 +62,7 @@ export type OrderType = {
   employee: string;
   selectedTime: string;
   description: string;
+  status: string
 };
 export type user = {
   _id?: string;
@@ -108,7 +109,7 @@ export type availabilityProps = {
   setSelectedTime: (time: Date) => void;
   selectedTime: Date | null;
   isPassed: boolean
-  orders: OrderType[]|undefined
+  orders: OrderType[] | undefined
 };
 export type IfClosedProps = {
   date: Date | null;
@@ -178,7 +179,7 @@ export type EmployeeCardProps = {
   ner: string;
   mergejil: string;
   zurag: string;
-  captionText: string;
+  captionText: string|null;
 };
 
 export type BookingPageProps = {

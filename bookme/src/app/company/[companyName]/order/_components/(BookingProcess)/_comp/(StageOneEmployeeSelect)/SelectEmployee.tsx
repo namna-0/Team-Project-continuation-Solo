@@ -26,7 +26,7 @@ export default function StagaOneSelectEmployee({
                 }
               }}
               className={` ${item._id == selectedEmployeeImf
-                ? "rounded-xl p-2 border bg-sky-200/50 border-sky-400"
+                ? "rounded-xl p-2 border bg-gradient-to-r from-sky-200   to-blue-400 border-sky-400"
                 : "rounded-xl p-2"
                 }`}
             >
@@ -35,7 +35,7 @@ export default function StagaOneSelectEmployee({
                 mergejil={item.description}
                 captionText={
                   selectedEmployeeImf === item._id
-                    ? ``
+                    ? null
                     : `${item.employeeName}-д захиалга өгөх`
                 }
                 zurag={item.profileImage || ""}

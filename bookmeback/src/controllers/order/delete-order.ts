@@ -4,9 +4,7 @@ import { Booking } from "../../models/booking.schema";
 export const deleteOrderController: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
-
     const deletedOrder = await Booking.findByIdAndDelete(id);
-
     if (!deletedOrder) {
       res.status(404).json({ message: "Order not found" });
       return;
