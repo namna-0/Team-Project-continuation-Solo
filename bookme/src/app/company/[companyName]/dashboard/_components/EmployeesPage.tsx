@@ -52,13 +52,13 @@ export function EmployeesPage() {
 
         {(searchedEmployees ?? company?.employees)?.filter((employee) =>
           employee.employeeName
-            .toLowerCase()
+            ?.toLowerCase()
             .includes(searchValue.toLowerCase())
         ).length === 0 && (
-            <div className="col-span-full text-center text-muted-foreground">
-              Үр дүн олдсонгүй
-            </div>
-          )}
+          <div className="col-span-full text-center text-muted-foreground">
+            Үр дүн олдсонгүй
+          </div>
+        )}
       </div>
     </div>
   );
