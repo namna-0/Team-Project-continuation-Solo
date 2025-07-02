@@ -72,7 +72,7 @@ export default function HomePage() {
           )}
         </div>
 
-        <Header />
+        <Header company={company?.companyName} />
         {!isLoading && <Hero id="hero" />}
         <VerticalServicesParent id="vertical-services" />
         <ServicesParent id="services" />

@@ -76,7 +76,7 @@ export default function Footer({ id }: { id: string }) {
             <div className="flex flex-col gap-3 md:gap-4 text-white text-center md:text-left">
               <h5 className="text-gray-400 font-semibold">Bookme</h5>
               <p className="hover:text-blue-400 cursor-pointer transition-colors">
-                Home
+                Нүүр
               </p>
               <p className="hover:text-blue-400 cursor-pointer transition-colors">
                 Байгууллагад

@@ -4,10 +4,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import Link from "next/link";
 import { useCompanyAuth } from "../_providers/CompanyAuthProvider";
-import { Company } from "../company/[companyName]/_components/CompanyTypes";
 
 type CompanyNavBarProps = {
-  company?: Company | undefined;
+  company?: string | undefined;
 };
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -51,8 +50,8 @@ const Header = ({ company }: CompanyNavBarProps) => {
             duration: 0.5,
             ease: "power2.out",
 
-            marginLeft: shouldShrink ? "17%" : "10%",
-            marginRight: shouldShrink ? "17%" : "10%",
+            marginLeft: shouldShrink ? "15%" : "10%",
+            marginRight: shouldShrink ? "15%" : "10%",
             backdropFilter: shouldShrink ? "blur(8px)" : "blur(0px)",
             background: shouldShrink ? "rgba(0,0,0,0.8)" : "rgba(0,0,0,0)",
             overwrite: "auto",
@@ -147,15 +146,15 @@ const Header = ({ company }: CompanyNavBarProps) => {
             : "flex items-center justify-center gap-2 list-none col-span-8 min-w-0"
         }`}
       >
-        <li className="flex-shrink-0 opacity-0">
+        <li className="flex-shrink-1 opacity-0">
           <a
             href="#hero"
             className="text-white/90 text-sm font-medium px-3 py-2 rounded-full transition hover:bg-white/10 hover:text-white whitespace-nowrap"
           >
-            Home
+            Нүүр
           </a>
         </li>
-        <li className="flex-shrink-0">
+        <li className="flex-shrink-1">
           <a
             href="#vertical-services"
             className="text-white/90 text-sm font-medium px-3 py-2 rounded-full transition hover:bg-white/10 hover:text-white whitespace-nowrap"
@@ -163,7 +162,7 @@ const Header = ({ company }: CompanyNavBarProps) => {
             Байгууллага
           </a>
         </li>
-        <li className="flex-shrink-0">
+        <li className="flex-shrink-1">
           <a
             href="#services"
             className="text-white/90 text-sm font-medium px-3 py-2 rounded-full transition hover:bg-white/10 hover:text-white whitespace-nowrap"
@@ -171,7 +170,7 @@ const Header = ({ company }: CompanyNavBarProps) => {
             Үйлчлүүлэгч
           </a>
         </li>
-        <li className="flex-shrink-0">
+        <li className="flex-shrink-1">
           <a
             href="#team"
             className="text-white/90 text-sm font-medium px-3 py-2 rounded-full transition hover:bg-white/10 hover:text-white whitespace-nowrap"
@@ -179,7 +178,7 @@ const Header = ({ company }: CompanyNavBarProps) => {
             Манай баг
           </a>
         </li>
-        <li className="flex-shrink-0">
+        <li className="flex-shrink-1">
           <a
             href="#footer"
             className="text-white/90 text-sm font-medium px-3 py-2 rounded-full transition hover:bg-white/10 hover:text-white whitespace-nowrap"
@@ -188,7 +187,6 @@ const Header = ({ company }: CompanyNavBarProps) => {
           </a>
         </li>
       </ul>
-
       <div
         className={`${
           isMobile ? "ml-auto" : "col-span-2 flex justify-end min-w-0"
@@ -226,7 +224,7 @@ const Header = ({ company }: CompanyNavBarProps) => {
           </Link>
         ) : (
           <>
-            <Link href={`/company/${company?.companyName}/dashboard`}>
+            <Link href={`/company/${company}/dashboard`}>
               <button
                 className="group px-3 py-2 cursor-pointer rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 whitespace-nowrap text-xs"
                 style={{
