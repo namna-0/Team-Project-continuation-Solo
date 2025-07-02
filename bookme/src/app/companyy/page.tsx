@@ -115,8 +115,8 @@ export default function Home() {
     <div className="h-fit bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-blue-400/20 to-blue-200/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-blue-400/20 to-pink-400/20 rounded-full blur-3xl animate-pulse" />
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-cyan-400/10 to-blue-400/10 rounded-full blur-3xl" />
       </div>
 
@@ -151,7 +151,7 @@ export default function Home() {
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.3 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-2xl blur-xl" />
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-blue-200/20 rounded-2xl blur-xl" />
                 <div className="relative h-12 flex items-center gap-3 px-4 border border-white/30 rounded-2xl shadow-lg bg-white/90 backdrop-blur-sm focus-within:ring-2 focus-within:ring-blue-400/50 focus-within:border-blue-400/50 transition-all">
                   <Search className="text-gray-500 w-5 h-5" />
                   <input
@@ -177,7 +177,7 @@ export default function Home() {
         >
           <div className="relative mb-6">
             <motion.div
-              className="w-16 h-16 mx-auto bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg"
+              className="w-16 h-16 mx-auto bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg"
               whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
@@ -191,7 +191,7 @@ export default function Home() {
             </motion.div>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 bg-clip-text text-transparent mb-10">
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-blue-800 bg-clip-text text-transparent mb-10">
             Bookme компаниуд
           </h1>
           <p className="text-lg text-gray-600 leading-relaxed mb-[20px]">
@@ -346,7 +346,7 @@ export default function Home() {
                             </span>
                           </div>
                           <div className="flex items-center gap-2 text-gray-500">
-                            <Mail className="w-4 h-4 text-purple-500" />
+                            <Mail className="w-4 h-4 text-blue-500" />
                             <span className="line-clamp-1">
                               {company.email}
                             </span>
@@ -365,7 +365,7 @@ export default function Home() {
                           href={`/company/${company.companyName}`}
                           className="block"
                         >
-                          <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-2xl py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
+                          <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-200 hover:from-blue-700 hover:to-blue-700 text-white rounded-2xl py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
                             <Calendar className="w-4 h-4 mr-2" />
                             Цаг захиалах
                           </Button>
@@ -431,7 +431,7 @@ export default function Home() {
           transition={{ delay: 0.6, duration: 0.8 }}
         >
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 text-center shadow-lg border border-white/50 mt-[100px]">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-200 rounded-full flex items-center justify-center mx-auto mb-4">
               <Users className="w-6 h-6 text-white" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-2">
@@ -449,7 +449,7 @@ export default function Home() {
           </div>
 
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 text-center shadow-lg border border-white/50 mt-[100px]">
-            <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-12 h-12 bg-gradient-to-r from-blue-200 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
               <Calendar className="w-6 h-6 text-white" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-2">24/7</h3>
