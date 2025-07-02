@@ -7,7 +7,6 @@ import { useAuth } from "@/app/_providers/UserAuthProvider";
 import { useCompanyAuth } from "@/app/_providers/CompanyAuthProvider";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { IsSucsessBooked } from "./_components/(SucsessBooked)/IsSucsessBooked";
 import { CompanyType } from "./_components/(BookingProcess)/(publicItems)/_OrderPageTypes/types";
 
 export default function OrderPage() {
@@ -81,11 +80,10 @@ export default function OrderPage() {
                     </div>
                 </div>
             </div>
-
         </div>
     )
     return (
-        Stages.indexOf(isStage) <= Stages.length - 1 ? (
+        Stages.indexOf(isStage) <= Stages.length - 1 && (
             <BookingPage
                 date={date} setDate={setDate} isStage={isStage} setIsStage={setIsStage}
                 isSelectEmployee={isSelectEmployee} setIsSelectEmployee={setIsSelectEmployee}
@@ -94,6 +92,6 @@ export default function OrderPage() {
                 HandleNextStage={HandleNextStage}
                 companyData={companyData}
             />
-        ) : <IsSucsessBooked />
+        )
     )
 }

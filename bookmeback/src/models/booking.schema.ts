@@ -40,10 +40,10 @@ const bookingSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  description:{
-    type:String,
-    required:false,
-    default:"нэмэлт мэдээлэл байхгүй."
+  description: {
+    type: String,
+    required: false,
+    default: "нэмэлт мэдээлэл байхгүй."
   }
 });
 bookingSchema.index(

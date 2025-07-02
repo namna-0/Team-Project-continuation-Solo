@@ -46,7 +46,7 @@ export const BookingPage = ({ isStage, setSelectedTime, setIsStage, setIsSelectE
                                     }}
                                     className={
                                         item == isStage
-                                            ? "font-bold h-fit flex gap-1 text-xl items-center"
+                                            ? "font-bold h-fit flex gap-1 text-xl bg-gray-300 p-2 rounded-xl items-center"
                                             : "flex text-xl gap-1 font-normal items-center"
                                     }
                                     key={index}

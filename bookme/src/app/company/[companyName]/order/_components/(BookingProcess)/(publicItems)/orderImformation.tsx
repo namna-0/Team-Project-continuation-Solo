@@ -10,6 +10,7 @@ import { OrderImformationType } from "./_OrderPageTypes/types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import UpdateEmployee from "../_comp/(StageOneEmployeeSelect)/updateEmployeeDialog";
+import { useEffect } from "react";
 
 function OrderImformation({
     HandleNextStage,
@@ -39,16 +40,14 @@ function OrderImformation({
             }),
 
         }).then((response) => {
-            console.log("Order added successfully", response.data);
+            // console.log("Order added successfully", response.data);
             toast.success("Амжилттай захиалагдлаа")
             router.push(`/company/${company?.companyName}/appointments`)
         }).catch((error: any) => {
-            if (error.response.status === 409) {
-                toast.error("таны сонгосон цаг дээр захиалга үүсчихсэн байна.")
-                console.log("Уучлаарай, энэ цаг аль хэдийн захиалагдсан байна.", error.code);;
-            } else {
-                console.log
-                    ("Захиалга хийхэд алдаа гарлаа. Дахин оролдоно уу.", error);
+            if (error.response?.status === 409) {
+                toast.error("Захиалга давхацлаа. Та дахин оролдно уу.")
+                setIsStage(Stages[1])
+                setSelectedTime(null)
             }
             console.error(error);
         })
@@ -108,19 +107,21 @@ function OrderImformation({
                     </div>) : undefined
                 }
             </div>
-            <Button variant={"default"} className={(isSelectEmployee == "" || selectedTime == null || !isChecked) ? "w-full h-fit bg-gray-300 text-black hover:bg-gray-500 flex items-center justify-center" : "w-full bg-black text-white "} onClick={() => {
-                HandleNextStage()
-                if (isStage == Stages[2] && isChecked) {
-                    addOrder()
-                    setIsSelectEmployee("")
-                    setSelectEmployee("")
-                    setDate(null)
-                    setSelectedTime(null)
-                    setIsStage(Stages[0])
-                }
-            }}>{isStage == Stages[0] && (<>Огноо сонгох <ChevronRight /></>)}
+            {/* Removed invalid useEffect call */}
+            < Button variant={((isSelectEmployee !== i?.employeeName) || !selectedTime || !isChecked) ? "ghost" : "default"}
+                onClick={() => {
+                    HandleNextStage()
+                    if (isStage == Stages[2] && isChecked) {
+                        addOrder()
+                        setIsSelectEmployee("")
+                        setSelectEmployee("")
+                        setDate(null)
+                        setSelectedTime(null)
+                        setIsStage(Stages[0])
+                    }
+                }}> {isStage == Stages[0] && (<>Огноо сонгох <ChevronRight /></>)}
                 {isStage == Stages[1] && (<>Үргэлжлүүлэх <ChevronRight /></>)}
-                {isStage == Stages[2] && (<>Захиалгах <ChevronRight /></>)}</Button>
+                {isStage == Stages[2] && (<>Захиалгах <ChevronRight /></>)}</Button >
         </div >
     )
 }
