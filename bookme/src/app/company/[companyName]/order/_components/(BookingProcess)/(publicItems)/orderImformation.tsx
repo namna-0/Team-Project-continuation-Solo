@@ -46,7 +46,7 @@ function OrderImformation({
             router.push(`/company/${company?.companyName}/appointments`)
         }).catch((error: any) => {
             if (error.response?.status === 409) {
-                toast.error("Захиалга давхацлаа. Та дахин оролдно уу.")
+                toast.error("Захиалгын цаг давхацлаа. Та дахин оролдно уу.")
                 setIsStage(Stages[1])
                 setSelectedTime(null)
             }
@@ -74,7 +74,7 @@ function OrderImformation({
                     <div className="w-24 h-24 rounded border hover:border-blue-700 transition flex justify-center items-center p-3 ">
                         <img
                             src={company?.companyLogo}
-                            onClick={() => window.open(`http://localhost:3000/company/${company?.companyName}`, '_blank')}
+                            onClick={() => window.open(`https://team-naba.vercel.app//company/${company?.companyName}`, '_blank')}
                             className="w-full h-full object-cover rounded "
                         />
                     </div>
@@ -136,7 +136,7 @@ function OrderImformation({
                     }
                 }}> {isStage == Stages[0] && (<>Огноо сонгох <ChevronRight /></>)}
                 {isStage == Stages[1] && (<>Үргэлжлүүлэх <ChevronRight /></>)}
-                {isStage == Stages[2] && (<>Захиалгах <ChevronRight /></>)}</Button >
+                {isStage == Stages[2] && (<>Захиалах <ChevronRight /></>)}</Button >
         </div >
     )
 }

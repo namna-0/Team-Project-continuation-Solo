@@ -14,7 +14,7 @@ export const BookingPage = ({ isStage, setSelectedTime, setIsStage, setIsSelectE
 
     HandleNextStage, date, setDate }: BookingPageProps) => {
     const [isChecked, setIsChecked] = useState(false);
-    const Stages = ["Ажилтан", "Огноо", "Баталгаажуулалт", "амжилттай захиалагдлаа"]
+    const Stages = ["Ажилтан", "Огноо", "Баталгаажуулалт"]
     const title = () => {
         if (isStage === Stages[2]) { return `${isStage} хийх`; }
         if (isStage == Stages[1] || isStage === Stages[0]) { return `${isStage} сонгох`; }
@@ -88,7 +88,6 @@ export const BookingPage = ({ isStage, setSelectedTime, setIsStage, setIsSelectE
                             />
                         </div>
                     )}
-
                     {isStage == Stages[2] && <ConfirmBooking isChecked={isChecked} setIsChecked={setIsChecked} />}
                 </div>
                 <div className="flex flex-2 w-full relative justify-start items-center">

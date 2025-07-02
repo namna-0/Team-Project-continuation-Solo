@@ -171,6 +171,12 @@ export default function CompanySetupPage() {
         experience: values.experience,
       };
 
+      console.log("Илгээж буй өгөгдөл:", apiData);
+
+      const response = await signUp(apiData);
+      if (response) {
+        toast.success("Таны компани амжилттай бүртгэгдлээ!");
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
       toast.error("Алдаа гарлаа. Дахин оролдоно уу.");
