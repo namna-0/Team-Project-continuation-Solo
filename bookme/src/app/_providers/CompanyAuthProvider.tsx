@@ -31,6 +31,8 @@ export const CompanyAuthProvider = ({ children }: PropsWithChildren) => {
       const { data } = await api.post("/signin", { email, password });
       localStorage.setItem("company_token", data.token);
       setCompany(data.company);
+      console.log(data);
+      
       router.push(`/company/${data.company.companyName}`);
       toast.success("Амжилттай нэвтэрлээ!");
     } catch (error) {

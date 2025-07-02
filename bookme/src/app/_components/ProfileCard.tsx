@@ -314,7 +314,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                   </div>
                 </div>
                 <button
-                  className="pc-contact-btn"
+                  className="pc-contact-btn cursor-pointer"
                   onClick={handleContactClick}
                   style={{ pointerEvents: "auto" }}
                   type="button"

@@ -20,6 +20,7 @@ export default function CompanyTemplateSelector() {
     try {
       setLoading(true);
       const response = await api.get(`/company/name/${companyName}`);
+
       if (response.data?.company) {
         setCompany(response.data.company);
       }
@@ -51,7 +52,10 @@ export default function CompanyTemplateSelector() {
           <strong className="font-bold">Анхаар!</strong>
           <span className="block sm:inline"> {error}</span>
         </div>
-        <Button className="mt-4" onClick={() => window.location.reload()}>
+        <Button
+          className="mt-4 cursor-pointer"
+          onClick={() => window.location.reload()}
+        >
           Дахин оролдох
         </Button>
       </div>

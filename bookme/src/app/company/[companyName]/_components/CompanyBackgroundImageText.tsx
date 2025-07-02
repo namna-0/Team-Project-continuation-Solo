@@ -98,7 +98,7 @@ export const CompanyBackgroundImageText = ({
                 className="flex flex-col sm:flex-row gap-4 sm:gap-6 pt-4"
               >
                 <Link href={`${companyName}/order`}>
-                  <button className="group relative px-5 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-rose-500 to-pink-600 rounded-xl sm:rounded-2xl overflow-hidden transform transition-all duration-300 hover:scale-[1.02] sm:hover:scale-105 hover:shadow-lg sm:hover:shadow-2xl hover:shadow-rose-500/25 w-auto">
+                  <button className="group relative px-5 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-rose-500 to-pink-600 rounded-xl sm:rounded-2xl overflow-hidden transform transition-all duration-300 hover:scale-[1.02] sm:hover:scale-105 hover:shadow-lg sm:hover:shadow-2xl hover:shadow-rose-500/25 w-auto cursor-pointer">
                     <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-rose-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
                     <div className="relative z-10 flex items-center justify-center gap-2 sm:gap-3 text-white font-semibold sm:font-bold text-sm sm:text-lg">
                       <Heart className="w-5 h-5 sm:w-6 sm:h-6 group-hover:animate-pulse" />

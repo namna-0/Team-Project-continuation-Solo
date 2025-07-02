@@ -123,7 +123,7 @@ export const CompanyBackgroundTemplate2 = ({
                 }`}
               >
                 <Link href={`${companyName}/order`}>
-                  <button className="group relative px-4 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg sm:rounded-xl overflow-hidden transform transition-all duration-300 hover:scale-[1.02] sm:hover:scale-105 hover:shadow-md sm:hover:shadow-lg hover:shadow-blue-500/20 w-full sm:w-auto">
+                  <button className="group relative px-4 py-2.5 sm:px-6 sm:py-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg sm:rounded-xl overflow-hidden transform transition-all duration-300 hover:scale-[1.02] sm:hover:scale-105 hover:shadow-md sm:hover:shadow-lg hover:shadow-blue-500/20 w-full sm:w-auto cursor-pointer">
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                     <div className="relative z-10 flex items-center justify-center gap-2 text-white font-medium sm:font-bold text-sm sm:text-base">
                       <Heart className="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse" />
