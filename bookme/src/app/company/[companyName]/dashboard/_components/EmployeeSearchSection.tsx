@@ -23,8 +23,9 @@ export const EmployeeSearchSection = ({
     setSearchValue(e.target.value.toLowerCase());
   };
 
-  const filteredEmployees = company?.employees.filter((employee) =>
-    employee.employeeName.toLowerCase().includes(searchValue)
+  const filteredEmployees = company?.employees.filter(
+    (employee) =>
+      employee.employeeName ?? "".toLowerCase().includes(searchValue)
   );
 
   return (
@@ -41,22 +42,6 @@ export const EmployeeSearchSection = ({
             Нийт {`${filteredEmployees?.length}`} ажилтан байна.
           </div>
         </div>
-
-        {/* {searchValue && (
-          <div className="absolute top-12 w-full p-2 rounded-2xl z-10 bg-[#f9f9f9] max-h-64 overflow-auto shadow-md">
-            <div className="flex flex-col">
-              {filteredEmployees?.length ? (
-                filteredEmployees.map((employee) => (
-                  <EmploySearchCard key={employee._id} employ={employee} />
-                ))
-              ) : (
-                <div className="text-sm text-gray-500 p-2 text-center">
-                  Үр дүн олдсонгүй
-                </div>
-              )}
-            </div>
-          </div>
-        )} */}
       </div>
     </div>
   );
