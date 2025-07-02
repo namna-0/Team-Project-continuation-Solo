@@ -30,8 +30,8 @@ function SelectDayOnCalendar({ open, setOpen, setDate, date }: CalendarProps) {
           selected={date || undefined}
           buttonVariant="ghost"
           captionLayout="dropdown"
-          fromYear={new Date().getFullYear()} // өнөөдрийн оноос эхэлнэ
-          toYear={new Date().getFullYear() + 1} // дараа жилийн эхний сар хүртэл
+          fromYear={new Date().getFullYear()} 
+          toYear={new Date().getFullYear() + 1} 
           onMonthChange={(month: Date) => {
             const today = new Date();
             const isCurrentMonth =
