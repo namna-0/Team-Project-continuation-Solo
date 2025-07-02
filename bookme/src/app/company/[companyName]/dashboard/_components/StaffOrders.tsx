@@ -42,7 +42,6 @@ export function StaffOrdersPage({ company }: { company: Company }) {
     setCurrentPage(1);
   }, [selectedEmployee]);
 
-  // Calculate stats
   const activeStaff =
     company.employees?.filter((emp) => emp.availability)?.length || 0;
   const pendingOrders = displayBookings.filter(
@@ -58,8 +57,8 @@ export function StaffOrdersPage({ company }: { company: Company }) {
   }).length;
 
   return (
-    <div className="flex-1 p-6 bg-gray-50">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="w-full min-h-full bg-gray-50 space-y-4 sm:space-y-6">
+      <div className="w-full flex flex-col space-y-6">
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <div className="flex items-center justify-between">
             <div>
@@ -110,20 +109,24 @@ export function StaffOrdersPage({ company }: { company: Company }) {
         </div>
 
         {/* Staff List */}
-        <StaffOrdersList
-          company={company}
-          selectedEmployee={selectedEmployee}
-          onEmployeeSelect={handleEmployeeSelect}
-          getEmployeeBookings={getEmployeeBookings}
-        />
+        <div className="w-full">
+          <StaffOrdersList
+            company={company}
+            selectedEmployee={selectedEmployee}
+            onEmployeeSelect={handleEmployeeSelect}
+            getEmployeeBookings={getEmployeeBookings}
+          />
+        </div>
 
         {/* Calendar */}
         {selectedEmployee && (
-          <BookingCalendar
-            company={company}
-            selectedEmployee={selectedEmployee}
-            bookings={displayBookings}
-          />
+          <div className="w-full">
+            <BookingCalendar
+              company={company}
+              selectedEmployee={selectedEmployee}
+              bookings={displayBookings}
+            />
+          </div>
         )}
       </div>
     </div>

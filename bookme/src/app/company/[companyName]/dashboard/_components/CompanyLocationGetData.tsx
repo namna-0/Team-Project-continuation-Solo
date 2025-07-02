@@ -22,17 +22,19 @@ export const CompanyLocationGetData = () => {
     }
   }, [company]);
 
-  if (!selectedPosition) {
-    return <Skeleton className="w-full h-[500px] rounded-full " />;
-  }
-
   return (
-    <div>
-      <CompanyLocationEdit
-        companyId={company?._id}
-        selectedPosition={selectedPosition}
-        setSelectedPosition={setSelectedPosition}
-      />
+    <div className="w-full h-full min-h-[600px] rounded-xl overflow-hidden">
+      {!selectedPosition ? (
+        <Skeleton className="w-full h-full min-h-[600px]" />
+      ) : (
+        <div className="w-full h-full min-h-[600px]">
+          <CompanyLocationEdit
+            companyId={company?._id}
+            selectedPosition={selectedPosition}
+            setSelectedPosition={setSelectedPosition}
+          />
+        </div>
+      )}
     </div>
   );
 };
