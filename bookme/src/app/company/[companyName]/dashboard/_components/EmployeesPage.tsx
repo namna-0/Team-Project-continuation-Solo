@@ -36,10 +36,10 @@ export function EmployeesPage() {
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr">
         {(searchedEmployees ?? company?.employees)
-          ?.filter((employee) =>
-            employee.employeeName
-              .toLowerCase()
-              .includes(searchValue.toLowerCase())
+          ?.filter(
+            (employee) =>
+              employee.employeeName ??
+              "".toLowerCase().includes(searchValue.toLowerCase())
           )
           .reverse()
           .map((employee) => (
