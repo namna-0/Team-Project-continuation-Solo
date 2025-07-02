@@ -42,6 +42,7 @@ export const BookingPage = ({ isStage, setSelectedTime, setIsStage, setIsSelectE
                                         if (isStage !== "" && Stages.indexOf(isStage) > index) {
                                             setSelectedTime(null);
                                             setIsStage(item);
+                                            setIsChecked(false)
                                         }
                                     }}
                                     className={

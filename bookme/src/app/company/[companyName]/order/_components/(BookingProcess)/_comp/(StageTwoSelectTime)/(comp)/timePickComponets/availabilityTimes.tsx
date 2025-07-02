@@ -2,7 +2,7 @@
 
 import { availabilityProps, OrderType } from "../../../../(publicItems)/_OrderPageTypes/types";
 
-export function AvailabilityTimes({ times, date, setDate, setSelectedTime, selectedTime, isPassed,orders }: availabilityProps) {
+export function AvailabilityTimes({ times, date, setDate, setSelectedTime, selectedTime, isPassed, orders }: availabilityProps) {
     return (
         <div className="flex w-full flex-col gap-10 ">
             <div className="flex w-full gap-10 justify-end">
@@ -25,12 +25,12 @@ export function AvailabilityTimes({ times, date, setDate, setSelectedTime, selec
                         minute
                     );
                     const allSelectedTimes = orders
-                        ? orders.map((order: OrderType) => new Date(order.selectedTime))
+                        ? orders.map((order: OrderType) => order.status == "confirmed" && new Date(order.selectedTime))
                         : []
 
                     const isBooked =
                         allSelectedTimes.some(
-                            (selectedTime) => selectedTime.getTime() === currentSlot.getTime()
+                            (selectedTime) => selectedTime instanceof Date && selectedTime.getTime() === currentSlot.getTime()
                         )
                     const isSelected =
                         selectedTime &&
@@ -41,7 +41,6 @@ export function AvailabilityTimes({ times, date, setDate, setSelectedTime, selec
                         : isSelected
                             ? "bg-blue-500 flex w-full  rounded-xl items-center justify-center p-4 cursor-pointer text-white"
                             : "bg-blue-200/50  flex w-full rounded-xl items-center justify-center p-4 hover:border hover:border-blue-700 cursor-pointer";
-
                     return (
                         <span
                             key={time.toString()}

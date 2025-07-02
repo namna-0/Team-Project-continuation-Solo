@@ -10,7 +10,7 @@ import { OrderImformationType } from "./_OrderPageTypes/types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import UpdateEmployee from "../_comp/(StageOneEmployeeSelect)/updateEmployeeDialog";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function OrderImformation({
     HandleNextStage,
@@ -22,6 +22,7 @@ function OrderImformation({
     setSelectEmployee, setDate,
     company, isStage, setIsStage, Stages, isChecked }: OrderImformationType) {
     const router = useRouter()
+    const [buttonVariant, setButtonVariant] = useState<"outline" | "default" | "link" | "destructive" | "secondary" | "ghost" | null | undefined>("outline");
     const { user } = useAuth()
     const i = company?.employees.find((employee) => employee._id === selectedEmployeeImf);
     const addOrder = async () => {
@@ -52,6 +53,20 @@ function OrderImformation({
             console.error(error);
         })
     }
+    useEffect(() => {
+        if (isSelectEmployee !== i?.employeeName) {
+            setButtonVariant("outline");
+        }
+        if (!selectedTime) {
+            setButtonVariant("outline");
+        }
+        if (!isChecked) {
+            setButtonVariant("outline");
+        }
+        else {
+            setButtonVariant("default");
+        }
+    }, [isChecked, selectedTime, isSelectEmployee, i?.employeeName]);
     return (
         <div className="flex border absolute top-56 border-gray-300 p-6 flex-col rounded-xl w-100 min-h-130 justify-between ">
             <div className="w-full flex flex-col gap-4">
@@ -108,7 +123,7 @@ function OrderImformation({
                 }
             </div>
             {/* Removed invalid useEffect call */}
-            < Button variant={((isSelectEmployee !== i?.employeeName) || !selectedTime || !isChecked) ? "ghost" : "default"}
+            < Button variant={buttonVariant}
                 onClick={() => {
                     HandleNextStage()
                     if (isStage == Stages[2] && isChecked) {

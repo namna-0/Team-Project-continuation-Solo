@@ -9,7 +9,7 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 interface TiltedCardProps {
   imageSrc: React.ComponentProps<"img">["src"];
   altText?: string;
-  captionText?: string;
+  captionText?: string|null;
   containerHeight?: React.CSSProperties["height"];
   containerWidth?: React.CSSProperties["width"];
   imageHeight?: React.CSSProperties["height"];
@@ -32,7 +32,7 @@ const springValues: SpringOptions = {
 export default function TiltedCard({
   imageSrc,
   altText = "",
-  captionText = "",
+  captionText = null,
   containerHeight = "300px",
   containerWidth = "100%",
   imageHeight = "300px",
@@ -136,13 +136,11 @@ export default function TiltedCard({
             {overlayContent}
           </motion.span>
         )}
-
       </motion.span>
-
       {
         showTooltip && (
           <motion.span
-            className=" absolute left-0 top-0 rounded-xl border border-[#63626099]  shadow-2xl px-[10px] py-1 text-[10px] bg-gradient-to-r from-sky-500   to-blue-800 bg-clip-text  font-extrabold text-transparent opacity-0 z-30 sm:block hidden"
+            className={captionText==null?" absolute left-0 top-0 rounded-xl bg-gradient-to-r from-sky-500   to-blue-800 text-white font-extrabold opacity-0 z-30 sm:block hidden":" absolute left-0 top-0 rounded-xl border border-[#63626099]shadow-2xl px-[10px] py-1 text-[10px] bg-gradient-to-r from-sky-500   to-blue-800 text-white font-extrabold opacity-0 z-30 sm:block hidden"}
             style={{
               x,
               y,

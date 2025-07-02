@@ -29,11 +29,6 @@ function TimePicker({
         hour,
         minute
     );
-    // const allSelectedTimes = orders
-    //     ? orders.map((order: OrderType) => new Date(order.selectedTime))
-    //     : []
-
-
     const isPassed = currentSlot.getTime() < new Date().getTime()
     const nextAvailabilityDay = () => {
         if (date) {
@@ -63,7 +58,6 @@ function TimePicker({
             <IsFullyDay nextAvailabilityDay={nextAvailabilityDay} isSelectEmployee={isSelectEmployee} setIsSelectEmployee={setIsSelectEmployee} setSelectedEmployee={setSelectedEmployee} company={company} setSelectedTime={setSelectedTime} zurag={zurag} selectedEmployeeImf={selectedEmployeeImf} />
         )
     }
-
     return (
         <AvailabilityTimes
             date={date} setDate={setDate} selectedTime={selectedTime} times={times} setSelectedTime={setSelectedTime} isPassed={isPassed} orders={orders} />
