@@ -38,7 +38,6 @@ export function EmployeesPage() {
           <EmployeeAddSection />
         </div>
       </div>
-
       {/* Search section */}
       <div className="w-full">
         <EmployeeSearchSection
@@ -47,6 +46,22 @@ export function EmployeesPage() {
           setSearchedEmployees={setSearchedEmployees}
         />
       </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 auto-rows-fr">
+        {(searchedEmployees ?? company?.employees)
+          ?.filter(
+            (employee) =>
+              employee.employeeName ??
+              "".toLowerCase().includes(searchValue.toLowerCase())
+          )
+          .reverse()
+          .map((employee) => (
+            <EmployeeCard
+              key={employee._id}
+              employee={employee}
+              getCompanyAction={getCompany}
+            />
+          ))}
 
       {/* Employee cards grid - fully responsive */}
       <div className="w-full">
