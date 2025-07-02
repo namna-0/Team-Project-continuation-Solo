@@ -22,17 +22,17 @@ export const Step6 = ({
   >;
 
   return (
-    <div className="text-white max-w-2xl mx-auto p-6 rounded-lg space-y-6">
+    <div className="text-white max-w-2xl mx-auto p-6 rounded-lg space-y-6  max-h-[600px] overflow-y-auto">
       <h2 className="text-xl font-bold">Нийт мэдээлэл</h2>
 
       <div>
         <h3 className="font-semibold mb-2">Бүртгэлийн мэдээлэл</h3>
         <p>Имэйл: {formData.email}</p>
-        <p>Салоны нэр: {formData.companyName}</p>
+        <p>Компаний нэр: {formData.companyName}</p>
       </div>
 
       <div>
-        <h3 className="font-semibold mb-2">Салоны дэлгэрэнгүй</h3>
+        <h3 className="font-semibold mb-2">Компаний дэлгэрэнгүй</h3>
         <p>Тайлбар: {formData.description || "—"}</p>
         <p>Хаяг: {formData.address}</p>
         <p>Хот: {formData.city}</p>
@@ -44,7 +44,7 @@ export const Step6 = ({
           <div className="mt-2">
             <p className="text-sm mb-1">Лого:</p>
             <img
-              src={logoPreview}
+              src={formData.logo}
               alt="Лого"
               className="h-16 object-contain border rounded"
             />

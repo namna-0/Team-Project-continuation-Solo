@@ -80,7 +80,7 @@ export default function SignIn() {
         />
         <div className="absolute bottom-0 left-0 w-[1400px] h-[900px] overflow-hidden z-0">
           <motion.div
-            className="absolute -bottom-64 -left-64 w-[1400px] h-[1000px]"
+            className="absolute -bottom-64 -left-64 w-[1400px] h-[900px]"
             initial={{ rotate: 0 }}
             animate={{ rotate: 360 }}
             transition={{

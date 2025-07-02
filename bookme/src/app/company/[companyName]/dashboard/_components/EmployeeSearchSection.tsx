@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { ChangeEvent } from "react";
 import { EmploySearchCard } from "./EmploySearchCard";
-import { Employee } from "../../_components/CompanyTypes";
+import { Company, Employee } from "../../_components/CompanyTypes";
 
 interface Props {
   searchValue: string;
@@ -18,7 +18,6 @@ export const EmployeeSearchSection = ({
   setSearchValue,
 }: Props) => {
   const { company } = useCompanyAuth();
-
   const handleSearchEmploy = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value.toLowerCase());
   };

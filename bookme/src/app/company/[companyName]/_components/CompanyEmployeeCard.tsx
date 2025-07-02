@@ -108,7 +108,7 @@ const EmployeeCard = ({
           </div>
           <Link href={`/company/${company.companyName}/order`}>
             <button
-              className={`w-full py-2 rounded-xl bg-gradient-to-r ${colorScheme.primary} text-white font-semibold text-sm shadow-md hover:shadow-lg transition duration-300`}
+              className={`w-full py-2 rounded-xl bg-gradient-to-r ${colorScheme.primary} text-white font-semibold text-sm shadow-md hover:shadow-lg transition duration-300 cursor-pointer`}
             >
               <div className="flex items-center justify-center gap-1">
                 <Calendar className="w-4 h-4" />

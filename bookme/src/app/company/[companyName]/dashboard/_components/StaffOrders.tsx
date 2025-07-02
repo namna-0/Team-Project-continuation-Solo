@@ -71,16 +71,6 @@ export function StaffOrdersPage({ company }: { company: Company }) {
                   : "Бүх ажилтнуудын цаг захиалга"}
               </p>
             </div>
-            {selectedEmployee && (
-              <Button
-                variant="outline"
-                onClick={showAllBookings}
-                className="flex items-center gap-2"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Бүх захиалга харах
-              </Button>
-            )}
           </div>
         </div>
 

@@ -15,6 +15,10 @@ import {
   Eye,
   X,
   MoreHorizontal,
+  TrendingUp,
+  TrendingDown,
+  Users,
+  DollarSign,
 } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar as CalendarIcon } from "lucide-react";
@@ -26,12 +30,43 @@ type AllOrdersPageProps = {
   company: Company;
 };
 
+// Animated counter component
+const AnimatedCounter = ({ value, duration = 1000 }: { value: number; duration?: number }) => {
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    const startTime = Date.now();
+    const startValue = displayValue;
+    const difference = value - startValue;
+
+    const updateCounter = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Easing function for smooth animation
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      const currentValue = Math.round(startValue + difference * easeOutQuart);
+      
+      setDisplayValue(currentValue);
+      
+      if (progress < 1) {
+        requestAnimationFrame(updateCounter);
+      }
+    };
+
+    requestAnimationFrame(updateCounter);
+  }, [value, duration]);
+
+  return <span>{displayValue}</span>;
+};
+
 export function AllOrdersPage({ company }: AllOrdersPageProps) {
   const [orders, setOrders] = useState<Booking[]>([]);
   const [filter, setFilter] = useState("all");
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [previousStats, setPreviousStats] = useState<any>({});
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -50,9 +85,10 @@ export function AllOrdersPage({ company }: AllOrdersPageProps) {
   const filteredOrders = orders.filter((o) => {
     const date = new Date(o.selectedTime);
     const isFuture = date.getTime() >= new Date().getTime();
-    const matchesSearch =
-      o.user?.username?.toLowerCase().includes(search.toLowerCase()) ||
-      o.employee?.employeeName?.toLowerCase().includes(search.toLowerCase());
+const matchesSearch =
+  (o.user?.username ?? "").toLowerCase().includes(search.toLowerCase()) ||
+  (o.employee?.employeeName ?? "").toLowerCase().includes(search.toLowerCase());
+
 
     if (!matchesSearch) return false;
 
@@ -181,38 +217,88 @@ export function AllOrdersPage({ company }: AllOrdersPageProps) {
     },
   ];
 
+  // Calculate real-time stats
+  const totalOrders = filteredOrders.length;
+  const confirmedOrders = orders.filter((o) => o.status === "confirmed").length;
+  const pendingOrders = orders.filter((o) => o.status === "pending").length;
+  const cancelledOrders = orders.filter((o) => o.status === "cancelled").length;
+  const todayOrders = orders.filter((o) => isToday(new Date(o.selectedTime))).length;
+  const weekOrders = orders.filter((o) => isThisWeek(new Date(o.selectedTime), { weekStartsOn: 1 })).length;
+  
+  const confirmationRate = orders.length > 0 ? Math.round((confirmedOrders / orders.length) * 100) : 0;
+  const cancellationRate = orders.length > 0 ? Math.round((cancelledOrders / orders.length) * 100) : 0;
+  
+  // Calculate revenue (assuming each booking has a price field)
+
+  // Calculate trends (mock data for demonstration)
+  const getTrend = (current: number, category: string) => {
+    const previous = previousStats[category] || current * 0.9;
+    const change = current - previous;
+    const percentage = previous > 0 ? Math.round((change / previous) * 100) : 0;
+    return {
+      change: percentage,
+      isPositive: change >= 0,
+      display: `${percentage > 0 ? '+' : ''}${percentage}%`
+    };
+  };
+
+  // Update previous stats
+  useEffect(() => {
+    setPreviousStats({
+      total: totalOrders,
+      confirmed: confirmedOrders,
+      pending: pendingOrders,
+      cancelled: cancelledOrders,
+    });
+  }, []);
+
   const stats = [
     {
       title: "Нийт захиалга",
-      value: filteredOrders.length,
-      change: "+12%",
-      trend: "up",
+      value: totalOrders,
+      trend: getTrend(totalOrders, 'total'),
       icon: ShoppingCart,
       color: "blue",
+      gradient: "from-blue-500 to-blue-600",
+      description: "Нийт захиалгын тоо",
     },
     {
-      title: "Батлагдсан",
-      value: "85%",
-      change: "+8%",
-      trend: "up",
+      title: "Батлагдсан захиалга",
+      value: confirmedOrders,
+      percentage: confirmationRate,
+      trend: getTrend(confirmedOrders, 'confirmed'),
       icon: Check,
       color: "green",
+      gradient: "from-green-500 to-green-600",
+      description: `${confirmationRate}% амжилттай`,
     },
     {
       title: "Хүлээгдэж буй",
-      value: orders.filter((o) => o.status === "pending").length,
-      change: "-3%",
-      trend: "down",
+      value: pendingOrders,
+      trend: getTrend(pendingOrders, 'pending'),
       icon: Clock,
       color: "yellow",
+      gradient: "from-yellow-500 to-yellow-600",
+      description: "Шийдвэр хүлээж буй",
     },
     {
       title: "Цуцлагдсан",
-      value: "3%",
-      change: "-2%",
-      trend: "down",
+      value: cancelledOrders,
+      percentage: cancellationRate,
+      trend: getTrend(cancelledOrders, 'cancelled'),
       icon: AlertCircle,
       color: "red",
+      gradient: "from-red-500 to-red-600",
+      description: `${cancellationRate}% цуцлагдсан`,
+    },
+    {
+      title: "Өнөөдрийн захиалга",
+      value: todayOrders,
+      trend: { change: 15, isPositive: true, display: '+15%' },
+      icon: Users,
+      color: "purple",
+      gradient: "from-purple-500 to-purple-600",
+      description: "Өнөөдрийн идэвхтэй захиалга",
     },
   ];
 
@@ -229,26 +315,25 @@ export function AllOrdersPage({ company }: AllOrdersPageProps) {
             </div>
             <div className="flex items-center gap-3">
               <Popover>
-  <PopoverTrigger asChild>
-    <button className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors duration-200 flex items-center gap-2">
-      <CalendarIcon className="w-4 h-4" />
-      Хугацаагаар шүүх
-    </button>
-  </PopoverTrigger>
-  <PopoverContent className="w-auto p-0">
-    <Calendar
-      mode="single"
-      selected={selectedDate}
-      onSelect={(date) => {
-        setSelectedDate(date);
-        setFilter("all"); 
-      }}
-      initialFocus
-    />
-  </PopoverContent>
-</Popover>
+                <PopoverTrigger asChild>
+                  <button className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors duration-200 flex items-center gap-2">
+                    <CalendarIcon className="w-4 h-4" />
+                    Хугацаагаар шүүх
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={(date) => {
+                      setSelectedDate(date);
+                      setFilter("all"); 
+                    }}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
-            
           </div>
         </div>
 
@@ -292,45 +377,63 @@ export function AllOrdersPage({ company }: AllOrdersPageProps) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {stats.map((stat, index) => {
-            const getColorClasses = (color: string) => {
-              const colors = {
-                blue: "bg-blue-50 text-blue-600 border-blue-100",
-                green: "bg-green-50 text-green-600 border-green-100",
-                yellow: "bg-yellow-50 text-yellow-600 border-yellow-100",
-                red: "bg-red-50 text-red-600 border-red-100",
-              };
-              return colors[color as keyof typeof colors] || colors.blue;
-            };
+        {/* Enhanced Stats Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {stats.map((stat, index) => (
+            <div
+              key={index}
+              className="group relative bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+            >
+              {/* Background Gradient Overlay */}
+              <div className={`absolute inset-0 bg-gradient-to-br ${stat.gradient} opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300`}></div>
+              
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-4">
+                  <div className={`p-3 rounded-xl bg-gradient-to-br ${stat.gradient} shadow-lg`}>
+                    <stat.icon className="w-6 h-6 text-white" />
+                  </div>
+                  <div className={`flex items-center gap-1 text-sm font-semibold ${
+                    stat.trend.isPositive ? 'text-green-600' : 'text-red-600'
+                  }`}>
+                    {stat.trend.isPositive ? (
+                      <TrendingUp className="w-4 h-4" />
+                    ) : (
+                      <TrendingDown className="w-4 h-4" />
+                    )}
+                    {stat.trend.display}
+                  </div>
+                </div>
 
-            return (
-              <div
-                key={index}
-                className={`p-4 rounded-xl border ${getColorClasses(
-                  stat.color
-                )}`}
-              >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-gray-500">{stat.title}</p>
-                    <p className="text-2xl font-semibold mt-1">{stat.value}</p>
+                <div className="space-y-2">
+                  <h3 className="text-sm font-medium text-gray-600">{stat.title}</h3>
+                  <div className="flex items-baseline gap-2">
+                    {stat.percentage && (
+                      <span className={`text-sm font-medium px-2 py-1 rounded-full ${
+                        stat.percentage >= 80 ? 'bg-green-100 text-green-700' : 
+                        stat.percentage >= 50 ? 'bg-yellow-100 text-yellow-700' : 
+                        'bg-red-100 text-red-700'
+                      }`}>
+                        {stat.percentage}%
+                      </span>
+                    )}
                   </div>
-                  <div className="p-3 rounded-lg bg-white">
-                    <stat.icon className="w-5 h-5" />
+                  <p className="text-xs text-gray-500">{stat.description}</p>
+                </div>
+
+                {/* Progress bar for percentages */}
+                {stat.percentage && (
+                  <div className="mt-4">
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className={`h-2 rounded-full bg-gradient-to-r ${stat.gradient} transition-all duration-1000 ease-out`}
+                        style={{ width: `${stat.percentage}%` }}
+                      ></div>
+                    </div>
                   </div>
-                </div>
-                <div
-                  className={`flex items-center gap-1 text-sm font-medium mt-2 ${
-                    stat.trend === "up" ? "text-green-600" : "text-red-600"
-                  }`}
-                >
-                  {stat.trend === "up" ? <span>↑</span> : <span>↓</span>}
-                  {stat.change}
-                </div>
+                )}
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
 
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
