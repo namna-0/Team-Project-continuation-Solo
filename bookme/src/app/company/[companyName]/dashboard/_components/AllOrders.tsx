@@ -291,15 +291,6 @@ const matchesSearch =
       gradient: "from-red-500 to-red-600",
       description: `${cancellationRate}% цуцлагдсан`,
     },
-    {
-      title: "Өнөөдрийн захиалга",
-      value: todayOrders,
-      trend: { change: 15, isPositive: true, display: '+15%' },
-      icon: Users,
-      color: "purple",
-      gradient: "from-purple-500 to-purple-600",
-      description: "Өнөөдрийн идэвхтэй захиалга",
-    },
   ];
 
   return (

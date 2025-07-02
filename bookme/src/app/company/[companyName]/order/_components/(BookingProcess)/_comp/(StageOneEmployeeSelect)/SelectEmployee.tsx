@@ -1,6 +1,8 @@
 "use client";;
 import EmployeeCard from "../../(publicItems)/employeeCard";
 import { StagOneProps } from "../../(publicItems)/_OrderPageTypes/types";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function StagaOneSelectEmployee({
   company,
@@ -9,6 +11,7 @@ export default function StagaOneSelectEmployee({
   selectedEmployeeImf,
   setSelectedEmployeeImf,
 }: StagOneProps) {
+  const router=useRouter()
   return (
     company?.employees.length > 0 ?
       <div className="grid grid-cols-3 w-fit gap-5 justify-between items-center p-5">
@@ -44,6 +47,10 @@ export default function StagaOneSelectEmployee({
           ) : null
         )}
       </div>
-      : <div className="w-full aspect-8/5 shadow mt-28 rounded-2xl border items-center justify-center">  Захиалга өгөх боломжтой ажилтан байхгүй байна.</div>
+      : <div className="w-full aspect-8/5 mt-22 shadow flex flex-col gap-6 text-xl font-bold rounded-2xl border items-center text-wrap p-20  "> 
+       <div className=" w-full  text-center">Захиалга өгөх боломжтой ажилтан байхгүй байна. Өөрчлөлт орсны дараа дахин оролдно уу!</div>
+       <Button onClick={()=>{
+      company && router.push(`https://team-naba.vercel.app//company/${company.companyName}`)
+       }}>Буцах</Button></div>
   );
 }

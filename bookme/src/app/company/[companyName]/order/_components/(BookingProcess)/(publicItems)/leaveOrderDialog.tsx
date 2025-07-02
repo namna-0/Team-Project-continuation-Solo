@@ -20,7 +20,7 @@ const LeaveOrder = ({ companyData }: leaveOrderProps) => {
                             <Button className="flex-1 h-14 text-wrap" variant="ghost">Захиалгаа үргэлжлүүлэх</Button>
                         </DialogPrimitive.Close>
                         <Button onClick={() => {
-                            companyData && router.push(`http://localhost:3000/company/${companyData.companyName}`)
+                            companyData && router.push(`https://team-naba.vercel.app//company/${companyData.companyName}`)
                         }} className="flex-1 bg-black text-white h-14" >Тийм. Гарах</Button>
                     </div>
                 </DialogHeader>

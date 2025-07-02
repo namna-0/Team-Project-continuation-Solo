@@ -57,9 +57,9 @@ export default function OrderPage() {
             <div className="w-[1440px] h-screen flex flex-col items-center gap-20 bg-white justify-center ">
                 <h1 className="text-2xl font-bold  shadow-2xl w-2/3 text-center rounded-full p-4 ">❌ Хэрэглэгчид зориулсан захиалгын хуудас байна.Компаний хяналын самбараас захиалгаа үүсгэнэ үү⁉️.</h1>
                 <div className="flex gap-6 ">
-                    <Button onClick={() => { companyData && router.push(`http://localhost:3000/company/${companyData.companyName}`); }}
+                    <Button onClick={() => { companyData && router.push(`/company/${companyData.companyName}`); }}
                         className="w-fit h-fit rounded-4xl  border border-black text-xl p-6" variant={"ghost"}>Буцах </Button>
-                    <Button onClick={() => { companyData && router.push(`http://localhost:3000/company/${companyData.companyName}/dashboard`); }}
+                    <Button onClick={() => { companyData && router.push(`/company/${companyData.companyName}/dashboard`); }}
                         className="w-fit h-fit rounded-4xl   text-xl p-6" variant={"ghost"}> хяналтын самбар </Button>
                 </div>
             </div>
@@ -69,13 +69,13 @@ export default function OrderPage() {
     if (!user) return (
         <div className="w-screen h-screen  flex items-center justify-center">
             <div className="w-[1440px] h-screen flex flex-col items-center  bg-white  ">
-                <div className="w-full items-start justify-items-start p-5 " > <Button variant={"default"} onClick={() => { companyData && router.push(`http://localhost:3000/company/${companyData.companyName}`); }}>буцах</Button></div>
+                <div className="w-full items-start justify-items-start p-5 " > <Button variant={"default"} onClick={() => { companyData && router.push(`/company/${companyData.companyName}`); }}>буцах</Button></div>
                 <div className="w-full items-center h-full flex justify-center gap-20 flex-col">
                     <h1 className="text-2xl font-bold    w-2/3 text-center shadow-2xl rounded-full p-4 ">❌ Бүртгэлтэй болон нэвтэрсэн хэрэглэгч захиалга өгөх боломжтой⁉️.</h1>
                     <div className="flex gap-6 ">
-                        <Button onClick={() => { companyData && router.push(`http://localhost:3000/company/${companyData.companyName}/login`); }}
+                        <Button onClick={() => { companyData && router.push(`/company/${companyData.companyName}/login`); }}
                             className="w-fit h-fit rounded-4xl  border border-black text-xl p-6" variant={"ghost"}> Нэвтрэх </Button>
-                        <Button onClick={() => { companyData && router.push(`http://localhost:3000/company/${companyData.companyName}/signup`); }}
+                        <Button onClick={() => { companyData && router.push(`/company/${companyData.companyName}/signup`); }}
                             className="w-fit h-fit rounded-4xl   text-xl p-6" variant={"default"}> Бүртгүүлэх </Button>
                     </div>
                 </div>

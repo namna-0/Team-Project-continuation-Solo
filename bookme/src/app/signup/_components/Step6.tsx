@@ -40,17 +40,6 @@ export const Step6 = ({
         <p>Тогвортой ажилласан жил: {formData.experience || "—"}</p>
         <p>Нийт үйлчлүүлэгчдийн тоо: {formData.clientNumber || ""}</p>
 
-        {logoPreview && (
-          <div className="mt-2">
-            <p className="text-sm mb-1">Лого:</p>
-            <img
-              src={formData.logo}
-              alt="Лого"
-              className="h-16 object-contain border rounded"
-            />
-          </div>
-        )}
-
         {formData.backGroundImage && (
           <div className="mt-2">
             <p className="text-sm mb-1">Background зураг:</p>
@@ -90,7 +79,6 @@ export const Step6 = ({
         )}
       </div>
 
-      {/* Ажлын цаг */}
       <div>
         <h3 className="font-semibold mb-2">Ажлын цаг</h3>
         <ul className="space-y-1">
