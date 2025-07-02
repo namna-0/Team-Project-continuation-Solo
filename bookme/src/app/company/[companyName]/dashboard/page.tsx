@@ -88,17 +88,11 @@ export default function Dashboard() {
 
     switch (currentPage) {
       case "employees":
-        return (
-            <EmployeesPage />
-        );
+        return <EmployeesPage />;
       case "all-orders":
-        return (
-            <AllOrdersPage company={company} />
-        );
+        return <AllOrdersPage company={company} />;
       case "staff-orders":
-        return (
-            <StaffOrdersPage company={company} />
-        );
+        return <StaffOrdersPage company={company} />;
       case "general-settings":
         return (
           <PageContainer>
@@ -326,7 +320,7 @@ export default function Dashboard() {
                         : "text-gray-600 hover:bg-blue-50"
                     }`}
                   >
-                    Template
+                    Веб дизайн
                   </button>
                 </div>
               )}

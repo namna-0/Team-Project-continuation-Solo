@@ -40,7 +40,6 @@ export default function SignIn() {
     setLoading(true);
     try {
       await signIn(data.email, data.password);
-      toast.success("Амжилттай нэвтэрлээ");
     } catch (error) {
       console.error("Login error:", error);
       toast.error("Нэвтрэхэд алдаа гарлаа. Дахин оролдоно уу.");

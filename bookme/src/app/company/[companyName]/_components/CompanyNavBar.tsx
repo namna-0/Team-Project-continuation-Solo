@@ -23,7 +23,7 @@ export const CompanyNavBar = ({
   const { company: loggedInCompany, signOutCompany } = useCompanyAuth();
 
   const navItems = [
-    { label: "Home", href: "#home" },
+    { label: "Нүүр", href: "#home" },
     { label: "Бидний тухай", href: "#about" },
     { label: "Байршил", href: "#location" },
     { label: "Холбоо барих", href: "#contact" },
